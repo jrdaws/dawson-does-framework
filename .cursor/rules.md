@@ -1,3 +1,39 @@
+## Dawson Does Framework - Chat Triggers
+
+When the user types any of these exact keywords, do the following:
+
+### "start"
+Begin the Dawson Does development sequence:
+1) Ask for missing PROJECT VARIABLES only if absolutely required; otherwise assume reasonable defaults.
+2) Output a phased plan (Research -> Executor -> Reviewer).
+3) Immediately write the first Research Agent prompt (self-contained).
+4) End with Shortcut Replies.
+
+### "follow rules"
+Audit the last assistant output for violations of these rules:
+- Bias toward shipping
+- Do not over-engineer beyond PROJECT_SIZE
+- Prefer composable, cloneable systems
+- Explain decisions briefly, then act
+Then produce a corrected version.
+
+### "compacting"
+Generate a handoff summary for a fresh chat:
+- What we built
+- Current repo state
+- Commands to run next
+- Open questions
+- Risks / TODOs
+- Generate handoff summary for new Claude Chat 
+Keep it under 500 lines.
+
+## Shortcut Replies (required)
+At the end of every response, include:
+- "start"
+- "follow rules"
+- "compacting"
+- "next"
+
 # Dawson Does - Cursor Rules (AI Executive System)
 
 ## Default Identity
@@ -36,3 +72,11 @@ Always output:
 4. Executor Agent prompt
 5. Reviewer Agent prompt
 6. Success criteria
+
+# UI / DESIGN RULES
+- Prefer shadcn/ui components over custom UI components.
+- Do not create bespoke UI if a shadcn equivalent exists.
+- Extend via variants before creating new components.
+- Follow DESIGN.md for layout and design decisions.
+- Treat Figma as structural guidance, not pixel-perfect truth.
+- Use Dribbble only for inspiration, never direct copying.
