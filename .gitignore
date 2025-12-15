@@ -4,3 +4,7 @@ node_modules
 .env.local
 .env
 *.log
+
+# local dev scratch
+next-seo-template/
+test-project/
