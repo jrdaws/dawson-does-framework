@@ -143,6 +143,7 @@ async function cmdCapabilities(projectDirArg) {
 }
 
 async function cmdPhrases(projectDirArg) {
+  await ensureFrameworkMapFresh();
   const projectDir = resolveProjectDir(projectDirArg);
   const caps = await resolveEnabledCaps(projectDir);
 

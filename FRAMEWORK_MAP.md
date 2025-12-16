@@ -1,10 +1,11 @@
 # FRAMEWORK_MAP
 
-Generated: 2025-12-16T04:53:25.939Z
+Generated: 2025-12-16T04:53:35.960Z
 Hash: 01e6fa6159
 
 ## Recent changes
-- 140e1b8 2025-12-15 Fix framework-map recentChanges + remove duplicate dispatcher block
+- 7558ac8 2025-12-15 Ignore backup files
+140e1b8 2025-12-15 Fix framework-map recentChanges + remove duplicate dispatcher block
 6ffa4d1 2025-12-15 Add optional Google/Meta/Apple integration scaffolding + capabilities
 3745882 2025-12-15 Update framework map + hooks
 404f57f 2025-12-15 Update husky hook header for v10 compatibility
@@ -28,7 +29,6 @@ f612f6f 2025-12-14 Add multi-model orchestrator (start/follow-rules/compacting)
 0941329 2025-12-14 Add template-local gitignore
 21a3109 2025-12-14 Add gitignore for node_modules/.next/env
 e285d62 2025-12-14 Update seo-directory template with shadcn + supabase + env example
-5a93cae 2025-12-14 Add start/follow rules/compacting workflow to template
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
