@@ -1,80 +1,30 @@
 #!/usr/bin/env node
-import degit from "degit";
-import fs from "node:fs";
 import path from "node:path";
+import fs from "node:fs";
 import fse from "fs-extra";
+import degit from "degit";
 
-const TEMPLATE_MAP = {
+const __cwd = process.cwd();
+
+const TEMPLATES = {
   "seo-directory": "jrdaws/dawson-does-framework/templates/seo-directory",
   "saas": "jrdaws/dawson-does-framework/templates/saas",
   "internal-tool": "jrdaws/dawson-does-framework/templates/internal-tool",
-  "automation": "jrdaws/dawson-does-framework/templates/automation"
+  "automation": "jrdaws/dawson-does-framework/templates/automation",
 };
 
 function usage() {
-  console.log("Usage:");
-  console.log("  npx @jrdaws/framework <templateId> <projectDir>");
-  console.log("Example:");
-  console.log("  npx @jrdaws/framework seo-directory my-project");
+  console.log(`Usage:
+  framework start [projectDir]
+  framework <templateId> <projectDir>
+
+Examples:
+  framework start
+  framework start /Users/joseph.dawson/Documents/dd-cli-test
+  framework seo-directory my-project
+`);
 }
 
-async function main() {
-  const templateId = process.argv[2];
-  const projectDir = process.argv[3];
-
-  if (!templateId || !projectDir) {
-    usage();
-    process.exit(1);
-  }
-
-  const repoPath = TEMPLATE_MAP[templateId];
-  if (!repoPath) {
-    console.error(`Unknown templateId: ${templateId}`);
-    console.error(`Valid: ${Object.keys(TEMPLATE_MAP).join(", ")}`);
-    process.exit(1);
-  }
-
-  if (fs.existsSync(projectDir) && fs.readdirSync(projectDir).length > 0) {
-    console.error(`Target directory "${projectDir}" exists and is not empty.`);
-    process.exit(1);
-  }
-
-  console.log(`Cloning template "${templateId}" into "${projectDir}"...`);
-  const emitter = degit(repoPath, { cache: false, force: true, verbose: true });
-  await emitter.clone(projectDir);
-
-  // Ensure env example exists
-  const envExample = path.join(projectDir, ".env.local.example");
-  if (!fs.existsSync(envExample)) {
-    fs.writeFileSync(envExample, "OPENAI_API_KEY=\nANTHROPIC_API_KEY=\n", "utf8");
-  }
-
-  // Copy your superprompt into the new project root
-  const superPromptSrc = path.resolve("prompts/superprompt/v0.1.md");
-  const superPromptDst = path.join(projectDir, "SUPER_PROMPT.md");
-  if (fs.existsSync(superPromptSrc)) {
-    await fse.copy(superPromptSrc, superPromptDst, { overwrite: true });
-  }
-
-  console.log("\nNext steps:");
-  console.log(`  cd ${projectDir}`);
-  console.log("  npm install");
-  console.log("  npm run dev");
-  console.log("\nCursor:");
-  console.log("  Open this folder in Cursor");
-  console.log("  Open SUPER_PROMPT.md, fill variables, paste into Cursor chat");
-}
-
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
-
-/**
- * framework start <projectDir?>
- * - prints prompts/tasks/framework-start.md
- * - optionally writes START_PROMPT.md into project dir
- */
 async function cmdStart(projectDirArg) {
   const startPromptPath = path.resolve("prompts/tasks/framework-start.md");
   if (!fs.existsSync(startPromptPath)) {
@@ -92,16 +42,54 @@ async function cmdStart(projectDirArg) {
   }
 }
 
-/**
- * Simple dispatcher:
- * - framework start <projectDir?>
- * - framework <templateId> <projectDir>
- */
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const [, , a, b, c] = process.argv;
+async function cmdScaffold(templateId, projectDir) {
+  if (!templateId || !projectDir) {
+    usage();
+    process.exit(1);
+  }
+  if (!TEMPLATES[templateId]) {
+    console.error(`Unknown templateId: ${templateId}`);
+    console.error(`Valid: ${Object.keys(TEMPLATES).join(", ")}`);
+    process.exit(1);
+  }
+
+  console.log(`Cloning template "${templateId}" into "${projectDir}"...`);
+  const repoPath = TEMPLATES[templateId];
+  const emitter = degit(repoPath, { cache: false, force: true, verbose: false });
+  await emitter.clone(projectDir);
+
+  const superPromptSrc = path.resolve("prompts/superprompt/v0.1.md");
+  const superPromptDst = path.join(path.resolve(projectDir), "SUPER_PROMPT.md");
+  if (fs.existsSync(superPromptSrc)) {
+    await fse.copy(superPromptSrc, superPromptDst, { overwrite: true });
+  }
+
+  console.log("\nNext steps:");
+  console.log(`  cd ${projectDir}`);
+  console.log("  npm install");
+  console.log("  npm run dev");
+  console.log("\nCursor:");
+  console.log("  Open this folder in Cursor");
+  console.log("  Open SUPER_PROMPT.md, fill variables, paste into Cursor chat");
+}
+
+async function main() {
+  const [, , a, b] = process.argv;
+
+  if (!a || a === "--help" || a === "-h") {
+    usage();
+    process.exit(0);
+  }
 
   if (a === "start") {
     await cmdStart(b);
     process.exit(0);
   }
+
+  await cmdScaffold(a, b);
 }
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
