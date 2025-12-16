@@ -1,10 +1,11 @@
 # FRAMEWORK_MAP
 
-Generated: 2025-12-16T05:45:40.981Z
+Generated: 2025-12-16T05:45:58.163Z
 Hash: 01e6fa6159
 
 ## Recent changes
-- d0f1e14 2025-12-15 Add global map auto-refresh + framework doctor command
+- 835d6dc 2025-12-15 Fix CLI: remove execa dependency; use spawnSync for doctor/map/scripts
+d0f1e14 2025-12-15 Add global map auto-refresh + framework doctor command
 d924d8e 2025-12-15 Fix CLI: don’t call main() eagerly; use unified dispatcher
 083a9a7 2025-12-15 Refactor entitlements into pure canCore + thin wrapper
 2f464d4 2025-12-15 Fix entitlements can() imports + restrict test discovery
@@ -28,7 +29,6 @@ ee2f188 2025-12-15 Fix CLI dispatcher so phrases/capabilities/toggle work
 b520656 2025-12-15 Add framework function phrases + capability negotiation
 6596592 2025-12-15 Make Figma parsing optional when env vars missing
 57341d7 2025-12-15 Fix CLI dispatcher (framework start)
-6558946 2025-12-15 Ignore local scratch projects (next-seo-template, test-project)
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

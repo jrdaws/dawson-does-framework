@@ -11,3 +11,6 @@ test-project/
 
 # backups
 *.bak.*
+
+# npm pack artifacts
+*.tgz
