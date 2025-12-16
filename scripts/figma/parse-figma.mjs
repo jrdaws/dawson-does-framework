@@ -5,8 +5,8 @@ const token = process.env.FIGMA_TOKEN;
 const fileKey = process.env.FIGMA_FILE_KEY;
 
 if (!token || !fileKey) {
-  console.error("Missing FIGMA_TOKEN or FIGMA_FILE_KEY in env.");
-  process.exit(1);
+  console.error("Figma integration is optional. Skipping because no FIGMA_TOKEN / FILE_KEY found.");
+  process.exit(0);
 }
 
 const api = (path) => `https://api.figma.com/v1/${path}`;
@@ -73,5 +73,5 @@ const main = async () => {
 
 main().catch((e) => {
   console.error(e);
-  process.exit(1);
+  process.exit(0);
 });
