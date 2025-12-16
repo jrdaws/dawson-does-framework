@@ -1,74 +1,41 @@
 # FRAMEWORK_MAP
-Generated: 2025-12-16T02:50:23.237Z
-Entrypoint: `bin/framework.js`
 
-## Legend
-- 🟦 `cli.core` (free, required)
-- 🟩 `capabilities.engine` (free)
-- 🟠 `cost.logging` (pro, optional)
-- 🟣 `figma.parse` (pro, optional)
-- 🟨 `templates` (free)
-- ⬜ `unknown` (free, fallback)
+Generated: 2025-12-16T03:17:17.636Z
+Hash: 01e6fa6159
 
 ## Recent changes
-- 2025-12-15 486ba3f Make call graph recursive BFS from bin/framework.js
-- 2025-12-15 e7e8d37 Enhance FRAMEWORK_MAP: call graph + tiered capabilities + recent changes
-- 2025-12-15 a5f741c Add auto-updating framework map for agents (docs/FRAMEWORK_MAP.md)
-- 2025-12-15 096c196 Add auto-updating FRAMEWORK_MAP.md (repo roadmap for agents)
-- 2025-12-15 ab3d212 Fix syntax error in CLI (remove extra brace)
-- 2025-12-15 ee2f188 Fix CLI dispatcher so phrases/capabilities/toggle work
-- 2025-12-15 3c49fba Add dynamic phrases/capabilities/toggles + optional figma + superprompt section
-- 2025-12-15 b520656 Add framework function phrases + capability negotiation
-- 2025-12-15 6596592 Make Figma parsing optional when env vars missing
-- 2025-12-15 57341d7 Fix CLI dispatcher (framework start)
-- 2025-12-15 6558946 Ignore local scratch projects (next-seo-template, test-project)
-- 2025-12-15 3fe9b34 Add framework start CLI, Figma parsing, PR visual workflow, and agent cost logging
-- 2025-12-15 0a40cc4 Add standardized design rules (shadcn + figma + dribbble)
-- 2025-12-15 658b7b9 Add design system and UI workflow (shadcn + figma + dribbble)
-- 2025-12-14 f612f6f Add multi-model orchestrator (start/follow-rules/compacting)
+- (git log unavailable)
+
+## Capability registry
+| id | tier | optional | color | phrase | command | paths |
+|---|---|---:|---|---|---|---|
+| `start.prompt` | `free` | no | `green` | Print framework start prompt | `framework start` | `prompts/tasks/framework-start.md`, `bin/framework.js` |
+| `figma.parse` | `pro` | yes | `blue` | Parse Figma (sections + frames) | `framework figma:parse` | `scripts/figma/parse-figma.mjs`, `.env.example`, `bin/framework.js` |
+| `cost.logging` | `free` | yes | `purple` | Show cost summary | `framework cost:summary` | `scripts/orchestrator/cost.mjs`, `scripts/orchestrator/cost-summary.mjs`, `bin/framework.js` |
 
 ## Call Graph (Execution BFS)
-Used for: Runtime reasoning - Blast-radius analysis - Debugging
+Used for: runtime reasoning, blast-radius analysis, debugging
 
-### BFS outline (levels)
-### Depth 0
-- 🟦 `bin/framework.js`  _(cli.core, free)_
-
-### Depth 1
-- ⬜ `scripts/orchestrator/project-config.mjs`  _(unknown, free)_
-- ⬜ `scripts/orchestrator/capability-engine.mjs`  _(unknown, free)_
-
-
-### BFS grouped (tree-like, parent -> children, still BFS-layered)
-### Depth 0 (parents grouped)
-- 🟦 `bin/framework.js`  _(cli.core, free)_
-  - ⬜ `scripts/orchestrator/capability-engine.mjs`  _(unknown, free)_
-  - ⬜ `scripts/orchestrator/project-config.mjs`  _(unknown, free)_
-
-### Depth 1 (parents grouped)
-- ⬜ `scripts/orchestrator/project-config.mjs`  _(unknown, free)_
-  - (no local imports)
-- ⬜ `scripts/orchestrator/capability-engine.mjs`  _(unknown, free)_
-  - ⬜ `scripts/orchestrator/project-config.mjs`  _(unknown, free)_
-
+- `bin/framework.js`  -  start.prompt [free/required/green], figma.parse [pro/optional/blue], cost.logging [free/optional/purple]
+  - `scripts/orchestrator/project-config.mjs`
+  - `scripts/orchestrator/capability-engine.mjs`
 
 ## Dependency Tree (Structural)
-Used for: Onboarding - Refactors - Capability ownership
+Used for: onboarding, refactors, capability ownership
 
-```
-🟦 `bin/framework.js`  _(cli.core, free)_
-⬜ `scripts/orchestrator/capability-engine.mjs`  _(unknown, free)_
-⬜ `scripts/orchestrator/project-config.mjs`  _(unknown, free)_
-⬜ `scripts/orchestrator/project-config.mjs`  _(unknown, free)_
-↩︎ (already shown above)
-```
+- `bin/framework.js`  -  start.prompt [free/required/green], figma.parse [pro/optional/blue], cost.logging [free/optional/purple]
+- `├─ scripts/orchestrator/project-config.mjs`
+- `│  scripts/orchestrator/project-config.mjs`
+- `└─ scripts/orchestrator/capability-engine.mjs`
+- `   scripts/orchestrator/capability-engine.mjs`
+- `   └─ scripts/orchestrator/project-config.mjs`
+- `      scripts/orchestrator/project-config.mjs`
 
-## Reverse graph (what depends on this file)
+## Reverse graph (What depends on this file)
 
-- 🟦 `bin/framework.js`
-  - (no dependents)
-- ⬜ `scripts/orchestrator/capability-engine.mjs`
-  - 🟦 `bin/framework.js`
-- ⬜ `scripts/orchestrator/project-config.mjs`
-  - 🟦 `bin/framework.js`
-  - ⬜ `scripts/orchestrator/capability-engine.mjs`
+- `scripts/orchestrator/project-config.mjs` <- `bin/framework.js`, `scripts/orchestrator/capability-engine.mjs`
+- `scripts/orchestrator/capability-engine.mjs` <- `bin/framework.js`
+
+## Notes
+- Optional integrations should never block progress. If env is missing, skip with a clear message.
+

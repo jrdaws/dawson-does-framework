@@ -21,7 +21,8 @@
     "degit": "^2.8.4",
     "dotenv": "^17.2.3",
     "fs-extra": "^11.2.0",
-    "prompts": "^2.4.2"
+    "prompts": "^2.4.2",
+    "zod": "^4.2.1"
   },
   "scripts": {
     "figma:parse": "node scripts/figma/parse-figma.mjs",
@@ -29,7 +30,7 @@
     "map:generate": "node scripts/meta/generate-framework-map.mjs",
     "docs:map": "node scripts/orchestrator/generate-framework-map.mjs",
     "prepare": "husky",
-    "framework:map": "node scripts/meta/generate-framework-map.mjs",
+    "framework:map": "node scripts/orchestrator/framework-map.mjs",
     "map:gen": "node scripts/orchestrator/framework-map.mjs"
   },
   "devDependencies": {

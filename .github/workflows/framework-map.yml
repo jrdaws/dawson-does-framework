@@ -6,13 +6,13 @@ on:
     branches: [ main ]
 
 jobs:
-  map:
+  framework-map:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "20"
       - run: npm ci
-      - run: npm run map:gen
+      - run: npm run framework:map
       - run: git diff --exit-code FRAMEWORK_MAP.md

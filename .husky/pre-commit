@@ -1,8 +1,5 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
 npm run framework:map
-git add FRAMEWORK_MAP.md
-
-npm run map:gen
 git add FRAMEWORK_MAP.md

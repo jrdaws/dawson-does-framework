@@ -1,121 +1,45 @@
 import fs from "fs";
 import path from "path";
-import { execSync } from "child_process";
+import crypto from "crypto";
 
-const ROOT = process.cwd();
-const ENTRY = path.resolve("bin/framework.js");
-const OUT = path.resolve("FRAMEWORK_MAP.md");
-
-const EXT_CANDIDATES = [".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".mts", ".cts"];
-
-// --------- capability metadata (edit this as you grow) ----------
-const CAPABILITY_RULES = [
-  {
-    id: "cli.core",
-    tier: "free",
-    optional: false,
-    color: "🟦",
-    match: (p) => p.endsWith("bin/framework.js"),
-  },
-  {
-    id: "figma.parse",
-    tier: "pro",
-    optional: true,
-    color: "🟣",
-    match: (p) => p.includes("/scripts/figma/"),
-  },
-  {
-    id: "cost.logging",
-    tier: "pro",
-    optional: true,
-    color: "🟠",
-    match: (p) => p.includes("/scripts/orchestrator/cost"),
-  },
-  {
-    id: "capabilities.engine",
-    tier: "free",
-    optional: false,
-    color: "🟩",
-    match: (p) =>
-      p.includes("/scripts/orchestrator/capability") ||
-      p.includes("/scripts/orchestrator/project-config") ||
-      p.includes("/scripts/orchestrator/capabilities.json"),
-  },
-  {
-    id: "templates",
-    tier: "free",
-    optional: false,
-    color: "🟨",
-    match: (p) => p.includes("/templates/"),
-  },
-];
-
-function norm(p) {
-  return p.replaceAll("\\", "/");
-}
-
-function rel(p) {
-  return norm(path.relative(ROOT, p));
-}
-
-function capFor(filePathAbs) {
-  const r = rel(filePathAbs);
-  for (const rule of CAPABILITY_RULES) {
-    if (rule.match(r)) return rule;
-  }
-  return { id: "unknown", tier: "free", optional: false, color: "⬜" };
-}
+const REPO_ROOT = process.cwd();
+const ENTRY = path.join(REPO_ROOT, "bin", "framework.js");
+const CAPS_PATH = path.join(REPO_ROOT, "scripts", "orchestrator", "capabilities.json");
+const OUT = path.join(REPO_ROOT, "FRAMEWORK_MAP.md");
 
 function readText(p) {
   return fs.readFileSync(p, "utf8");
 }
 
 function exists(p) {
-  try {
-    fs.accessSync(p);
-    return true;
-  } catch {
-    return false;
-  }
+  try { fs.accessSync(p); return true; } catch { return false; }
 }
 
-function resolveImport(fromFileAbs, spec) {
-  if (!spec.startsWith(".") && !spec.startsWith("/")) return null;
-
-  const fromDir = path.dirname(fromFileAbs);
-  let target = spec.startsWith("/")
-    ? path.resolve(ROOT, "." + spec)
-    : path.resolve(fromDir, spec);
-
-  // If spec includes extension and exists
-  if (exists(target) && fs.statSync(target).isFile()) return target;
-
-  // Try extension candidates
-  for (const ext of EXT_CANDIDATES) {
-    if (exists(target + ext) && fs.statSync(target + ext).isFile()) return target + ext;
-  }
-
-  // If it’s a directory, try index.*
-  if (exists(target) && fs.statSync(target).isDirectory()) {
-    for (const ext of EXT_CANDIDATES) {
-      const idx = path.join(target, "index" + ext);
-      if (exists(idx) && fs.statSync(idx).isFile()) return idx;
+function listAllFiles(dir) {
+  const out = [];
+  const stack = [dir];
+  while (stack.length) {
+    const d = stack.pop();
+    const entries = fs.readdirSync(d, { withFileTypes: true });
+    for (const e of entries) {
+      if (e.name === "node_modules" || e.name === ".git" || e.name === ".next") continue;
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) stack.push(p);
+      else out.push(p);
     }
   }
+  return out;
+}
 
-  return null;
+function sha1(s) {
+  return crypto.createHash("sha1").update(s).digest("hex").slice(0, 10);
 }
 
 function extractImports(code) {
   const imports = new Set();
-
-  // import ... from "x"
-  const re1 = /\bimport\s+[^;]*?\s+from\s+["']([^"']+)["']/g;
-  // import("x")
-  const re2 = /\bimport\s*\(\s*["']([^"']+)["']\s*\)/g;
-  // require("x")
-  const re3 = /\brequire\s*\(\s*["']([^"']+)["']\s*\)/g;
-
+  const re1 = /\bimport\s+(?:[^'"]+from\s+)?["']([^"']+)["']/g;
+  const re2 = /\brequire\(\s*["']([^"']+)["']\s*\)/g;
+  const re3 = /\bimport\(\s*["']([^"']+)["']\s*\)/g;
   for (const re of [re1, re2, re3]) {
     let m;
     while ((m = re.exec(code))) imports.add(m[1]);
@@ -123,237 +47,217 @@ function extractImports(code) {
   return [...imports];
 }
 
-function buildGraph(entryAbs) {
-  const adj = new Map(); // fileAbs -> Set(fileAbs)
-  const all = new Set();
-  const q = [entryAbs];
-  all.add(entryAbs);
-
-  while (q.length) {
-    const cur = q.shift();
-    const code = readText(cur);
-    const specs = extractImports(code);
-    const children = new Set();
-
-    for (const spec of specs) {
-      const resolved = resolveImport(cur, spec);
-      if (!resolved) continue;
-      children.add(resolved);
-      if (!all.has(resolved)) {
-        all.add(resolved);
-        q.push(resolved);
-      }
-    }
-
-    adj.set(cur, children);
-  }
-
-  // ensure every node has a set
-  for (const n of all) if (!adj.has(n)) adj.set(n, new Set());
-  return adj;
+function resolveImport(fromFile, spec) {
+  if (!spec.startsWith(".") && !spec.startsWith("/")) return null;
+  const base = spec.startsWith("/") ? path.join(REPO_ROOT, spec) : path.resolve(path.dirname(fromFile), spec);
+  const cands = [
+    base,
+    base + ".js",
+    base + ".mjs",
+    base + ".cjs",
+    base + ".ts",
+    base + ".tsx",
+    path.join(base, "index.js"),
+    path.join(base, "index.mjs"),
+    path.join(base, "index.ts"),
+    path.join(base, "index.tsx"),
+  ];
+  for (const c of cands) if (exists(c) && fs.statSync(c).isFile()) return c;
+  return null;
 }
 
-function bfsLevels(adj, entryAbs) {
-  const dist = new Map();
-  const parent = new Map();
-  const levels = new Map(); // depth -> array
-
-  const q = [entryAbs];
-  dist.set(entryAbs, 0);
-  parent.set(entryAbs, null);
-
-  while (q.length) {
-    const cur = q.shift();
-    const d = dist.get(cur) ?? 0;
-    if (!levels.has(d)) levels.set(d, []);
-    levels.get(d).push(cur);
-
-    for (const ch of adj.get(cur) ?? []) {
-      if (!dist.has(ch)) {
-        dist.set(ch, d + 1);
-        parent.set(ch, cur);
-        q.push(ch);
-      }
-    }
-  }
-
-  return { levels, dist, parent };
-}
-
-function renderBfsOutline(levels) {
-  const depths = [...levels.keys()].sort((a, b) => a - b);
-  const lines = [];
-  for (const d of depths) {
-    lines.push(`### Depth ${d}`);
-    for (const n of levels.get(d)) {
-      const cap = capFor(n);
-      lines.push(`- ${cap.color} \`${rel(n)}\`  _(${cap.id}, ${cap.tier}${cap.optional ? ", optional" : ""})_`);
-    }
-    lines.push("");
-  }
-  return lines.join("\n");
-}
-
-// BFS but grouped as parent -> children, level by level
-function renderBfsGrouped(adj, levels) {
-  const depths = [...levels.keys()].sort((a, b) => a - b);
-  const lines = [];
-  for (const d of depths) {
-    lines.push(`### Depth ${d} (parents grouped)`);
-    for (const parent of levels.get(d)) {
-      const capP = capFor(parent);
-      lines.push(`- ${capP.color} \`${rel(parent)}\`  _(${capP.id}, ${capP.tier}${capP.optional ? ", optional" : ""})_`);
-      const children = [...(adj.get(parent) ?? [])].sort();
-      if (!children.length) {
-        lines.push(`  - (no local imports)`);
-      } else {
-        for (const ch of children) {
-          const capC = capFor(ch);
-          lines.push(`  - ${capC.color} \`${rel(ch)}\`  _(${capC.id}, ${capC.tier}${capC.optional ? ", optional" : ""})_`);
-        }
-      }
-    }
-    lines.push("");
-  }
-  return lines.join("\n");
-}
-
-// Structural tree (DFS). De-dupe with backrefs.
-function renderStructuralTree(adj, entryAbs) {
+function buildGraphs(entry) {
+  const edges = new Map();
+  const reverse = new Map();
   const seen = new Set();
-  const lines = [];
+  const q = [entry];
 
-  function walk(node, prefix, isLast) {
-    const cap = capFor(node);
-    const label = `${cap.color} \`${rel(node)}\`  _(${cap.id}, ${cap.tier}${cap.optional ? ", optional" : ""})_`;
+  while (q.length) {
+    const f = q.shift();
+    if (seen.has(f)) continue;
+    seen.add(f);
 
-    lines.push(prefix + (prefix ? (isLast ? "└─ " : "├─ ") : "") + label);
+    const code = readText(f);
+    const specs = extractImports(code);
+    const kids = [];
 
-    if (seen.has(node)) {
-      lines.push(prefix + (prefix ? (isLast ? "   " : "│  ") : "") + "↩︎ (already shown above)");
-      return;
+    for (const s of specs) {
+      const r = resolveImport(f, s);
+      if (!r) continue;
+      kids.push(r);
+      if (!reverse.has(r)) reverse.set(r, new Set());
+      reverse.get(r).add(f);
+      q.push(r);
     }
-    seen.add(node);
 
-    const kids = [...(adj.get(node) ?? [])].sort();
-    const nextPrefix = prefix + (prefix ? (isLast ? "   " : "│  ") : "");
-    kids.forEach((k, i) => walk(k, nextPrefix, i === kids.length - 1));
+    edges.set(f, kids);
   }
 
-  walk(entryAbs, "", true);
-  return lines.join("\n");
+  return { edges, reverse };
 }
 
-function buildReverseGraph(adj) {
-  const rev = new Map(); // node -> Set(parents)
-  for (const [p, kids] of adj.entries()) {
-    for (const k of kids) {
-      if (!rev.has(k)) rev.set(k, new Set());
-      rev.get(k).add(p);
-    }
-  }
-  // ensure every node exists
-  for (const n of adj.keys()) if (!rev.has(n)) rev.set(n, new Set());
-  return rev;
-}
-
-function renderReverseGraph(rev) {
-  const nodes = [...rev.keys()].sort();
-  const lines = [];
-  for (const n of nodes) {
-    const capN = capFor(n);
-    const deps = [...rev.get(n)].sort();
-    lines.push(`- ${capN.color} \`${rel(n)}\``);
-    if (!deps.length) {
-      lines.push(`  - (no dependents)`);
-    } else {
-      for (const d of deps) {
-        const capD = capFor(d);
-        lines.push(`  - ${capD.color} \`${rel(d)}\``);
+function bfsOutline(entry, edges) {
+  const out = [];
+  const q = [entry];
+  const dist = new Map([[entry, 0]]);
+  while (q.length) {
+    const n = q.shift();
+    const d = dist.get(n) ?? 0;
+    out.push({ file: n, depth: d });
+    for (const k of edges.get(n) ?? []) {
+      if (!dist.has(k)) {
+        dist.set(k, d + 1);
+        q.push(k);
       }
     }
   }
-  return lines.join("\n");
+  return out;
 }
 
-function renderLegend() {
-  const byId = new Map();
-  for (const r of CAPABILITY_RULES) byId.set(r.id, r);
-  const ids = [...byId.keys()].sort();
-
+function treeView(entry, edges) {
   const lines = [];
-  lines.push(`- 🟦 \`cli.core\` (free, required)`);
-  for (const id of ids) {
-    if (id === "cli.core") continue;
-    const r = byId.get(id);
-    lines.push(`- ${r.color} \`${r.id}\` (${r.tier}${r.optional ? ", optional" : ""})`);
+  const visited = new Set();
+
+  function walk(node, prefix) {
+    lines.push(prefix + node);
+    if (visited.has(node)) return;
+    visited.add(node);
+    const kids = edges.get(node) ?? [];
+    for (let i = 0; i < kids.length; i++) {
+      const isLast = i === kids.length - 1;
+      const p2 = prefix + (isLast ? "   " : "│  ");
+      const branch = prefix + (isLast ? "└─ " : "├─ ");
+      lines.push(branch + kids[i]);
+      walk(kids[i], p2);
+    }
   }
-  lines.push(`- ⬜ \`unknown\` (free, fallback)`);
-  return lines.join("\n");
+
+  walk(entry, "");
+  return lines;
 }
 
-function recentChanges() {
+function loadCaps() {
+  const raw = JSON.parse(readText(CAPS_PATH));
+  const caps = raw.caps || [];
+  const byPath = new Map();
+  for (const c of caps) {
+    for (const p of c.paths || []) {
+      const abs = path.join(REPO_ROOT, p);
+      if (!byPath.has(abs)) byPath.set(abs, []);
+      byPath.get(abs).push(c);
+    }
+  }
+  return { caps, byPath };
+}
+
+function formatCapBadges(capsForFile) {
+  return (capsForFile || []).map(c => {
+    const opt = c.optional ? "optional" : "required";
+    return `${c.id} [${c.tier}/${opt}/${c.color}]`;
+  });
+}
+
+function rel(p) {
+  return path.relative(REPO_ROOT, p);
+}
+
+function recentChanges(n = 20) {
   try {
-    const out = execSync(`git log -n 15 --date=short --pretty=format:"- %ad %h %s"`, {
-      stdio: ["ignore", "pipe", "ignore"],
-    }).toString("utf8");
-    return out.trim() || "(no recent commits)";
+    const { execSync } = require("child_process");
+    const out = execSync(`git log -n ${n} --pretty=format:%h\\ %ad\\ %s --date=short`, { cwd: REPO_ROOT, stdio: ["ignore", "pipe", "ignore"] }).toString();
+    return out.trim().split("\n");
   } catch {
-    return "(git log unavailable)";
+    return [];
   }
 }
 
 function main() {
   if (!exists(ENTRY)) {
-    console.error(`Missing entrypoint: ${ENTRY}`);
+    console.error("Missing entry:", ENTRY);
+    process.exit(1);
+  }
+  if (!exists(CAPS_PATH)) {
+    console.error("Missing capabilities.json:", CAPS_PATH);
     process.exit(1);
   }
 
-  const adj = buildGraph(ENTRY);
-  const { levels } = bfsLevels(adj, ENTRY);
-  const rev = buildReverseGraph(adj);
+  const { edges, reverse } = buildGraphs(ENTRY);
+  const outline = bfsOutline(ENTRY, edges);
+  const tree = treeView(ENTRY, edges);
+  const { caps, byPath } = loadCaps();
+  const changes = recentChanges(25);
 
-  const md = [];
-  md.push(`# FRAMEWORK_MAP`);
-  md.push(`Generated: ${new Date().toISOString()}`);
-  md.push(`Entrypoint: \`${rel(ENTRY)}\``);
-  md.push("");
+  const allFiles = listAllFiles(REPO_ROOT);
+  const capCoverage = caps.map(c => ({
+    id: c.id,
+    tier: c.tier,
+    optional: c.optional,
+    color: c.color,
+    phrase: c.phrase,
+    command: c.command,
+    paths: c.paths || []
+  }));
 
-  md.push(`## Legend`);
-  md.push(renderLegend());
-  md.push("");
+  const lines = [];
+  lines.push(`# FRAMEWORK_MAP`);
+  lines.push(``);
+  lines.push(`Generated: ${new Date().toISOString()}`);
+  lines.push(`Hash: ${sha1(outline.map(x=>x.file).join("|"))}`);
+  lines.push(``);
 
-  md.push(`## Recent changes`);
-  md.push(recentChanges());
-  md.push("");
+  lines.push(`## Recent changes`);
+  if (changes.length) lines.push(...changes.map(l => `- ${l}`));
+  else lines.push(`- (git log unavailable)`);
+  lines.push(``);
 
-  md.push(`## Call Graph (Execution BFS)`);
-  md.push(`Used for: Runtime reasoning - Blast-radius analysis - Debugging`);
-  md.push("");
+  lines.push(`## Capability registry`);
+  lines.push(`| id | tier | optional | color | phrase | command | paths |`);
+  lines.push(`|---|---|---:|---|---|---|---|`);
+  for (const c of capCoverage) {
+    const pathsStr = (c.paths || []).map(p => `\`${p}\``).join(", ");
+    lines.push(`| \`${c.id}\` | \`${c.tier}\` | ${c.optional ? "yes" : "no"} | \`${c.color}\` | ${c.phrase} | \`${c.command}\` | ${pathsStr} |`);
+  }
+  lines.push(``);
 
-  md.push(`### BFS outline (levels)`);
-  md.push(renderBfsOutline(levels));
-  md.push("");
+  lines.push(`## Call Graph (Execution BFS)`);
+  lines.push(`Used for: runtime reasoning, blast-radius analysis, debugging`);
+  lines.push(``);
+  for (const x of outline) {
+    const r = path.relative(REPO_ROOT, x.file);
+    const badges = formatCapBadges(byPath.get(x.file));
+    const badgeStr = badges.length ? `  -  ${badges.join(", ")}` : "";
+    lines.push(`${"  ".repeat(x.depth)}- \`${r}\`${badgeStr}`);
+  }
+  lines.push(``);
 
-  md.push(`### BFS grouped (tree-like, parent -> children, still BFS-layered)`);
-  md.push(renderBfsGrouped(adj, levels));
-  md.push("");
+  lines.push(`## Dependency Tree (Structural)`);
+  lines.push(`Used for: onboarding, refactors, capability ownership`);
+  lines.push(``);
+  for (const t of tree) {
+    const p = t.replace(REPO_ROOT + path.sep, "");
+    const abs = path.join(REPO_ROOT, p);
+    const badges = formatCapBadges(byPath.get(abs));
+    const badgeStr = badges.length ? `  -  ${badges.join(", ")}` : "";
+    lines.push(`- \`${p}\`${badgeStr}`);
+  }
+  lines.push(``);
 
-  md.push(`## Dependency Tree (Structural)`);
-  md.push(`Used for: Onboarding - Refactors - Capability ownership`);
-  md.push("");
-  md.push("```");
-  md.push(renderStructuralTree(adj, ENTRY));
-  md.push("```");
-  md.push("");
+  lines.push(`## Reverse graph (What depends on this file)`);
+  lines.push(``);
+  const nodes = [...new Set(outline.map(x => x.file))];
+  for (const n of nodes) {
+    const deps = [...(reverse.get(n) || [])].map(rel);
+    if (!deps.length) continue;
+    lines.push(`- \`${rel(n)}\` <- ${deps.map(d => `\`${d}\``).join(", ")}`);
+  }
+  lines.push(``);
 
-  md.push(`## Reverse graph (what depends on this file)`);
-  md.push("");
-  md.push(renderReverseGraph(rev));
-  md.push("");
+  lines.push(`## Notes`);
+  lines.push(`- Optional integrations should never block progress. If env is missing, skip with a clear message.`);
+  lines.push(``);
 
-  fs.writeFileSync(OUT, md.join("\n"), "utf8");
-  console.log(`Wrote ${rel(OUT)}`);
+  fs.writeFileSync(OUT, lines.join("\n") + "\n", "utf8");
+  console.log("Wrote:", OUT);
 }
 
 main();

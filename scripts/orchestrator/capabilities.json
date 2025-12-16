@@ -2,24 +2,33 @@
   "caps": [
     {
       "id": "start.prompt",
-      "tier": "free",
       "phrase": "Print framework start prompt",
       "command": "framework start",
-      "requiresEnv": []
+      "tier": "free",
+      "optional": false,
+      "color": "green",
+      "requiresEnv": [],
+      "paths": ["prompts/tasks/framework-start.md", "bin/framework.js"]
     },
     {
       "id": "figma.parse",
-      "tier": "pro",
       "phrase": "Parse Figma (sections + frames)",
       "command": "framework figma:parse",
-      "requiresEnv": ["FIGMA_TOKEN", "FIGMA_FILE_KEY"]
+      "tier": "pro",
+      "optional": true,
+      "color": "blue",
+      "requiresEnv": ["FIGMA_TOKEN", "FIGMA_FILE_KEY"],
+      "paths": ["scripts/figma/parse-figma.mjs", ".env.example", "bin/framework.js"]
     },
     {
       "id": "cost.logging",
-      "tier": "pro",
       "phrase": "Show cost summary",
       "command": "framework cost:summary",
-      "requiresEnv": []
+      "tier": "free",
+      "optional": true,
+      "color": "purple",
+      "requiresEnv": [],
+      "paths": ["scripts/orchestrator/cost.mjs", "scripts/orchestrator/cost-summary.mjs", "bin/framework.js"]
     }
   ]
 }
