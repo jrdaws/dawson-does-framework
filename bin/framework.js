@@ -183,7 +183,6 @@ if (a === "capabilities") { await cmdCapabilities(b); process.exit(0); }
   if (a === "toggle") { await cmdToggle(b, c, d); process.exit(0); }
   if (a === "figma:parse") { await cmdFigmaParse(); process.exit(0); }
   if (a === "cost:summary") { await cmdCostSummary(); process.exit(0); }
-}
 
 /**
  * Unified dispatcher (single source of truth)
