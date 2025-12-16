@@ -111,6 +111,7 @@ async function cmdHelp() {
 Examples:
   framework help
   framework start
+  framework start /Users/joseph.dawson/Documents/dd-cli-test
   framework capabilities .
   framework phrases .
   framework toggle figma.parse on .
@@ -177,13 +178,33 @@ async function cmdCostSummary() {
 }
 
 // Extend dispatcher
+if (a === "capabilities") { await cmdCapabilities(b); process.exit(0); }
+  if (a === "phrases") { await cmdPhrases(b); process.exit(0); }
+  if (a === "toggle") { await cmdToggle(b, c, d); process.exit(0); }
+  if (a === "figma:parse") { await cmdFigmaParse(); process.exit(0); }
+  if (a === "cost:summary") { await cmdCostSummary(); process.exit(0); }
+}
+
+/**
+ * Unified dispatcher (single source of truth)
+ */
 if (import.meta.url === `file://${process.argv[1]}`) {
   const [, , a, b, c, d] = process.argv;
 
-  if (a === "help" || a === "--help" || a === "-h") { await cmdHelp(); process.exit(0); }
+  // help first
+  if (!a || a === "help" || a === "--help" || a === "-h") {
+    await cmdHelp();
+    process.exit(0);
+  }
+
+  // framework commands
+  if (a === "start") { await cmdStart(b); process.exit(0); }
   if (a === "capabilities") { await cmdCapabilities(b); process.exit(0); }
   if (a === "phrases") { await cmdPhrases(b); process.exit(0); }
   if (a === "toggle") { await cmdToggle(b, c, d); process.exit(0); }
   if (a === "figma:parse") { await cmdFigmaParse(); process.exit(0); }
   if (a === "cost:summary") { await cmdCostSummary(); process.exit(0); }
+
+  // otherwise treat as template
+  await main(); // <-- your existing template clone flow
 }
