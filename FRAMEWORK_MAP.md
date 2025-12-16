@@ -1,10 +1,11 @@
 # FRAMEWORK_MAP
 
-Generated: 2025-12-16T05:07:05.818Z
+Generated: 2025-12-16T05:10:15.043Z
 Hash: 01e6fa6159
 
 ## Recent changes
-- f33ebba 2025-12-15 Add repo health script
+- 062a36c 2025-12-15 Add repo-audit + provider registry + usage budgets + entitlements tests
+f33ebba 2025-12-15 Add repo health script
 e66266a 2025-12-15 Auto-refresh FRAMEWORK_MAP on capabilities/phrases
 7558ac8 2025-12-15 Ignore backup files
 140e1b8 2025-12-15 Fix framework-map recentChanges + remove duplicate dispatcher block
@@ -28,7 +29,6 @@ b520656 2025-12-15 Add framework function phrases + capability negotiation
 0a40cc4 2025-12-15 Add standardized design rules (shadcn + figma + dribbble)
 658b7b9 2025-12-15 Add design system and UI workflow (shadcn + figma + dribbble)
 f612f6f 2025-12-14 Add multi-model orchestrator (start/follow-rules/compacting)
-0941329 2025-12-14 Add template-local gitignore
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

@@ -1,4 +1,3 @@
-import { resolveEnabledCaps } from "../../scripts/orchestrator/capability-engine.mjs";
 import { appendAudit } from "../audit/log";
 import { wouldExceed, appendUsage, type Budget } from "../usage/budgets";
 
