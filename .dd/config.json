@@ -1,0 +1,9 @@
+{
+  "plan": "free",
+  "featureOverrides": {},
+  "integrations": {
+    "figma": { "enabled": false },
+    "supabase": { "enabled": false },
+    "ghl": { "enabled": false }
+  }
+}
