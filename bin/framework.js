@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import fs from "node:fs";
+import { realpathSync } from "node:fs";
 import fse from "fs-extra";
 import degit from "degit";
 
@@ -98,10 +100,6 @@ async function main() {
   await cmdScaffold(a, b);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
 
 import { resolveProjectDir, loadProjectConfig, saveProjectConfig } from "../scripts/orchestrator/project-config.mjs";
 import { resolveEnabledCaps } from "../scripts/orchestrator/capability-engine.mjs";
@@ -191,7 +189,11 @@ async function cmdCostSummary() {
 /**
  * Unified dispatcher (single source of truth)
  */
-if (import.meta.url === `file://${process.argv[1]}`) {
+const selfPath = realpathSync(fileURLToPath(import.meta.url));
+let argvPath = process.argv[1];
+try { argvPath = realpathSync(argvPath); } catch {}
+const isEntrypoint = selfPath === argvPath;
+if (isEntrypoint) {
   const [, , a, b, c, d] = process.argv;
 
   // help first
