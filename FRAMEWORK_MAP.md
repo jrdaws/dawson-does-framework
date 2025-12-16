@@ -1,10 +1,11 @@
 # FRAMEWORK_MAP
 
-Generated: 2025-12-16T09:16:05.271Z
+Generated: 2025-12-16T09:31:23.823Z
 Hash: 01e6fa6159
 
 ## Recent changes
-- 7ce9aa1 2025-12-16 Fix package.json files list to include health, docs, and framework assets
+- 7206c8e 2025-12-16 Add capability validation, local secrets vault, realtime scaffolding
+7ce9aa1 2025-12-16 Fix package.json files list to include health, docs, and framework assets
 4580560 2025-12-16 Fix npm package files list; include .dd/health.sh
 938f70a 2025-12-16 Export: include .dd/health.sh in exported repos
 e1f5348 2025-12-15 Add agent feedback loop docs + improve export args test
@@ -28,29 +29,22 @@ f865806 2025-12-15 Add auto-generated FRAMEWORK_MAP (BFS + tree + reverse graph 
 e7e8d37 2025-12-15 Enhance FRAMEWORK_MAP: call graph + tiered capabilities + recent changes
 a5f741c 2025-12-15 Add auto-updating framework map for agents (docs/FRAMEWORK_MAP.md)
 096c196 2025-12-15 Add auto-updating FRAMEWORK_MAP.md (repo roadmap for agents)
-ab3d212 2025-12-15 Fix syntax error in CLI (remove extra brace)
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
 |---|---|---:|---|---|---|---|
-| `start.prompt` | `free` | no | `green` | Print framework start prompt | `framework start` | `prompts/tasks/framework-start.md`, `bin/framework.js` |
-| `figma.parse` | `pro` | yes | `blue` | Parse Figma (sections + frames) | `framework figma:parse` | `scripts/figma/parse-figma.mjs`, `.env.example`, `bin/framework.js` |
-| `cost.logging` | `free` | yes | `purple` | Show cost summary | `framework cost:summary` | `scripts/orchestrator/cost.mjs`, `scripts/orchestrator/cost-summary.mjs`, `bin/framework.js` |
-| `integrations.google.gmail` | `team` | yes | `blue` | Enable Google OAuth + Gmail API scaffolding | `docs: open docs/integrations/google-gmail.md` | `src/platform/integrations/google/index.ts`, `docs/integrations/google-gmail.md`, `.env.example` |
-| `integrations.meta.graph` | `team` | yes | `blue` | Enable Meta OAuth + Graph API scaffolding | `docs: open docs/integrations/meta.md` | `src/platform/integrations/meta/index.ts`, `docs/integrations/meta.md`, `.env.example` |
-| `auth.apple` | `team` | yes | `blue` | Enable Apple Sign In scaffolding | `docs: open docs/integrations/apple.md` | `src/platform/integrations/apple/index.ts`, `docs/integrations/apple.md`, `.env.example` |
 
 ## Call Graph (Execution BFS)
 Used for: runtime reasoning, blast-radius analysis, debugging
 
-- `bin/framework.js`  -  start.prompt [free/required/green], figma.parse [pro/optional/blue], cost.logging [free/optional/purple]
+- `bin/framework.js`
   - `scripts/orchestrator/project-config.mjs`
   - `scripts/orchestrator/capability-engine.mjs`
 
 ## Dependency Tree (Structural)
 Used for: onboarding, refactors, capability ownership
 
-- `bin/framework.js`  -  start.prompt [free/required/green], figma.parse [pro/optional/blue], cost.logging [free/optional/purple]
+- `bin/framework.js`
 - `├─ scripts/orchestrator/project-config.mjs`
 - `│  scripts/orchestrator/project-config.mjs`
 - `└─ scripts/orchestrator/capability-engine.mjs`
