@@ -90,10 +90,7 @@ function resolveLocalImport(fromFile, spec) {
 
 function buildCallGraph() {
   const exts = [".js", ".mjs", ".ts", ".tsx"];
-  const roots = [
-    path.join(ROOT, "bin"),
-    path.join(ROOT, "scripts")
-  ].filter(exists);
+  const roots = [path.join(ROOT, "bin"), path.join(ROOT, "scripts")].filter(exists);
 
   const files = roots.flatMap((r) => listFiles(r, exts));
   const edges = new Map();
@@ -106,24 +103,51 @@ function buildCallGraph() {
       .filter(Boolean)
       .map((p) => toRel(p));
 
-    edges.set(toRel(f), [...new Set(locals)]);
+    edges.set(toRel(f), [...new Set(locals)].sort());
   }
 
-  const keyFiles = [
-    "bin/framework.js",
-    "scripts/orchestrator/capability-engine.mjs",
-    "scripts/orchestrator/project-config.mjs",
-    "scripts/figma/parse-figma.mjs",
-    "scripts/orchestrator/cost.mjs",
-    "scripts/orchestrator/cost-summary.mjs"
-  ].filter(exists);
+  const entry = exists("bin/framework.js") ? "bin/framework.js" : (edges.keys().next().value || null);
+  if (!entry) return "(no files scanned)";
+
+  const maxNodes = 500;
+  const maxDepth = 12;
+
+  const q = [entry];
+  const depthBy = new Map([[entry, 0]]);
+  const visited = new Set([entry]);
 
   const out = [];
-  const keysRel = keyFiles.map(toRel);
+  out.push(`- **ENTRY:** \`${entry}\``);
 
-  for (const k of keysRel) {
-    const deps = edges.get(k) || [];
-    out.push(`- **${k}**\n  - calls/imports:\n${deps.map(d => `    - ${d}`).join("\n") || "    - (none)"}`);
+  while (q.length) {
+    const cur = q.shift();
+    const d = depthBy.get(cur) ?? 0;
+    const indent = "  ".repeat(d + 1);
+    const children = edges.get(cur) || [];
+
+    if (d >= maxDepth) {
+      out.push(`${indent}- ${cur} (maxDepth reached)`);
+      continue;
+    }
+
+    if (cur !== entry) out.push(`${indent}- ${cur}`);
+
+    const childIndent = "  ".repeat(d + 2);
+    for (const child of children) {
+      const already = visited.has(child);
+      out.push(`${childIndent}- ${child}${already ? " (seen)" : ""}`);
+
+      if (!already) {
+        visited.add(child)
+        depthBy.set(child, d + 1);
+        q.push(child);
+        if (visited.size >= maxNodes) {
+          out.push(`${childIndent}- (stopped: maxNodes reached)`);
+          q.length = 0;
+          break;
+        }
+      }
+    }
   }
 
   return out.join("\n");

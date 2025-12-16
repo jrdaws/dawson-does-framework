@@ -1,7 +1,7 @@
 # FRAMEWORK_MAP
 
 Auto-generated. Do not edit manually.
-Last updated: 2025-12-16T02:38:38.051Z
+Last updated: 2025-12-16T02:41:03.869Z
 
 This file is the authoritative roadmap for humans and AI agents.
 
@@ -191,27 +191,15 @@ This file is the authoritative roadmap for humans and AI agents.
 
 ## Call Graph (simple import scan)
 
-- **bin/framework.js**
-  - calls/imports:
+- **ENTRY:** `bin/framework.js`
+    - scripts/orchestrator/capability-engine.mjs
     - scripts/orchestrator/project-config.mjs
     - scripts/orchestrator/capability-engine.mjs
-- **scripts/orchestrator/capability-engine.mjs**
-  - calls/imports:
+      - scripts/orchestrator/project-config.mjs (seen)
     - scripts/orchestrator/project-config.mjs
-- **scripts/orchestrator/project-config.mjs**
-  - calls/imports:
-    - (none)
-- **scripts/figma/parse-figma.mjs**
-  - calls/imports:
-    - (none)
-- **scripts/orchestrator/cost.mjs**
-  - calls/imports:
-    - (none)
-- **scripts/orchestrator/cost-summary.mjs**
-  - calls/imports:
-    - scripts/orchestrator/cost.mjs
 ## Recent Changes (git log)
 
+- 2025-12-15 e7e8d37 Enhance FRAMEWORK_MAP: call graph + tiered capabilities + recent changes
 - 2025-12-15 a5f741c Add auto-updating framework map for agents (docs/FRAMEWORK_MAP.md)
 - 2025-12-15 096c196 Add auto-updating FRAMEWORK_MAP.md (repo roadmap for agents)
 - 2025-12-15 ab3d212 Fix syntax error in CLI (remove extra brace)
@@ -226,4 +214,3 @@ This file is the authoritative roadmap for humans and AI agents.
 - 2025-12-15 658b7b9 Add design system and UI workflow (shadcn + figma + dribbble)
 - 2025-12-14 f612f6f Add multi-model orchestrator (start/follow-rules/compacting)
 - 2025-12-14 0941329 Add template-local gitignore
-- 2025-12-14 21a3109 Add gitignore for node_modules/.next/env
