@@ -87,3 +87,16 @@ test("parseExportFlags: flag without value is ignored for value flags", () => {
   assert.equal(result.name, null); // no value provided
 });
 
+test("parseExportFlags: flag followed by another flag treats value as missing", () => {
+  // --name followed by --remote should NOT assign "--remote" as the name
+  const result = parseExportFlags(["--name", "--remote", "https://github.com/me/repo.git"]);
+  assert.equal(result.name, null); // value starts with "--", so treated as missing
+  assert.equal(result.remote, "https://github.com/me/repo.git");
+});
+
+test("parseExportFlags: --branch followed by flag keeps default", () => {
+  const result = parseExportFlags(["--branch", "--push"]);
+  assert.equal(result.branch, "main"); // default preserved, "--push" not assigned
+  assert.equal(result.push, true);
+});
+

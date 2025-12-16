@@ -1,10 +1,11 @@
 # FRAMEWORK_MAP
 
-Generated: 2025-12-16T08:22:00.395Z
+Generated: 2025-12-16T09:16:05.271Z
 Hash: 01e6fa6159
 
 ## Recent changes
-- 4580560 2025-12-16 Fix npm package files list; include .dd/health.sh
+- 7ce9aa1 2025-12-16 Fix package.json files list to include health, docs, and framework assets
+4580560 2025-12-16 Fix npm package files list; include .dd/health.sh
 938f70a 2025-12-16 Export: include .dd/health.sh in exported repos
 e1f5348 2025-12-15 Add agent feedback loop docs + improve export args test
 4aafcdb 2025-12-15 Ignore npm pack tgz artifacts
@@ -28,7 +29,6 @@ e7e8d37 2025-12-15 Enhance FRAMEWORK_MAP: call graph + tiered capabilities + rec
 a5f741c 2025-12-15 Add auto-updating framework map for agents (docs/FRAMEWORK_MAP.md)
 096c196 2025-12-15 Add auto-updating FRAMEWORK_MAP.md (repo roadmap for agents)
 ab3d212 2025-12-15 Fix syntax error in CLI (remove extra brace)
-ee2f188 2025-12-15 Fix CLI dispatcher so phrases/capabilities/toggle work
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

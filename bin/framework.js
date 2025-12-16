@@ -327,17 +327,24 @@ coverage/
   // 5. Remote + push (optional)
   if (flags.remote) {
     console.log(`[5/5] Setting up remote...`);
-    // Check if origin already exists
-    const remoteCheck = spawnSync("git", ["remote", "get-url", "origin"], { cwd: absProjectDir, stdio: "pipe" });
-    if (remoteCheck.status === 0) {
-      runIn(absProjectDir, "git", ["remote", "set-url", "origin", flags.remote], { stdio: "pipe" });
-      console.log(`     ✓ Remote origin updated to ${flags.remote}`);
-    } else {
-      runIn(absProjectDir, "git", ["remote", "add", "origin", flags.remote], { stdio: "pipe" });
-      console.log(`     ✓ Remote origin added: ${flags.remote}`);
+    let remoteConfigured = false;
+    try {
+      // Check if origin already exists
+      const remoteCheck = spawnSync("git", ["remote", "get-url", "origin"], { cwd: absProjectDir, stdio: "pipe" });
+      if (remoteCheck.status === 0) {
+        runIn(absProjectDir, "git", ["remote", "set-url", "origin", flags.remote], { stdio: "pipe" });
+        console.log(`     ✓ Remote origin updated to ${flags.remote}`);
+      } else {
+        runIn(absProjectDir, "git", ["remote", "add", "origin", flags.remote], { stdio: "pipe" });
+        console.log(`     ✓ Remote origin added: ${flags.remote}`);
+      }
+      remoteConfigured = true;
+    } catch (e) {
+      console.error(`     ✗ Failed to configure remote: ${e?.message || e}`);
+      console.error(`     You can add it manually: git remote add origin ${flags.remote}`);
     }
 
-    if (flags.push) {
+    if (flags.push && remoteConfigured) {
       console.log(`     Pushing to origin/${flags.branch}...`);
       try {
         runIn(absProjectDir, "git", ["push", "-u", "origin", flags.branch], { stdio: "inherit" });
@@ -345,6 +352,8 @@ coverage/
       } catch {
         console.error("     ✗ Push failed. You can push manually later.");
       }
+    } else if (flags.push && !remoteConfigured) {
+      console.error("     ✗ Push skipped (remote not configured).");
     }
   } else {
     console.log(`[5/5] Remote setup skipped (no --remote provided)`);
