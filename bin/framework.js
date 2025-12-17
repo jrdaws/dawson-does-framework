@@ -316,7 +316,7 @@ coverage/
     // .dd/after-install.sh (copy framework after-install hook if present)
   try {
     const srcAfterInstall = path.join(__dirname, "..", ".dd", "after-install.sh");
-    const dstAfterInstall = path.join(outDir, ".dd", "after-install.sh");
+    const dstAfterInstall = path.join(absProjectDir, ".dd", "after-install.sh");
 
     if (fs.existsSync(srcAfterInstall)) {
       fs.copyFileSync(srcAfterInstall, dstAfterInstall);
