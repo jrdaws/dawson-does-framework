@@ -201,7 +201,7 @@ function main() {
   const lines = [];
   lines.push(`# FRAMEWORK_MAP`);
   lines.push(``);
-  lines.push(`Generated: ${new Date().toISOString()}`);
+  lines.push(`Generated: (deterministic)`);
   lines.push(`Hash: ${sha1(outline.map(x=>x.file).join("|"))}`);
   lines.push(``);
 
