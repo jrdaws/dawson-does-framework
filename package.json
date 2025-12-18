@@ -43,7 +43,8 @@
     "caps:validate": "node scripts/orchestrator/validate-capabilities.mjs",
     "matrix:smoke": "node tests/matrix/smoke.mjs",
     "caps:explain": "node scripts/orchestrator/caps-explain.mjs",
-    "caps:diff": "node scripts/orchestrator/caps-diff.mjs"
+    "caps:diff": "node scripts/orchestrator/caps-diff.mjs",
+    "framework:map:check": "npm run framework:map >/dev/null && git diff --exit-code -- FRAMEWORK_MAP.md || (git checkout -- FRAMEWORK_MAP.md && echo \"ERROR: FRAMEWORK_MAP.md is out of date. Run: npm run framework:map\" && exit 1)"
   },
   "devDependencies": {
     "husky": "^9.1.7",

@@ -1,10 +1,11 @@
 # FRAMEWORK_MAP
 
-Generated: 2025-12-18T22:00:04.662Z
+Generated: 2025-12-18T22:11:06.381Z
 Hash: 542288378f
 
 ## Recent changes
-- 43c1fec 2025-12-18 test(export): include afterInstall in expected defaults
+- 27ad00f 2025-12-18 refactor(tests): use defaults + expectFlags helpers
+43c1fec 2025-12-18 test(export): include afterInstall in expected defaults
 afb31e0 2025-12-18 test(export): update expectations for afterInstall + add post-export hooks module
 433686d 2025-12-18 feat(export): add --after-install and run post-export hooks
 7e3464b 2025-12-18 chore(dd): make patch helper dry-run by default
@@ -28,7 +29,6 @@ c347e86 2025-12-16 Add after-install hook to seo-directory template
 938f70a 2025-12-16 Export: include .dd/health.sh in exported repos
 e1f5348 2025-12-15 Add agent feedback loop docs + improve export args test
 4aafcdb 2025-12-15 Ignore npm pack tgz artifacts
-835d6dc 2025-12-15 Fix CLI: remove execa dependency; use spawnSync for doctor/map/scripts
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
