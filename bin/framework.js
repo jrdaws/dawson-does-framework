@@ -1,4 +1,62 @@
 #!/usr/bin/env node
+// Ask whether to run .dd/after-install.sh (and remember the user's choice)
+async function askYesNo(question, defaultNo = true) {
+  return await new Promise((resolve) => {
+    const readline = require("readline");
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    const suffix = defaultNo ? " [y/N] " : " [Y/n] ";
+    rl.question(question + suffix, (answer) => {
+      rl.close();
+      const a = String(answer || "").trim().toLowerCase();
+      if (!a) return resolve(!defaultNo);
+      resolve(a === "y" || a === "yes");
+    });
+  });
+}
+
+async function maybeRunAfterInstall(OUT) {
+  const fs = require("fs");
+  const path = require("path");
+  const { execSync } = require("child_process");
+
+  const ddDir = path.join(OUT, ".dd");
+  const hookPath = path.join(ddDir, "after-install.sh");
+  const configPath = path.join(ddDir, "config.json");
+
+  if (!fs.existsSync(hookPath)) return;
+
+  // Read config (if it exists)
+  let cfg = {};
+  try {
+    if (fs.existsSync(configPath)) {
+      cfg = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    }
+  } catch (_) {
+    cfg = {};
+  }
+
+  // Skip asking if user said "don't ask again"
+  if (cfg && cfg.afterInstall && cfg.afterInstall.dontAskAgain === true) return;
+
+  console.log("");
+  console.log("First-time setup:");
+  const runNow = await askYesNo("[ ] Run first-time setup now? (installs packages)", true);
+  const dontAskAgain = await askYesNo("[ ] Don’t show this question again for this app?", true);
+
+  // Save preference
+  try {
+    cfg.afterInstall = cfg.afterInstall || {};
+    cfg.afterInstall.dontAskAgain = dontAskAgain;
+    fs.mkdirSync(ddDir, { recursive: true });
+    fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2) + "\\n");
+  } catch (_) {}
+
+  if (!runNow) return;
+
+  console.log("== running after-install hook ==");
+  execSync(`bash "${hookPath}"`, { stdio: "inherit", cwd: OUT });
+}
+
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath, URL } from "node:url";
