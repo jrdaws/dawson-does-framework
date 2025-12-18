@@ -2,17 +2,25 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { parseExportFlags } from "../bin/framework.js";
 
-test("parseExportFlags: empty args returns defaults", () => {
-  const result = parseExportFlags([]);
-  assert.deepEqual(result, {
-  afterInstall: "prompt",
+function defaults() {
+  return {
+    afterInstall: "prompt",
     name: null,
     remote: null,
     push: false,
     branch: "main",
     dryRun: false,
     force: false,
-  });
+  };
+}
+
+function expectFlags(args, overrides = {}) {
+  const result = parseExportFlags(args);
+  assert.deepEqual(result, { ...defaults(), ...overrides });
+}
+
+test("parseExportFlags: empty args returns defaults", () => {
+  expectFlags([]);
 });
 
 test("parseExportFlags: --name flag", () => {
@@ -46,23 +54,24 @@ test("parseExportFlags: --force flag", () => {
 });
 
 test("parseExportFlags: all flags combined", () => {
-  const result = parseExportFlags([
-    "--name", "my-app",
-    "--remote", "https://github.com/me/my-app.git",
-    "--push",
-    "--branch", "main",
-    "--dry-run",
-    "--force",
-  ]);
-  assert.deepEqual(result, {
-  afterInstall: "prompt",
-    name: "my-app",
-    remote: "https://github.com/me/my-app.git",
-    push: true,
-    branch: "main",
-    dryRun: true,
-    force: true,
-  });
+  expectFlags(
+    [
+      "--name", "my-app",
+      "--remote", "https://github.com/me/my-app.git",
+      "--push",
+      "--branch", "main",
+      "--dry-run",
+      "--force",
+    ],
+    {
+      name: "my-app",
+      remote: "https://github.com/me/my-app.git",
+      push: true,
+      branch: "main",
+      dryRun: true,
+      force: true,
+    }
+  );
 });
 
 test("parseExportFlags: flags in different order", () => {
