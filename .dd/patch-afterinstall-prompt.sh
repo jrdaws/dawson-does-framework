@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+APPLY=0
+if [ "${1:-}" = "--apply" ]; then APPLY=1; fi
+
 cd "$(dirname "$0")/.."
 
 FILE="bin/framework.js"
@@ -122,6 +125,15 @@ echo ""
 echo "----- DIFF -----"
 git diff -- "$FILE" || true
 echo "--------------"
+
+echo ""
+echo "Patch prepared. Review the diff above."
+echo ""
+if [ "$APPLY" -ne 1 ]; then
+  echo "Dry-run mode: not committing, not pushing, not linking."
+  echo "To apply: .dd/patch-afterinstall-prompt.sh --apply"
+  exit 0
+fi
 
 git add "$FILE"
 git commit -m "Export: prompt to run after-install with dont-ask-again" || true

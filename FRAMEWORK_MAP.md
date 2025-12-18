@@ -1,10 +1,11 @@
 # FRAMEWORK_MAP
 
-Generated: 2025-12-18T21:14:08.214Z
+Generated: 2025-12-18T21:22:12.467Z
 Hash: 01e6fa6159
 
 ## Recent changes
-- d895e50 2025-12-18 chore(dd): add after-install patch prompt helper
+- 4f605d9 2025-12-18 chore(map): refresh FRAMEWORK_MAP
+d895e50 2025-12-18 chore(dd): add after-install patch prompt helper
 e1ac240 2025-12-18 fix(health): run with tsx and stabilize provider imports
 26a42f3 2025-12-18 fix(cli): ensure shebang at byte 0
 c39020b 2025-12-18 feat(trust): align capability engine + add caps explain/diff
@@ -28,7 +29,6 @@ d0f1e14 2025-12-15 Add global map auto-refresh + framework doctor command
 d924d8e 2025-12-15 Fix CLI: don’t call main() eagerly; use unified dispatcher
 083a9a7 2025-12-15 Refactor entitlements into pure canCore + thin wrapper
 2f464d4 2025-12-15 Fix entitlements can() imports + restrict test discovery
-062a36c 2025-12-15 Add repo-audit + provider registry + usage budgets + entitlements tests
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
