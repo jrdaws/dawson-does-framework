@@ -10,6 +10,7 @@ import degit from "degit";
 import { writeManifest } from "../src/dd/manifest.mjs";
 import { validateConfig } from "../src/dd/config-schema.mjs";
 import { detectDrift } from "../src/dd/drift.mjs";
+import { checkPlanCompliance } from "../src/dd/plan-compliance.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, "..");
@@ -714,6 +715,7 @@ async function cmdCapabilities(projectDirArg) {
   const caps = await resolveEnabledCaps(projectDir);
   const cfg = await loadProjectConfig(projectDir);
   const conflicts = detectConflicts(caps);
+  const compliance = checkPlanCompliance(caps, cfg.plan || "free");
 
   console.log(JSON.stringify({
     projectDir,
@@ -727,7 +729,11 @@ async function cmdCapabilities(projectDirArg) {
       capA: conf.capA.id,
       capB: conf.capB.id,
       reason: conf.reason
-    }))
+    })),
+    planCompliance: {
+      compliant: compliance.compliant,
+      violations: compliance.violations
+    }
   }, null, 2));
 
   if (conflicts.length > 0) {
@@ -736,6 +742,14 @@ async function cmdCapabilities(projectDirArg) {
       console.log(`   - ${conf.reason}`);
     });
     console.log(`\nTo resolve: disable one of the conflicting capabilities in .dd/config.json`);
+  }
+
+  if (!compliance.compliant) {
+    console.log(`\n⚠️  WARNING: ${compliance.violations.length} plan compliance violation(s) detected!`);
+    compliance.violations.forEach(v => {
+      console.log(`   - ${v.message}`);
+    });
+    console.log(`\nTo resolve: upgrade to ${compliance.violations[0].requiredTier} plan or disable these capabilities`);
   }
 }
 
