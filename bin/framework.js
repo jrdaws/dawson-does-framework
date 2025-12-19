@@ -11,6 +11,7 @@ import { writeManifest } from "../src/dd/manifest.mjs";
 import { validateConfig } from "../src/dd/config-schema.mjs";
 import { detectDrift } from "../src/dd/drift.mjs";
 import { checkPlanCompliance } from "../src/dd/plan-compliance.mjs";
+import { cmdLLM } from "../src/commands/llm.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, "..");
@@ -240,15 +241,9 @@ function isGitAvailable() {
  */
 async function cmdExport(templateId, projectDir, restArgs) {
   const flags = parseExportFlags(restArgs || []);
-  
-    const resolved = resolveTemplateRef({
-      templateId,
-      templateSource: flags.templateSource,
-      frameworkVersion: flags.frameworkVersion,
-    });
-const dryRun = flags.dryRun;
+  const dryRun = flags.dryRun;
 
-  // Validate required args
+  // Validate required args BEFORE resolving template
   if (!templateId || !projectDir) {
     console.error("Usage: framework export <templateId> <projectDir> [options]\n");
     console.error("Options:");
@@ -262,12 +257,19 @@ const dryRun = flags.dryRun;
     process.exit(1);
   }
 
-  // Validate template
+  // Validate template BEFORE resolving
   if (!TEMPLATES[templateId]) {
     console.error(`Unknown templateId: ${templateId}`);
     console.error(`Valid templates: ${Object.keys(TEMPLATES).join(", ")}`);
     process.exit(1);
   }
+
+  // Now safe to resolve template reference
+  const resolved = resolveTemplateRef({
+    templateId,
+    templateSource: flags.templateSource,
+    frameworkVersion: flags.frameworkVersion,
+  });
 
   // Validate --push requires --remote
   if (flags.push && !flags.remote) {
@@ -882,6 +884,7 @@ if (isEntrypoint) {
   if (a === "cost:summary") { await cmdCostSummary(); process.exit(0); }
   if (a === "doctor") { await cmdDoctor(b); process.exit(0); }
   if (a === "drift") { await cmdDrift(b); process.exit(0); }
+  if (a === "llm") { await cmdLLM([b, c, d]); process.exit(0); }
   if (a === "export") {
     const restArgs = process.argv.slice(5); // Everything after "export <templateId> <projectDir>"
     await cmdExport(b, c, restArgs);
