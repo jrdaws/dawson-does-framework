@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { execSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import readline from "node:readline";
 
 function readJson(p) {
@@ -30,9 +30,17 @@ export async function askYesNo(question, defaultNo = true) {
 }
 
 /**
+ * Check if running in a non-interactive environment (CI, piped input, etc.)
+ */
+function isNonInteractive() {
+  return !process.stdin.isTTY || process.env.CI === "true" || process.env.CI === "1";
+}
+
+/**
  * Stable post-export hook pipeline.
  * - Deterministic config output: always writes .dd/config.json with afterInstall.policy
  * - No hidden behavior: hook runs only per policy and explicit consent (prompt) or auto policy
+ * - Non-interactive environments skip prompts safely
  */
 export async function runPostExportHooks({ outDir, afterInstall }) {
   const ddDir = path.join(outDir, ".dd");
@@ -51,15 +59,25 @@ export async function runPostExportHooks({ outDir, afterInstall }) {
   if (policy === "off") return;
 
   if (policy === "auto") {
-    execSync(`bash "${hookPath}"`, { stdio: "inherit", cwd: outDir });
+    console.log("\n[after-install: auto] Running setup...");
+    const result = spawnSync("bash", [hookPath], { stdio: "inherit", cwd: outDir });
+    if (result.status !== 0) process.exit(result.status ?? 1);
     return;
   }
 
   // policy === "prompt"
+  // Skip prompting in non-interactive environments
+  if (isNonInteractive()) {
+    console.log("\n[after-install: prompt] Non-interactive environment detected.");
+    console.log("Skipping setup prompt. Run manually: cd " + outDir + " && bash .dd/after-install.sh");
+    return;
+  }
+
   console.log("");
   console.log("Post-export setup:");
   const runNow = await askYesNo("[ ] Run first-time setup now? (installs packages)", true);
   if (!runNow) return;
 
-  execSync(`bash "${hookPath}"`, { stdio: "inherit", cwd: outDir });
+  const result = spawnSync("bash", [hookPath], { stdio: "inherit", cwd: outDir });
+  if (result.status !== 0) process.exit(result.status ?? 1);
 }
