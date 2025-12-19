@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: a5b61bc06d
 
 ## Recent changes
+- 9c98e21 2025-12-19 feat(auth): implement Supabase auth provider with health checks
 - c7ac391 2025-12-19 chore(deps): add @supabase/supabase-js for auth provider
 - d76de9d 2025-12-19 feat(cli): add framework llm test command
 - 91df16c 2025-12-19 test(llm): add comprehensive Anthropic provider tests
@@ -28,7 +29,6 @@ Hash: a5b61bc06d
 - 56bb214 2025-12-18 feat(templates): add ready signal to saas and seo-directory page components
 - 06c6762 2025-12-18 chore: add handoff tooling and move network tests
 - 1301cf8 2025-12-18 fix(map): normalize Recent changes bullets and handle multiline entries
-- 51fe7d7 2025-12-18 chore(templates): add after-install.sh to saas template
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
