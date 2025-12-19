@@ -4,7 +4,8 @@ Generated: (deterministic)
 Hash: 542288378f
 
 ## Recent changes
-- 1b8e681 2025-12-18 feat(template): make saas template runnable (Next.js dev/build/start)
+- 1dbd3a8 2025-12-18 fix(export): honor local template source and copy templates from disk
+1b8e681 2025-12-18 feat(template): make saas template runnable (Next.js dev/build/start)
 95c5870 2025-12-18 feat(export): resolve template source (local/remote/auto) + version pinning
 06f5534 2025-12-18 fix(export): actually parse --template-source and --framework-version
 482f673 2025-12-18 chore(map): make FRAMEWORK_MAP deterministic (no timestamp churn)
@@ -28,7 +29,6 @@ c347e86 2025-12-16 Add after-install hook to seo-directory template
 3be859c 2025-12-16 Add after-install hook to template
 1a405f5 2025-12-16 Add post-export hook runner
 46afde8 2025-12-16 Make .dd/health.sh work for framework repo and exported apps
-7206c8e 2025-12-16 Add capability validation, local secrets vault, realtime scaffolding
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

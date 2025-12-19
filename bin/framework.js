@@ -259,7 +259,13 @@ function isGitAvailable() {
  */
 async function cmdExport(templateId, projectDir, restArgs) {
   const flags = parseExportFlags(restArgs || []);
-  const dryRun = flags.dryRun;
+  
+    const resolved = resolveTemplateRef({
+      templateId,
+      templateSource: flags.templateSource,
+      frameworkVersion: flags.frameworkVersion,
+    });
+const dryRun = flags.dryRun;
 
   // Validate required args
   if (!templateId || !projectDir) {
@@ -314,7 +320,12 @@ async function cmdExport(templateId, projectDir, restArgs) {
   if (dryRun) {
     console.log("DRY RUN - The following operations would be performed:\n");
     console.log(`1. Clone template "${templateId}" into "${absProjectDir}"`);
-    console.log(`   degit ${TEMPLATES[templateId]}`);
+
+    if (resolved && resolved.localPath) {
+      console.log(`   local copy from ${resolved.localPath}`);
+    } else {
+      console.log(`   degit ${resolved.remoteRef}`);
+    }
     console.log(`\n2. Create starter files in "${absProjectDir}":`);
     console.log("   - README.md");
     console.log("   - .gitignore");
