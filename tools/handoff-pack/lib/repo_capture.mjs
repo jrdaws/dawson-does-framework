@@ -88,25 +88,32 @@ export async function captureEnv({ repoPath, outDir, runner = defaultRunner }) {
 }
 
 /**
- * Writes git captures.
+ * Writes git captures and returns { commits, status } for use by caller.
  */
 export async function captureRepoAdditions({ repoPath, outDir, runner = defaultRunner }) {
   const repoOut = path.join(outDir, "repo");
   fs.mkdirSync(repoOut, { recursive: true });
 
+  let commits = "";
+  let status = "";
+
   try {
-    const log = runner("git", ["log", "--oneline", "--decorate", "-n", "200"], { cwd: repoPath });
-    fs.writeFileSync(path.join(repoOut, "git_log_oneline_decorate_n200.txt"), log, "utf8");
+    commits = runner("git", ["log", "--oneline", "--decorate", "-n", "200"], { cwd: repoPath });
+    fs.writeFileSync(path.join(repoOut, "git_log_oneline_decorate_n200.txt"), commits, "utf8");
   } catch (e) {
-    fs.writeFileSync(path.join(repoOut, "git_log_oneline_decorate_n200.txt"), `ERROR: ${e}\n`, "utf8");
+    commits = `ERROR: ${e}`;
+    fs.writeFileSync(path.join(repoOut, "git_log_oneline_decorate_n200.txt"), commits + "\n", "utf8");
   }
 
   try {
-    const st = runner("git", ["status", "--porcelain"], { cwd: repoPath });
-    fs.writeFileSync(path.join(repoOut, "git_status_porcelain.txt"), st, "utf8");
+    status = runner("git", ["status", "--porcelain"], { cwd: repoPath });
+    fs.writeFileSync(path.join(repoOut, "git_status_porcelain.txt"), status, "utf8");
   } catch (e) {
-    fs.writeFileSync(path.join(repoOut, "git_status_porcelain.txt"), `ERROR: ${e}\n`, "utf8");
+    status = `ERROR: ${e}`;
+    fs.writeFileSync(path.join(repoOut, "git_status_porcelain.txt"), status + "\n", "utf8");
   }
+
+  return { commits, status };
 }
 
 /**

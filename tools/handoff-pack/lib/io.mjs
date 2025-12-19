@@ -40,8 +40,8 @@ export async function buildPack({ chatPath, repoPath, platformExportPath, outZip
 
   const repoOut = path.join(staging, "repo");
   fs.mkdirSync(repoOut, { recursive: true });
-  const { commits, status } = captureRepoAdditions(repoPath, repoOut);
-  captureEnv(path.join(repoOut, "env.md"));
+  const { commits, status } = await captureRepoAdditions({ repoPath, outDir: staging });
+  await captureEnv({ repoPath, outDir: staging });
 
   fs.appendFileSync(path.join(artDir, "commits.md"), `\n## git log --oneline -n 200\n\n\`\`\`\n${commits}\n\`\`\`\n`, "utf8");
   fs.appendFileSync(path.join(artDir, "files_created.md"), `\n## git status --porcelain\n\n\`\`\`\n${status}\n\`\`\`\n`, "utf8");

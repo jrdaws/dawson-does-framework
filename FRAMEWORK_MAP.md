@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 7c67fd4d5c
 
 ## Recent changes
+- cd87d1f 2025-12-18 chore: update framework map and fix localDir typo
 - 97e7a25 2025-12-18 chore(ci): add seo-directory smoke test job
 - 56bb214 2025-12-18 feat(templates): add ready signal to saas and seo-directory page components
 - 06c6762 2025-12-18 chore: add handoff tooling and move network tests
@@ -28,7 +29,6 @@ Hash: 7c67fd4d5c
 - 43c1fec 2025-12-18 test(export): include afterInstall in expected defaults
 - afb31e0 2025-12-18 test(export): update expectations for afterInstall + add post-export hooks module
 - 433686d 2025-12-18 feat(export): add --after-install and run post-export hooks
-- 7e3464b 2025-12-18 chore(dd): make patch helper dry-run by default
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
