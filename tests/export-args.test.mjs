@@ -5,6 +5,8 @@ import { parseExportFlags } from "../bin/framework.js";
 function defaults() {
   return {
     afterInstall: "prompt",
+  templateSource: "auto",
+  frameworkVersion: null,
     name: null,
     remote: null,
     push: false,
@@ -120,4 +122,17 @@ test("parseExportFlags: --after-install prompt|auto|off", async () => {
   assert.equal(d1.afterInstall, "prompt");
   assert.equal(d2.afterInstall, "auto");
   assert.equal(d3.afterInstall, "off");
+});
+
+
+test("parseExportFlags: --template-source and --framework-version", () => {
+  const d1 = parseExportFlags(["--template-source", "local"]);
+  const d2 = parseExportFlags(["--template-source", "remote"]);
+  const d3 = parseExportFlags(["--template-source", "auto"]);
+  const d4 = parseExportFlags(["--framework-version", "v0.2.0"]);
+
+  assert.equal(d1.templateSource, "local");
+  assert.equal(d2.templateSource, "remote");
+  assert.equal(d3.templateSource, "auto");
+  assert.equal(d4.frameworkVersion, "v0.2.0");
 });

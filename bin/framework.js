@@ -70,13 +70,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, "..");
 
 const __cwd = process.cwd();
-
 const TEMPLATES = {
   "seo-directory": "jrdaws/dawson-does-framework/templates/seo-directory",
   "saas": "jrdaws/dawson-does-framework/templates/saas",
   "internal-tool": "jrdaws/dawson-does-framework/templates/internal-tool",
   "automation": "jrdaws/dawson-does-framework/templates/automation",
 };
+
+const args = process.argv.slice(2);
+
+// Subcommand: demo
+if (args[0] === "demo") {
+  // Usage: framework demo <templateId?> <projectDir?> [--after-install prompt|auto|off]
+  await cmdDemo(args.slice(1));
+  process.exit(0);
+}
+
 
 /**
  * Parse export command flags from argv array
@@ -85,6 +94,8 @@ const TEMPLATES = {
  */
 export function parseExportFlags(args) {
   const flags = {
+      templateSource: "auto",
+      frameworkVersion: null,
     afterInstall: "prompt",
     name: null,
     remote: null,
@@ -115,10 +126,29 @@ export function parseExportFlags(args) {
       const v = String(args[++i]).trim();
       if (v === "prompt" || v === "auto" || v === "off") flags.afterInstall = v;
     }
+      else if (arg === "--template-source" && hasValue(i)) {
+        const v2 = String(args[++i]).trim();
+        if (v2 === "local" || v2 === "remote" || v2 === "auto") flags.templateSource = v2;
+      } else if (arg === "--framework-version" && hasValue(i)) {
+        flags.frameworkVersion = String(args[++i]).trim();
+      }
+
   }
 
   return flags;
 }
+
+/**
+ * Demo command: quick golden-path runner.
+ * Usage: framework demo <templateId?> <projectDir?> [--after-install prompt|auto|off]
+ */
+async function cmdDemo(restArgs) {
+  const templateId = restArgs[0] || "saas";
+  const projectDir = restArgs[1] || `./_demo-${templateId}`;
+  const flags = parseExportFlags(restArgs.slice(2));
+  await cmdExport(templateId, projectDir, ["--after-install", flags.afterInstall]);
+}
+
 
 /**
  * Run a command in a specific directory
