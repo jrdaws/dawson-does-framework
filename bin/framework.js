@@ -9,6 +9,7 @@ import fse from "fs-extra";
 import degit from "degit";
 import { writeManifest } from "../src/dd/manifest.mjs";
 import { validateConfig } from "../src/dd/config-schema.mjs";
+import { detectDrift } from "../src/dd/drift.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, "..");
@@ -678,6 +679,7 @@ async function cmdHelp() {
   framework figma:parse
   framework cost:summary
   framework doctor [projectDir]
+  framework drift [projectDir]
   framework export <templateId> <projectDir> [options]
   framework <templateId> <projectDir>
 
@@ -781,6 +783,40 @@ async function cmdDoctor(projectDirArg) {
   runOrExit("bash", [healthPath]);
 }
 
+async function cmdDrift(projectDirArg) {
+  const projectDir = resolveProjectDir(projectDirArg);
+  const result = detectDrift(projectDir);
+
+  if (result.error) {
+    console.log(`❌ ${result.error}`);
+    return;
+  }
+
+  if (!result.hasDrift) {
+    console.log(`✅ No drift detected (${result.unchanged} files unchanged)`);
+    return;
+  }
+
+  console.log(`⚠️  Drift detected:\n`);
+
+  if (result.added.length > 0) {
+    console.log(`   Added (${result.added.length}):`);
+    result.added.forEach(f => console.log(`     + ${f}`));
+  }
+
+  if (result.modified.length > 0) {
+    console.log(`   Modified (${result.modified.length}):`);
+    result.modified.forEach(f => console.log(`     ~ ${f}`));
+  }
+
+  if (result.deleted.length > 0) {
+    console.log(`   Deleted (${result.deleted.length}):`);
+    result.deleted.forEach(f => console.log(`     - ${f}`));
+  }
+
+  console.log(`\n   Unchanged: ${result.unchanged} files`);
+}
+
 /**
  * Unified dispatcher (single source of truth)
  */
@@ -808,6 +844,7 @@ if (isEntrypoint) {
   if (a === "figma:parse") { await cmdFigmaParse(); process.exit(0); }
   if (a === "cost:summary") { await cmdCostSummary(); process.exit(0); }
   if (a === "doctor") { await cmdDoctor(b); process.exit(0); }
+  if (a === "drift") { await cmdDrift(b); process.exit(0); }
   if (a === "export") {
     const restArgs = process.argv.slice(5); // Everything after "export <templateId> <projectDir>"
     await cmdExport(b, c, restArgs);
