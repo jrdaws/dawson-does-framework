@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: a5b61bc06d
 
 ## Recent changes
+- c7ac391 2025-12-19 chore(deps): add @supabase/supabase-js for auth provider
 - d76de9d 2025-12-19 feat(cli): add framework llm test command
 - 91df16c 2025-12-19 test(llm): add comprehensive Anthropic provider tests
 - 48305af 2025-12-19 feat(llm): implement Anthropic LLM provider with health checks
@@ -28,7 +29,6 @@ Hash: a5b61bc06d
 - 06c6762 2025-12-18 chore: add handoff tooling and move network tests
 - 1301cf8 2025-12-18 fix(map): normalize Recent changes bullets and handle multiline entries
 - 51fe7d7 2025-12-18 chore(templates): add after-install.sh to saas template
-- 23d4b34 2025-12-18 chore(ci): add GitHub Actions workflow for tests and smoke
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

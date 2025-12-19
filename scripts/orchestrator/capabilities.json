@@ -123,6 +123,39 @@
       ],
       "postInstall": [],
       "tests": []
+    },
+    {
+      "id": "auth.supabase",
+      "label": "Supabase Auth",
+      "group": "Auth",
+      "tier": "free",
+      "requires": [],
+      "conflicts": [],
+      "provides": ["auth"],
+      "filesOwned": ["src/platform/providers/impl/auth.supabase.ts"],
+      "templates": [],
+      "env": [
+        {
+          "key": "SUPABASE_URL",
+          "required": true,
+          "runtime": "server",
+          "secret": false
+        },
+        {
+          "key": "SUPABASE_ANON_KEY",
+          "required": true,
+          "runtime": "server",
+          "secret": true
+        },
+        {
+          "key": "SUPABASE_SERVICE_KEY",
+          "required": false,
+          "runtime": "server",
+          "secret": true
+        }
+      ],
+      "postInstall": [],
+      "tests": []
     }
   ]
 }
