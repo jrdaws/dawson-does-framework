@@ -79,6 +79,33 @@ const TEMPLATES = {
 
 
 function resolveTemplateRef({ templateId, templateSource, frameworkVersion }) {
+  // Env defaults (env is useful for dev loops)
+  const envSource = (process.env.FRAMEWORK_TEMPLATE_SOURCE || "").trim();
+  const envVersion = (process.env.FRAMEWORK_VERSION || "").trim();
+
+  // If templateSource not provided (or auto), allow env to steer it
+  if (!templateSource || templateSource === "auto") {
+    if (envSource === "local" || envSource === "remote" || envSource === "auto") templateSource = envSource || "auto";
+    else templateSource = templateSource || "auto";
+  }
+
+  // Allow env version pinning if not provided
+  if (!frameworkVersion && envVersion) frameworkVersion = envVersion;
+
+  // Local template directory inside the framework repo
+  const localTplDir = path.join(PKG_ROOT, "templates", templateId);
+  const hasLocal = fs.existsSync(localTplDir);
+
+  // Resolve policy
+  if (templateSource === "local") {
+    if (!hasLocal) throw new Error(`Local template not found: ${localTplDir}`);
+    return { mode: "local", localPath: localTplDir };
+  }
+
+  if (templateSource === "auto" && hasLocal) {
+    return { mode: "local", localPath: localTplDir };
+  }
+
   const source = templateSource || "auto";
   const localDir = path.join(PKG_ROOT, "templates", templateId);
 
@@ -317,8 +344,26 @@ async function cmdExport(templateId, projectDir, restArgs) {
   // 1. Clone template using degit
   console.log(`[1/5] Cloning template...`);
   const repoPath = TEMPLATES[templateId];
-  const emitter = degit(repoPath, { cache: false, force: flags.force, verbose: false });
-  await emitter.clone(absProjectDir);
+    // Clone/copy template into the project directory
+    if (resolved && resolved.localPath) {
+      fse.copySync(resolved.localPath, absProjectDir, {
+        overwrite: true,
+        errorOnExist: false,
+        filter: (src) => {
+          const bn = path.basename(src);
+          if (bn === "node_modules" || bn === ".git" || bn === ".next") return false;
+          return true;
+        },
+      });
+    } else {
+      const emitter = degit(resolved.remoteRef, {
+        cache: false,
+        force: true,
+        verbose: true,
+      });
+      await emitter.clone(absProjectDir);
+    }
+
   console.log(`     ✓ Template cloned`);
 
   // 2. Create starter files
