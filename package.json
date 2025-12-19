@@ -23,6 +23,7 @@
     "README.md"
   ],
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
     "degit": "^2.8.4",
     "dotenv": "^17.2.3",
     "fs-extra": "^11.2.0",
