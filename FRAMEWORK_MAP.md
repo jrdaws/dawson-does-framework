@@ -4,6 +4,11 @@ Generated: (deterministic)
 Hash: 7c67fd4d5c
 
 ## Recent changes
+- 23d4b34 2025-12-18 chore(ci): add GitHub Actions workflow for tests and smoke
+- db43ff5 2025-12-18 fix(cli): improve demo command UX and update templates list
+- def1e12 2025-12-18 feat(hooks): add TTY detection for non-interactive environments
+- 161197a 2025-12-18 feat(manifest): add template manifest system with SHA256 verification
+- ec7097f 2025-12-18 test(map): guard Recent changes bullets + single-line entries
 - 5407c0a 2025-12-18 chore(template): make tsconfig deterministic for Next (avoid first-run rewrite)
 - beed865 2025-12-18 chore(template): include TypeScript devDependencies to avoid first-run mutation
 - a8a50aa 2025-12-18 chore(template): bump Next.js to patched version
@@ -24,11 +29,7 @@ Hash: 7c67fd4d5c
 - e1ac240 2025-12-18 fix(health): run with tsx and stabilize provider imports
 - 26a42f3 2025-12-18 fix(cli): ensure shebang at byte 0
 - c39020b 2025-12-18 feat(trust): align capability engine + add caps explain/diff
-- 6f92075 2025-12-16 Fix export: copy after-install.sh to correct output folder
-- 2ea919b 2025-12-16 Export: include .dd/after-install.sh
-- ce5f6e8 2025-12-16 Export should include .dd/after-install.sh
-- f39b358 2025-12-16 Export should also include .dd/after-install.sh
-- 284f892 2025-12-16 Export should include .dd/after-install.sh
+
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
 |---|---|---:|---|---|---|---|
