@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 05a6897405
 
 ## Recent changes
+- 2a34328 2025-12-19 fix(website): remove static export for Vercel compatibility
 - e483db1 2025-12-19 docs(website): add comprehensive deployment guide
 - 7d54b4c 2025-12-19 feat(website): add terminal-aesthetic landing page
 - 0603f05 2025-12-19 chore: bump version to v0.3.0
@@ -28,7 +29,6 @@ Hash: 05a6897405
 - 7039463 2025-12-19 Merge pull request: feat: Add LLM (Anthropic) and Auth (Supabase) providers
 - 809fda1 2025-12-19 refactor(framework): streamline compliance message logic for clarity
 - 3198864 2025-12-19 refactor(framework): enhance compliance message to display highest required tier
-- 8a327d0 2025-12-19 fix(framework): improve compliance message for capability violations
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
