@@ -170,7 +170,10 @@ function recentChanges(n = 20) {
     // Exclude map-update commits to avoid circular dependency
     const filtered = lines.filter(line => {
       const lower = line.toLowerCase();
-      return !lower.includes("framework_map") && !lower.includes("framework-map");
+      // Filter: framework_map, framework-map, framework:map, and FRAMEWORK_MAP.md
+      return !lower.includes("framework_map") && 
+             !lower.includes("framework-map") && 
+             !lower.includes("framework:map");
     });
     return filtered.slice(0, n);
   } catch {
