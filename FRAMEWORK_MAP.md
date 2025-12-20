@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 05a6897405
 
 ## Recent changes
+- e483db1 2025-12-19 docs(website): add comprehensive deployment guide
 - 7d54b4c 2025-12-19 feat(website): add terminal-aesthetic landing page
 - 0603f05 2025-12-19 chore: bump version to v0.3.0
 - 4f5f59e 2025-12-19 docs(registry): add comprehensive template registry documentation
@@ -28,7 +29,6 @@ Hash: 05a6897405
 - 809fda1 2025-12-19 refactor(framework): streamline compliance message logic for clarity
 - 3198864 2025-12-19 refactor(framework): enhance compliance message to display highest required tier
 - 8a327d0 2025-12-19 fix(framework): improve compliance message for capability violations
-- 39c2fcf 2025-12-19 feat(cli): add framework auth test command
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
