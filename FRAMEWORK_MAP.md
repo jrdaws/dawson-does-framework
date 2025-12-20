@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 1cca075d21
 
 ## Recent changes
+- c086d40 2025-12-20 feat: production-ready deployment with AI preview
 - 196b128 2025-12-20 feat(configurator): add client-side ZIP download
 - 4678616 2025-12-20 fix(configurator): update AI model and improve env setup UX
 - 3ce10db 2025-12-20 fix(website): resolve hydration mismatch and URL parsing errors
@@ -28,7 +29,6 @@ Hash: 1cca075d21
 - 8bbab03 2025-12-19 chore: prepare for npm publish
 - b1867fb 2025-12-19 docs: add CHANGELOG.md and release process
 - e362000 2025-12-19 feat(cli): add version and upgrade commands
-- 5e9dbbf 2025-12-19 feat(webhooks): add standard webhook provider
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

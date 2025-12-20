@@ -322,16 +322,16 @@ export function EnvironmentKeys({
 
             {/* Terminal command to create .env.local automatically */}
             <div className="terminal-window border-terminal-accent/50">
-              <div className="terminal-header">
-                <div className="terminal-dot bg-terminal-error"></div>
-                <div className="terminal-dot bg-terminal-warning"></div>
-                <div className="terminal-dot bg-terminal-text"></div>
-                <span className="text-xs text-terminal-accent ml-2">
+            <div className="terminal-header">
+              <div className="terminal-dot bg-terminal-error"></div>
+              <div className="terminal-dot bg-terminal-warning"></div>
+              <div className="terminal-dot bg-terminal-text"></div>
+              <span className="text-xs text-terminal-accent ml-2">
                   ⚡ Quick Install Command (Copy & Run in Terminal)
-                </span>
-              </div>
-              <div className="terminal-content space-y-4">
-                <p className="text-xs text-terminal-dim">
+              </span>
+            </div>
+            <div className="terminal-content space-y-4">
+              <p className="text-xs text-terminal-dim">
                   Run this command in your project folder to automatically create your <code className="text-terminal-accent">.env.local</code> file:
                 </p>
                 <div className="relative">
@@ -382,32 +382,32 @@ export function EnvironmentKeys({
               <div className="terminal-content space-y-4">
                 <p className="text-xs text-terminal-dim">
                   If you prefer, copy this content and paste it into a new file called <code className="text-terminal-accent">.env.local</code> in your project root:
-                </p>
-                <pre className="text-xs bg-terminal-bg/50 p-4 rounded border border-terminal-text/20 overflow-x-auto font-mono text-terminal-text">
-                  {requiredEnvVars.map((varName) => (
-                    <div key={varName}>
-                      {varName}={envKeys[varName] || "your_value_here"}
-                    </div>
-                  ))}
-                </pre>
-                <Button
-                  onClick={handleCopyEnvFile}
-                  className="w-full bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg"
-                >
-                  {copiedKey === "__all__" ? (
-                    <>
-                      <Check className="mr-2 h-4 w-4" />
+              </p>
+              <pre className="text-xs bg-terminal-bg/50 p-4 rounded border border-terminal-text/20 overflow-x-auto font-mono text-terminal-text">
+                {requiredEnvVars.map((varName) => (
+                  <div key={varName}>
+                    {varName}={envKeys[varName] || "your_value_here"}
+                  </div>
+                ))}
+              </pre>
+              <Button
+                onClick={handleCopyEnvFile}
+                className="w-full bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg"
+              >
+                {copiedKey === "__all__" ? (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
                       Copied to Clipboard!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="mr-2 h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    <Copy className="mr-2 h-4 w-4" />
                       Copy .env.local Content
-                    </>
-                  )}
-                </Button>
-              </div>
+                  </>
+                )}
+              </Button>
             </div>
+          </div>
 
             {/* Resources */}
             <div className="terminal-window border-terminal-text/10">

@@ -280,7 +280,7 @@ function isGitAvailable() {
  */
 async function cmdExport(templateId, projectDir, restArgs) {
   const flags = parseExportFlags(restArgs || []);
-  const dryRun = flags.dryRun;
+const dryRun = flags.dryRun;
 
   // Validate required args BEFORE resolving template
   if (!templateId || !projectDir) {
@@ -388,7 +388,7 @@ async function cmdExport(templateId, projectDir, restArgs) {
     console.log(`\n[4/5] Remote setup`);
     if (flags.remote) {
       console.log(`      git remote add origin ${flags.remote}`);
-      if (flags.push) {
+    if (flags.push) {
         console.log(`      git push -u origin ${flags.branch}`);
       }
     } else {

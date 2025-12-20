@@ -48,13 +48,13 @@ export function ExportView({
     setIsDownloading(true);
     try {
       await generateProjectZip({
-        template,
-        projectName,
-        integrations,
-        vision,
-        mission,
-        successCriteria,
-        envKeys,
+          template,
+          projectName,
+          integrations,
+          vision,
+          mission,
+          successCriteria,
+          envKeys,
       });
     } catch (error) {
       console.error("Download failed:", error);
