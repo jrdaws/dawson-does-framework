@@ -752,7 +752,12 @@ async function cmdCapabilities(projectDirArg) {
     compliance.violations.forEach(v => {
       console.log(`   - ${v.message}`);
     });
-    console.log(`\nTo resolve: upgrade to ${compliance.violations[0].requiredTier} plan or disable these capabilities`);
+    // Find highest required tier among all violations
+    const tierRank = { free: 0, pro: 1, team: 2 };
+    const highestTier = compliance.violations.reduce((max, v) => 
+      (tierRank[v.requiredTier] || 0) > (tierRank[max] || 0) ? v.requiredTier : max
+    , "free");
+    console.log(`\nTo resolve: upgrade to ${highestTier} plan or disable these capabilities`);
   }
 }
 
