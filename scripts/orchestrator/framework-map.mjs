@@ -164,8 +164,15 @@ function rel(p) {
 
 function recentChanges(n = 20) {
   try {
-    const out = execSync(`git log -n ${n} --pretty=format:%h\\ %ad\\ %s --date=short`, { cwd: REPO_ROOT, stdio: ["ignore", "pipe", "ignore"] }).toString();
-    return out.trim().split("\n");
+    // Fetch more commits to account for filtered ones
+    const out = execSync(`git log -n ${n * 2} --pretty=format:%h\\ %ad\\ %s --date=short`, { cwd: REPO_ROOT, stdio: ["ignore", "pipe", "ignore"] }).toString();
+    const lines = out.trim().split("\n");
+    // Exclude map-update commits to avoid circular dependency
+    const filtered = lines.filter(line => {
+      const lower = line.toLowerCase();
+      return !lower.includes("framework_map") && !lower.includes("framework-map");
+    });
+    return filtered.slice(0, n);
   } catch {
     return [];
   }
