@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 3ce07cadef
 
 ## Recent changes
+- 41cc8c9 2025-12-20 feat(configurator): add state management with Zustand and navigation components
 - b8599c8 2025-12-19 fix(website): remove outputDirectory from vercel.json
 - 2a34328 2025-12-19 fix(website): remove static export for Vercel compatibility
 - e483db1 2025-12-19 docs(website): add comprehensive deployment guide
@@ -28,7 +29,6 @@ Hash: 3ce07cadef
 - 3639d8c 2025-12-19 feat(cli): add structured step logging with timing
 - 2158038 2025-12-19 feat(cli): comprehensive --dry-run output
 - 7039463 2025-12-19 Merge pull request: feat: Add LLM (Anthropic) and Auth (Supabase) providers
-- 809fda1 2025-12-19 refactor(framework): streamline compliance message logic for clarity
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
