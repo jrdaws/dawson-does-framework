@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 05a6897405
 
 ## Recent changes
+- 0170bae 2025-12-19 feat(templates): add template.json metadata to existing templates
 - 935dab3 2025-12-19 feat(registry): add template registry and discovery system
 - 619faad 2025-12-19 chore: bump version to v0.2.0
 - e005888 2025-12-19 feat(plugins): add plugin system with hook architecture
@@ -28,7 +29,6 @@ Hash: 05a6897405
 - c7ac391 2025-12-19 chore(deps): add @supabase/supabase-js for auth provider
 - d76de9d 2025-12-19 feat(cli): add framework llm test command
 - 91df16c 2025-12-19 test(llm): add comprehensive Anthropic provider tests
-- 48305af 2025-12-19 feat(llm): implement Anthropic LLM provider with health checks
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

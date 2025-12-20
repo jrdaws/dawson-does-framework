@@ -14,6 +14,7 @@ import { checkPlanCompliance } from "../src/dd/plan-compliance.mjs";
 import { cmdLLM } from "../src/commands/llm.mjs";
 import { cmdAuth } from "../src/commands/auth.mjs";
 import { cmdPlugin } from "../src/commands/plugin.mjs";
+import { cmdTemplates } from "../src/commands/templates.mjs";
 import { executeHooks } from "../src/dd/plugins.mjs";
 import * as logger from "../src/dd/logger.mjs";
 import { getCurrentVersion, checkForUpdates, getUpgradeCommand, getPackageName } from "../src/dd/version.mjs";
@@ -805,6 +806,7 @@ async function cmdHelp() {
   framework doctor [projectDir]
   framework drift [projectDir]
   framework plugin <add|remove|list|hooks|info>
+  framework templates <list|search|info|categories|tags>
   framework export <templateId> <projectDir> [options]
   framework <templateId> <projectDir>
 
@@ -1080,6 +1082,7 @@ if (isEntrypoint) {
   if (a === "llm") { await cmdLLM([b, c, d]); process.exit(0); }
   if (a === "auth") { await cmdAuth([b, c, d]); process.exit(0); }
   if (a === "plugin") { await cmdPlugin([b, c, d]); process.exit(0); }
+  if (a === "templates") { await cmdTemplates([b, c, d]); process.exit(0); }
   if (a === "demo") {
     const restArgs = process.argv.slice(3); // Everything after "demo" (includes templateId)
     await cmdDemo(restArgs);
