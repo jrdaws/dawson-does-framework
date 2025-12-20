@@ -21,5 +21,19 @@
     "Tailwind CSS",
     "Server components"
   ],
+  "supportedIntegrations": {
+    "auth": ["supabase", "clerk"],
+    "payments": ["stripe", "paddle"],
+    "email": ["resend", "sendgrid"],
+    "db": ["supabase", "planetscale"],
+    "ai": ["openai", "anthropic"],
+    "analytics": ["posthog", "plausible"]
+  },
+  "defaultIntegrations": {
+    "auth": "supabase",
+    "payments": "stripe",
+    "db": "supabase"
+  },
+  "requiredIntegrations": ["auth", "db"],
   "license": "MIT"
 }

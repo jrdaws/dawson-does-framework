@@ -89,9 +89,9 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="btn-primary">
-              Get Started →
-            </button>
+            <a href="/configure" className="btn-primary">
+              Configure Project →
+            </a>
             <a href="https://github.com/jrdaws/dawson-does-framework"
                target="_blank"
                rel="noopener noreferrer"

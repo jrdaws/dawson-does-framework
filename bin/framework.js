@@ -18,6 +18,7 @@ import { cmdTemplates } from "../src/commands/templates.mjs";
 import { executeHooks } from "../src/dd/plugins.mjs";
 import * as logger from "../src/dd/logger.mjs";
 import { getCurrentVersion, checkForUpdates, getUpgradeCommand, getPackageName } from "../src/dd/version.mjs";
+import { validateIntegrations, applyIntegrations } from "../src/dd/integrations.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, "..");
@@ -122,6 +123,15 @@ export function parseExportFlags(args) {
     branch: "main",
     dryRun: false,
     force: false,
+    integrations: {
+      auth: null,
+      payments: null,
+      email: null,
+      db: null,
+      ai: null,
+      analytics: null,
+      storage: null,
+    },
   };
 
   // Helper: check if next arg exists and is a value (not another flag)
@@ -150,6 +160,22 @@ export function parseExportFlags(args) {
         if (v2 === "local" || v2 === "remote" || v2 === "auto") flags.templateSource = v2;
       } else if (arg === "--framework-version" && hasValue(i)) {
         flags.frameworkVersion = String(args[++i]).trim();
+      }
+      // Integration flags
+      else if (arg === "--auth" && hasValue(i)) {
+        flags.integrations.auth = String(args[++i]).trim();
+      } else if (arg === "--payments" && hasValue(i)) {
+        flags.integrations.payments = String(args[++i]).trim();
+      } else if (arg === "--email" && hasValue(i)) {
+        flags.integrations.email = String(args[++i]).trim();
+      } else if (arg === "--db" && hasValue(i)) {
+        flags.integrations.db = String(args[++i]).trim();
+      } else if (arg === "--ai" && hasValue(i)) {
+        flags.integrations.ai = String(args[++i]).trim();
+      } else if (arg === "--analytics" && hasValue(i)) {
+        flags.integrations.analytics = String(args[++i]).trim();
+      } else if (arg === "--storage" && hasValue(i)) {
+        flags.integrations.storage = String(args[++i]).trim();
       }
 
   }
@@ -474,6 +500,54 @@ async function cmdExport(templateId, projectDir, restArgs) {
   };
 
   await executeHooks("post:export:clone", postCloneContext, ".");
+
+  // Apply integrations if any were requested
+  const hasIntegrations = Object.values(flags.integrations).some((v) => v);
+  if (hasIntegrations) {
+    logger.startStep("integrations", logger.formatStep(2, 6, "Applying integrations..."));
+
+    // Determine template path for validation
+    const templatePath = resolved.localPath || path.join(PKG_ROOT, "templates", templateId);
+
+    // Validate integrations
+    const validation = await validateIntegrations(templatePath, flags.integrations);
+
+    if (validation.warnings.length > 0) {
+      logger.stepWarning("Integration warnings:");
+      validation.warnings.forEach((w) => logger.stepInfo(`  ⚠️  ${w}`));
+    }
+
+    if (!validation.valid) {
+      logger.stepError("Integration validation failed:");
+      validation.errors.forEach((e) => logger.stepInfo(`  ❌ ${e}`));
+      process.exit(1);
+    }
+
+    // Apply integrations
+    const application = await applyIntegrations(
+      absProjectDir,
+      templatePath,
+      flags.integrations
+    );
+
+    if (!application.success) {
+      logger.stepError("Failed to apply integrations:");
+      application.errors.forEach((e) => logger.stepInfo(`  ❌ ${e}`));
+      process.exit(1);
+    }
+
+    // Log applied integrations
+    for (const integration of application.applied) {
+      logger.stepSuccess(
+        `${integration.type}/${integration.provider} (v${integration.version}) applied`
+      );
+      if (integration.postInstallInstructions) {
+        logger.stepInfo(`  ℹ️  ${integration.postInstallInstructions}`);
+      }
+    }
+
+    logger.endStep("integrations", "     Integrations configured");
+  }
 
   // 2. Create starter files
   logger.startStep("files", logger.formatStep(2, 5, "Creating starter files..."));
