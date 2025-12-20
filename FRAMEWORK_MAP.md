@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 3cce48cf1e
 
 ## Recent changes
+- 2df3285 2025-12-19 feat(cli): add safe upgrade with rollback support
 - 8bbab03 2025-12-19 chore: prepare for npm publish
 - b1867fb 2025-12-19 docs: add CHANGELOG.md and release process
 - e362000 2025-12-19 feat(cli): add version and upgrade commands
@@ -28,7 +29,6 @@ Hash: 3cce48cf1e
 - 52a3ab7 2025-12-19 test(billing): add comprehensive Stripe provider tests
 - 3f06deb 2025-12-19 feat(billing): implement Stripe billing provider
 - a5b2cdb 2025-12-19 feat(config): add Stripe environment variables to schema
-- c8e5c9b 2025-12-19 chore(deps): add stripe npm package for billing provider
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
