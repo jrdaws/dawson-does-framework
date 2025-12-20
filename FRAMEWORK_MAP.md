@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 1cca075d21
 
 ## Recent changes
+- 196b128 2025-12-20 feat(configurator): add client-side ZIP download
 - 4678616 2025-12-20 fix(configurator): update AI model and improve env setup UX
 - 3ce10db 2025-12-20 fix(website): resolve hydration mismatch and URL parsing errors
 - e890aff 2025-12-20 docs(configurator): add comprehensive shipping status documentation
@@ -28,7 +29,6 @@ Hash: 1cca075d21
 - b1867fb 2025-12-19 docs: add CHANGELOG.md and release process
 - e362000 2025-12-19 feat(cli): add version and upgrade commands
 - 5e9dbbf 2025-12-19 feat(webhooks): add standard webhook provider
-- da361a1 2025-12-19 feat(billing): add Paddle and Lemon Squeezy providers
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

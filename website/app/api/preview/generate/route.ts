@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-
-// Rate limiting: 5 previews per session in demo mode
-const DEMO_RATE_LIMIT = 5;
-const sessionUsage = new Map<string, number>();
+import { checkRateLimit, isRedisAvailable } from "@/lib/rate-limiter";
 
 interface GeneratePreviewRequest {
   template: string;
@@ -15,7 +12,13 @@ interface GeneratePreviewRequest {
   seed?: number;
 }
 
+// Cost control: Maximum tokens to prevent runaway generations
+const MAX_TOKENS = 4096;
+const MAX_INPUT_LENGTH = 10000; // Prevent extremely long prompts
+
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+
   try {
     const body: GeneratePreviewRequest = await request.json();
     const {
@@ -31,25 +34,44 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     if (!template) {
       return NextResponse.json(
-        { error: "Template is required" },
+        { error: "Validation failed", message: "Template is required" },
         { status: 400 }
       );
     }
 
-    // Rate limiting for demo mode
-    if (!userApiKey) {
-      const usage = sessionUsage.get(sessionId) || 0;
-      if (usage >= DEMO_RATE_LIMIT) {
-        return NextResponse.json(
-          {
-            error: "Demo limit reached",
-            message: `You've reached the demo limit of ${DEMO_RATE_LIMIT} previews. Add your Anthropic API key in the settings to continue.`,
-            rateLimited: true,
-          },
-          { status: 429 }
-        );
-      }
-      sessionUsage.set(sessionId, usage + 1);
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: "Validation failed", message: "Session ID is required" },
+        { status: 400 }
+      );
+    }
+
+    // Cost control: Limit input size
+    const descriptionLength = description?.length || 0;
+    if (descriptionLength > MAX_INPUT_LENGTH) {
+      return NextResponse.json(
+        {
+          error: "Input too long",
+          message: `Description must be less than ${MAX_INPUT_LENGTH} characters`,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Rate limiting check (uses Redis in production)
+    const rateLimitResult = await checkRateLimit(sessionId, userApiKey);
+
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        {
+          error: "Rate limit exceeded",
+          message: `You've reached the demo limit. Add your Anthropic API key for unlimited access.`,
+          rateLimited: true,
+          resetAt: rateLimitResult.resetAt,
+          remaining: 0,
+        },
+        { status: 429 }
+      );
     }
 
     // Initialize Anthropic client
@@ -78,10 +100,9 @@ export async function POST(request: NextRequest) {
     );
 
     // Call Claude API - using claude-sonnet-4-20250514 (latest Sonnet model)
-    // Fallback to claude-3-5-sonnet-latest if the specific version fails
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 4096,
+      max_tokens: MAX_TOKENS,
       temperature: seed ? 0 : 0.3, // Deterministic if seed provided
       system: systemPrompt,
       messages: [
@@ -100,23 +121,79 @@ export async function POST(request: NextRequest) {
 
     const html = extractHtmlFromResponse(content.text);
 
+    // Log success metrics (for monitoring)
+    const duration = Date.now() - startTime;
+    console.log(`[Preview Generated] ${template} | ${duration}ms | ${message.usage.input_tokens}/${message.usage.output_tokens} tokens | Redis: ${isRedisAvailable()}`);
+
     return NextResponse.json({
       success: true,
       html,
       seed: seed || Date.now(),
       usage: message.usage,
-      remainingDemoGenerations: userApiKey
-        ? null
-        : DEMO_RATE_LIMIT - (sessionUsage.get(sessionId) || 0),
+      remainingDemoGenerations: rateLimitResult.remaining >= 0 ? rateLimitResult.remaining : null,
+      redisEnabled: isRedisAvailable(),
     });
   } catch (error: any) {
-    console.error("Preview generation error:", error);
+    const duration = Date.now() - startTime;
+
+    // Enhanced error handling with specific error types
+    if (error?.status === 401) {
+      console.error(`[API Error 401] Invalid API key | ${duration}ms`);
+      return NextResponse.json(
+        {
+          error: "Invalid API key",
+          message: "The API key provided is invalid. Please check your key and try again.",
+          details: "Get a valid key from https://console.anthropic.com",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (error?.status === 429) {
+      console.error(`[API Error 429] Anthropic rate limit | ${duration}ms`);
+      return NextResponse.json(
+        {
+          error: "Anthropic rate limit exceeded",
+          message: "Too many requests to Claude API. Please try again in a few moments.",
+        },
+        { status: 429 }
+      );
+    }
+
+    if (error?.status === 400) {
+      console.error(`[API Error 400] Bad request | ${duration}ms`, error.message);
+      return NextResponse.json(
+        {
+          error: "Invalid request",
+          message: error.message || "The request was invalid. Please check your inputs.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (error?.status === 500 || error?.status === 503) {
+      console.error(`[API Error ${error.status}] Anthropic service error | ${duration}ms`);
+      return NextResponse.json(
+        {
+          error: "Service temporarily unavailable",
+          message: "Claude API is temporarily unavailable. Please try again in a few moments.",
+        },
+        { status: 503 }
+      );
+    }
+
+    // Generic error handling
+    console.error(`[Preview Error] ${duration}ms`, error);
+
+    // Don't expose internal errors in production
+    const isDevelopment = process.env.NODE_ENV === "development";
 
     return NextResponse.json(
       {
         error: "Generation failed",
-        message: error.message || "Failed to generate preview. Please try again.",
-        details: process.env.NODE_ENV === "development" ? error.stack : undefined,
+        message: "Failed to generate preview. Please try again.",
+        details: isDevelopment ? error.message : undefined,
+        stack: isDevelopment ? error.stack : undefined,
       },
       { status: 500 }
     );
