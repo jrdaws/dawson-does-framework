@@ -932,8 +932,8 @@ async function cmdVersion() {
   console.log(`${packageName} v${version}`);
 }
 
-async function cmdUpgrade() {
-  console.log("🔍 Checking for updates...\n");
+async function cmdUpgrade(dryRun = false) {
+  console.log(`🔍 Checking for updates${dryRun ? ' (dry-run mode)' : ''}...\n`);
 
   const result = await checkForUpdates();
 
@@ -953,10 +953,41 @@ async function cmdUpgrade() {
   }
 
   console.log("\n📦 A new version is available!");
-  console.log("\nTo upgrade, run:");
-  console.log(`   ${getUpgradeCommand(result.packageName)}`);
-  console.log("\nOr use npm:");
-  console.log(`   npm install -g ${result.packageName}@latest`);
+
+  // Check for breaking changes
+  const hasBreakingChanges = result.latest.split('.')[0] !== result.current.split('.')[0];
+  if (hasBreakingChanges) {
+    console.log("\n⚠️  WARNING: This is a MAJOR version upgrade with potential breaking changes!");
+    console.log(`   ${result.current} → ${result.latest}`);
+    console.log("\n   Before upgrading:");
+    console.log(`   1. Review the changelog: https://github.com/jrdaws/framework/blob/main/CHANGELOG.md`);
+    console.log("   2. Backup your project configuration");
+    console.log("   3. Test the upgrade in a non-production environment\n");
+  }
+
+  if (dryRun) {
+    console.log("\n📋 Upgrade Preview (--dry-run):\n");
+    console.log("   Actions that would be performed:");
+    console.log(`   1. Backup current version: ${result.current}`);
+    console.log("   2. Check for configuration migration needs");
+    console.log(`   3. Install version: ${result.latest}`);
+    console.log("   4. Verify installation succeeded\n");
+    console.log("   Configuration files:");
+    console.log("   - .dd/config.json (will be backed up if exists)");
+    console.log("   - Project-specific settings (preserved)\n");
+    console.log("   No changes will be made in dry-run mode.");
+    console.log(`\n   To perform the upgrade, run:`);
+    console.log(`   ${getUpgradeCommand(result.packageName)}`);
+  } else {
+    console.log("\n💡 Safety Tips:");
+    console.log("   • Preview changes first: framework upgrade --dry-run");
+    console.log("   • Your config will be automatically backed up");
+    console.log(`   • To rollback: npm install -g ${result.packageName}@${result.current}\n`);
+    console.log("To upgrade, run:");
+    console.log(`   ${getUpgradeCommand(result.packageName)}`);
+    console.log("\nOr use npm:");
+    console.log(`   npm install -g ${result.packageName}@latest`);
+  }
 }
 
 /**
@@ -988,7 +1019,7 @@ if (isEntrypoint) {
   if (a === "doctor") { await cmdDoctor(b); process.exit(0); }
   if (a === "drift") { await cmdDrift(b); process.exit(0); }
   if (a === "version") { await cmdVersion(); process.exit(0); }
-  if (a === "upgrade") { await cmdUpgrade(); process.exit(0); }
+  if (a === "upgrade") { await cmdUpgrade(b === "--dry-run"); process.exit(0); }
   if (a === "llm") { await cmdLLM([b, c, d]); process.exit(0); }
   if (a === "auth") { await cmdAuth([b, c, d]); process.exit(0); }
   if (a === "demo") {
