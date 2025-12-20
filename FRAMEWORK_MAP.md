@@ -1,9 +1,10 @@
 # FRAMEWORK_MAP
 
 Generated: (deterministic)
-Hash: a5b61bc06d
+Hash: 07d4a5f63e
 
 ## Recent changes
+- 2158038 2025-12-19 feat(cli): comprehensive --dry-run output
 - 7039463 2025-12-19 Merge pull request: feat: Add LLM (Anthropic) and Auth (Supabase) providers
 - 809fda1 2025-12-19 refactor(framework): streamline compliance message logic for clarity
 - 3198864 2025-12-19 refactor(framework): enhance compliance message to display highest required tier
@@ -28,7 +29,6 @@ Hash: a5b61bc06d
 - 842c59e 2025-12-18 feat(framework): enhance command options and argument handling
 - f0220dd 2025-12-18 fix(health): ensure correct argument handling in has_script function
 - f9b9d5a 2025-12-18 fix(health): correct argument index for script name in has_script function
-- ed09ee6 2025-12-18 refactor(framework): remove after-install prompt and enhance capability logging
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
@@ -45,6 +45,7 @@ Used for: runtime reasoning, blast-radius analysis, debugging
   - `src/dd/plan-compliance.mjs`
   - `src/commands/llm.mjs`
   - `src/commands/auth.mjs`
+  - `src/dd/logger.mjs`
   - `scripts/orchestrator/project-config.mjs`
   - `scripts/orchestrator/capability-engine.mjs`
     - `src/platform/providers/impl/llm.anthropic.ts`
@@ -89,6 +90,8 @@ Used for: onboarding, refactors, capability ownership
 - `│     │     src/platform/providers/types.ts`
 - `│     └─ src/platform/providers/types.ts`
 - `│        src/platform/providers/types.ts`
+- `├─ src/dd/logger.mjs`
+- `│  src/dd/logger.mjs`
 - `├─ scripts/orchestrator/project-config.mjs`
 - `│  scripts/orchestrator/project-config.mjs`
 - `└─ scripts/orchestrator/capability-engine.mjs`
@@ -105,6 +108,7 @@ Used for: onboarding, refactors, capability ownership
 - `src/dd/plan-compliance.mjs` <- `bin/framework.js`
 - `src/commands/llm.mjs` <- `bin/framework.js`
 - `src/commands/auth.mjs` <- `bin/framework.js`
+- `src/dd/logger.mjs` <- `bin/framework.js`
 - `scripts/orchestrator/project-config.mjs` <- `bin/framework.js`, `scripts/orchestrator/capability-engine.mjs`
 - `scripts/orchestrator/capability-engine.mjs` <- `bin/framework.js`
 - `src/platform/providers/impl/llm.anthropic.ts` <- `src/commands/llm.mjs`
