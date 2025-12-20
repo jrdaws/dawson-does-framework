@@ -194,9 +194,15 @@ Examples:
     process.exit(1);
   }
 
-  const projectDir = restArgs[1] || `./_demo-${templateId}`;
+  // Check if second arg is a flag (starts with --) or a directory
+  const secondArg = restArgs[1];
+  const isFlag = secondArg && secondArg.startsWith("--");
+  
+  const projectDir = (isFlag || !secondArg) ? `./_demo-${templateId}` : secondArg;
   // Pass through all flags to cmdExport (it will parse them itself)
-  await cmdExport(templateId, projectDir, restArgs.slice(2));
+  // If secondArg was a flag, include it; otherwise start from restArgs[2]
+  const flagArgs = isFlag ? restArgs.slice(1) : restArgs.slice(2);
+  await cmdExport(templateId, projectDir, flagArgs);
 }
 
 
@@ -419,7 +425,7 @@ async function cmdExport(templateId, projectDir, restArgs) {
     logger.error(e);
     process.exit(1);
   }
-  logger.endStep("clone", "");
+  logger.endStep("clone", "     Template ready");
 
   // 2. Create starter files
   logger.startStep("files", logger.formatStep(2, 5, "Creating starter files..."));
@@ -570,20 +576,20 @@ coverage/
     logger.stepInfo(`failed to copy .dd/after-install.sh (non-fatal): ${e?.message || e}`);
   }
 
-  logger.endStep("files", "");
+  logger.endStep("files", "     Starter files ready");
 
   // 3. Initialize git (use -b to set initial branch, requires git 2.28+)
   logger.startStep("git-init", logger.formatStep(3, 5, "Initializing git repository..."));
   runIn(absProjectDir, "git", ["init", "-q", "-b", flags.branch]);
   logger.stepSuccess(`Git initialized on branch "${flags.branch}"`);
-  logger.endStep("git-init", "");
+  logger.endStep("git-init", "     Repository initialized");
 
   // 4. Commit
   logger.startStep("commit", logger.formatStep(4, 5, "Creating initial commit..."));
   runIn(absProjectDir, "git", ["add", "-A"]);
   runIn(absProjectDir, "git", ["commit", "-q", "-m", "Initial commit (exported via dawson-does-framework)"]);
   logger.stepSuccess("Initial commit created");
-  logger.endStep("commit", "");
+  logger.endStep("commit", "     Commit created");
 
   // 5. Remote + push (optional)
   if (flags.remote) {
@@ -616,7 +622,7 @@ coverage/
     } else if (flags.push && !remoteConfigured) {
       logger.stepError("Push skipped (remote not configured).");
     }
-    logger.endStep("remote", "");
+    logger.endStep("remote", "     Remote configured");
   } else {
     logger.log(`[5/5] Remote setup skipped (no --remote provided)`);
   }
@@ -947,6 +953,11 @@ if (isEntrypoint) {
   if (a === "drift") { await cmdDrift(b); process.exit(0); }
   if (a === "llm") { await cmdLLM([b, c, d]); process.exit(0); }
   if (a === "auth") { await cmdAuth([b, c, d]); process.exit(0); }
+  if (a === "demo") {
+    const restArgs = process.argv.slice(4); // Everything after "framework demo"
+    await cmdDemo(restArgs);
+    process.exit(0);
+  }
   if (a === "export") {
     const restArgs = process.argv.slice(5); // Everything after "export <templateId> <projectDir>"
     await cmdExport(b, c, restArgs);

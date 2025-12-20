@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 6d67cca890
 
 ## Recent changes
+- a0c8c49 2025-12-19 chore: clean up test artifacts
 - d026157 2025-12-19 feat(cli): add failure recovery guidance
 - 3639d8c 2025-12-19 feat(cli): add structured step logging with timing
 - 2158038 2025-12-19 feat(cli): comprehensive --dry-run output
@@ -28,7 +29,6 @@ Hash: 6d67cca890
 - 62d1744 2025-12-19 feat(capabilities): add conflict detection and composition rules
 - fa6eeca 2025-12-19 feat(drift): add drift detection command
 - 7837f13 2025-12-18 feat(config): add plan file schema validation
-- 842c59e 2025-12-18 feat(framework): enhance command options and argument handling
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

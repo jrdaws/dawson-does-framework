@@ -67,20 +67,20 @@
       "templates": [],
       "env": [
         {
-          "key": "PADDLE_VENDOR_ID",
+          "key": "PADDLE_API_KEY",
           "required": true,
           "runtime": "server",
-          "secret": false
+          "secret": true
         },
         {
-          "key": "PADDLE_AUTH_CODE",
-          "required": true,
+          "key": "PADDLE_WEBHOOK_SECRET",
+          "required": false,
           "runtime": "server",
           "secret": true
         }
       ],
       "postInstall": [],
-      "tests": []
+      "tests": ["npm test tests/providers/billing-paddle.test.mjs"]
     },
     {
       "id": "billing.lemon-squeezy",
@@ -98,10 +98,22 @@
           "required": true,
           "runtime": "server",
           "secret": true
+        },
+        {
+          "key": "LEMON_SQUEEZY_STORE_ID",
+          "required": true,
+          "runtime": "server",
+          "secret": false
+        },
+        {
+          "key": "LEMON_SQUEEZY_WEBHOOK_SECRET",
+          "required": false,
+          "runtime": "server",
+          "secret": true
         }
       ],
       "postInstall": [],
-      "tests": []
+      "tests": ["npm test tests/providers/billing-lemon-squeezy.test.mjs"]
     },
     {
       "id": "llm.anthropic",
