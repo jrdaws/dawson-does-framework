@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 05a6897405
 
 ## Recent changes
+- 0603f05 2025-12-19 chore: bump version to v0.3.0
 - 4f5f59e 2025-12-19 docs(registry): add comprehensive template registry documentation
 - 2639e84 2025-12-19 test(registry): add comprehensive template registry tests
 - 4ead1c7 2025-12-19 feat(cli): add framework templates command suite
@@ -28,7 +29,6 @@ Hash: 05a6897405
 - 8a327d0 2025-12-19 fix(framework): improve compliance message for capability violations
 - 39c2fcf 2025-12-19 feat(cli): add framework auth test command
 - 517f1d9 2025-12-19 test(auth): add comprehensive Supabase auth provider tests
-- 9c98e21 2025-12-19 feat(auth): implement Supabase auth provider with health checks
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
