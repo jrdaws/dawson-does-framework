@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 3cce48cf1e
 
 ## Recent changes
+- f487150 2025-12-19 chore: sync FRAMEWORK_MAP.md
 - 85db90e 2025-12-19 chore: update FRAMEWORK_MAP.md
 - a15cbf4 2025-12-19 chore: sync FRAMEWORK_MAP.md with latest commit
 - ebf1792 2025-12-19 fix: restore framework:map:check to prepublishOnly and update map
@@ -28,7 +29,6 @@ Hash: 3cce48cf1e
 - 9c98e21 2025-12-19 feat(auth): implement Supabase auth provider with health checks
 - c7ac391 2025-12-19 chore(deps): add @supabase/supabase-js for auth provider
 - d76de9d 2025-12-19 feat(cli): add framework llm test command
-- 91df16c 2025-12-19 test(llm): add comprehensive Anthropic provider tests
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
