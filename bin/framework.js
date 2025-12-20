@@ -303,32 +303,80 @@ async function cmdExport(templateId, projectDir, restArgs) {
   // Dry run mode: print operations and exit
   if (dryRun) {
     console.log("DRY RUN - The following operations would be performed:\n");
-    console.log(`1. Clone template "${templateId}" into "${absProjectDir}"`);
+    console.log(`Project: ${projectName}`);
+    console.log(`Directory: ${absProjectDir}`);
+    console.log(`Template: ${templateId}`);
+    console.log(`Branch: ${flags.branch}`);
+    console.log("");
 
+    // Step 1: Clone template
+    console.log(`[1/5] Clone template`);
     if (resolved && resolved.localPath) {
-      console.log(`   local copy from ${resolved.localPath}`);
+      console.log(`      Source: ${resolved.localPath} (local)`);
     } else {
-      console.log(`   degit ${resolved.remoteRef}`);
+      console.log(`      Source: ${resolved.remoteRef} (remote)`);
     }
-    console.log(`\n2. Create starter files in "${absProjectDir}":`);
-    console.log("   - README.md");
-    console.log("   - .gitignore");
-    console.log("   - .dd/config.json");
-    console.log("   - .dd/health.sh (if source exists)");
-    console.log("   - START_PROMPT.md (if source exists)");
-    console.log(`\n3. Initialize git repository:`);
-    console.log(`   git init -b ${flags.branch}`);
-    console.log(`   git add -A`);
-    console.log(`   git commit -m "Initial commit (exported via dawson-does-framework)"`);
+    console.log(`      Destination: ${absProjectDir}`);
+
+    // Step 2: Create files
+    console.log(`\n[2/5] Create starter files`);
+    console.log(`      - .dd/manifest.json (template metadata)`);
+    console.log(`      - README.md (project documentation)`);
+    console.log(`      - .gitignore (git exclusions)`);
+    console.log(`      - .dd/config.json (framework configuration)`);
+
+    // Check if optional files exist
+    const startPromptSrc = path.join(PKG_ROOT, "prompts", "tasks", "framework-start.md");
+    const healthSrc = path.join(PKG_ROOT, ".dd", "health.sh");
+    const afterInstallSrc = path.join(__dirname, "..", ".dd", "after-install.sh");
+
+    if (fs.existsSync(startPromptSrc)) {
+      console.log(`      - START_PROMPT.md (onboarding guide)`);
+    }
+    if (fs.existsSync(healthSrc)) {
+      console.log(`      - .dd/health.sh (health check script)`);
+    }
+    if (fs.existsSync(afterInstallSrc)) {
+      console.log(`      - .dd/after-install.sh (post-export setup hook)`);
+    }
+
+    // Step 3: Git operations
+    console.log(`\n[3/5] Initialize git repository`);
+    console.log(`      git init -b ${flags.branch}`);
+    console.log(`      git add -A`);
+    console.log(`      git commit -m "Initial commit (exported via dawson-does-framework)"`);
+
+    // Step 4: Remote setup
+    console.log(`\n[4/5] Remote setup`);
     if (flags.remote) {
-      console.log(`\n4. Add remote origin:`);
-      console.log(`   git remote add origin ${flags.remote}`);
+      console.log(`      git remote add origin ${flags.remote}`);
+      if (flags.push) {
+        console.log(`      git push -u origin ${flags.branch}`);
+      }
+    } else {
+      console.log(`      (skipped - no --remote specified)`);
     }
-    if (flags.push) {
-      console.log(`\n5. Push to remote:`);
-      console.log(`   git push -u origin ${flags.branch}`);
+
+    // Step 5: Post-export hooks
+    console.log(`\n[5/5] Post-export hooks`);
+    const afterInstallPolicy = flags.afterInstall || "prompt";
+    console.log(`      Policy: ${afterInstallPolicy}`);
+
+    if (!fs.existsSync(afterInstallSrc)) {
+      console.log(`      (no after-install.sh found - skipped)`);
+    } else if (afterInstallPolicy === "off") {
+      console.log(`      (disabled via --after-install off)`);
+    } else if (afterInstallPolicy === "auto") {
+      console.log(`      Would run: bash .dd/after-install.sh`);
+      console.log(`      (installs dependencies, runs setup)`);
+    } else {
+      console.log(`      Would prompt: "Run first-time setup now?"`);
+      console.log(`      (user can accept/decline interactively)`);
     }
-    console.log("\nDRY RUN complete. No changes made.");
+
+    console.log("\n" + "─".repeat(60));
+    console.log("DRY RUN complete. No changes made.");
+    console.log("Run without --dry-run to execute these operations.");
     return;
   }
 

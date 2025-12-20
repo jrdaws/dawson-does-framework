@@ -4,6 +4,8 @@ Generated: (deterministic)
 Hash: a5b61bc06d
 
 ## Recent changes
+- 7039463 2025-12-19 Merge pull request: feat: Add LLM (Anthropic) and Auth (Supabase) providers
+- 809fda1 2025-12-19 refactor(framework): streamline compliance message logic for clarity
 - 3198864 2025-12-19 refactor(framework): enhance compliance message to display highest required tier
 - 8a327d0 2025-12-19 fix(framework): improve compliance message for capability violations
 - 39c2fcf 2025-12-19 feat(cli): add framework auth test command
@@ -27,8 +29,6 @@ Hash: a5b61bc06d
 - f0220dd 2025-12-18 fix(health): ensure correct argument handling in has_script function
 - f9b9d5a 2025-12-18 fix(health): correct argument index for script name in has_script function
 - ed09ee6 2025-12-18 refactor(framework): remove after-install prompt and enhance capability logging
-- d749c18 2025-12-18 refactor: enhance captureRepoAdditions to return commits and status
-- cd87d1f 2025-12-18 chore: update framework map and fix localDir typo
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
