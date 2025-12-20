@@ -4,6 +4,12 @@ import { Label } from "@/components/ui/label";
 import { TEMPLATES, INTEGRATION_INFO, type IntegrationType } from "@/lib/templates";
 import { AlertCircle, Check } from "lucide-react";
 
+// Helper type for integration info
+interface IntegrationProviderInfo {
+  name: string;
+  description: string;
+}
+
 interface IntegrationSelectorProps {
   template: string;
   integrations: Record<string, string>;
@@ -76,7 +82,9 @@ export function IntegrationSelector({
 
       <div className="space-y-6 max-w-4xl mx-auto">
         {Object.entries(selectedTemplate.supportedIntegrations).map(([type, providers]) => {
-          const isRequired = selectedTemplate.requiredIntegrations.includes(type);
+          // Cast to readonly string[] to allow .includes with any string
+          const requiredIntegrations = selectedTemplate.requiredIntegrations as readonly string[];
+          const isRequired = requiredIntegrations.includes(type);
           const selectedProvider = integrations[type];
 
           return (
@@ -98,11 +106,15 @@ export function IntegrationSelector({
 
                 <div className="grid md:grid-cols-2 gap-3">
                   {providers.map((provider) => {
-                    const info = INTEGRATION_INFO[type as IntegrationType]?.[provider];
+                    // Safely get integration info with explicit typing
+                    const typeInfo = INTEGRATION_INFO[type as IntegrationType] as Record<string, IntegrationProviderInfo> | undefined;
+                    const info = typeInfo?.[provider];
                     if (!info) return null;
 
                     const isSelected = selectedProvider === provider;
-                    const isDefault = selectedTemplate.defaultIntegrations?.[type] === provider;
+                    // Cast defaultIntegrations to allow string indexing
+                    const defaultIntegrations = selectedTemplate.defaultIntegrations as Record<string, string>;
+                    const isDefault = defaultIntegrations?.[type] === provider;
                     const showRecommended = mode === "beginner" && isDefault;
 
                     return (

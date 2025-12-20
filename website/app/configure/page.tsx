@@ -4,8 +4,11 @@ import { useConfiguratorStore, Step } from "@/lib/configurator-state";
 import { StepIndicator } from "@/app/components/configurator/StepIndicator";
 import { ModeToggle } from "@/app/components/configurator/ModeToggle";
 import { TemplateSelector } from "@/app/components/configurator/TemplateSelector";
+import { InspirationUpload } from "@/app/components/configurator/InspirationUpload";
 import { ProjectDetails } from "@/app/components/configurator/ProjectDetails";
 import { IntegrationSelector } from "@/app/components/configurator/IntegrationSelector";
+import { EnvironmentKeys } from "@/app/components/configurator/EnvironmentKeys";
+import { ContextFields } from "@/app/components/configurator/ContextFields";
 import { ExportView } from "@/app/components/configurator/ExportView";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -17,16 +20,29 @@ export default function ConfigurePage() {
     completedSteps,
     mode,
     template,
+    inspirations,
+    description,
     projectName,
     outputDir,
     integrations,
+    envKeys,
+    vision,
+    mission,
+    successCriteria,
     setStep,
     completeStep,
     setMode,
     setTemplate,
+    addInspiration,
+    removeInspiration,
+    setDescription,
     setProjectName,
     setOutputDir,
     setIntegration,
+    setEnvKey,
+    setVision,
+    setMission,
+    setSuccessCriteria,
   } = useConfiguratorStore();
 
   const selectedTemplate = TEMPLATES[template as keyof typeof TEMPLATES];
@@ -36,7 +52,7 @@ export default function ConfigurePage() {
     switch (currentStep) {
       case 1: // Template selection
         return template !== "";
-      case 2: // Inspiration (skipped for now)
+      case 2: // Inspiration (optional step)
         return true;
       case 3: // Project details
         const slugifiedName = projectName
@@ -56,11 +72,11 @@ export default function ConfigurePage() {
           (type) => !integrations[type]
         );
         return missingRequired.length === 0;
-      case 5: // Environment (skipped for now)
+      case 5: // Environment (optional step)
         return true;
       case 6: // Preview (skipped for now)
         return true;
-      case 7: // Context (skipped for now)
+      case 7: // Context (optional step)
         return true;
       case 8: // Export
         return true;
@@ -74,8 +90,8 @@ export default function ConfigurePage() {
 
     completeStep(currentStep);
 
-    // Skip steps 2, 5, 6, 7 for now (Inspiration, Environment, Preview, Context)
-    const skippedSteps = [2, 5, 6, 7];
+    // Skip step 6 only (AI Preview - needs backend)
+    const skippedSteps = [6];
     let nextStep = (currentStep + 1) as Step;
 
     while (skippedSteps.includes(nextStep) && nextStep < 8) {
@@ -89,8 +105,8 @@ export default function ConfigurePage() {
   };
 
   const handlePrevious = () => {
-    // Skip steps 2, 5, 6, 7 when going backward
-    const skippedSteps = [2, 5, 6, 7];
+    // Skip step 6 when going backward (AI Preview - needs backend)
+    const skippedSteps = [6];
     let prevStep = (currentStep - 1) as Step;
 
     while (skippedSteps.includes(prevStep) && prevStep > 0) {
@@ -142,6 +158,16 @@ export default function ConfigurePage() {
             />
           )}
 
+          {currentStep === 2 && (
+            <InspirationUpload
+              inspirations={inspirations}
+              description={description}
+              onAddInspiration={addInspiration}
+              onRemoveInspiration={removeInspiration}
+              onDescriptionChange={setDescription}
+            />
+          )}
+
           {currentStep === 3 && (
             <ProjectDetails
               projectName={projectName}
@@ -160,12 +186,35 @@ export default function ConfigurePage() {
             />
           )}
 
+          {currentStep === 5 && (
+            <EnvironmentKeys
+              integrations={integrations}
+              envKeys={envKeys}
+              onEnvKeyChange={setEnvKey}
+            />
+          )}
+
+          {currentStep === 7 && (
+            <ContextFields
+              vision={vision}
+              mission={mission}
+              successCriteria={successCriteria}
+              onVisionChange={setVision}
+              onMissionChange={setMission}
+              onSuccessCriteriaChange={setSuccessCriteria}
+            />
+          )}
+
           {currentStep === 8 && (
             <ExportView
               template={template}
               projectName={projectName}
               outputDir={outputDir}
               integrations={integrations}
+              vision={vision}
+              mission={mission}
+              successCriteria={successCriteria}
+              envKeys={envKeys}
             />
           )}
         </div>

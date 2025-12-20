@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 1cca075d21
 
 ## Recent changes
+- e890aff 2025-12-20 docs(configurator): add comprehensive shipping status documentation
 - 8f5a146 2025-12-20 feat(configurator): implement all 8 steps with full UI
 - 8e5b829 2025-12-20 feat(configurator): implement Phase 2 core user flow
 - 41cc8c9 2025-12-20 feat(configurator): add state management with Zustand and navigation components
@@ -28,7 +29,6 @@ Hash: 1cca075d21
 - da361a1 2025-12-19 feat(billing): add Paddle and Lemon Squeezy providers
 - a0c8c49 2025-12-19 chore: clean up test artifacts
 - d026157 2025-12-19 feat(cli): add failure recovery guidance
-- 3639d8c 2025-12-19 feat(cli): add structured step logging with timing
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

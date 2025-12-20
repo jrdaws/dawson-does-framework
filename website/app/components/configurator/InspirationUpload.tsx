@@ -7,6 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Upload, Link as LinkIcon, Figma, X, Image as ImageIcon, FileText } from "lucide-react";
 import { Inspiration } from "@/lib/configurator-state";
 
+/**
+ * Safely extract hostname from a URL string
+ * Returns the original value if URL parsing fails
+ */
+function getHostname(url: string): string {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    // Return a truncated version of the raw value if not a valid URL
+    return url.length > 30 ? url.slice(0, 30) + "..." : url;
+  }
+}
+
 interface InspirationUploadProps {
   inspirations: Inspiration[];
   description: string;
@@ -243,7 +256,7 @@ export function InspirationUpload({
                       <p className="text-xs text-terminal-text truncate font-mono">
                         {inspiration.type === "image"
                           ? inspiration.value
-                          : new URL(inspiration.value).hostname}
+                          : getHostname(inspiration.value)}
                       </p>
                     </div>
 
