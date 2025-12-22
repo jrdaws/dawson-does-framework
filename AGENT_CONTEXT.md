@@ -89,18 +89,127 @@ dawson-does-framework/
 - Don't change shared configs without coordination
 - Don't add console.log debugging (use logger.mjs)
 - Don't commit .env files or secrets
+- **Don't delete protected files** (see below)
+- **Don't create feature branches** (work on `main` only)
+
+---
+
+## 🛡️ Protected Files - NEVER DELETE
+
+The following files are **critical to project governance**. Deleting them breaks agent continuity:
+
+| File | Purpose |
+|------|---------|
+| `AGENT_CONTEXT.md` | Project context and standards |
+| `CLAUDE.md` | Claude Code CLI auto-context |
+| `.cursorrules` | Cursor IDE auto-rules |
+| `docs/GOVERNANCE_ROADMAP.md` | Governance documentation |
+| `docs/standards/CODING_STANDARDS.md` | Code style reference |
+| `prompts/agents/UNIVERSAL_BOOTSTRAP.md` | Agent initialization |
+| `prompts/agents/roles/ROLE_PROTOCOL.md` | Agent lifecycle |
+| `prompts/agents/memory/*_MEMORY.md` | Persistent agent memory |
+
+**See `.protected-files` for the complete list.**
+
+If you accidentally delete a protected file, restore it immediately:
+```bash
+git checkout HEAD -- <file-path>
+```
+
+---
+
+## 🔀 Git Branch Policy
+
+**All AI agents MUST work on `main` branch only.**
+
+Why:
+- Prevents branch divergence and lost work
+- Keeps memory files in sync across agents
+- Avoids complex merge conflicts
+- Changes are immediately visible to all agents
+
+Rules:
+1. **Never create feature branches** (humans do that)
+2. **Commit frequently** (after each significant change)
+3. **Pull before starting**: `git pull origin main`
+4. **Push after committing**: `git push origin main`
+
+---
+
+## ⚡ Commit Checkpoint Policy
+
+**Commit every 15-20 minutes or after any significant change.**
+
+Commit when:
+- ✅ Completing any task in the task queue
+- ✅ Updating memory files
+- ✅ Creating or modifying 3+ files
+- ✅ Before ending session (ALWAYS)
+
+Commit message format:
+```
+<type>(<scope>): <description>
+
+Types: feat, fix, docs, chore, test, refactor
+Example: docs(agents): update CLI memory with session notes
+```
+
+---
+
+## 🔍 Check for Active Agents (Anti-Collision)
+
+Before starting work, check if other agents might be active:
+
+```bash
+# 1. Check recent commits (last 10 minutes = potential active agent)
+git log --oneline --since="10 minutes ago"
+
+# 2. Check for uncommitted changes
+git status
+
+# 3. Check terminal files (Cursor-specific)
+ls -la ~/.cursor/projects/*/terminals/
+```
+
+**If you detect another agent may be active:**
+- Coordinate tasks to avoid overlap
+- Focus on different files/areas
+- Commit and push frequently
+
+---
 
 ## Before You Start
-1. Run `git status` to see current state
+
+1. **Sync check** (CRITICAL - do this FIRST):
+   ```bash
+   git pull origin main
+   git status
+   git checkout HEAD -- .  # Restores any missing tracked files
+   ```
 2. Run `npm test` to ensure tests pass
-3. Read the specific files for your task area
-4. Ask if anything is unclear
+3. Check for active agents (see above)
+4. Read the specific files for your task area
+5. Ask if anything is unclear
 
 ## When You're Done
+
 1. Run `npm test` to verify
 2. Run `npm run lint` if available
-3. Commit with conventional commit message
-4. Note any follow-up tasks needed
+3. Update your memory file (`prompts/agents/memory/[ROLE]_MEMORY.md`)
+4. Commit with conventional commit message
+5. Push to origin: `git push origin main`
+6. Note any follow-up tasks needed
+
+---
+
+## 📚 Additional Resources
+
+| Document | Purpose |
+|----------|---------|
+| `prompts/agents/UNIVERSAL_BOOTSTRAP.md` | For initializing agents on any platform |
+| `prompts/agents/roles/ROLE_PROTOCOL.md` | Agent lifecycle and memory management |
+| `docs/CONSOLIDATION_CHECKLIST.md` | Human checklist for daily branch consolidation |
+| `.protected-files` | List of files agents must never delete |
 
 ---
 *This context applies to all agents working on dawson-does-framework.*

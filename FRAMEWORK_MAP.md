@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 39cc1b1 2025-12-22 feat(templates): add supportedIntegrations to seo-directory template
 - b5f0491 2025-12-22 chore: update framework map after push
 - d19f039 2025-12-22 docs(agents): update Template Agent memory with flagship-saas completion session
 - 44d61f9 2025-12-22 fix(templates): resolve flagship-saas template test failures
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 00dd8d3 2025-12-22 feat(templates): add dark mode support to blog, dashboard, and landing-page
 - 1c4406c 2025-12-22 docs(agents): update agent memory files with recent sessions
 - ad7bd61 2025-12-22 docs(cli): update CLI memory with API format update session
-- 9052da5 2025-12-22 feat(cli): update pull command to support new standardized API format
 
 ## Agent Governance Structure
 

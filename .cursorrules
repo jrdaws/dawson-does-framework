@@ -1,14 +1,29 @@
 # Dawson-Does Framework - Cursor Rules
 
-## 🛑 MANDATORY FIRST STEP - DO NOT SKIP
+## 🛑 MANDATORY FIRST STEPS - DO NOT SKIP
 
 Before responding to ANY prompt or doing ANY work:
 
-1. **Read**: `cat AGENT_CONTEXT.md`
-2. **Pass the verification test** at the top of that file
-3. **Include your answers** in your first response
+### Step 0: Sync Check (CRITICAL)
+```bash
+git pull origin main
+git status
+git checkout HEAD -- .  # Restore any missing files
+git log --oneline --since="10 minutes ago"  # Check for active agents
+```
 
-This is non-negotiable. Work submitted without context verification may be rejected.
+### Step 1: Read Context
+```bash
+cat AGENT_CONTEXT.md
+```
+
+### Step 2: Pass Verification
+Answer the 5 verification questions from AGENT_CONTEXT.md in your first response.
+
+### Step 3: Proceed
+Only after Steps 0-2, proceed with the user's request.
+
+**Work submitted without context verification may be rejected.**
 
 ---
 
@@ -51,6 +66,28 @@ Use conventional commits:
 - Changing shared configs without coordination
 - Breaking existing tests
 - Committing secrets or .env files
+- **Deleting protected files** (see `.protected-files`)
+- **Creating feature branches** (always work on `main`)
+- **Skipping the sync check** (Step 0 above)
+
+## 🛡️ Protected Files - NEVER DELETE
+- `AGENT_CONTEXT.md`, `CLAUDE.md`, `.cursorrules`
+- All files in `prompts/agents/memory/`
+- All files in `prompts/agents/roles/`
+- `docs/standards/*`
+
+See `.protected-files` for complete list. If accidentally deleted:
+```bash
+git checkout HEAD -- <file-path>
+```
+
+## 🏁 Before Ending Session
+1. Run `npm test`
+2. Commit: `git add -A && git commit -m "<type>(<scope>): <desc>"`
+3. Push: `git push origin main`
+4. Update memory file if applicable
+
+**Never leave uncommitted work!**
 
 ## Useful Commands
 ```bash
@@ -58,5 +95,6 @@ npm test              # Run tests
 npm run lint          # Check linting
 framework doctor .    # Health check
 framework drift .     # Check template drift
+git pull origin main  # Sync before starting
 ```
 

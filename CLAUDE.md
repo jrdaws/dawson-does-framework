@@ -2,23 +2,46 @@
 
 > **This file is automatically read by Claude Code CLI when starting a session in this project.**
 
-## 🛑 MANDATORY FIRST STEP
+## 🛑 MANDATORY FIRST STEPS (Do ALL Before Any Work)
 
-Before responding to ANY prompt or doing ANY work, you MUST:
+### Step 0: Sync Check (CRITICAL - Do This FIRST)
 
-1. **Read the governing documents:**
-   ```bash
-   cat AGENT_CONTEXT.md
-   ```
+Before ANYTHING else, ensure your working directory is in sync:
 
-2. **Confirm understanding by stating:**
-   - The project's core philosophy (export-first, zero lock-in)
-   - The coding standards for your task area
-   - What you should NOT do
+```bash
+# Pull latest changes
+git pull origin main
 
-3. **Only then proceed** with the user's request.
+# Check for uncommitted changes or missing files
+git status
 
-If you skip this step, your work may be rejected for not following project standards.
+# Restore any missing tracked files
+git checkout HEAD -- .
+
+# Check if other agents might be active (commits in last 10 min)
+git log --oneline --since="10 minutes ago"
+```
+
+**If you see recent commits from other agents**: Coordinate to avoid file conflicts.
+
+### Step 1: Read Governing Documents
+
+```bash
+cat AGENT_CONTEXT.md
+```
+
+### Step 2: Confirm Understanding
+
+State in your response:
+- The project's core philosophy (export-first, zero lock-in)
+- The coding standards for your task area
+- What you should NOT do (including protected files)
+
+### Step 3: Proceed with Work
+
+Only after completing Steps 0-2, proceed with the user's request.
+
+**If you skip these steps, your work may be rejected for not following project standards.**
 
 ---
 
@@ -65,6 +88,9 @@ framework pull <token>      # Pull from platform
 - ❌ Skip reading AGENT_CONTEXT.md
 - ❌ Commit .env files or secrets
 - ❌ Use console.log for debugging (use logger.mjs)
+- ❌ **Delete protected files** (see `.protected-files`)
+- ❌ **Create feature branches** (always work on `main`)
+- ❌ **Skip the sync check** (Step 0 above)
 
 ### Important Files
 - `AGENT_CONTEXT.md` - Full context (READ THIS)
@@ -84,6 +110,40 @@ Before starting work, confirm you can answer:
 4. What should you NOT do?
 
 If you cannot answer these, re-read AGENT_CONTEXT.md.
+
+---
+
+## 🏁 Before Ending Your Session
+
+**ALWAYS do these before ending:**
+
+1. **Run tests**: `npm test`
+2. **Commit your work**:
+   ```bash
+   git add -A
+   git commit -m "<type>(<scope>): <description>"
+   ```
+3. **Push to origin**: `git push origin main`
+4. **Update memory file** (if applicable): `prompts/agents/memory/[ROLE]_MEMORY.md`
+
+**Never leave uncommitted work** - the next agent won't see it!
+
+---
+
+## 🛡️ Protected Files
+
+Some files are critical and must **NEVER be deleted**:
+- `AGENT_CONTEXT.md`, `CLAUDE.md`, `.cursorrules`
+- All files in `prompts/agents/memory/`
+- All files in `prompts/agents/roles/`
+- `docs/standards/*`
+
+See `.protected-files` for the complete list.
+
+If you accidentally delete one, restore immediately:
+```bash
+git checkout HEAD -- <file-path>
+```
 
 ---
 
