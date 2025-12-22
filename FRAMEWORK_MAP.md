@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- ad7bd61 2025-12-22 docs(cli): update CLI memory with API format update session
 - 9052da5 2025-12-22 feat(cli): update pull command to support new standardized API format
 - 1e7811d 2025-12-22 docs: create CONTRIBUTING.md with comprehensive CLI patterns documentation
 - 942d8bb 2025-12-22 feat(cli): add standardized error helper functions to logger
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 770b22b 2025-12-21 fix(tests): achieve 100% test pass rate (291/306 passing, 15 skipped)
 - a94bd34 2025-12-21 fix(tests): resolve remaining test failures
 - 44ea472 2025-12-21 feat(testing): add test documentation and fix test imports
-- ba338d2 2025-12-21 fix(tests): add template manifests and fix test utility imports
 
 ## Agent Governance Structure
 
