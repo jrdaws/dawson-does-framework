@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 9d5ea8f 2025-12-22 test(providers): improve billing.stripe test assertions
 - fb218db 2025-12-22 chore: cleanup and standardize post-session changes
 - 0a489c6 2025-12-22 feat(governance): add parallel agent coordination policies
 - 39cc1b1 2025-12-22 feat(templates): add supportedIntegrations to seo-directory template
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - dce6da7 2025-12-22 feat(website): improve configurator and add E2E tests
 - bb5dab3 2025-12-22 chore(templates): update seo-directory Next.js types
 - ea01403 2025-12-22 feat(templates): add dark mode support to all templates
-- 00dd8d3 2025-12-22 feat(templates): add dark mode support to blog, dashboard, and landing-page
 
 ## Agent Governance Structure
 
