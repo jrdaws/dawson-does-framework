@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: b41ff877de
 
 ## Recent changes
+- de90a18 2025-12-22 test(api): add comprehensive tests for projects API endpoints
 - 2241da1 2025-12-22 feat(cli): update pull command to support new API response format
 - 3dac20f 2025-12-22 feat(platform): add preview caching infrastructure
 - c3bb46f 2025-12-22 docs(memory): update Platform, Website, and Template agent memories
@@ -28,7 +29,6 @@ Hash: b41ff877de
 - ecbe086 2025-12-22 docs(patterns): add comprehensive component patterns guide
 - 67220e8 2025-12-22 docs: add comprehensive standards documentation
 - 8acf17e 2025-12-22 fix(website): remove editor components for clean deployment
-- 3d4d4d8 2025-12-22 chore: update framework map after adding release notes
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

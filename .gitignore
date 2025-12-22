@@ -26,3 +26,7 @@ coverage/
 playwright-report/
 test-results/
 *.lcov
+# WIP files
+website/app/components/editor/
+website/lib/editor/
+templates/*/package-lock.json
