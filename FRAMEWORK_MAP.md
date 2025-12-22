@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 3d4d4d8 2025-12-22 chore: update framework map after adding release notes
 - 6a8bc6b 2025-12-22 docs: add release notes for v0.3.1
 - 8f6eab2 2025-12-22 fix(website): simplify for production deployment
 - 1ee384f 2025-12-22 docs(patterns): add comprehensive integration patterns guide
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 44a3ea1 2025-12-21 chore: update dependencies and configuration for testing
 - 5cb5249 2025-12-21 feat(packages): add monorepo structure with ai-agent and collaboration packages
 - a5f829c 2025-12-21 feat(testing): comprehensive test infrastructure with CI/CD pipelines
-- c4c9e2e 2025-12-21 feat(website): add visual editor and project download endpoint
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
