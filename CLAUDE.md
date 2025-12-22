@@ -87,5 +87,37 @@ If you cannot answer these, re-read AGENT_CONTEXT.md.
 
 ---
 
+## 📋 Response Rules (MANDATORY)
+
+**Your FINAL response MUST end with these three sections:**
+
+### 1. Summary of Achievements
+```markdown
+## ✅ Summary of Achievements
+- [What was completed]
+- [Files created/modified]
+- [Test status]
+```
+
+### 2. Suggestions
+```markdown
+## 💡 Suggestions
+- [Immediate improvements]
+- [Future considerations]
+```
+
+### 3. Continuation Prompt
+```markdown
+## 🚀 Next Steps Prompt
+[Ready-to-use expert-level prompt for continuing the work]
+```
+
+**NEVER end abruptly. ALWAYS provide:**
+- Summary of what was achieved
+- Suggestions for improvements
+- A complete continuation prompt another agent can use
+
+---
+
 *This file is loaded automatically by Claude Code CLI. For full context, see AGENT_CONTEXT.md.*
 

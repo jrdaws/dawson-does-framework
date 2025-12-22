@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- ba43919 2025-12-22 chore: final framework map sync
 - a0807e8 2025-12-22 chore: update framework map after push
 - ecbe086 2025-12-22 docs(patterns): add comprehensive component patterns guide
 - 67220e8 2025-12-22 docs: add comprehensive standards documentation
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 570a242 2025-12-21 fix(tests): fix all failing tests and improve coverage to 78% (core)
 - 770b22b 2025-12-21 fix(tests): achieve 100% test pass rate (291/306 passing, 15 skipped)
 - a94bd34 2025-12-21 fix(tests): resolve remaining test failures
-- 44ea472 2025-12-21 feat(testing): add test documentation and fix test imports
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

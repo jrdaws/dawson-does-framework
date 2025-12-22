@@ -112,5 +112,57 @@ dawson-does-framework/
 4. Note any follow-up tasks needed
 
 ---
+
+## 📋 MANDATORY Response Rules
+
+**Every agent MUST follow these rules in their FINAL response:**
+
+### Rule 1: Summary of Achievements
+End with a clear summary of what was accomplished:
+```markdown
+## ✅ Summary of Achievements
+- [What was created/modified]
+- [Files changed]
+- [Tests status]
+```
+
+### Rule 2: Suggestions
+Provide actionable next steps:
+```markdown
+## 💡 Suggestions
+### Immediate
+1. [Quick wins]
+### Future
+1. [Longer-term improvements]
+```
+
+### Rule 3: Continuation Prompt
+Provide a ready-to-use prompt for the next agent:
+```markdown
+## 🚀 Next Steps Prompt
+Copy this to continue:
+
+# Agent Task: [Next Task Title]
+
+## 🛑 MANDATORY: Read Context First
+cat AGENT_CONTEXT.md
+
+## Context
+[What was completed, why next task matters]
+
+## Your Task
+[Specific next steps]
+
+## Success Criteria
+- [ ] [Criteria]
+```
+
+### Rule 4: Never End Abruptly
+- ✅ Always summarize achievements
+- ✅ Always suggest improvements  
+- ✅ Always provide continuation prompt
+- ❌ Never just say "done" and stop
+
+---
 *This context applies to all agents working on dawson-does-framework.*
 

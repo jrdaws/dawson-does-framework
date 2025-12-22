@@ -61,7 +61,88 @@ I have read and understood AGENT_CONTEXT.md. Proceeding with task.
 ### When Complete
 1. Run `npm test` and confirm passing
 2. Commit with message: `[type](scope): [description]`
-3. List any follow-up tasks identified
+3. Follow the Response Rules below
+
+---
+
+## 📋 MANDATORY Response Rules
+
+Your FINAL response MUST end with these three sections:
+
+### Section 1: Summary of Achievements
+```markdown
+---
+## ✅ Summary of Achievements
+
+### Completed
+- [What was created/modified]
+- [Files changed with brief description]
+- [Tests added/passing]
+
+### Metrics
+- Files created: X
+- Files modified: X
+- Tests passing: X/X
+```
+
+### Section 2: Suggestions
+```markdown
+## 💡 Suggestions
+
+### Immediate Improvements
+1. [Quick win that could be done next]
+2. [Another quick improvement]
+
+### Future Considerations  
+1. [Longer-term improvement]
+2. [Technical debt to address]
+
+### Potential Issues
+1. [Any concerns or edge cases noticed]
+```
+
+### Section 3: Continuation Prompt
+```markdown
+## 🚀 Next Steps Prompt
+
+Copy this expert-level prompt to continue development:
+
+---
+
+# Agent Task: [Next Logical Task Title]
+
+## 🛑 MANDATORY: Read Context First
+\`\`\`bash
+cat AGENT_CONTEXT.md
+\`\`\`
+Answer the 5 verification questions before proceeding.
+
+## Context
+[What was just completed and why next task matters]
+
+## Your Task
+[Specific next task based on suggestions above]
+
+## Files to Create/Modify
+- \`[file1]\` - [what to do]
+- \`[file2]\` - [what to do]
+
+## Success Criteria
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+- [ ] Tests pass: \`npm test\`
+
+## Technical Notes
+[Any relevant context from current work]
+
+---
+```
+
+### Response Rules Summary
+- ✅ ALWAYS provide Summary of Achievements
+- ✅ ALWAYS provide Suggestions
+- ✅ ALWAYS provide a Continuation Prompt
+- ❌ NEVER end abruptly without these sections
 
 ---
 
