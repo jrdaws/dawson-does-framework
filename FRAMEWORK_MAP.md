@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- a6c8eb7 2025-12-21 docs(templates): add comprehensive template documentation
 - 5e8cd30 2025-12-21 chore: bump version to 0.3.1
 - b39f514 2025-12-21 chore: update framework map after test additions
 - d710faf 2025-12-21 docs(governance): add mandatory agent context verification system
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 4678616 2025-12-20 fix(configurator): update AI model and improve env setup UX
 - 3ce10db 2025-12-20 fix(website): resolve hydration mismatch and URL parsing errors
 - e890aff 2025-12-20 docs(configurator): add comprehensive shipping status documentation
-- 8f5a146 2025-12-20 feat(configurator): implement all 8 steps with full UI
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
