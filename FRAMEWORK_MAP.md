@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: b41ff877de
 
 ## Recent changes
+- b701664 2025-12-22 feat(pull): add support for new API response format with backward compatibility
 - ac4b076 2025-12-22 docs(memory): update CLI_MEMORY.md with session CLI-007
 - e6acc1e 2025-12-22 feat(cli): implement framework init and enhance pull command
 - 04e76bd 2025-12-22 docs(memory): update DOCS_MEMORY with Documentation Agent sessions P2-P5
@@ -28,7 +29,6 @@ Hash: b41ff877de
 - 6a8bc6b 2025-12-22 docs: add release notes for v0.3.1
 - 8f6eab2 2025-12-22 fix(website): simplify for production deployment
 - 1ee384f 2025-12-22 docs(patterns): add comprehensive integration patterns guide
-- dfed0f2 2025-12-22 docs(standards): add comprehensive file structure guide
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
