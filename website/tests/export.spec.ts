@@ -29,16 +29,16 @@ test.describe('Export Functionality', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for the comparison section
-    await expect(page.locator('text=The Before & After')).toBeVisible();
+    await expect(page.locator('text=The Before & After').first()).toBeVisible();
 
-    // Verify export command is shown in "after" section
-    await expect(page.locator('text=framework export saas ./my-app')).toBeVisible();
+    // Verify export command is shown in "after" section (use first match)
+    await expect(page.locator('text=framework export saas ./my-app').first()).toBeVisible();
 
-    // Check for benefits listed
-    await expect(page.locator('text=✓ Next.js 15 + App Router')).toBeVisible();
-    await expect(page.locator('text=✓ TypeScript configured')).toBeVisible();
-    await expect(page.locator('text=✓ Supabase auth integrated')).toBeVisible();
-    await expect(page.locator('text=✓ Stripe billing connected')).toBeVisible();
+    // Check for benefits listed (use first match for each)
+    await expect(page.locator('text=✓ Next.js 15 + App Router').first()).toBeVisible();
+    await expect(page.locator('text=✓ TypeScript configured').first()).toBeVisible();
+    await expect(page.locator('text=✓ Supabase auth integrated').first()).toBeVisible();
+    await expect(page.locator('text=✓ Stripe billing connected').first()).toBeVisible();
   });
 
   test('homepage displays provider integrations info', async ({ page }) => {
@@ -46,19 +46,19 @@ test.describe('Export Functionality', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for provider integrations feature
-    await expect(page.locator('text=Provider Integrations')).toBeVisible();
+    await expect(page.locator('text=Provider Integrations').first()).toBeVisible();
 
     // Verify integration examples are shown
-    await expect(page.locator('text=auth.supabase, billing.stripe')).toBeVisible();
+    await expect(page.locator('text=auth.supabase, billing.stripe').first()).toBeVisible();
   });
 
   test('homepage shows quick start commands', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // Check beginner mode commands (default)
-    await expect(page.locator('text=npm install -g @jrdaws/framework')).toBeVisible();
-    await expect(page.locator('text=npm run dev')).toBeVisible();
+    // Check beginner mode commands (default) - use first match
+    await expect(page.locator('text=npm install -g @jrdaws/framework').first()).toBeVisible();
+    await expect(page.locator('text=npm run dev').first()).toBeVisible();
   });
 
   test('homepage displays template examples', async ({ page }) => {
@@ -66,8 +66,8 @@ test.describe('Export Functionality', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for template registry feature
-    await expect(page.locator('text=Template Registry')).toBeVisible();
-    await expect(page.locator('text=framework templates list')).toBeVisible();
+    await expect(page.locator('text=Template Registry').first()).toBeVisible();
+    await expect(page.locator('text=framework templates list').first()).toBeVisible();
   });
 
   test('homepage shows CLI commands feature', async ({ page }) => {
@@ -88,8 +88,8 @@ test.describe('Export Functionality', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for trust features
-    await expect(page.locator('text=Trust Primitives')).toBeVisible();
-    await expect(page.locator('text=framework drift')).toBeVisible();
+    await expect(page.locator('text=Trust Primitives').first()).toBeVisible();
+    await expect(page.locator('text=framework drift').first()).toBeVisible();
   });
 
   test('code examples use consistent command format', async ({ page }) => {
@@ -101,7 +101,8 @@ test.describe('Export Functionality', () => {
     const count = await codeBlocks.count();
     expect(count).toBeGreaterThan(5);
 
-    // Check that multiple framework commands are present
-    await expect(page.locator('code:has-text("framework")')).toHaveCount({ timeout: 5000 });
+    // Check that multiple framework commands are present (at least 3)
+    const frameworkCommands = await page.locator('code:has-text("framework")').count();
+    expect(frameworkCommands).toBeGreaterThanOrEqual(3);
   });
 });

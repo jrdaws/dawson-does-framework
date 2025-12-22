@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 1fcdcc4 2025-12-22 chore(templates): standardize dependencies across saas and seo-directory
 - 2efa50e 2025-12-22 docs(agents): update Template Agent memory with dark mode session
 - dce6da7 2025-12-22 feat(website): improve configurator and add E2E tests
 - bb5dab3 2025-12-22 chore(templates): update seo-directory Next.js types
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - a6c8eb7 2025-12-21 docs(templates): add comprehensive template documentation
 - 5e8cd30 2025-12-21 chore: bump version to 0.3.1
 - b39f514 2025-12-21 chore: update framework map after test additions
-- d710faf 2025-12-21 docs(governance): add mandatory agent context verification system
 
 ## Agent Governance Structure
 
