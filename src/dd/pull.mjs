@@ -19,6 +19,8 @@ export function parsePullFlags(args) {
     open: false,
     force: false,
     dev: false,
+    noGit: false,
+    templateVersion: null,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -33,6 +35,11 @@ export function parsePullFlags(args) {
       flags.force = true;
     } else if (arg === '--dev') {
       flags.dev = true;
+    } else if (arg === '--no-git') {
+      flags.noGit = true;
+    } else if (arg === '--template-version' && i + 1 < args.length) {
+      flags.templateVersion = args[i + 1];
+      i++; // Skip next arg since we consumed it
     }
   }
 

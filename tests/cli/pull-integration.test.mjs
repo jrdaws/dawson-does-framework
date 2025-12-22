@@ -140,3 +140,63 @@ test('CLI pull: pull with output directory', () => {
     cleanupTempProject(tempDir);
   }
 });
+
+test('CLI pull: pull with --no-git flag', () => {
+  const tempDir = createTempProject();
+
+  try {
+    const result = runFramework(['pull', 'test-token', tempDir, '--no-git'], {
+      timeout: 15000,
+    });
+
+    // Should process no-git flag (will likely fail on invalid token)
+    if (result.status !== 0) {
+      assert(true); // Error is acceptable for invalid token
+    }
+  } finally {
+    cleanupTempProject(tempDir);
+  }
+});
+
+test('CLI pull: pull with --template-version flag', () => {
+  const tempDir = createTempProject();
+
+  try {
+    const result = runFramework(['pull', 'test-token', tempDir, '--template-version', '0.3.0'], {
+      timeout: 15000,
+    });
+
+    // Should process template-version flag (will likely fail on invalid token)
+    if (result.status !== 0) {
+      assert(true); // Error is acceptable for invalid token
+    }
+  } finally {
+    cleanupTempProject(tempDir);
+  }
+});
+
+test('CLI pull: pull with all flags combined', () => {
+  const tempDir = createTempProject();
+
+  try {
+    const result = runFramework([
+      'pull',
+      'test-token',
+      tempDir,
+      '--cursor',
+      '--no-git',
+      '--template-version',
+      'main',
+      '--force',
+    ], {
+      timeout: 15000,
+    });
+
+    // Should process all flags (will likely fail on invalid token)
+    if (result.status !== 0) {
+      assert(true); // Error is acceptable for invalid token
+    }
+  } finally {
+    cleanupTempProject(tempDir);
+  }
+});

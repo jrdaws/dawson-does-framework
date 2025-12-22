@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase, Project } from "@/lib/supabase";
 import { checkRateLimit } from "@/lib/rate-limiter";
+import { apiError, apiSuccess, ErrorCodes } from "@/lib/api-errors";
 
 // CORS headers for CLI access
 const corsHeaders = {
@@ -22,9 +23,13 @@ export async function GET(
     const { token } = await params;
 
     if (!token) {
-      return NextResponse.json(
-        { error: "Validation failed", message: "Token is required" },
-        { status: 400, headers: corsHeaders }
+      return apiError(
+        ErrorCodes.MISSING_FIELD,
+        "Token is required",
+        400,
+        { field: "token" },
+        "Provide a valid project token in the URL path",
+        corsHeaders
       );
     }
 
@@ -36,13 +41,13 @@ export async function GET(
     const rateLimitResult = await checkRateLimit(`fetch:${clientIp}`);
     
     if (!rateLimitResult.allowed) {
-      return NextResponse.json(
-        { 
-          error: "Rate limit exceeded", 
-          message: "Too many requests. Please try again later.",
-          resetAt: rateLimitResult.resetAt,
-        },
-        { status: 429, headers: corsHeaders }
+      return apiError(
+        ErrorCodes.RATE_LIMITED,
+        "Too many requests. Please try again later.",
+        429,
+        { resetAt: rateLimitResult.resetAt },
+        "Wait until the rate limit resets or provide your own ANTHROPIC_API_KEY",
+        corsHeaders
       );
     }
 
@@ -56,30 +61,41 @@ export async function GET(
     if (error) {
       // Check if it's a "not found" error
       if (error.code === "PGRST116") {
-        return NextResponse.json(
-          { error: "Not found", message: `Project with token "${token}" not found` },
-          { status: 404, headers: corsHeaders }
+        return apiError(
+          ErrorCodes.TOKEN_NOT_FOUND,
+          `Project with token "${token}" not found`,
+          404,
+          { token },
+          "Verify the token is correct or create a new project at the configurator",
+          corsHeaders
         );
       }
 
       console.error("[Project Fetch Error]", error);
-      return NextResponse.json(
-        { error: "Database error", message: "Failed to fetch project", details: error.message },
-        { status: 500, headers: corsHeaders }
+      return apiError(
+        ErrorCodes.DATABASE_ERROR,
+        "Failed to fetch project",
+        500,
+        { message: error.message },
+        "Try again or contact support if the issue persists",
+        corsHeaders
       );
     }
 
     // Check if project has expired
     const expiresAt = new Date(data.expires_at);
     if (expiresAt < new Date()) {
-      return NextResponse.json(
+      return apiError(
+        ErrorCodes.TOKEN_EXPIRED,
+        `Project "${token}" has expired. Projects expire after 30 days.`,
+        410,
         {
-          error: "Expired",
-          message: `Project "${token}" has expired. Projects expire after 30 days. Please create a new project configuration.`,
+          token,
           expiredAt: data.expires_at,
-          helpUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/configure`,
+          helpUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/configure`
         },
-        { status: 410, headers: corsHeaders }
+        "Create a new project configuration at the configurator",
+        corsHeaders
       );
     }
 
@@ -96,23 +112,36 @@ export async function GET(
 
     console.log(`[Project Retrieved] ${token} | ${data.template} | ${data.project_name}`);
 
-    return NextResponse.json(
+    const project = data as Project;
+    return apiSuccess(
       {
-        success: true,
-        project: data as Project,
+        token: project.token,
+        template: project.template,
+        projectName: project.project_name,
+        outputDir: project.output_dir,
+        integrations: project.integrations,
+        envKeys: project.env_keys || {},
+        vision: project.vision,
+        mission: project.mission,
+        successCriteria: project.success_criteria,
+        inspirations: project.inspirations,
+        description: project.description,
+        createdAt: project.created_at,
+        expiresAt: project.expires_at,
       },
-      { headers: corsHeaders }
+      200,
+      corsHeaders
     );
   } catch (error: unknown) {
     console.error("[Project Fetch Error]", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json(
-      {
-        error: "Internal server error",
-        message: "Failed to fetch project",
-        details: process.env.NODE_ENV === "development" ? errorMessage : undefined,
-      },
-      { status: 500, headers: corsHeaders }
+    return apiError(
+      ErrorCodes.INTERNAL_ERROR,
+      "Failed to fetch project",
+      500,
+      process.env.NODE_ENV === "development" ? { message: errorMessage } : undefined,
+      "Try again or contact support if the issue persists",
+      corsHeaders
     );
   }
 }

@@ -22,6 +22,7 @@ import { getCurrentVersion, checkForUpdates, getUpgradeCommand, getPackageName }
 import { createCheckpoint, restoreCheckpoint, listCheckpoints, cleanupCheckpoints, getAuditLog } from "../src/dd/agent-safety.mjs";
 import { validateIntegrations, applyIntegrations } from "../src/dd/integrations.mjs";
 import { parsePullFlags, getApiUrl, fetchProject, generateEnvExample, generateContext, openInCursor, formatIntegrations } from "../src/dd/pull.mjs";
+import { parseInitFlags, isInitialized, createDdStructure, detectProjectInfo, generateInitCursorRules, generateInitStartPrompt } from "../src/dd/init.mjs";
 import { generateCursorRules, generateStartPrompt } from "../src/dd/cursorrules.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -884,8 +885,9 @@ async function cmdHelp() {
   framework toggle <capId> on|off [projectDir]
   framework figma:parse
   framework cost:summary
-  framework doctor [projectDir]
-  framework drift [projectDir]
+  framework init [projectDir] [options]                  # Initialize existing project
+  framework doctor [projectDir]                          # Check project health
+  framework drift [projectDir]                           # Detect template drift
   framework plugin <add|remove|list|hooks|info>
   framework templates <list|search|info|categories|tags>
   framework agent-prompt --role <ROLE> --task "<TASK>"
@@ -921,7 +923,9 @@ Examples:
   framework capabilities .
   framework phrases .
   framework toggle figma.parse on .
-  framework doctor .
+  framework init --cursor                                                 # Initialize current directory
+  framework init ./my-existing-project                                    # Initialize specific directory
+  framework doctor .                                                      # Check project health
   framework agent-prompt --role CLI --task "Add deploy command"          # Generate agent bootstrap prompt
   framework agent-prompt --role Website --task "Update landing page"     # For Website agent
   framework deploy                                   # Deploy to preview (auto-detect provider)
@@ -929,9 +933,11 @@ Examples:
   framework deploy:auth save vercel YOUR_TOKEN       # Save deployment credentials
   framework export seo-directory ~/Documents/Cursor/my-app
   framework export saas ~/Documents/Cursor/my-saas --remote https://github.com/me/my-saas.git --push
-  framework pull fast-lion-1234                      # Pull project from web platform
-  framework pull fast-lion-1234 --cursor --open      # Pull with Cursor AI files and open
-  framework pull fast-lion-1234 ./my-app --dry-run   # Preview without making changes
+  framework pull fast-lion-1234                            # Pull project from web platform
+  framework pull fast-lion-1234 --cursor --open            # Pull with Cursor AI files and open
+  framework pull fast-lion-1234 ./my-app --dry-run         # Preview without making changes
+  framework pull fast-lion-1234 --template-version 0.3.0   # Use specific template version
+  framework pull fast-lion-1234 --no-git                   # Skip git operations
 `);
 }
 
@@ -1036,6 +1042,222 @@ async function cmdFigmaParse() {
 
 async function cmdCostSummary() {
   runOrExit("node", ["scripts/orchestrator/cost-summary.mjs"]);
+}
+
+/**
+ * Initialize an existing project with framework tooling
+ * Usage: framework init [project-dir] [options]
+ */
+async function cmdInit(projectDirArg, restArgs = []) {
+  // Handle help
+  if (projectDirArg === "--help" || projectDirArg === "-h" || projectDirArg === "help") {
+    console.log(`Usage: framework init [project-dir] [options]
+
+Initialize an existing project with dawson-does-framework tooling.
+
+Arguments:
+  project-dir       Directory to initialize (default: current directory)
+
+Options:
+  --name <name>     Project name (default: directory name)
+  --cursor          Generate .cursorrules and START_PROMPT.md
+  --force           Overwrite existing .dd directory
+  --no-git          Skip git init if not a git repo
+  --dry-run         Show what would happen without making changes
+
+Examples:
+  # Initialize current directory
+  framework init
+
+  # Initialize specific directory
+  framework init ./my-existing-project
+
+  # Initialize with Cursor AI files
+  framework init --cursor
+
+  # Initialize with custom name
+  framework init --name "My Awesome Project"
+
+Notes:
+  - Creates .dd/ directory with framework metadata
+  - Safe to run on existing projects - won't modify your code
+  - Use --cursor to add AI coding context files
+  - Run 'framework doctor' after init to verify setup
+`);
+    if (!projectDirArg) process.exit(1);
+    return;
+  }
+
+  // Parse directory and flags
+  let projectDir = projectDirArg || ".";
+  let flagArgs = restArgs;
+
+  // If first arg is a flag, use current directory
+  if (projectDirArg && projectDirArg.startsWith("--")) {
+    projectDir = ".";
+    flagArgs = [projectDirArg, ...restArgs];
+  }
+
+  const flags = parseInitFlags(flagArgs);
+  const absProjectDir = path.resolve(projectDir);
+
+  // Validate directory exists
+  if (!fs.existsSync(absProjectDir)) {
+    console.error(`❌ Directory does not exist: ${absProjectDir}`);
+    console.log("\nCreate the directory first:");
+    console.log(`  mkdir -p ${absProjectDir}`);
+    process.exit(1);
+  }
+
+  // Check if already initialized
+  if (isInitialized(absProjectDir) && !flags.force) {
+    console.error(`❌ Project already initialized: ${absProjectDir}/.dd`);
+    console.log("\nUse --force to reinitialize, or run:");
+    console.log(`  framework doctor ${absProjectDir}`);
+    process.exit(1);
+  }
+
+  // Detect project info
+  const projectInfo = detectProjectInfo(absProjectDir);
+  const projectName = flags.name || projectInfo?.name || path.basename(absProjectDir);
+
+  // Dry run mode
+  if (flags.dryRun) {
+    console.log("DRY RUN - The following operations would be performed:\n");
+    console.log(`Project: ${projectName}`);
+    console.log(`Directory: ${absProjectDir}`);
+    console.log("");
+
+    console.log(`[1/4] Create .dd directory structure`);
+    console.log(`      - .dd/manifest.json (framework metadata)`);
+    console.log(`      - .dd/config.json (configuration)`);
+    console.log(`      - .dd/.gitkeep`);
+
+    if (projectInfo) {
+      console.log(`\n[2/4] Detected project info`);
+      console.log(`      - Name: ${projectInfo.name}`);
+      if (projectInfo.hasNext) console.log(`      - Framework: Next.js`);
+      if (projectInfo.hasReact) console.log(`      - UI: React`);
+      if (projectInfo.hasTypeScript) console.log(`      - Language: TypeScript`);
+    } else {
+      console.log(`\n[2/4] No package.json found`);
+      console.log(`      - Will use custom project template`);
+    }
+
+    console.log(`\n[3/4] Generate Cursor files`);
+    if (flags.cursor) {
+      console.log(`      - .cursorrules (AI coding guidelines)`);
+      console.log(`      - START_PROMPT.md (onboarding guide)`);
+    } else {
+      console.log(`      (skipped - use --cursor to generate)`);
+    }
+
+    console.log(`\n[4/4] Git initialization`);
+    if (flags.git && !fs.existsSync(path.join(absProjectDir, ".git"))) {
+      console.log(`      - git init (create repository)`);
+    } else if (!flags.git) {
+      console.log(`      (skipped - --no-git flag set)`);
+    } else {
+      console.log(`      (skipped - already a git repository)`);
+    }
+
+    console.log("\n" + "─".repeat(60));
+    console.log("DRY RUN complete. No changes made.");
+    console.log("Run without --dry-run to execute these operations.");
+    return;
+  }
+
+  // ---- ACTUAL OPERATIONS (not dry run) ----
+
+  logger.log(`🎯 Initializing ${projectName}...\n`);
+
+  // Step 1: Create .dd structure
+  logger.startStep("dd-struct", "[1/4] Creating .dd directory structure...");
+
+  if (isInitialized(absProjectDir) && flags.force) {
+    logger.stepInfo("Overwriting existing .dd directory (--force)");
+  }
+
+  createDdStructure(absProjectDir, projectName);
+  logger.stepSuccess(".dd structure created");
+  logger.endStep("dd-struct", "     Directory ready");
+
+  // Step 2: Detect project info
+  logger.startStep("detect", "[2/4] Detecting project info...");
+
+  if (projectInfo) {
+    logger.stepSuccess(`Found ${projectInfo.hasNext ? "Next.js" : projectInfo.hasReact ? "React" : "Node.js"} project`);
+    if (projectInfo.hasTypeScript) {
+      logger.stepSuccess("TypeScript detected");
+    }
+  } else {
+    logger.stepSuccess("No package.json (custom project)");
+  }
+
+  logger.endStep("detect", "     Detection complete");
+
+  // Step 3: Generate Cursor files
+  if (flags.cursor) {
+    logger.startStep("cursor", "[3/4] Generating Cursor AI files...");
+
+    const cursorInfo = projectInfo || { name: projectName, description: "" };
+    const cursorRules = generateInitCursorRules(cursorInfo);
+    fs.writeFileSync(path.join(absProjectDir, ".cursorrules"), cursorRules, "utf8");
+    logger.stepSuccess(".cursorrules generated");
+
+    const startPrompt = generateInitStartPrompt(cursorInfo);
+    fs.writeFileSync(path.join(absProjectDir, "START_PROMPT.md"), startPrompt, "utf8");
+    logger.stepSuccess("START_PROMPT.md generated");
+
+    logger.endStep("cursor", "     Cursor files ready");
+  } else {
+    logger.log("[3/4] Cursor files skipped (use --cursor to generate)");
+  }
+
+  // Step 4: Git init if needed
+  const isGitRepo = fs.existsSync(path.join(absProjectDir, ".git"));
+
+  if (flags.git && !isGitRepo && isGitAvailable()) {
+    logger.startStep("git", "[4/4] Initializing git repository...");
+
+    try {
+      runIn(absProjectDir, "git", ["init", "-q"]);
+      runIn(absProjectDir, "git", ["add", ".dd/"]);
+      runIn(absProjectDir, "git", ["commit", "-q", "-m", "chore: initialize dawson-does-framework"]);
+      logger.stepSuccess("Git initialized with .dd/ committed");
+      logger.endStep("git", "     Repository ready");
+    } catch (err) {
+      logger.stepInfo("Git init failed (non-fatal)");
+      logger.endStep("git", "     Skipped");
+    }
+  } else if (!flags.git) {
+    logger.log("[4/4] Git init skipped (--no-git flag)");
+  } else {
+    logger.log("[4/4] Already a git repository");
+  }
+
+  logger.log(`\n✅ Project initialized successfully!\n`);
+  logger.log(`Directory: ${absProjectDir}`);
+  logger.log(`Name: ${projectName}`);
+  logger.log("");
+
+  // Next steps
+  console.log("📋 Next steps:");
+  console.log("");
+  console.log("  1. Run health check:");
+  console.log(`     framework doctor ${projectDir !== "." ? projectDir : ""}`);
+  console.log("");
+
+  if (!flags.cursor) {
+    console.log("  2. Generate AI context files:");
+    console.log(`     cd ${absProjectDir}`);
+    console.log("     framework init --cursor --force");
+    console.log("");
+  }
+
+  console.log("  3. Deploy your project:");
+  console.log("     framework deploy");
+  console.log("");
 }
 
 async function cmdDoctor(projectDirArg) {
@@ -1414,17 +1636,38 @@ Arguments:
   output-dir    Output directory (default: ./<project-name>)
 
 Options:
-  --cursor      Generate .cursorrules and START_PROMPT.md for Cursor AI
-  --open        Open the project in Cursor after scaffolding
-  --dry-run     Show what would happen without making changes
-  --force       Overwrite existing directory
-  --dev         Use localhost:3002 instead of production API
+  --cursor            Generate .cursorrules and START_PROMPT.md for Cursor AI
+  --open              Open the project in Cursor after scaffolding
+  --dry-run           Show what would happen without making changes
+  --force             Overwrite existing directory if it exists
+  --no-git            Skip git commit amendments (git init still runs in export)
+  --template-version  Use specific template version (e.g., 0.3.0, main, dev)
+  --dev               Use localhost:3002 instead of production API
 
 Examples:
+  # Basic pull
   framework pull swift-eagle-1234
+
+  # Pull to specific directory
   framework pull swift-eagle-1234 ./my-project
+
+  # Pull with Cursor AI setup and auto-open
   framework pull swift-eagle-1234 --cursor --open
+
+  # Preview changes without executing
   framework pull swift-eagle-1234 --dry-run
+
+  # Use specific template version
+  framework pull swift-eagle-1234 --template-version 0.3.0
+
+  # Skip git operations (useful for testing)
+  framework pull swift-eagle-1234 --no-git
+
+Notes:
+  - Project configs are fetched from https://dawson.dev/api/projects/<token>
+  - The --cursor flag generates AI-optimized context files for Claude
+  - Use --template-version to pull a specific version of the template
+  - Git operations can be skipped with --no-git for manual git management
 `);
     if (!token) process.exit(1);
     return;
@@ -1538,9 +1781,17 @@ Examples:
     }
 
     console.log(`\n[6/6] Initialize git repository`);
-    console.log(`      git init -b main`);
-    console.log(`      git add -A`);
-    console.log(`      git commit -m "Initial commit (pulled via framework)"`);
+    if (!flags.noGit) {
+      console.log(`      git init -b main`);
+      console.log(`      git add -A`);
+      console.log(`      git commit -m "Initial commit (pulled via framework)"`);
+    } else {
+      console.log(`      (skipped - --no-git flag set)`);
+    }
+
+    if (flags.templateVersion) {
+      console.log(`\n[Info] Template version: ${flags.templateVersion}`);
+    }
 
     if (flags.open) {
       console.log(`\n[Post] Open in Cursor`);
@@ -1572,6 +1823,11 @@ Examples:
   // Add project name
   if (project.project_name) {
     exportFlags.push("--name", project.project_name);
+  }
+
+  // Add template version if specified
+  if (flags.templateVersion) {
+    exportFlags.push("--framework-version", flags.templateVersion);
   }
 
   // Call the export command with the project configuration
@@ -1683,13 +1939,17 @@ Examples:
     "utf8"
   );
 
-  // Amend the git commit to include our new files
-  try {
-    runIn(absTargetDir, "git", ["add", "-A"]);
-    runIn(absTargetDir, "git", ["commit", "--amend", "-q", "-m", `Initial commit (pulled via framework: ${token})`]);
-  } catch {
-    // Non-fatal if git amend fails
-    logger.stepInfo("Note: Could not amend git commit with context files");
+  // Amend the git commit to include our new files (unless --no-git)
+  if (!flags.noGit) {
+    try {
+      runIn(absTargetDir, "git", ["add", "-A"]);
+      runIn(absTargetDir, "git", ["commit", "--amend", "-q", "-m", `Initial commit (pulled via framework: ${token})`]);
+    } catch {
+      // Non-fatal if git amend fails
+      logger.stepInfo("Note: Could not amend git commit with context files");
+    }
+  } else {
+    logger.stepInfo("Git operations skipped (--no-git flag)");
   }
 
   logger.log(`\n✅ Project pulled successfully from platform!\n`);
@@ -1748,6 +2008,11 @@ if (isEntrypoint) {
   if (a === "toggle") { await cmdToggle(b, c, d); process.exit(0); }
   if (a === "figma:parse") { await cmdFigmaParse(); process.exit(0); }
   if (a === "cost:summary") { await cmdCostSummary(); process.exit(0); }
+  if (a === "init") {
+    const initArgs = process.argv.slice(3); // Everything after "framework init"
+    await cmdInit(b, initArgs);
+    process.exit(0);
+  }
   if (a === "doctor") { await cmdDoctor(b); process.exit(0); }
   if (a === "drift") { await cmdDrift(b); process.exit(0); }
   if (a === "version") { await cmdVersion(); process.exit(0); }

@@ -19,6 +19,8 @@ test('parsePullFlags: empty args returns defaults', () => {
     open: false,
     force: false,
     dev: false,
+    noGit: false,
+    templateVersion: null,
   });
 });
 
@@ -47,11 +49,50 @@ test('parsePullFlags: --dev flag', () => {
   assert.equal(flags.dev, true);
 });
 
+test('parsePullFlags: --no-git flag', () => {
+  const flags = parsePullFlags(['--no-git']);
+  assert.equal(flags.noGit, true);
+});
+
+test('parsePullFlags: --template-version flag', () => {
+  const flags = parsePullFlags(['--template-version', '0.3.0']);
+  assert.equal(flags.templateVersion, '0.3.0');
+});
+
+test('parsePullFlags: --template-version with different values', () => {
+  assert.equal(parsePullFlags(['--template-version', 'main']).templateVersion, 'main');
+  assert.equal(parsePullFlags(['--template-version', 'dev']).templateVersion, 'dev');
+  assert.equal(parsePullFlags(['--template-version', 'v1.2.3']).templateVersion, 'v1.2.3');
+});
+
+test('parsePullFlags: --template-version without value returns null', () => {
+  const flags = parsePullFlags(['--template-version']);
+  assert.equal(flags.templateVersion, null);
+});
+
 test('parsePullFlags: multiple flags', () => {
   const flags = parsePullFlags(['--cursor', '--open', '--force']);
   assert.equal(flags.cursor, true);
   assert.equal(flags.open, true);
   assert.equal(flags.force, true);
+});
+
+test('parsePullFlags: all flags combined', () => {
+  const flags = parsePullFlags([
+    '--cursor',
+    '--open',
+    '--force',
+    '--no-git',
+    '--template-version',
+    '0.3.0',
+    '--dry-run',
+  ]);
+  assert.equal(flags.cursor, true);
+  assert.equal(flags.open, true);
+  assert.equal(flags.force, true);
+  assert.equal(flags.noGit, true);
+  assert.equal(flags.templateVersion, '0.3.0');
+  assert.equal(flags.dryRun, true);
 });
 
 test('getApiUrl: returns production URL by default', () => {

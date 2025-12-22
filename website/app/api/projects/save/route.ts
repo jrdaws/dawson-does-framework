@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase, generateToken, CreateProjectInput } from "@/lib/supabase";
 import { checkRateLimit } from "@/lib/rate-limiter";
+import { apiError, apiSuccess, ErrorCodes } from "@/lib/api-errors";
 
 // CORS headers for CLI access
 const corsHeaders = {
@@ -24,13 +25,13 @@ export async function POST(request: NextRequest) {
     const rateLimitResult = await checkRateLimit(`save:${clientIp}`);
     
     if (!rateLimitResult.allowed) {
-      return NextResponse.json(
-        { 
-          error: "Rate limit exceeded", 
-          message: "Too many requests. Please try again later.",
-          resetAt: rateLimitResult.resetAt,
-        },
-        { status: 429, headers: corsHeaders }
+      return apiError(
+        ErrorCodes.RATE_LIMITED,
+        "Too many requests. Please try again later.",
+        429,
+        { resetAt: rateLimitResult.resetAt },
+        "Wait until the rate limit resets or provide your own ANTHROPIC_API_KEY",
+        corsHeaders
       );
     }
 
@@ -38,16 +39,24 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!body.template) {
-      return NextResponse.json(
-        { error: "Validation failed", message: "Template is required" },
-        { status: 400, headers: corsHeaders }
+      return apiError(
+        ErrorCodes.MISSING_FIELD,
+        "Template is required",
+        400,
+        { field: "template" },
+        "Provide a valid template in the request body (e.g., 'saas', 'seo-directory')",
+        corsHeaders
       );
     }
 
     if (!body.project_name) {
-      return NextResponse.json(
-        { error: "Validation failed", message: "Project name is required" },
-        { status: 400, headers: corsHeaders }
+      return apiError(
+        ErrorCodes.MISSING_FIELD,
+        "Project name is required",
+        400,
+        { field: "project_name" },
+        "Provide a project_name in the request body",
+        corsHeaders
       );
     }
 
@@ -71,9 +80,13 @@ export async function POST(request: NextRequest) {
     }
 
     if (attempts >= maxAttempts) {
-      return NextResponse.json(
-        { error: "Token generation failed", message: "Could not generate unique token" },
-        { status: 500, headers: corsHeaders }
+      return apiError(
+        ErrorCodes.TOKEN_GENERATION_FAILED,
+        "Could not generate unique token",
+        500,
+        { attempts: maxAttempts },
+        "Try again in a few moments",
+        corsHeaders
       );
     }
 
@@ -105,35 +118,39 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error("[Project Save Error]", error);
-      return NextResponse.json(
-        { error: "Database error", message: "Failed to save project", details: error.message },
-        { status: 500, headers: corsHeaders }
+      return apiError(
+        ErrorCodes.DATABASE_ERROR,
+        "Failed to save project",
+        500,
+        { message: error.message },
+        "Try again or contact support if the issue persists",
+        corsHeaders
       );
     }
 
     console.log(`[Project Saved] ${token} | ${body.template} | ${body.project_name}`);
 
-    return NextResponse.json(
+    return apiSuccess(
       {
-        success: true,
         token,
-        project: data,
+        expiresAt: expiresAt.toISOString(),
         pullCommand: `npx @jrdaws/framework pull ${token}`,
         url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/configure?project=${token}`,
-        expiresAt: expiresAt.toISOString(),
+        project: data,
       },
-      { headers: corsHeaders }
+      201,
+      corsHeaders
     );
   } catch (error: unknown) {
     console.error("[Project Save Error]", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json(
-      {
-        error: "Internal server error",
-        message: "Failed to save project",
-        details: process.env.NODE_ENV === "development" ? errorMessage : undefined,
-      },
-      { status: 500, headers: corsHeaders }
+    return apiError(
+      ErrorCodes.INTERNAL_ERROR,
+      "Failed to save project",
+      500,
+      process.env.NODE_ENV === "development" ? { message: errorMessage } : undefined,
+      "Try again or contact support if the issue persists",
+      corsHeaders
     );
   }
 }

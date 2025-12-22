@@ -9,6 +9,20 @@ Transform ideas into deployed applications in minutes, not days. The Dawson Does
 
 ---
 
+## 🎯 Core Philosophy: Export-First, Zero Lock-In
+
+**You own your code.** Every project exported from the framework is a complete, standalone application with no dependencies on our platform. Use our tools to accelerate development, but keep 100% ownership and control.
+
+- **Export-First**: All features designed for local ownership
+- **Zero Lock-In**: Platform is optional after export - delete it if you want
+- **Cursor-Native**: Optimized for AI-assisted development with Claude Code and Cursor
+- **Transparent**: No magic black boxes - you see and control everything
+- **Production-Ready**: Real templates with auth, billing, databases - not toy examples
+
+[Read our vision →](docs/VISION_MISSION.md)
+
+---
+
 ## Quick Start
 
 ```bash
@@ -71,8 +85,8 @@ framework export saas ./my-app \
   --email resend \
   --ai anthropic
 
-# Or pull from web configurator
-framework pull <token> --cursor
+# Or pull from web configurator (https://dawson.dev)
+framework pull <token> --cursor --open
 ```
 
 [Integration guides →](docs/integrations/README.md)
@@ -139,6 +153,58 @@ framework drift  # See changes from template
 
 ---
 
+## Architecture
+
+The Dawson Does Framework is a **hybrid system** combining web-based configuration with local development:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Web Configurator                         │
+│              (https://dawson.dev)                           │
+│  - Visual project builder                                    │
+│  - AI code generation                                        │
+│  - Real-time preview                                         │
+│  - Configuration storage                                     │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 │ framework pull <token>
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   CLI Tool                                   │
+│              (npm package)                                   │
+│  - Template export                                           │
+│  - Integration merging                                       │
+│  - Deployment automation                                     │
+│  - Plugin system                                             │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+                 │ Generates
+                 ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Your Local Project                              │
+│           (100% Owned by You)                                │
+│  - Full Next.js application                                  │
+│  - All integrations configured                               │
+│  - Git repository initialized                                │
+│  - Ready to deploy                                           │
+│  - NO platform dependencies                                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Components
+
+| Component | Purpose | Location |
+|-----------|---------|----------|
+| **CLI** | Command-line tool for export, deploy, and management | `bin/framework.js`, `src/` |
+| **Website** | Visual configurator and AI generation | `website/` |
+| **Templates** | Production-ready starter projects | `templates/` |
+| **Integrations** | Pre-configured provider integrations | `templates/*/integrations/` |
+| **Packages** | Shared libraries and utilities | `packages/` |
+
+[Full architecture map →](FRAMEWORK_MAP.md)
+
+---
+
 ## Installation
 
 ### Global Install (Recommended)
@@ -169,6 +235,13 @@ npx @jrdaws/framework export saas ./my-app
 - [Your First Project](docs/getting-started/first-project.md)
 - [Project Structure](docs/getting-started/project-structure.md)
 
+### Standards & Best Practices
+- [Coding Standards](docs/standards/CODING_STANDARDS.md) - Style guide for contributors
+- [API Contracts](docs/standards/API_CONTRACTS.md) - API response formats and contracts
+- [Testing Standards](docs/standards/TESTING_STANDARDS.md) - Test patterns and coverage
+- [File Structure](docs/standards/FILE_STRUCTURE.md) - Project organization
+- [Glossary](docs/GLOSSARY.md) - Project terminology
+
 ### CLI Reference
 - [Commands Overview](docs/cli/README.md)
 - [`framework export`](docs/cli/export.md) - Create projects from templates
@@ -186,9 +259,9 @@ npx @jrdaws/framework export saas ./my-app
 
 ### Advanced
 - [Core Concepts](docs/concepts/README.md)
-- [Architecture](docs/architecture/README.md)
+- [Architecture](FRAMEWORK_MAP.md)
+- [Vision & Mission](docs/VISION_MISSION.md)
 - [AI Governance](docs/AI_GOVERNANCE.md)
-- [Framework Map](FRAMEWORK_MAP.md)
 
 ---
 
@@ -226,6 +299,18 @@ npm run dev
 ```bash
 # Configure at https://dawson.dev, get token
 framework pull abc123xyz --cursor --open
+
+# Pull to specific directory
+framework pull abc123xyz ./my-project
+
+# Preview changes without executing
+framework pull abc123xyz --dry-run
+
+# Use specific template version
+framework pull abc123xyz --template-version 0.3.0
+
+# Skip git operations for manual control
+framework pull abc123xyz --no-git
 ```
 
 ### Deploy to Production
@@ -255,30 +340,29 @@ Battle-tested templates with best practices baked in: TypeScript, ESLint, proper
 
 Mix and match integrations. Swap Supabase for Clerk. Use Stripe or Paddle. OpenAI or Anthropic. Your stack, your choice.
 
-### 4. AI-First
+### 4. True Ownership
+
+**This is the big one.** Every exported project is 100% yours. No vendor lock-in. No platform dependencies. Delete our CLI after export if you want - your app will still work perfectly.
+
+### 5. AI-First
 
 Built for AI-assisted development. Cursor integration, agent safety, drift detection, and recovery guidance.
 
-### 5. Production-Ready
+### 6. Production-Ready
 
 Not toy examples. Real templates with auth, billing, databases, email, AI - everything you need to launch.
 
 ---
 
-## Ecosystem
-
-- **CLI** - Command-line tool (this repository)
-- **Web Configurator** - Visual project builder at [dawson.dev](https://dawson.dev)
-- **Template Registry** - Discover and publish templates
-- **Plugin Marketplace** - Coming soon
-
----
-
 ## Contributing
 
-We welcome contributions! See [CONTRIBUTING.md](docs/architecture/contributing.md) for guidelines.
+We welcome contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+- Submitting pull requests
+- Coding standards and style guide
+- Testing requirements
+- Documentation standards
 
-### Development
+### Development Setup
 
 ```bash
 # Clone repository
@@ -299,6 +383,30 @@ framework version
 ### Creating Templates
 
 Templates are stored in `/templates`. See [Template Registry](docs/TEMPLATE_REGISTRY.md) for the creation guide.
+
+### Running Tests
+
+```bash
+# All tests
+npm test
+
+# Specific test file
+npm test -- tests/cli/version.test.mjs
+
+# With coverage
+npm run test:coverage
+```
+
+See [Testing Standards](docs/standards/TESTING_STANDARDS.md) for testing patterns.
+
+---
+
+## Ecosystem
+
+- **CLI** - Command-line tool (this repository)
+- **Web Configurator** - Visual project builder at [dawson.dev](https://dawson.dev)
+- **Template Registry** - Discover and publish templates
+- **Plugin Marketplace** - Coming soon
 
 ---
 
