@@ -63,14 +63,17 @@ test("billing.stripe: health shows configured when API key present", async () =>
   const provider = (await import("../../src/platform/providers/impl/billing.stripe.ts")).default
   const result = await provider.health()
 
-  assert.equal(result.details.configured, true)
+  // Stripe health check makes actual API call which will fail with fake key
+  // but configured should still be true since API key is set
+  assert.equal(result.ok, false) // API call fails with fake key
+  assert.equal(result.details.configured, true) // But key is configured
 })
 
 test("billing.stripe: verifyWebhook returns false when signature header missing", async () => {
   const provider = (await import("../../src/platform/providers/impl/billing.stripe.ts")).default
   const result = await provider.verifyWebhook({
-    payload: JSON.stringify({ type: "payment_intent.succeeded" }),
-    headers: {},
+    rawBody: JSON.stringify({ type: "payment_intent.succeeded" }),
+    headers: new Headers(),
   })
 
   assert.equal(result, false)
@@ -78,11 +81,12 @@ test("billing.stripe: verifyWebhook returns false when signature header missing"
 
 test("billing.stripe: verifyWebhook returns false for invalid signature", async () => {
   const provider = (await import("../../src/platform/providers/impl/billing.stripe.ts")).default
+  const headers = new Headers()
+  headers.set("stripe-signature", "t=1234567890,v1=invalid_signature_here")
+
   const result = await provider.verifyWebhook({
-    payload: JSON.stringify({ type: "payment_intent.succeeded" }),
-    headers: {
-      "stripe-signature": "t=1234567890,v1=invalid_signature_here",
-    },
+    rawBody: JSON.stringify({ type: "payment_intent.succeeded" }),
+    headers: headers,
   })
 
   assert.equal(result, false)
@@ -93,14 +97,15 @@ test("billing.stripe: parseWebhookEvent parses valid Stripe event", async () => 
   const payload = JSON.stringify({
     id: "evt_test_123",
     type: "payment_intent.succeeded",
-    data: { object: {} },
+    data: { object: { amount: 1000 } },
   })
 
-  const result = await provider.parseWebhookEvent({ payload })
+  const result = await provider.parseWebhookEvent(payload)
 
   assert.equal(typeof result, "object")
   assert.equal(result.type, "payment_intent.succeeded")
   assert.equal(result.id, "evt_test_123")
+  assert.deepEqual(result.data, { amount: 1000 })
 })
 
 test("billing.stripe: parseWebhookEvent throws error for malformed JSON", async () => {
@@ -108,7 +113,7 @@ test("billing.stripe: parseWebhookEvent throws error for malformed JSON", async 
 
   await assert.rejects(
     async () => {
-      await provider.parseWebhookEvent({ payload: "not valid json {" })
+      await provider.parseWebhookEvent("not valid json {")
     },
     {
       name: "Error",
