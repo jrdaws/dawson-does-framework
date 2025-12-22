@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 0339f33 2025-12-22 feat(governance): integrate validation into review workflow
 - 6bee923 2025-12-22 docs: review and update cherry-picked documentation
 - 0e2b3ae 2025-12-22 docs: cherry-pick documentation and tests from stale branches
 - bdd877d 2025-12-22 feat(governance): add session management, validation, and token authentication
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 9daf6a0 2025-12-22 docs(testing): update memory with test fixes session
 - daef293 2025-12-22 chore: update agent memory, API docs, templates, and E2E tests
 - 47889c7 2025-12-22 docs(governance): create Documentation Agent memory file
-- 921f61c 2025-12-22 docs(governance): add comprehensive governance and standards documentation
 
 ## Agent Governance Structure
 

@@ -176,6 +176,56 @@ fi
 echo ""
 
 # ============================================================================
+# Check 7: Agent Handoff Format (if session active)
+# ============================================================================
+echo "📋 Check 7: Agent Handoff Format"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+if [ -f ".current-session" ]; then
+    SESSION=$(cat .current-session)
+    ROLE=$(echo "$SESSION" | cut -d'-' -f1)
+    ROLE_UPPER=$(echo "$ROLE" | tr '[:lower:]' '[:upper:]')
+    MEMORY_FILE="prompts/agents/memory/${ROLE_UPPER}_MEMORY.md"
+
+    if [ -f "$MEMORY_FILE" ]; then
+        # Check if recent session entry has proper handoff format
+        RECENT_SESSION=$(tail -100 "$MEMORY_FILE")
+
+        HAS_WORK_COMPLETED=false
+        HAS_NEXT_PRIORITIES=false
+        HAS_HANDOFF_NOTES=false
+
+        if echo "$RECENT_SESSION" | grep -q "Work Completed\|**Work Completed**"; then
+            HAS_WORK_COMPLETED=true
+        fi
+
+        if echo "$RECENT_SESSION" | grep -q "Next Priorities\|**Next Priorities**"; then
+            HAS_NEXT_PRIORITIES=true
+        fi
+
+        if echo "$RECENT_SESSION" | grep -q "Handoff Notes\|**Handoff Notes**"; then
+            HAS_HANDOFF_NOTES=true
+        fi
+
+        if [ "$HAS_WORK_COMPLETED" = true ] && [ "$HAS_NEXT_PRIORITIES" = true ] && [ "$HAS_HANDOFF_NOTES" = true ]; then
+            echo "   ✅ Memory file has proper handoff format"
+        else
+            echo "   ⚠️  Memory file missing handoff sections:"
+            [ "$HAS_WORK_COMPLETED" = false ] && echo "      - Work Completed"
+            [ "$HAS_NEXT_PRIORITIES" = false ] && echo "      - Next Priorities"
+            [ "$HAS_HANDOFF_NOTES" = false ] && echo "      - Handoff Notes"
+            echo "      (Expected in end-of-session updates)"
+            WARNINGS=$((WARNINGS + 1))
+        fi
+    else
+        echo "   ℹ️  Memory file not found: $MEMORY_FILE"
+    fi
+else
+    echo "   ℹ️  No active session (skipping handoff format check)"
+fi
+echo ""
+
+# ============================================================================
 # Summary
 # ============================================================================
 echo "╔══════════════════════════════════════════════════════════════╗"
