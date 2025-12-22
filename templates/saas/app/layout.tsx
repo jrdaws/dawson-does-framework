@@ -1,9 +1,11 @@
+import "./globals.css";
+
 export const metadata = { title: "SaaS Demo" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body style={{ fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif", margin: 0 }}>
+      <body className="font-sans m-0 bg-white dark:bg-gray-900 dark:text-gray-100">
         {children}
       </body>
     </html>
