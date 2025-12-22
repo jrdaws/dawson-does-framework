@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- dfed0f2 2025-12-22 docs(standards): add comprehensive file structure guide
 - 86d8845 2025-12-21 feat(editor): restore visual editor with full functionality
 - 1fe0c4e 2025-12-21 feat(deploy): add help flag handling and comprehensive help output
 - 8e652f9 2025-12-21 test(coverage): add 59 tests to push coverage to 69.99%
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 6b14c7b 2025-12-21 feat(templates): add blog, dashboard, and landing-page templates
 - 7eb42c4 2025-12-21 feat(cli): implement framework pull command with full web platform integration
 - a2d922f 2025-12-21 feat(website): integrate Supabase client library
-- 3abd367 2025-12-20 feat: implement framework pull command with web platform integration
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
