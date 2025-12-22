@@ -94,11 +94,16 @@ dawson-does-framework/
 
 | If Working On... | Also Read |
 |------------------|-----------|
+| Understanding the "why" | `docs/VISION_MISSION.md` - Goals, success metrics |
 | Unfamiliar terms | `docs/GLOSSARY.md` - Project terminology |
 | CLI/Core code | `docs/standards/CODING_STANDARDS.md`, `docs/standards/FILE_STRUCTURE.md` |
 | Website code | `docs/standards/CODING_STANDARDS.md`, `docs/standards/FILE_STRUCTURE.md` |
+| API work | `docs/standards/API_CONTRACTS.md` - Response formats |
+| Writing tests | `docs/standards/TESTING_STANDARDS.md` - Test patterns |
 | Templates | `docs/standards/CODING_STANDARDS.md` + template.json schema |
 | Any code | `FRAMEWORK_MAP.md` for architecture context |
+| Agent coordination | `prompts/agents/AGENT_ORG_STRUCTURE.md` - Who owns what |
+| Memory updates | `prompts/agents/MEMORY_PROTOCOL.md` - When/what to update |
 
 ## Before You Start
 1. Run `git status` to see current state
@@ -180,9 +185,14 @@ cat prompts/agents/memory/[ROLE]_MEMORY.md
 
 | Document | Purpose |
 |----------|---------|
+| `docs/VISION_MISSION.md` | Project goals and success metrics |
 | `prompts/agents/AGENT_POLICIES.md` | Corporate standards (v1.0) |
+| `prompts/agents/AGENT_ORG_STRUCTURE.md` | Agent hierarchy and coordination |
+| `prompts/agents/MEMORY_PROTOCOL.md` | When and what to update in memory |
 | `prompts/agents/roles/ROLE_PROTOCOL.md` | Role lifecycle |
 | `prompts/agents/UNIVERSAL_BOOTSTRAP.md` | For non-Claude/Cursor platforms |
+| `docs/standards/API_CONTRACTS.md` | API response formats |
+| `docs/standards/TESTING_STANDARDS.md` | Test patterns and coverage |
 
 ---
 *Governance Version 1.0 | This context applies to all agents.*
