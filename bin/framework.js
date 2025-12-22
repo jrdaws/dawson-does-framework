@@ -1114,7 +1114,7 @@ Usage: framework agent-prompt --role <ROLE> --task "<TASK>"
 Generates a ready-to-use bootstrap prompt for an AI agent with current memory state.
 
 Arguments:
-  --role <ROLE>    Agent role (CLI, Website, Template, Integration, Platform, Docs, Testing)
+  --role <ROLE>    Agent role (CLI, Website, Template, Integration, Platform, Documentation, Testing)
   --task <TASK>    Task description for the agent
 
 Example:
@@ -1126,7 +1126,7 @@ Example:
 
   // Normalize role name
   const roleUpper = role.toUpperCase()
-  const validRoles = ["CLI", "WEBSITE", "TEMPLATE", "INTEGRATION", "PLATFORM", "DOCS", "TESTING"]
+  const validRoles = ["CLI", "WEBSITE", "TEMPLATE", "INTEGRATION", "PLATFORM", "DOCUMENTATION", "TESTING"]
 
   if (!validRoles.includes(roleUpper)) {
     console.error(`Error: Invalid role "${role}"`)
@@ -1236,8 +1236,8 @@ function extractSection(content, heading) {
       continue
     }
 
-    // Stop if we hit another heading (starts with ## or #)
-    if (capturing && line.match(/^#{1,2} /)) {
+    // Stop if we hit another heading (any level)
+    if (capturing && line.match(/^#+ /)) {
       break
     }
 

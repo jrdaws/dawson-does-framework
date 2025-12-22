@@ -27,6 +27,7 @@
 | 2024-12-22 | 30min | CLI-001 | Verified --cursor flag implementation complete, added comprehensive tests |
 | 2024-12-22 | 45min | CLI-002 | Added agent-prompt command with --role and --task flags for generating bootstrap prompts |
 | 2024-12-22 | 20min | CLI-003 | Discovered deploy command already complete, added to help text and updated memory |
+| 2024-12-22 | 25min | CLI-004 | Added comprehensive tests for deploy command (24 tests) covering cmdDeploy and cmdDeployAuth |
 
 ---
 
@@ -40,6 +41,7 @@
 | Output agent-prompt to stdout | Allows easy copy-paste into AI platforms, avoids file management | 2024-12-22 |
 | Extract only key sections from memory | Full memory too verbose, focus on recent sessions, queue, issues | 2024-12-22 |
 | Deploy command was already complete | Previous agents implemented full deploy system, just needed help text update | 2024-12-22 |
+| Test deploy without real API calls | Deploy tests use CLI output validation, no mocking needed for command-level tests | 2024-12-22 |
 
 ---
 

@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 3d553d9 2025-12-22 docs(cli): add deploy commands to help text and update CLI memory
 - 8dfcfdc 2025-12-22 feat(cli): add agent-prompt command for generating AI agent bootstrap prompts
 - 9e60610 2025-12-22 feat(governance): add vision, org structure, memory triggers, and standards
 - c656e99 2025-12-22 feat(governance): add corporate policies, versioning, and agent handoff system
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 24b5614 2025-12-21 docs(governance): update AGENT_CONTEXT.md with new doc references
 - 348fe28 2025-12-21 fix: temporarily disable editor features for production deployment
 - 9fca0a7 2025-12-21 docs(governance): add coding standards and governance roadmap
-- a6c8eb7 2025-12-21 docs(templates): add comprehensive template documentation
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
