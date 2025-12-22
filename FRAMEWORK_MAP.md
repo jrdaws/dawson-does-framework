@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: b41ff877de
 
 ## Recent changes
+- 9f54054 2025-12-22 test(cli): add comprehensive tests for init command
 - ec43c6a 2025-12-22 docs(cli): update memory with deploy test coverage
 - 6f26286 2025-12-22 fix(governance): address critical bootstrap issues and recreate DOCS_MEMORY
 - 3d553d9 2025-12-22 docs(cli): add deploy commands to help text and update CLI memory
@@ -28,7 +29,6 @@ Hash: b41ff877de
 - 86d8845 2025-12-21 feat(editor): restore visual editor with full functionality
 - 1fe0c4e 2025-12-21 feat(deploy): add help flag handling and comprehensive help output
 - 8e652f9 2025-12-21 test(coverage): add 59 tests to push coverage to 69.99%
-- 24b5614 2025-12-21 docs(governance): update AGENT_CONTEXT.md with new doc references
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
