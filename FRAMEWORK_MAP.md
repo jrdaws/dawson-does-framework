@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- ecbe086 2025-12-22 docs(patterns): add comprehensive component patterns guide
 - 67220e8 2025-12-22 docs: add comprehensive standards documentation
 - 8acf17e 2025-12-22 fix(website): remove editor components for clean deployment
 - 3d4d4d8 2025-12-22 chore: update framework map after adding release notes
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - a94bd34 2025-12-21 fix(tests): resolve remaining test failures
 - 44ea472 2025-12-21 feat(testing): add test documentation and fix test imports
 - ba338d2 2025-12-21 fix(tests): add template manifests and fix test utility imports
-- 44a3ea1 2025-12-21 chore: update dependencies and configuration for testing
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
