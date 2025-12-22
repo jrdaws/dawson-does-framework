@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 6e425a8 2025-12-22 docs(agents): create agent governance system v1.0
 - a6c8eb7 2025-12-21 docs(templates): add comprehensive template documentation
 - 5e8cd30 2025-12-21 chore: bump version to 0.3.1
 - b39f514 2025-12-21 chore: update framework map after test additions
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 196b128 2025-12-20 feat(configurator): add client-side ZIP download
 - 4678616 2025-12-20 fix(configurator): update AI model and improve env setup UX
 - 3ce10db 2025-12-20 fix(website): resolve hydration mismatch and URL parsing errors
-- e890aff 2025-12-20 docs(configurator): add comprehensive shipping status documentation
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
