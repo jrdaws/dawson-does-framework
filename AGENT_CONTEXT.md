@@ -1,6 +1,6 @@
 # Agent Context - Read This First
 
-> This file provides essential context for AI agents working on the dawson-does-framework.
+> **Governance Version: 1.0** | Essential context for all AI agents.
 > **Every agent must read this file before starting work.**
 
 ---
@@ -118,52 +118,72 @@ dawson-does-framework/
 
 **Every agent MUST follow these rules in their FINAL response:**
 
-### Rule 1: Summary of Achievements
-End with a clear summary of what was accomplished:
+### Rule 1: Update Memory File
+Before your final response, update your role's memory file:
+- File: `prompts/agents/memory/[ROLE]_MEMORY.md`
+- Add: Session entry, decisions, task updates, insights
+
+### Rule 2: Summary of Achievements
 ```markdown
-## ✅ Summary of Achievements
-- [What was created/modified]
+## 📝 Memory Updated
+- Session entry: [what you added]
+- Tasks: [completed/new]
+
+## ✅ Summary
+- [What was accomplished]
 - [Files changed]
-- [Tests status]
 ```
 
-### Rule 2: Suggestions
-Provide actionable next steps:
+### Rule 3: Suggestions with Agent Handoff
 ```markdown
 ## 💡 Suggestions
-### Immediate
-1. [Quick wins]
-### Future
-1. [Longer-term improvements]
+- [Immediate improvements]
+- [Future considerations]
+
+**Recommended Next Agent**: [ROLE] Agent
+**Priority Task**: [What they should do first]
 ```
 
-### Rule 3: Continuation Prompt
-Provide a ready-to-use prompt for the next agent:
+### Rule 4: Continuation Prompt
 ```markdown
-## 🚀 Next Steps Prompt
-Copy this to continue:
+## 🚀 Continuation Prompt for [ROLE] Agent
 
-# Agent Task: [Next Task Title]
+You are the [ROLE] Agent for dawson-does-framework.
 
-## 🛑 MANDATORY: Read Context First
+### Step 1: Read context
 cat AGENT_CONTEXT.md
 
-## Context
-[What was completed, why next task matters]
+### Step 2: Load your memory
+cat prompts/agents/roles/[ROLE]_AGENT.md
+cat prompts/agents/memory/[ROLE]_MEMORY.md
 
-## Your Task
-[Specific next steps]
+### Step 3: Your task
+[Specific task description]
 
-## Success Criteria
+### Files to modify
+- [file paths]
+
+### Success criteria
 - [ ] [Criteria]
 ```
 
-### Rule 4: Never End Abruptly
-- ✅ Always summarize achievements
-- ✅ Always suggest improvements  
-- ✅ Always provide continuation prompt
+### Rule 5: Never End Abruptly
+- ✅ Update memory file
+- ✅ Summarize achievements
+- ✅ Recommend next agent
+- ✅ Provide continuation prompt
 - ❌ Never just say "done" and stop
 
 ---
-*This context applies to all agents working on dawson-does-framework.*
+
+## Additional Resources
+
+| Document | Purpose |
+|----------|---------|
+| `prompts/agents/AGENT_POLICIES.md` | Corporate standards (v1.0) |
+| `prompts/agents/roles/ROLE_PROTOCOL.md` | Role lifecycle |
+| `prompts/agents/UNIVERSAL_BOOTSTRAP.md` | For non-Claude/Cursor platforms |
+
+---
+*Governance Version 1.0 | This context applies to all agents.*
 

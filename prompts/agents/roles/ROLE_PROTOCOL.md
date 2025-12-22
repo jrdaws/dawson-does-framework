@@ -1,6 +1,6 @@
 # Agent Role Protocol
 
-> **This document defines how AI agents self-identify, assume roles, and maintain persistent memory.**
+> **Version 1.0** | How AI agents self-identify, assume roles, and maintain persistent memory.
 
 ---
 

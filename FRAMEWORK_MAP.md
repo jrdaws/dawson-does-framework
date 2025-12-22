@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 889a15c 2025-12-22 test(cli): add comprehensive tests for cursorrules generation
 - a0cbcc7 2025-12-22 docs(standards): add GLOSSARY with comprehensive terminology
 - 9a4fd3c 2025-12-22 fix(tests): address remaining test failures and improve template validation
 - 62cfd34 2025-12-22 fix(tests): resolve remaining test failures and enhance template documentation
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 5e8cd30 2025-12-21 chore: bump version to 0.3.1
 - b39f514 2025-12-21 chore: update framework map after test additions
 - d710faf 2025-12-21 docs(governance): add mandatory agent context verification system
-- b33247a 2025-12-21 feat(website): complete Projects API and CLI pull integration
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

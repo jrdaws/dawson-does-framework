@@ -1,90 +1,66 @@
 # Dawson-Does Framework - Cursor Rules
 
-## 🛑 MANDATORY FIRST STEPS (4 Steps) - DO NOT SKIP
+> **Governance Version: 1.0** | Auto-loaded by Cursor IDE
 
-Before responding to ANY prompt or doing ANY work:
+---
+
+## 🛑 MANDATORY: 4-Step Initialization
 
 ### Step 1: Read Context
 ```bash
 cat AGENT_CONTEXT.md
 ```
 
-### Step 2: Self-Identify Your Role
-Based on task, announce which of 7 roles you are:
-- **CLI Agent** - CLI, bin/framework.js, src/dd/
-- **Website Agent** - Website UI, Next.js pages
-- **Template Agent** - Templates, template.json
-- **Integration Agent** - Auth, payments, email
-- **Documentation Agent** - Docs, README, guides
-- **Testing Agent** - Tests, E2E, coverage
-- **Platform Agent** - APIs, preview, deploy
+### Step 2: Identify Your Role
+| Task Area | Role |
+|-----------|------|
+| CLI, bin/framework.js, src/dd/ | CLI Agent |
+| Website UI, Next.js pages | Website Agent |
+| Templates, template.json | Template Agent |
+| Auth, payments, integrations | Integration Agent |
+| Documentation, README, guides | Documentation Agent |
+| Tests, E2E, coverage | Testing Agent |
+| APIs, preview, deploy | Platform Agent |
 
-### Step 3: Load Your Memory
+### Step 3: Load Memory
 ```bash
 cat prompts/agents/roles/[ROLE]_AGENT.md
 cat prompts/agents/memory/[ROLE]_MEMORY.md
 ```
 
 ### Step 4: Confirm Continuity
-State:
-- Your assigned role
-- Last session from memory file
-- Current priorities
-
-**Include your role and continuity statement in your first response.**
-
-This is non-negotiable. Work submitted without context verification may be rejected.
+State your role, last session, and current priorities.
 
 ---
 
-## Role Protocol
-See `prompts/agents/roles/ROLE_PROTOCOL.md` for full details on:
-- Role self-identification
-- Memory file updates
-- Session handoffs
+## Quick Reference
 
-## Project Structure
-- `bin/framework.js` - CLI entry point (JavaScript ESM)
-- `src/dd/` - Core modules (JavaScript ESM, .mjs)
-- `website/` - Next.js 15 web configurator (TypeScript)
-- `templates/` - Starter templates
-- `packages/` - Shared packages
+| Area | Style |
+|------|-------|
+| CLI (`.mjs`) | JavaScript ESM, no semicolons, 2-space |
+| Website (`.ts`) | TypeScript, semicolons, 2-space |
 
-## Code Style
-- CLI/Core: JavaScript ESM (.mjs), no semicolons, 2-space indent
-- Website: TypeScript, semicolons, 2-space indent
-- Use existing patterns - check similar files first
-- Prefer explicit over clever
+**Philosophy:** Export-first · Zero lock-in · Transparent
 
-## Commit Messages
-Use conventional commits:
-- `feat(scope): add new feature`
-- `fix(scope): fix bug`
-- `docs(scope): update docs`
-- `chore(scope): maintenance`
+**Commands:** `npm test` · `npm run lint` · `framework doctor .`
 
-## Testing
-- Run `npm test` before committing
-- CLI tests: `tests/*.test.mjs`
-- Website tests: `website/tests/`
+---
 
-## Key Principles
-1. Export-first: Everything designed for local ownership
-2. Zero lock-in: Platform optional after export
-3. Transparency: No magic, explicit complexity
-4. Fail gracefully: Helpful errors with recovery guidance
+## Session End Protocol
 
-## What to Avoid
+1. **Update memory**: `prompts/agents/memory/[ROLE]_MEMORY.md`
+2. **Provide**: Summary + Suggestions + **Recommended Next Agent** + Continuation Prompt
+
+---
+
+## Forbidden
+
 - Adding unrequested features
-- Changing shared configs without coordination
-- Breaking existing tests
-- Committing secrets or .env files
+- Working outside your role
+- Breaking tests
+- Committing secrets
+- Ending without handoff
 
-## Useful Commands
-```bash
-npm test              # Run tests
-npm run lint          # Check linting
-framework doctor .    # Health check
-framework drift .     # Check template drift
-```
+---
 
+*Version 1.0 | Full details: prompts/agents/AGENT_POLICIES.md*
