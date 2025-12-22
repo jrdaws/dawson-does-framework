@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- e937da5 2025-12-22 chore: update framework map, testing standards, and flagship-saas manifest
 - 3a4615a 2025-12-22 feat(integrations): add Clerk auth integration for saas template
 - 5063e8f 2025-12-22 docs(agents): update DOCS_MEMORY with handoff note
 - d0c5b93 2025-12-22 feat(templates): complete flagship-saas template with advanced features
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 1e7811d 2025-12-22 docs: create CONTRIBUTING.md with comprehensive CLI patterns documentation
 - 942d8bb 2025-12-22 feat(cli): add standardized error helper functions to logger
 - b83a654 2025-12-22 docs(readme): add Projects API documentation section
-- 527e4e6 2025-12-22 docs(agents): update Template Agent memory with saas fix session
 
 ## Agent Governance Structure
 
