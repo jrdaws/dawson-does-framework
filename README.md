@@ -141,6 +141,51 @@ framework drift  # See changes from template
 
 [AI features →](docs/concepts/agent-safety.md)
 
+### 🌐 **Platform API**
+
+Save and retrieve project configurations programmatically via the Projects API:
+
+```bash
+# Save a project configuration
+curl -X POST https://dawson.dev/api/projects/save \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": "saas",
+    "project_name": "My SaaS App",
+    "integrations": {
+      "auth": "supabase",
+      "payments": "stripe"
+    }
+  }'
+
+# Response includes a token
+{
+  "success": true,
+  "data": {
+    "token": "fast-lion-1234",
+    "expiresAt": "2026-01-21T10:00:00Z",
+    "pullCommand": "npx @jrdaws/framework pull fast-lion-1234",
+    "url": "https://dawson.dev/configure?project=fast-lion-1234"
+  }
+}
+
+# Pull the project locally
+framework pull fast-lion-1234
+```
+
+**API Endpoints:**
+- `POST /api/projects/save` - Save project configuration (30-day expiry)
+- `GET /api/projects/{token}` - Retrieve project by token
+- `GET /api/projects/{token}/download` - Download project manifest
+
+**Use Cases:**
+- Automate project creation in CI/CD pipelines
+- Build custom configurators on top of the platform
+- Integrate with project management tools
+- Programmatic template deployment
+
+[View API documentation →](docs/API_CONTRACTS.md)
+
 ---
 
 ## Installation
@@ -180,6 +225,12 @@ npx @jrdaws/framework export saas ./my-app
 - [`framework deploy`](docs/cli/deploy.md) - Deploy to production
 - [`framework templates`](docs/cli/templates.md) - Browse templates
 - [`framework plugin`](docs/cli/plugin.md) - Manage plugins
+
+### Platform API
+- [API Contracts](docs/API_CONTRACTS.md) - Complete API reference
+- [Projects API](docs/API_CONTRACTS.md#projects-api) - Save and retrieve configurations
+- [Error Handling](docs/API_CONTRACTS.md#error-handling) - Standard error responses
+- [Rate Limiting](docs/API_CONTRACTS.md#rate-limiting) - API limits and quotas
 
 ### Guides
 - [Templates](docs/templates/README.md) - Explore all templates
