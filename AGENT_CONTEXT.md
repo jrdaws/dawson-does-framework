@@ -94,8 +94,9 @@ dawson-does-framework/
 
 | If Working On... | Also Read |
 |------------------|-----------|
-| CLI/Core code | `docs/standards/CODING_STANDARDS.md` |
-| Website code | `docs/standards/CODING_STANDARDS.md` |
+| Unfamiliar terms | `docs/GLOSSARY.md` - Project terminology |
+| CLI/Core code | `docs/standards/CODING_STANDARDS.md`, `docs/standards/FILE_STRUCTURE.md` |
+| Website code | `docs/standards/CODING_STANDARDS.md`, `docs/standards/FILE_STRUCTURE.md` |
 | Templates | `docs/standards/CODING_STANDARDS.md` + template.json schema |
 | Any code | `FRAMEWORK_MAP.md` for architecture context |
 

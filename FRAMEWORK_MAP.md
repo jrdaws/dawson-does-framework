@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 9a4fd3c 2025-12-22 fix(tests): address remaining test failures and improve template validation
 - 62cfd34 2025-12-22 fix(tests): resolve remaining test failures and enhance template documentation
 - 8a85895 2025-12-22 docs(governance): add mandatory response rules for all agents
 - ba43919 2025-12-22 chore: final framework map sync
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - d710faf 2025-12-21 docs(governance): add mandatory agent context verification system
 - b33247a 2025-12-21 feat(website): complete Projects API and CLI pull integration
 - 8d8aab8 2025-12-21 docs(test): add comprehensive test coverage documentation and improve logger tests
-- 570a242 2025-12-21 fix(tests): fix all failing tests and improve coverage to 78% (core)
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
