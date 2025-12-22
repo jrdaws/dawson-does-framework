@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- a397272 2025-12-22 test(governance): verify and enhance validation workflow
 - 0339f33 2025-12-22 feat(governance): integrate validation into review workflow
 - 6bee923 2025-12-22 docs: review and update cherry-picked documentation
 - 0e2b3ae 2025-12-22 docs: cherry-pick documentation and tests from stale branches
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - f1feb26 2025-12-22 feat(templates): add subscription management to saas Stripe integration
 - 9daf6a0 2025-12-22 docs(testing): update memory with test fixes session
 - daef293 2025-12-22 chore: update agent memory, API docs, templates, and E2E tests
-- 47889c7 2025-12-22 docs(governance): create Documentation Agent memory file
 
 ## Agent Governance Structure
 
