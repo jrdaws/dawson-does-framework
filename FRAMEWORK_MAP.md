@@ -4,7 +4,7 @@ Generated: (deterministic)
 Hash: b41ff877de
 
 ## Recent changes
-- 54535ac 2025-12-22 fix(templates): remove node_modules from landing-page template
+- 86b3e51 2025-12-22 fix(templates): remove node_modules from landing-page template
 - 0f81301 2025-12-22 chore: add WIP files to .gitignore
 - de90a18 2025-12-22 test(api): add comprehensive tests for projects API endpoints
 - 2241da1 2025-12-22 feat(cli): update pull command to support new API response format
