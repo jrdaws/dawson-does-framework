@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- ace4b27 2025-12-22 docs(agents): update Testing Agent memory with Stripe test enablement session
 - db47e37 2025-12-22 chore: update framework map hash
 - 6d8fb25 2025-12-22 chore: update framework map after test improvements
 - 9d5ea8f 2025-12-22 test(providers): improve billing.stripe test assertions
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - ada33cd 2025-12-22 chore: update Next.js types and fix E2E test selectors
 - 1fcdcc4 2025-12-22 chore(templates): standardize dependencies across saas and seo-directory
 - 2efa50e 2025-12-22 docs(agents): update Template Agent memory with dark mode session
-- dce6da7 2025-12-22 feat(website): improve configurator and add E2E tests
 
 ## Agent Governance Structure
 
