@@ -1,6 +1,29 @@
 "use client";
+import { useState, useEffect } from "react";
 
 export default function BlogPost({ params }: { params: { slug: string } }) {
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check localStorage and system preference
+    const stored = localStorage.getItem('darkMode');
+    const isDark = stored ? stored === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(isDark);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem('darkMode', String(newMode));
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
   // In a real app, fetch post data based on slug
   const post = {
     title: "Getting Started with Next.js 15",
@@ -62,27 +85,34 @@ Next.js 15 is a significant step forward in web development. Its focus on perfor
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 transition-colors">
         <nav className="max-w-7xl mx-auto flex justify-between items-center">
-          <a href="/" className="text-xl font-bold text-gray-900 no-underline hover:text-gray-700">
+          <a href="/" className="text-xl font-bold text-gray-900 dark:text-white no-underline hover:text-gray-700 dark:hover:text-gray-300">
             ← Back to Blog
           </a>
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
         </nav>
       </header>
 
       <article className="max-w-3xl mx-auto px-6 py-12">
         {/* Post Header */}
-        <div className="bg-white p-12 rounded-xl mb-8 border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-12 rounded-xl mb-8 border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex gap-2 mb-4">
-            <span className="px-3 py-1 rounded-xl bg-blue-50 text-blue-600 text-xs font-medium">
+            <span className="px-3 py-1 rounded-xl bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-xs font-medium">
               {post.category}
             </span>
-            <span className="text-xs text-gray-400">{post.readTime}</span>
+            <span className="text-xs text-gray-400 dark:text-gray-500">{post.readTime}</span>
           </div>
 
-          <h1 className="text-4xl font-bold mb-4 leading-tight">
+          <h1 className="text-4xl font-bold mb-4 leading-tight text-gray-900 dark:text-white">
             {post.title}
           </h1>
 
@@ -91,14 +121,14 @@ Next.js 15 is a significant step forward in web development. Its focus on perfor
               {post.author[0]}
             </div>
             <div>
-              <div className="text-base font-semibold">{post.author}</div>
-              <div className="text-sm text-gray-600">{post.date}</div>
+              <div className="text-base font-semibold text-gray-900 dark:text-white">{post.author}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">{post.date}</div>
             </div>
           </div>
 
           <div className="flex gap-2 flex-wrap">
             {post.tags.map(tag => (
-              <span key={tag} className="px-3 py-1 rounded-xl bg-gray-100 text-gray-600 text-xs">
+              <span key={tag} className="px-3 py-1 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs">
                 #{tag}
               </span>
             ))}
@@ -106,19 +136,19 @@ Next.js 15 is a significant step forward in web development. Its focus on perfor
         </div>
 
         {/* Post Content */}
-        <div className="bg-white p-12 rounded-xl mb-8 border border-gray-200">
-          <div className="text-lg leading-relaxed text-gray-800">
+        <div className="bg-white dark:bg-gray-800 p-12 rounded-xl mb-8 border border-gray-200 dark:border-gray-700 transition-colors">
+          <div className="text-lg leading-relaxed text-gray-800 dark:text-gray-200">
             {post.content.split('\n\n').map((paragraph, i) => {
               if (paragraph.startsWith('##')) {
                 return (
-                  <h2 key={i} className="text-3xl font-semibold mt-8 mb-4">
+                  <h2 key={i} className="text-3xl font-semibold mt-8 mb-4 text-gray-900 dark:text-white">
                     {paragraph.replace('## ', '')}
                   </h2>
                 );
               }
               if (paragraph.startsWith('```')) {
                 return (
-                  <pre key={i} className="bg-gray-800 text-gray-50 p-6 rounded-lg overflow-auto text-sm my-6">
+                  <pre key={i} className="bg-gray-800 dark:bg-gray-950 text-gray-50 dark:text-gray-100 p-6 rounded-lg overflow-auto text-sm my-6">
                     <code>{paragraph.replace(/```\w*\n?/g, '')}</code>
                   </pre>
                 );
@@ -126,7 +156,7 @@ Next.js 15 is a significant step forward in web development. Its focus on perfor
               if (paragraph.match(/^\d\./)) {
                 const items = paragraph.split('\n');
                 return (
-                  <ol key={i} className="my-4 pl-6">
+                  <ol key={i} className="my-4 pl-6 text-gray-800 dark:text-gray-200">
                     {items.map((item, j) => (
                       <li key={j} className="my-2">
                         {item.replace(/^\d\.\s/, '')}
@@ -138,7 +168,7 @@ Next.js 15 is a significant step forward in web development. Its focus on perfor
               if (paragraph.startsWith('-')) {
                 const items = paragraph.split('\n');
                 return (
-                  <ul key={i} className="my-4 pl-6">
+                  <ul key={i} className="my-4 pl-6 text-gray-800 dark:text-gray-200">
                     {items.map((item, j) => (
                       <li key={j} className="my-2">
                         {item.replace(/^-\s/, '')}
@@ -148,7 +178,7 @@ Next.js 15 is a significant step forward in web development. Its focus on perfor
                 );
               }
               return (
-                <p key={i} className="my-4">
+                <p key={i} className="my-4 text-gray-800 dark:text-gray-200">
                   {paragraph}
                 </p>
               );
@@ -157,8 +187,8 @@ Next.js 15 is a significant step forward in web development. Its focus on perfor
         </div>
 
         {/* Author Bio */}
-        <div className="bg-white p-8 rounded-xl mb-8 border border-gray-200">
-          <h3 className="mb-4 text-lg font-semibold">
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-xl mb-8 border border-gray-200 dark:border-gray-700 transition-colors">
+          <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
             About the Author
           </h3>
           <div className="flex gap-4 items-start">
@@ -166,10 +196,10 @@ Next.js 15 is a significant step forward in web development. Its focus on perfor
               {post.author[0]}
             </div>
             <div>
-              <div className="text-lg font-semibold mb-2">
+              <div className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
                 {post.author}
               </div>
-              <p className="m-0 text-gray-600 leading-relaxed">
+              <p className="m-0 text-gray-600 dark:text-gray-300 leading-relaxed">
                 {post.authorBio}
               </p>
             </div>
@@ -177,15 +207,15 @@ Next.js 15 is a significant step forward in web development. Its focus on perfor
         </div>
 
         {/* Share Section */}
-        <div className="bg-white p-8 rounded-xl border border-gray-200 text-center">
-          <h3 className="mb-4 text-lg font-semibold">
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-center transition-colors">
+          <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
             Share this article
           </h3>
           <div className="flex gap-3 justify-center">
             {['Twitter', 'LinkedIn', 'Facebook'].map(platform => (
               <button
                 key={platform}
-                className="px-5 py-2.5 rounded-lg border border-gray-200 bg-white cursor-pointer text-sm font-medium hover:bg-gray-50"
+                className="px-5 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white cursor-pointer text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 {platform}
               </button>

@@ -12,6 +12,7 @@ import { ComponentTree } from "./ComponentTree";
 import { RemoteCursor } from "./RemoteCursor";
 import { PresenceIndicator } from "./PresenceIndicator";
 import { ElementEditingIndicator } from "./ElementEditingIndicator";
+import { UndoRedoToolbar } from "./UndoRedoToolbar";
 import { useCollaborativeHTML } from "./useCollaborativeHTML";
 import { getInjectionScript } from "./iframe-injector";
 import { EditorMessage, SelectedElement } from "./types";
@@ -56,6 +57,10 @@ function CollaborativeVisualEditorContent({
     html: syncedHtml,
     updateHtml,
     isLoading: htmlLoading,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   } = useCollaborativeHTML({
     projectId,
     userId,
@@ -280,6 +285,16 @@ function CollaborativeVisualEditorContent({
 
         {/* Center - Preview with Overlay */}
         <div className="flex-1 relative overflow-auto bg-white">
+          {/* Undo/Redo Toolbar - Floating */}
+          <div className="absolute top-4 right-4 z-50">
+            <UndoRedoToolbar
+              onUndo={undo}
+              onRedo={redo}
+              canUndo={canUndo}
+              canRedo={canRedo}
+            />
+          </div>
+
           <div className="relative min-h-full">
             <iframe
               ref={(iframe) => {

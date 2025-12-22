@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +25,12 @@ import {
 } from "lucide-react";
 import { generatePreview } from "@/lib/preview-generator";
 import { useConfiguratorStore } from "@/lib/configurator-state";
-import { CollaborativeVisualEditor } from "@/app/components/editor";
+
+// Dynamically import CollaborativeVisualEditor to avoid SSR issues
+const CollaborativeVisualEditor = dynamic(
+  () => import("@/app/components/editor").then(mod => mod.CollaborativeVisualEditor),
+  { ssr: false }
+);
 
 interface AIPreviewProps {
   template: string;

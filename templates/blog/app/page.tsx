@@ -1,8 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function BlogHome() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check localStorage and system preference
+    const stored = localStorage.getItem('darkMode');
+    const isDark = stored ? stored === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(isDark);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem('darkMode', String(newMode));
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
 
   const posts = [
     {
@@ -73,15 +95,22 @@ export default function BlogHome() {
   });
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 transition-colors">
         <nav className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="text-xl font-bold">My Blog</div>
+          <div className="text-xl font-bold text-gray-900 dark:text-white">My Blog</div>
           <div className="flex gap-6 items-center">
-            <a href="/" className="text-gray-800 no-underline hover:text-gray-900">Home</a>
-            <a href="#" className="text-gray-600 no-underline hover:text-gray-900">About</a>
-            <a href="#" className="text-gray-600 no-underline hover:text-gray-900">Contact</a>
+            <a href="/" className="text-gray-800 dark:text-gray-200 no-underline hover:text-gray-900 dark:hover:text-white">Home</a>
+            <a href="#" className="text-gray-600 dark:text-gray-300 no-underline hover:text-gray-900 dark:hover:text-white">About</a>
+            <a href="#" className="text-gray-600 dark:text-gray-300 no-underline hover:text-gray-900 dark:hover:text-white">Contact</a>
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? '☀️' : '🌙'}
+            </button>
           </div>
         </nav>
       </header>
@@ -89,10 +118,10 @@ export default function BlogHome() {
       <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4">
+          <h1 className="text-5xl font-bold mb-4 text-gray-900 dark:text-white">
             Welcome to My Blog
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Thoughts, stories, and ideas about web development, technology, and more.
           </p>
         </div>
@@ -104,7 +133,7 @@ export default function BlogHome() {
             placeholder="Search posts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-3 text-base border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-3 text-base border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -117,8 +146,8 @@ export default function BlogHome() {
               className={`px-4 py-2 rounded-full border-none ${
                 selectedCategory === cat
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-800 shadow-sm'
-              } cursor-pointer text-sm font-medium whitespace-nowrap hover:opacity-90`}
+                  : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm'
+              } cursor-pointer text-sm font-medium whitespace-nowrap hover:opacity-90 transition-colors`}
             >
               {cat}
             </button>
@@ -130,29 +159,29 @@ export default function BlogHome() {
           {filteredPosts.map(post => (
             <article
               key={post.slug}
-              className="bg-white rounded-xl overflow-hidden border border-gray-200 transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1"
+              className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1"
             >
               <div className="h-[200px] bg-gradient-to-br from-indigo-500 to-purple-600" />
               <div className="p-6">
                 <div className="flex gap-2 mb-3">
-                  <span className="px-3 py-1 rounded-xl bg-blue-50 text-blue-600 text-xs font-medium">
+                  <span className="px-3 py-1 rounded-xl bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-xs font-medium">
                     {post.category}
                   </span>
-                  <span className="text-xs text-gray-400">{post.readTime}</span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">{post.readTime}</span>
                 </div>
-                <h2 className="text-[22px] font-semibold mb-3 leading-snug">
+                <h2 className="text-[22px] font-semibold mb-3 leading-snug text-gray-900 dark:text-white">
                   {post.title}
                 </h2>
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
                   {post.excerpt}
                 </p>
-                <div className="flex items-center gap-3 pt-4 border-t border-gray-200">
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                   <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold text-sm">
                     {post.author[0]}
                   </div>
                   <div>
-                    <div className="text-sm font-medium">{post.author}</div>
-                    <div className="text-xs text-gray-400">{post.date}</div>
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">{post.author}</div>
+                    <div className="text-xs text-gray-400 dark:text-gray-500">{post.date}</div>
                   </div>
                 </div>
               </div>
@@ -161,24 +190,24 @@ export default function BlogHome() {
         </div>
 
         {filteredPosts.length === 0 && (
-          <div className="text-center py-12 text-gray-600">
+          <div className="text-center py-12 text-gray-600 dark:text-gray-400">
             No posts found matching your search.
           </div>
         )}
 
         {/* Newsletter Section */}
-        <div className="bg-white p-12 rounded-xl border border-gray-200 text-center">
-          <h2 className="text-3xl font-semibold mb-3">
+        <div className="bg-white dark:bg-gray-800 p-12 rounded-xl border border-gray-200 dark:border-gray-700 text-center transition-colors">
+          <h2 className="text-3xl font-semibold mb-3 text-gray-900 dark:text-white">
             Subscribe to the Newsletter
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
             Get the latest posts delivered right to your inbox.
           </p>
           <div className="flex gap-3 max-w-lg mx-auto">
             <input
               type="email"
               placeholder="Your email address"
-              className="flex-1 px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button className="bg-blue-600 text-white border-none rounded-lg px-6 py-3 text-sm font-medium cursor-pointer whitespace-nowrap hover:bg-blue-700">
               Subscribe
@@ -188,32 +217,32 @@ export default function BlogHome() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white px-6 py-12 mt-16">
+      <footer className="bg-gray-900 dark:bg-black text-white px-6 py-12 mt-16 transition-colors">
         <div className="max-w-7xl mx-auto grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-8">
           <div>
             <h3 className="mb-4 text-lg">My Blog</h3>
-            <p className="text-gray-400 m-0 text-sm leading-relaxed">
+            <p className="text-gray-400 dark:text-gray-500 m-0 text-sm leading-relaxed">
               Sharing knowledge and insights about web development.
             </p>
           </div>
           <div>
             <h4 className="mb-4 text-sm">Categories</h4>
             <div className="flex flex-col gap-2">
-              <a href="#" className="text-gray-400 text-sm no-underline hover:text-white">Tutorial</a>
-              <a href="#" className="text-gray-400 text-sm no-underline hover:text-white">Development</a>
-              <a href="#" className="text-gray-400 text-sm no-underline hover:text-white">Backend</a>
+              <a href="#" className="text-gray-400 dark:text-gray-500 text-sm no-underline hover:text-white">Tutorial</a>
+              <a href="#" className="text-gray-400 dark:text-gray-500 text-sm no-underline hover:text-white">Development</a>
+              <a href="#" className="text-gray-400 dark:text-gray-500 text-sm no-underline hover:text-white">Backend</a>
             </div>
           </div>
           <div>
             <h4 className="mb-4 text-sm">Social</h4>
             <div className="flex flex-col gap-2">
-              <a href="#" className="text-gray-400 text-sm no-underline hover:text-white">Twitter</a>
-              <a href="#" className="text-gray-400 text-sm no-underline hover:text-white">GitHub</a>
-              <a href="#" className="text-gray-400 text-sm no-underline hover:text-white">LinkedIn</a>
+              <a href="#" className="text-gray-400 dark:text-gray-500 text-sm no-underline hover:text-white">Twitter</a>
+              <a href="#" className="text-gray-400 dark:text-gray-500 text-sm no-underline hover:text-white">GitHub</a>
+              <a href="#" className="text-gray-400 dark:text-gray-500 text-sm no-underline hover:text-white">LinkedIn</a>
             </div>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-400 text-sm">
+        <div className="border-t border-gray-800 dark:border-gray-900 mt-8 pt-6 text-center text-gray-400 dark:text-gray-500 text-sm">
           © 2024 My Blog. All rights reserved.
         </div>
       </footer>

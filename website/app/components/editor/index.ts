@@ -17,4 +17,5 @@ export { ComponentTree } from "./ComponentTree";
 export { RemoteCursor } from "./RemoteCursor";
 export { PresenceIndicator } from "./PresenceIndicator";
 export { ElementEditingIndicator } from "./ElementEditingIndicator";
+export { UndoRedoToolbar } from "./UndoRedoToolbar";
 export * from "./types";

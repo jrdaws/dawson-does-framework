@@ -17,6 +17,10 @@ export interface UseCollaborativeDocumentResult {
   deleteText: (index: number, length: number) => void;
   awareness: AwarenessState;
   isLoading: boolean;
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 /**
@@ -35,8 +39,11 @@ export function useCollaborativeDocument(
     localUser: null,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
 
   const yTextRef = useRef<Y.Text | null>(null);
+  const undoManagerRef = useRef<Y.UndoManager | null>(null);
   const isLocalUpdateRef = useRef(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -57,6 +64,23 @@ export function useCollaborativeDocument(
       setContent(initialContent);
       setIsLoading(false);
 
+      // Initialize UndoManager for this text
+      const undoManager = new Y.UndoManager(yText, {
+        trackedOrigins: new Set([session.provider.awareness.clientID]),
+      });
+      undoManagerRef.current = undoManager;
+
+      // Update undo/redo availability
+      const updateUndoRedoState = () => {
+        setCanUndo(undoManager.undoStack.length > 0);
+        setCanRedo(undoManager.redoStack.length > 0);
+      };
+
+      // Listen for stack changes
+      undoManager.on("stack-item-added", updateUndoRedoState);
+      undoManager.on("stack-item-popped", updateUndoRedoState);
+      updateUndoRedoState();
+
       // Observe text changes from other users
       const unobserve = observeText(yText, (event) => {
         // Skip if this is our own change
@@ -76,6 +100,9 @@ export function useCollaborativeDocument(
           onContentChange?.(newContent);
         }, debounceMs);
       });
+
+      // Update undo/redo state after remote changes too
+      updateUndoRedoState();
 
       // Update awareness state
       const updateAwareness = () => {
@@ -110,6 +137,12 @@ export function useCollaborativeDocument(
         session.provider.awareness.off("change", updateAwareness);
         if (debounceTimerRef.current) {
           clearTimeout(debounceTimerRef.current);
+        }
+        // Clean up undo manager
+        if (undoManager) {
+          undoManager.off("stack-item-added", updateUndoRedoState);
+          undoManager.off("stack-item-popped", updateUndoRedoState);
+          undoManager.destroy();
         }
       };
     } catch (error) {
@@ -191,6 +224,38 @@ export function useCollaborativeDocument(
     }
   }, []);
 
+  // Undo last change
+  const undo = useCallback(() => {
+    const undoManager = undoManagerRef.current;
+    const yText = yTextRef.current;
+    if (!undoManager || !yText) return;
+
+    try {
+      undoManager.undo();
+      // Update local state with reverted content
+      setContent(yText.toString());
+      console.log("[useCollaborativeDocument] Undo performed");
+    } catch (error) {
+      console.error("[useCollaborativeDocument] Error during undo:", error);
+    }
+  }, []);
+
+  // Redo last undone change
+  const redo = useCallback(() => {
+    const undoManager = undoManagerRef.current;
+    const yText = yTextRef.current;
+    if (!undoManager || !yText) return;
+
+    try {
+      undoManager.redo();
+      // Update local state with restored content
+      setContent(yText.toString());
+      console.log("[useCollaborativeDocument] Redo performed");
+    } catch (error) {
+      console.error("[useCollaborativeDocument] Error during redo:", error);
+    }
+  }, []);
+
   return {
     content,
     updateContent,
@@ -198,5 +263,9 @@ export function useCollaborativeDocument(
     deleteText,
     awareness,
     isLoading,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   };
 }

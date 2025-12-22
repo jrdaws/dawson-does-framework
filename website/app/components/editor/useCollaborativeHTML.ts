@@ -24,6 +24,10 @@ interface UseCollaborativeHTMLResult {
   users: any[];
   cursors: Map<string, any>;
   updateCursor: (position: any) => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 /**
@@ -71,6 +75,10 @@ export function useCollaborativeHTML({
     content: syncedContent,
     updateContent,
     isLoading,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   } = useCollaborativeDocument({
     session,
     filePath,
@@ -139,5 +147,9 @@ export function useCollaborativeHTML({
     users,
     cursors,
     updateCursor,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   };
 }

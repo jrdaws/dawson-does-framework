@@ -14,8 +14,6 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
-    "@dawson-framework/ai-agent": "file:../packages/ai-agent",
-    "@dawson-framework/collaboration": "file:../packages/collaboration",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.0.0",
