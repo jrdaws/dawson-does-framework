@@ -889,6 +889,8 @@ async function cmdHelp() {
   framework plugin <add|remove|list|hooks|info>
   framework templates <list|search|info|categories|tags>
   framework agent-prompt --role <ROLE> --task "<TASK>"
+  framework deploy [options]
+  framework deploy:auth <command>
   framework export <templateId> <projectDir> [options]
   framework pull <token> [output-dir] [options]
   framework <templateId> <projectDir>
@@ -922,6 +924,9 @@ Examples:
   framework doctor .
   framework agent-prompt --role CLI --task "Add deploy command"          # Generate agent bootstrap prompt
   framework agent-prompt --role Website --task "Update landing page"     # For Website agent
+  framework deploy                                   # Deploy to preview (auto-detect provider)
+  framework deploy --prod                            # Deploy to production
+  framework deploy:auth save vercel YOUR_TOKEN       # Save deployment credentials
   framework export seo-directory ~/Documents/Cursor/my-app
   framework export saas ~/Documents/Cursor/my-saas --remote https://github.com/me/my-saas.git --push
   framework pull fast-lion-1234                      # Pull project from web platform

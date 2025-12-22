@@ -26,6 +26,7 @@
 | 2024-12-22 | Initial | Setup | Created memory file, established baseline |
 | 2024-12-22 | 30min | CLI-001 | Verified --cursor flag implementation complete, added comprehensive tests |
 | 2024-12-22 | 45min | CLI-002 | Added agent-prompt command with --role and --task flags for generating bootstrap prompts |
+| 2024-12-22 | 20min | CLI-003 | Discovered deploy command already complete, added to help text and updated memory |
 
 ---
 
@@ -38,6 +39,7 @@
 | Add comprehensive tests for cursorrules | No unit tests existed for generateCursorRules/generateStartPrompt - added 29 tests | 2024-12-22 |
 | Output agent-prompt to stdout | Allows easy copy-paste into AI platforms, avoids file management | 2024-12-22 |
 | Extract only key sections from memory | Full memory too verbose, focus on recent sessions, queue, issues | 2024-12-22 |
+| Deploy command was already complete | Previous agents implemented full deploy system, just needed help text update | 2024-12-22 |
 
 ---
 
@@ -51,7 +53,8 @@
 - ✅ .cursorrules and START_PROMPT.md generation working
 - ✅ Comprehensive tests for cursorrules (29 tests)
 - ✅ Agent-prompt command COMPLETE (generates bootstrap prompts)
-- ❌ Deploy command not started
+- ✅ Deploy command COMPLETE (Vercel, Netlify, Railway support)
+- ✅ Deploy:auth credential management COMPLETE
 
 ### In Progress
 - None
@@ -65,7 +68,7 @@
 
 ### High Priority
 - [x] Complete `framework pull --cursor` with .cursorrules generation
-- [ ] Implement `framework deploy` with Vercel support
+- [x] Implement `framework deploy` with Vercel support
 
 ### Medium Priority
 - [ ] Add `framework init` for existing projects
@@ -82,8 +85,8 @@
 
 | Issue | Severity | Notes |
 |-------|----------|-------|
-| No deploy command | High | Manual deployment required |
 | Some exit codes wrong | Medium | Error cases don't always exit(1) |
+| Deploy command not in help | FIXED | Added in CLI-003 |
 
 ---
 
@@ -98,6 +101,8 @@
 7. **Test Coverage**: Always check if functions have tests before assuming they're incomplete
 8. **Agent-prompt**: New command at line 1086, uses extractSection helper to parse memory files
 9. **Dispatcher Pattern**: All commands added around line 1747, use process.argv.slice to get args
+10. **Deploy Command**: FULLY implemented at src/commands/deploy.mjs - supports Vercel, Netlify, Railway
+11. **Always Check Implementation**: Memory can be outdated - verify files exist before assuming work needed
 
 ---
 
@@ -129,5 +134,5 @@ At the end of your session, add:
 
 ---
 
-*Last Updated: 2024-12-22 by CLI Agent (Session CLI-002)*
+*Last Updated: 2024-12-22 by CLI Agent (Session CLI-003)*
 
