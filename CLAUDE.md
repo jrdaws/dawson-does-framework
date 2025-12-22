@@ -2,23 +2,60 @@
 
 > **This file is automatically read by Claude Code CLI when starting a session in this project.**
 
-## 🛑 MANDATORY FIRST STEP
+## 🛑 MANDATORY FIRST STEPS (4 Steps)
 
-Before responding to ANY prompt or doing ANY work, you MUST:
+Before responding to ANY prompt or doing ANY work, you MUST complete ALL steps:
 
-1. **Read the governing documents:**
-   ```bash
-   cat AGENT_CONTEXT.md
-   ```
+### Step 1: Read Governing Documents
+```bash
+cat AGENT_CONTEXT.md
+```
 
-2. **Confirm understanding by stating:**
-   - The project's core philosophy (export-first, zero lock-in)
-   - The coding standards for your task area
-   - What you should NOT do
+### Step 2: Self-Identify Your Role
 
-3. **Only then proceed** with the user's request.
+Based on your assigned task, identify which role applies:
 
-If you skip this step, your work may be rejected for not following project standards.
+| If task involves... | Your Role |
+|---------------------|-----------|
+| CLI, bin/framework.js, src/dd/ | **CLI Agent** |
+| Website UI, Next.js pages | **Website Agent** |
+| Template creation, template.json | **Template Agent** |
+| Integrations, auth, payments | **Integration Agent** |
+| Documentation, README, guides | **Documentation Agent** |
+| Tests, E2E, coverage | **Testing Agent** |
+| APIs, preview, deploy, cloud | **Platform Agent** |
+
+**Announce your role:**
+```markdown
+## Role Identification
+**Assigned Role**: [ROLE_NAME] Agent
+**Reason**: [Why this role applies]
+```
+
+### Step 3: Load Your Role Memory
+```bash
+cat prompts/agents/roles/[ROLE]_AGENT.md
+cat prompts/agents/memory/[ROLE]_MEMORY.md
+```
+
+**Establish continuity:**
+```markdown
+## Session Continuity
+**Previous Session**: [Date from memory file]
+**Last Action**: [What was done]
+**Picking Up From**: [Current state]
+```
+
+### Step 4: Confirm Understanding
+State:
+- The project's core philosophy (export-first, zero lock-in)
+- The coding standards for your role
+- What you should NOT do
+- Your current priorities from the memory file
+
+**Only then proceed** with the user's request.
+
+If you skip these steps, your work may be rejected for not following project standards.
 
 ---
 
@@ -89,9 +126,34 @@ If you cannot answer these, re-read AGENT_CONTEXT.md.
 
 ## 📋 Response Rules (MANDATORY)
 
-**Your FINAL response MUST end with these three sections:**
+### Before Ending: Update Your Memory File
 
-### 1. Summary of Achievements
+**CRITICAL**: Before providing your final response, you MUST update your role's memory file:
+
+```bash
+# Edit: prompts/agents/memory/[ROLE]_MEMORY.md
+```
+
+Add:
+1. **Session entry** in Session History table
+2. **Decisions** you made with reasoning
+3. **Updated tasks** (mark completed, add new)
+4. **New issues** discovered
+5. **Insights** for the next agent
+
+### Final Response Format
+
+**Your FINAL response MUST end with these four sections:**
+
+### 1. Memory Updated Confirmation
+```markdown
+## 📝 Memory Updated
+- Added session entry: [brief description]
+- Updated tasks: [what changed]
+- New insights added: [if any]
+```
+
+### 2. Summary of Achievements
 ```markdown
 ## ✅ Summary of Achievements
 - [What was completed]
@@ -99,23 +161,24 @@ If you cannot answer these, re-read AGENT_CONTEXT.md.
 - [Test status]
 ```
 
-### 2. Suggestions
+### 3. Suggestions
 ```markdown
 ## 💡 Suggestions
 - [Immediate improvements]
 - [Future considerations]
 ```
 
-### 3. Continuation Prompt
+### 4. Continuation Prompt
 ```markdown
 ## 🚀 Next Steps Prompt
 [Ready-to-use expert-level prompt for continuing the work]
+[Include role assignment and priority tasks]
 ```
 
-**NEVER end abruptly. ALWAYS provide:**
-- Summary of what was achieved
-- Suggestions for improvements
-- A complete continuation prompt another agent can use
+**NEVER end abruptly. ALWAYS:**
+- Update your memory file first
+- Confirm the update
+- Provide summary, suggestions, and continuation prompt
 
 ---
 

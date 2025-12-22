@@ -1,19 +1,47 @@
 # Dawson-Does Framework - Cursor Rules
 
-## 🛑 MANDATORY FIRST STEP - DO NOT SKIP
+## 🛑 MANDATORY FIRST STEPS (4 Steps) - DO NOT SKIP
 
 Before responding to ANY prompt or doing ANY work:
 
-1. **Read**: `cat AGENT_CONTEXT.md`
-2. **Pass the verification test** at the top of that file
-3. **Include your answers** in your first response
+### Step 1: Read Context
+```bash
+cat AGENT_CONTEXT.md
+```
+
+### Step 2: Self-Identify Your Role
+Based on task, announce which of 7 roles you are:
+- **CLI Agent** - CLI, bin/framework.js, src/dd/
+- **Website Agent** - Website UI, Next.js pages
+- **Template Agent** - Templates, template.json
+- **Integration Agent** - Auth, payments, email
+- **Documentation Agent** - Docs, README, guides
+- **Testing Agent** - Tests, E2E, coverage
+- **Platform Agent** - APIs, preview, deploy
+
+### Step 3: Load Your Memory
+```bash
+cat prompts/agents/roles/[ROLE]_AGENT.md
+cat prompts/agents/memory/[ROLE]_MEMORY.md
+```
+
+### Step 4: Confirm Continuity
+State:
+- Your assigned role
+- Last session from memory file
+- Current priorities
+
+**Include your role and continuity statement in your first response.**
 
 This is non-negotiable. Work submitted without context verification may be rejected.
 
 ---
 
-## First Steps for Any Agent
-Before starting work, read AGENT_CONTEXT.md for project vision, philosophy, and standards.
+## Role Protocol
+See `prompts/agents/roles/ROLE_PROTOCOL.md` for full details on:
+- Role self-identification
+- Memory file updates
+- Session handoffs
 
 ## Project Structure
 - `bin/framework.js` - CLI entry point (JavaScript ESM)
