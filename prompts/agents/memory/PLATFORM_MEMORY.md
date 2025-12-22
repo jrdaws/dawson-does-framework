@@ -241,3 +241,88 @@ Documentation is now accurate and unblocks Documentation Agent to:
 - Option D: Pre-generation + cache warming
 
 **Recommendation:** Ship current implementation (13.5s is good enough).
+
+---
+
+### Session: 2025-12-22 (Part 4) - AI Agent Package Cost Optimization
+
+**Duration:** ~1 hour
+**Task:** Optimize Anthropic API token usage across ai-agent package
+
+**Work Completed:**
+
+1. ✅ **Task 1: Model Tier Optimization**
+   - Changed `intent-analyzer.ts` to use `claude-3-haiku-20240307`
+   - Changed `architecture-generator.ts` to use `claude-3-haiku-20240307`
+   - Kept Sonnet for code-generator and context-builder (require reasoning)
+   - **Expected savings:** ~$0.04 per generation (33% reduction on those stages)
+
+2. ✅ **Task 2: Reduce Code Generation Token Limit**
+   - Changed `code-generator.ts` maxTokens: 8192 → 4096
+   - **Expected savings:** ~$0.02 per generation (output tokens are 5x cost)
+
+3. ✅ **Task 3: Consolidate Context Builder Calls**
+   - Merged 2 API calls into 1 using delimiter format
+   - New format: `---CURSORRULES---\n{content}\n---STARTPROMPT---\n{content}`
+   - Added parsing with fallback handling
+   - **Expected savings:** ~$0.02 per generation
+
+4. ✅ **Task 4: Implement Token Usage Tracking**
+   - Created `packages/ai-agent/src/utils/token-tracker.ts`
+   - TokenTracker class with:
+     - `record(usage)` - Track usage per stage
+     - `getSessionTotal()` - Get summary with cost estimate
+     - `exportMetrics()` - Formatted string for logging
+   - Integrated into LLMClient with stage parameter
+   - Added summary logging to generateProject()
+
+**Files Created:**
+- `packages/ai-agent/src/utils/token-tracker.ts`
+
+**Files Modified:**
+- `packages/ai-agent/src/intent-analyzer.ts`
+- `packages/ai-agent/src/architecture-generator.ts`
+- `packages/ai-agent/src/code-generator.ts`
+- `packages/ai-agent/src/context-builder.ts`
+- `packages/ai-agent/src/utils/llm-client.ts`
+- `packages/ai-agent/src/index.ts`
+- `packages/ai-agent/src/template-selector.ts`
+- `packages/ai-agent/src/utils/retry-strategy.ts`
+- `packages/ai-agent/tsconfig.json`
+
+**ESM Compatibility Fixes:**
+- Added .js extensions to all TypeScript imports
+- Changed tsconfig to Node16 module resolution
+- All imports now work with ESM
+
+**Test Results:**
+- ✅ 668 project tests passing
+- ✅ Mock test passing
+- ✅ TypeScript compilation successful
+
+**Token Usage Output Format:**
+```
+[AI Agent] Generation complete:
+  Intent:       142 in / 487 out (Haiku)
+  Architecture: 891 in / 1203 out (Haiku)
+  Code:         2104 in / 3891 out (Sonnet)
+  Context:      1567 in / 2044 out (Sonnet)
+  ────────────────────────────────────────
+  Total: 4704 in / 7625 out | Est. cost: $0.08
+```
+
+**Cost Estimates:**
+- Before: ~$0.12-0.15 per generation
+- After: ~$0.06-0.08 per generation
+- **Savings: 33-50% reduction**
+
+**Next Priorities:**
+1. (Optional) Task 5: Prompt compression (60 min effort)
+2. (Optional) Live API testing with real Anthropic key
+3. (Optional) A/B testing Haiku vs Sonnet quality
+
+**Handoff Notes:**
+- All 4 optimization tasks complete
+- Token tracking integrated and working
+- ESM compatibility fixed across package
+- Ready for live testing with API key
