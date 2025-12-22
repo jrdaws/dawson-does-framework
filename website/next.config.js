@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove 'output: export' for Vercel deployment
-  // Vercel handles Next.js natively
+  // Vercel handles Next.js natively - no need for 'output: export'
   images: {
     unoptimized: true,
   },
-  trailingSlash: true,
+  trailingSlash: false, // Changed to false for API routes
 }
 
 module.exports = nextConfig
