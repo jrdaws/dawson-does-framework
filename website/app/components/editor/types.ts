@@ -45,7 +45,10 @@ export interface EditorMessage {
     | "update"
     | "tree"
     | "ready"
-    | "error";
+    | "error"
+    | "getHtml"
+    | "setHtml"
+    | "html";
   payload?: any;
 }
 
@@ -63,6 +66,8 @@ export interface EditorState {
   hoveredElement: SelectedElement | null;
   elementTree: ElementTreeNode[];
   editMode: "select" | "text" | "resize";
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 export interface EditorActions {
@@ -73,4 +78,7 @@ export interface EditorActions {
   deleteElement: () => void;
   duplicateElement: () => void;
   setEditMode: (mode: "select" | "text" | "resize") => void;
+  undo: () => void;
+  redo: () => void;
+  pushHistory: (html: string) => void;
 }

@@ -9,13 +9,17 @@ import { ProjectDetails } from "@/app/components/configurator/ProjectDetails";
 import { IntegrationSelector } from "@/app/components/configurator/IntegrationSelector";
 import { EnvironmentKeys } from "@/app/components/configurator/EnvironmentKeys";
 import { AIPreview } from "@/app/components/configurator/AIPreview";
+import { ProjectGenerator } from "@/app/components/configurator/ProjectGenerator";
 import { ContextFields } from "@/app/components/configurator/ContextFields";
 import { ExportView } from "@/app/components/configurator/ExportView";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TEMPLATES } from "@/lib/templates";
+import { useState } from "react";
 
 export default function ConfigurePage() {
+  const [aiTab, setAiTab] = useState<"preview" | "generate">("preview");
+
   const {
     currentStep,
     completedSteps,
@@ -185,12 +189,48 @@ export default function ConfigurePage() {
           )}
 
           {currentStep === 6 && (
-            <AIPreview
-              template={template}
-              integrations={integrations}
-              inspirations={inspirations}
-              description={description}
-            />
+            <div className="max-w-7xl mx-auto">
+              {/* Tab Selector */}
+              <div className="flex gap-2 mb-6 border-b border-terminal-text/20">
+                <button
+                  onClick={() => setAiTab("preview")}
+                  className={`px-4 py-2 font-mono text-sm transition-colors ${
+                    aiTab === "preview"
+                      ? "text-terminal-accent border-b-2 border-terminal-accent"
+                      : "text-terminal-dim hover:text-terminal-text"
+                  }`}
+                >
+                  Visual Preview
+                </button>
+                <button
+                  onClick={() => setAiTab("generate")}
+                  className={`px-4 py-2 font-mono text-sm transition-colors ${
+                    aiTab === "generate"
+                      ? "text-terminal-accent border-b-2 border-terminal-accent"
+                      : "text-terminal-dim hover:text-terminal-text"
+                  }`}
+                >
+                  Full Project Generator
+                </button>
+              </div>
+
+              {/* Tab Content */}
+              {aiTab === "preview" ? (
+                <AIPreview
+                  template={template}
+                  integrations={integrations}
+                  inspirations={inspirations}
+                  description={description}
+                />
+              ) : (
+                <ProjectGenerator
+                  template={template}
+                  integrations={integrations}
+                  inspirations={inspirations}
+                  description={description}
+                />
+              )}
+            </div>
           )}
 
           {currentStep === 7 && (

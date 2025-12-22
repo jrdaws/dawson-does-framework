@@ -12,7 +12,7 @@ export const ComponentDefinitionSchema = z.object({
   name: z.string(),
   type: z.enum(["ui", "feature", "layout"]),
   description: z.string(),
-  props: z.record(z.string()).optional(),
+  props: z.record(z.string(), z.string()).optional(),
   template: z.enum(["create-new", "use-existing"]),
 });
 

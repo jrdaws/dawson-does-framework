@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 44ea472 2025-12-21 feat(testing): add test documentation and fix test imports
 - ba338d2 2025-12-21 fix(tests): add template manifests and fix test utility imports
 - 44a3ea1 2025-12-21 chore: update dependencies and configuration for testing
 - 5cb5249 2025-12-21 feat(packages): add monorepo structure with ai-agent and collaboration packages
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 7d54b4c 2025-12-19 feat(website): add terminal-aesthetic landing page
 - 0603f05 2025-12-19 chore: bump version to v0.3.0
 - 4f5f59e 2025-12-19 docs(registry): add comprehensive template registry documentation
-- 2639e84 2025-12-19 test(registry): add comprehensive template registry tests
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

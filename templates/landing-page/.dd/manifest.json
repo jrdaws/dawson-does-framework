@@ -1,9 +1,7 @@
 {
   "template": "landing-page",
-  "version": "1.0.0",
-  "capabilities": ["marketing", "seo", "hero-sections"],
-  "description": "Marketing landing page template with hero and CTA sections",
-  "framework": "next.js",
-  "styling": "tailwind",
-  "typescript": true
+  "version": "0.1.0",
+  "capabilities": [],
+  "description": "Landing page template with Next.js",
+  "framework_version": "0.3.0"
 }

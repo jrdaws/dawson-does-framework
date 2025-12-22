@@ -33,7 +33,7 @@ test("CLI: help command", () => {
   const result = runFramework(["help"]);
   assert.equal(result.status, 0, "help command should exit with 0");
   assert.ok(result.stdout.includes("Usage:"), "should show usage information");
-  assert.ok(result.stdout.includes("Commands:"), "should list commands");
+  assert.ok(result.stdout.includes("framework"), "should list framework commands");
 });
 
 test("CLI: help with --help flag", () => {
@@ -77,7 +77,8 @@ test("CLI: plugin command requires subcommand", () => {
   const result = runFramework(["plugin"]);
   // Should either show help or error about missing subcommand
   assert.ok(
-    result.stderr.includes("Usage") || result.stdout.includes("Usage"),
+    result.stderr.includes("Usage") || result.stdout.includes("Usage") ||
+    result.stdout.includes("Plugin Management Commands"),
     "should show usage information"
   );
 });

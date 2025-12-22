@@ -18,17 +18,54 @@ import {
   EyeOff,
   Info,
   Edit3,
-  Code2
+  Code2,
+  Save,
+  Check
 } from "lucide-react";
 import { generatePreview } from "@/lib/preview-generator";
 import { useConfiguratorStore } from "@/lib/configurator-state";
-import { VisualEditor } from "@/app/components/editor";
+import { CollaborativeVisualEditor } from "@/app/components/editor";
 
 interface AIPreviewProps {
   template: string;
   integrations: Record<string, string>;
   inspirations: Array<{ type: string; value: string; preview?: string }>;
   description: string;
+}
+
+// Helper functions for user identification
+function getUserId(): string {
+  if (typeof window === "undefined") return "server-user";
+
+  // Try to get from localStorage
+  let userId = localStorage.getItem("dawson-collab-user-id");
+
+  if (!userId) {
+    // Generate a new random user ID
+    userId = `user-${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem("dawson-collab-user-id", userId);
+  }
+
+  return userId;
+}
+
+function getUserName(): string {
+  if (typeof window === "undefined") return "Server User";
+
+  // Try to get from localStorage
+  let userName = localStorage.getItem("dawson-collab-user-name");
+
+  if (!userName) {
+    // Generate a fun random name
+    const adjectives = ["Creative", "Happy", "Clever", "Swift", "Bright", "Bold", "Cool", "Epic"];
+    const nouns = ["Designer", "Developer", "Builder", "Maker", "Coder", "Artist", "Creator", "Hacker"];
+    const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+    const noun = nouns[Math.floor(Math.random() * nouns.length)];
+    userName = `${adjective} ${noun}`;
+    localStorage.setItem("dawson-collab-user-name", userName);
+  }
+
+  return userName;
 }
 
 export function AIPreview({
@@ -48,6 +85,7 @@ export function AIPreview({
     setGenerating,
     setUserApiKey,
     setRemainingDemoGenerations,
+    setPreviewHtml,
   } = useConfiguratorStore();
 
   const [localPreviewHtml, setLocalPreviewHtml] = useState<string | null>(previewHtml);
@@ -59,6 +97,7 @@ export function AIPreview({
   const [generatedAt, setGeneratedAt] = useState<string | null>(null);
   const [isCached, setIsCached] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const viewportWidths = {
     desktop: "100%",
@@ -124,6 +163,13 @@ export function AIPreview({
     const blob = new Blob([localPreviewHtml], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     window.open(url, "_blank");
+  };
+
+  const handleSave = () => {
+    if (!localPreviewHtml) return;
+    setPreviewHtml(localPreviewHtml);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   };
 
   return (
@@ -373,6 +419,30 @@ export function AIPreview({
                       </>
                     )}
                   </Button>
+                  {editMode && (
+                    <Button
+                      onClick={handleSave}
+                      variant={saved ? "default" : "outline"}
+                      size="sm"
+                      className={
+                        saved
+                          ? "bg-green-600 hover:bg-green-700 text-white"
+                          : "border-terminal-text/30 text-terminal-text hover:border-terminal-accent"
+                      }
+                    >
+                      {saved ? (
+                        <>
+                          <Check className="mr-2 h-4 w-4" />
+                          Saved!
+                        </>
+                      ) : (
+                        <>
+                          <Save className="mr-2 h-4 w-4" />
+                          Save Changes
+                        </>
+                      )}
+                    </Button>
+                  )}
                   <Button
                     onClick={handleOpenNewTab}
                     variant="outline"
@@ -410,6 +480,11 @@ export function AIPreview({
                   <span className="text-xs text-terminal-dim ml-2 flex items-center gap-2">
                     <Edit3 className="h-3 w-3 text-terminal-accent" />
                     Visual Editor - Click elements to edit
+                    {localPreviewHtml !== previewHtml && !saved && (
+                      <span className="text-amber-500 text-[10px] bg-amber-500/10 px-1.5 py-0.5 rounded">
+                        unsaved changes
+                      </span>
+                    )}
                   </span>
                   {components.length > 0 && (
                     <span className="ml-auto text-[10px] text-terminal-dim">
@@ -418,10 +493,14 @@ export function AIPreview({
                   )}
                 </div>
                 <div className="terminal-content p-0" style={{ height: "700px" }}>
-                  <VisualEditor
+                  <CollaborativeVisualEditor
                     html={localPreviewHtml}
                     onHtmlChange={setLocalPreviewHtml}
                     className="h-full"
+                    projectId={projectName || "default-project"}
+                    userId={getUserId()}
+                    userName={getUserName()}
+                    enableCollaboration={true}
                   />
                 </div>
               </div>

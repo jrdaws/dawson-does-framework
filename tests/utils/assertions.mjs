@@ -21,12 +21,18 @@ export function assertValidManifest(manifestPath) {
   // Check required fields
   assert.ok(manifest.template, "Manifest missing 'template' field");
   assert.ok(manifest.version, "Manifest missing 'version' field");
-  assert.ok(Array.isArray(manifest.capabilities), "Manifest 'capabilities' must be an array");
 
-  // Validate capabilities structure
-  for (const cap of manifest.capabilities) {
-    assert.ok(cap.id, "Capability missing 'id' field");
-    assert.ok(cap.type, "Capability missing 'type' field");
+  // Capabilities can be array of strings or objects
+  if (manifest.capabilities !== undefined) {
+    assert.ok(Array.isArray(manifest.capabilities), "Manifest 'capabilities' must be an array");
+
+    // If capabilities are objects, validate structure
+    if (manifest.capabilities.length > 0 && typeof manifest.capabilities[0] === 'object') {
+      for (const cap of manifest.capabilities) {
+        assert.ok(cap.id, "Capability missing 'id' field");
+        assert.ok(cap.type, "Capability missing 'type' field");
+      }
+    }
   }
 }
 

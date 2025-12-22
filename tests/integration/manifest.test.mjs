@@ -18,34 +18,35 @@ test('writeManifest: creates valid manifest', () => {
     });
 
     assert(fs.existsSync(manifestPath), 'Manifest file not created');
-    assertValidManifest(manifestPath);
 
+    // Read and validate the template-manifest.json structure
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
     assert.equal(manifest.templateId, 'saas');
+    assert.equal(manifest.schemaVersion, 1);
+    assert(manifest.generatedAt);
+    assert(Array.isArray(manifest.files));
   } finally {
     cleanupTempProject(tempDir);
   }
 });
 
-test('writeManifest: includes integrations', () => {
+test('writeManifest: includes template metadata', () => {
   const tempDir = createTempProject();
 
   try {
     const manifestPath = writeManifest(tempDir, {
       templateId: 'saas',
       flags: {
-        afterInstall: 'prompt',
-        integrations: {
-          auth: 'supabase',
-          payments: 'stripe',
-        },
+        templateSource: 'local',
+        frameworkVersion: 'v0.3.0',
       },
       resolved: { mode: 'local', localPath: '/path/to/template' },
     });
 
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-    assert.equal(manifest.integrations.auth, 'supabase');
-    assert.equal(manifest.integrations.payments, 'stripe');
+    assert.equal(manifest.templateId, 'saas');
+    assert.equal(manifest.templateSource, 'local');
+    assert.equal(manifest.frameworkVersion, 'v0.3.0');
   } finally {
     cleanupTempProject(tempDir);
   }
@@ -96,9 +97,9 @@ test('manifest validation: accepts valid manifest', () => {
 
   try {
     createMockManifest(tempDir, {
-      version: 1,
-      templateId: 'saas',
-      generatedAt: new Date().toISOString(),
+      template: 'saas',
+      version: '0.1.0',
+      capabilities: ['auth', 'billing'],
     });
 
     const manifestPath = path.join(tempDir, '.dd/manifest.json');

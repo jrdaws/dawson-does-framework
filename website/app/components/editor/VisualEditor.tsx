@@ -7,6 +7,7 @@ import { PropertiesPanel } from "./PropertiesPanel";
 import { ComponentTree } from "./ComponentTree";
 import { getInjectionScript } from "./iframe-injector";
 import { EditorMessage, SelectedElement, ElementTreeNode } from "./types";
+import { Undo2, Redo2 } from "lucide-react";
 
 interface VisualEditorProps {
   html: string;
@@ -21,6 +22,11 @@ function VisualEditorContent({ html, onHtmlChange, className }: VisualEditorProp
     selectElement,
     hoverElement,
     selectedElement,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    pushHistory,
   } = useEditor();
 
   // Inject the selection script into the HTML
@@ -58,20 +64,32 @@ function VisualEditorContent({ html, onHtmlChange, className }: VisualEditorProp
           // Tree updates are handled internally by context
           break;
         case "ready":
-          // Request initial tree
+          // Request initial tree and HTML
           if (iframeRef.current?.contentWindow) {
             iframeRef.current.contentWindow.postMessage(
               { type: "getTree" },
               "*"
             );
+            // Request initial HTML for history
+            iframeRef.current.contentWindow.postMessage(
+              { type: "getHtml" },
+              "*"
+            );
           }
+          break;
+        case "html":
+          // Received HTML from iframe - push to history
+          if (message.payload?.html && onHtmlChange) {
+            onHtmlChange(message.payload.html);
+          }
+          pushHistory(message.payload?.html || "");
           break;
         case "error":
           console.error("Editor error:", message.payload);
           break;
       }
     },
-    [selectElement, hoverElement, iframeRef]
+    [selectElement, hoverElement, iframeRef, onHtmlChange, pushHistory]
   );
 
   useEffect(() => {
@@ -79,17 +97,35 @@ function VisualEditorContent({ html, onHtmlChange, className }: VisualEditorProp
     return () => window.removeEventListener("message", handleMessage);
   }, [handleMessage]);
 
-  // Handle escape key to deselect
+  // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape to deselect
       if (e.key === "Escape") {
         selectElement(null);
+        return;
+      }
+
+      // Undo: Ctrl+Z (Windows/Linux) or Cmd+Z (Mac)
+      if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+        return;
+      }
+
+      // Redo: Ctrl+Y (Windows/Linux) or Cmd+Shift+Z (Mac)
+      if (
+        ((e.ctrlKey && e.key === "y") || (e.metaKey && e.shiftKey && e.key === "z"))
+      ) {
+        e.preventDefault();
+        redo();
+        return;
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectElement]);
+  }, [selectElement, undo, redo]);
 
   return (
     <div className={`flex h-full ${className || ""}`}>
@@ -98,20 +134,46 @@ function VisualEditorContent({ html, onHtmlChange, className }: VisualEditorProp
         <ComponentTree />
       </div>
 
-      {/* Center - Preview with Overlay */}
-      <div className="flex-1 relative overflow-auto bg-white">
-        <div className="relative min-h-full">
-          <iframe
-            ref={(iframe) => {
-              if (iframe) registerIframe(iframe);
-            }}
-            srcDoc={enhancedHtml}
-            className="w-full h-full border-0"
-            style={{ minHeight: "600px" }}
-            sandbox="allow-scripts allow-same-origin"
-            title="Visual Editor Preview"
-          />
-          {selectedElement && <SelectionOverlay />}
+      {/* Center - Preview with Toolbar and Overlay */}
+      <div className="flex-1 relative flex flex-col overflow-hidden bg-white">
+        {/* Toolbar */}
+        <div className="flex items-center gap-1 px-3 py-2 border-b border-terminal-text/20 bg-terminal-bg/30">
+          <button
+            onClick={undo}
+            disabled={!canUndo}
+            className="p-1.5 rounded hover:bg-terminal-text/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            title="Undo (Ctrl/Cmd+Z)"
+          >
+            <Undo2 className="h-4 w-4 text-terminal-text" />
+          </button>
+          <button
+            onClick={redo}
+            disabled={!canRedo}
+            className="p-1.5 rounded hover:bg-terminal-text/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            title="Redo (Ctrl+Y / Cmd+Shift+Z)"
+          >
+            <Redo2 className="h-4 w-4 text-terminal-text" />
+          </button>
+          <div className="ml-2 text-xs text-terminal-dim">
+            Press Escape to deselect
+          </div>
+        </div>
+
+        {/* Preview */}
+        <div className="flex-1 relative overflow-auto">
+          <div className="relative min-h-full">
+            <iframe
+              ref={(iframe) => {
+                if (iframe) registerIframe(iframe);
+              }}
+              srcDoc={enhancedHtml}
+              className="w-full h-full border-0"
+              style={{ minHeight: "600px" }}
+              sandbox="allow-scripts allow-same-origin"
+              title="Visual Editor Preview"
+            />
+            {selectedElement && <SelectionOverlay />}
+          </div>
         </div>
       </div>
 

@@ -14,9 +14,10 @@ test("getCurrentVersion returns a valid semver", () => {
 });
 
 test("getUpgradeCommand returns npm install command", () => {
-  const cmd = getUpgradeCommand();
+  const pkgName = getPackageName();
+  const cmd = getUpgradeCommand(pkgName);
   assert.ok(cmd.includes("npm"), "should include npm");
-  assert.ok(cmd.includes("@jrdaws/framework"), "should include package name");
+  assert.ok(cmd.includes(pkgName), "should include package name");
 });
 
 test("checkForUpdates handles when already on latest", async () => {

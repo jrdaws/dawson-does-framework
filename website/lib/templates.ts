@@ -42,8 +42,8 @@ export const TEMPLATES = {
   },
   blog: {
     id: "blog",
-    name: "Blog/CMS",
-    description: "MDX-based blog with syntax highlighting, tags, and RSS",
+    name: "Blog",
+    description: "Content-focused blog with post list, single post view, author bio, categories, and search",
     category: "Content",
     supportedIntegrations: {
       analytics: ["posthog", "plausible"],
@@ -54,19 +54,29 @@ export const TEMPLATES = {
   },
   dashboard: {
     id: "dashboard",
-    name: "Dashboard",
-    description: "Analytics dashboard with charts, tables, and real-time data",
-    category: "Application",
+    name: "Admin Dashboard",
+    description: "Modern admin dashboard starter with sidebar navigation, data tables, charts, and settings",
+    category: "Dashboard",
     supportedIntegrations: {
       auth: ["supabase", "clerk"],
       db: ["supabase", "planetscale"],
       analytics: ["posthog", "plausible"],
     },
-    defaultIntegrations: {
-      auth: "supabase",
-      db: "supabase",
+    defaultIntegrations: {},
+    requiredIntegrations: [],
+  },
+  "landing-page": {
+    id: "landing-page",
+    name: "Landing Page",
+    description: "Modern marketing landing page with hero, features, testimonials, pricing, FAQ, and CTA sections",
+    category: "Marketing",
+    supportedIntegrations: {
+      payments: ["stripe", "paddle"],
+      email: ["resend", "sendgrid"],
+      analytics: ["posthog", "plausible"],
     },
-    requiredIntegrations: ["auth", "db"],
+    defaultIntegrations: {},
+    requiredIntegrations: [],
   },
   "api-backend": {
     id: "api-backend",

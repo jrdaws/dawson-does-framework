@@ -253,6 +253,56 @@ export function EnvironmentKeys({
                   </div>
                 )}
 
+                {/* Format Example */}
+                <div className="bg-terminal-accent/10 border border-terminal-accent/30 rounded p-3 space-y-2">
+                  <p className="text-xs text-terminal-accent font-bold">
+                    ✅ Paste ONLY the value (without the variable name):
+                  </p>
+                  <div className="font-mono text-[10px] text-terminal-text space-y-1">
+                    {envVar.includes('SUPABASE_URL') && (
+                      <div>
+                        <span className="text-terminal-dim">Example: </span>
+                        <span className="text-terminal-accent">https://abcdefghi.supabase.co</span>
+                      </div>
+                    )}
+                    {envVar.includes('ANON_KEY') && (
+                      <div>
+                        <span className="text-terminal-dim">Example: </span>
+                        <span className="text-terminal-accent">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</span>
+                      </div>
+                    )}
+                    {(envVar.includes('STRIPE') && envVar.includes('SECRET')) && (
+                      <div>
+                        <span className="text-terminal-dim">Example: </span>
+                        <span className="text-terminal-accent">sk_test_51Abc...</span>
+                      </div>
+                    )}
+                    {(envVar.includes('STRIPE') && envVar.includes('PUBLISHABLE')) && (
+                      <div>
+                        <span className="text-terminal-dim">Example: </span>
+                        <span className="text-terminal-accent">pk_test_51Abc...</span>
+                      </div>
+                    )}
+                    {envVar.includes('CLERK') && (
+                      <div>
+                        <span className="text-terminal-dim">Example: </span>
+                        <span className="text-terminal-accent">pk_test_...</span>
+                      </div>
+                    )}
+                    {!envVar.includes('SUPABASE') && !envVar.includes('STRIPE') && !envVar.includes('CLERK') && (
+                      <div>
+                        <span className="text-terminal-dim">Paste the key/value from your dashboard</span>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-terminal-error">
+                    ❌ Do NOT paste: <code className="bg-terminal-bg px-1">{envVar}=your_value</code>
+                  </p>
+                  <p className="text-[10px] text-terminal-accent">
+                    ✅ Paste ONLY: <code className="bg-terminal-bg px-1">your_value</code>
+                  </p>
+                </div>
+
                 {/* Input Field */}
                 <div className="space-y-2">
                   <Label htmlFor={envVar} className="text-terminal-text font-mono text-xs">
@@ -264,7 +314,7 @@ export function EnvironmentKeys({
                       type={isVisible ? "text" : "password"}
                       value={value}
                       onChange={(e) => onEnvKeyChange(envVar, e.target.value)}
-                      placeholder="Paste your key here..."
+                      placeholder="Paste ONLY the value (not the variable name)"
                       className="bg-terminal-bg border-terminal-text/30 text-terminal-text font-mono text-xs pr-10"
                     />
                     <button

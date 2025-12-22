@@ -197,6 +197,12 @@ export function getInjectionScript(): string {
               const clone = targetElement.cloneNode(true);
               targetElement.parentNode.insertBefore(clone, targetElement.nextSibling);
             }
+
+            // After any update, send the new HTML for history tracking
+            window.parent.postMessage({
+              type: 'html',
+              payload: { html: document.body.innerHTML },
+            }, '*');
             break;
           }
           case 'getTree': {
@@ -239,6 +245,32 @@ export function getInjectionScript(): string {
             window.parent.postMessage({
               type: 'selection',
               payload: createElementData(targetElement),
+            }, '*');
+            break;
+          }
+          case 'getHtml': {
+            // Return current HTML for history tracking
+            window.parent.postMessage({
+              type: 'html',
+              payload: { html: document.body.innerHTML },
+            }, '*');
+            break;
+          }
+          case 'setHtml': {
+            // Restore HTML from history (for undo/redo)
+            const { html } = message.payload;
+            document.body.innerHTML = html;
+
+            // Clear selection
+            if (selectedElement) {
+              selectedElement = null;
+            }
+
+            // Rebuild tree
+            const tree = buildElementTree(document.body);
+            window.parent.postMessage({
+              type: 'tree',
+              payload: tree,
             }, '*');
             break;
           }

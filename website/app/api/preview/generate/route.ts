@@ -122,28 +122,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check cache first (only for deterministic requests with seed)
-    const cacheKey = generateCacheKey({
-      template,
-      projectName,
-      integrations,
-      description,
-      vision,
-      mission,
-      seed,
-    });
-
-    const cachedResult = previewCache.get(cacheKey);
-    if (cachedResult && cachedResult.expiresAt > Date.now()) {
-      console.log(`[Preview Cache Hit] ${template} | ${Date.now() - startTime}ms`);
-      return NextResponse.json({
-        success: true,
-        html: cachedResult.html,
-        components: cachedResult.components,
-        generatedAt: cachedResult.generatedAt,
-        cached: true,
-        remainingDemoGenerations: null, // Cache hit doesn't affect rate limit
+    // Check cache first (only for deterministic requests with explicit seed)
+    // Non-seeded requests use temperature 0.3 and should produce varied outputs
+    let cacheKey: string | null = null;
+    if (seed !== undefined) {
+      cacheKey = generateCacheKey({
+        template,
+        projectName,
+        integrations,
+        description,
+        vision,
+        mission,
+        seed,
       });
+
+      const cachedResult = previewCache.get(cacheKey);
+      if (cachedResult && cachedResult.expiresAt > Date.now()) {
+        console.log(`[Preview Cache Hit] ${template} | ${Date.now() - startTime}ms`);
+        return NextResponse.json({
+          success: true,
+          html: cachedResult.html,
+          components: cachedResult.components,
+          generatedAt: cachedResult.generatedAt,
+          cached: true,
+          remainingDemoGenerations: null, // Cache hit doesn't affect rate limit
+        });
+      }
     }
 
     // Rate limiting check (uses Redis in production)
@@ -214,13 +218,15 @@ export async function POST(request: NextRequest) {
     const components = extractComponents(html);
     const generatedAt = new Date().toISOString();
 
-    // Cache the result
-    previewCache.set(cacheKey, {
-      html,
-      components,
-      generatedAt,
-      expiresAt: Date.now() + CACHE_TTL,
-    });
+    // Cache the result only for deterministic (seeded) requests
+    if (cacheKey) {
+      previewCache.set(cacheKey, {
+        html,
+        components,
+        generatedAt,
+        expiresAt: Date.now() + CACHE_TTL,
+      });
+    }
 
     // Clean up old cache entries periodically
     if (previewCache.size > 100) {
@@ -332,28 +338,34 @@ FRAMEWORK CONTEXT:
 - Project Name: ${projectName || "My App"}
 - Selected Integrations: ${integrationsDesc || "none"}
 
-TERMINAL AESTHETIC:
-- Background: #0a0e14 (dark terminal)
-- Primary text: #00ff41 (matrix green)
-- Accent: #00d9ff (cyan)
-- Borders: green/cyan with glow effects
-- Font: Monospace (JetBrains Mono style)
-- Windows have terminal-style title bars with colored dots
+TERMINAL AESTHETIC - STRICTLY FOLLOW THESE COLORS:
+- Background: #0a0e14 (MUST use this exact dark terminal background for body and main sections)
+- Primary text: #00ff41 (MUST use this exact matrix green for all headings and primary text)
+- Accent text: #00d9ff (MUST use this exact cyan for links, buttons, and highlights)
+- Borders: Use green (#00ff41) or cyan (#00d9ff) with glow effects (box-shadow)
+- Font: MUST use monospace font family (ui-monospace, 'Courier New', monospace)
+- Cards/Sections: Dark background with green/cyan borders, subtle glow
+- Buttons: Solid cyan background (#00d9ff) with dark text, or outlined with green/cyan
+- Windows: Include terminal-style title bars with colored dots (red, yellow, green)
+
+CRITICAL: Apply these exact colors throughout. Do NOT use default Tailwind colors like blue, purple, or standard grays.
 
 YOUR TASK:
-Generate a complete, self-contained HTML preview that demonstrates what the user's project will look like.
+Generate a complete, MULTI-PAGE, self-contained HTML preview that demonstrates what the user's project will look like.
 
 OUTPUT REQUIREMENTS:
 1. Complete HTML document with <!DOCTYPE html>
-2. Include Tailwind CSS via CDN
-3. Inline all styles (no external stylesheets)
-4. Use the terminal aesthetic consistently
-5. Create realistic content that matches the template type
-6. Show integration points visually (auth buttons, payment forms, etc.)
-7. Make it visually impressive but maintain the terminal theme
-8. Include navigation, hero section, and key features
-9. Responsive design (mobile-friendly)
-10. No JavaScript interactions needed (static preview)
+2. Include Tailwind CSS via CDN for layout utilities
+3. MUST include inline <style> tag with the exact terminal colors specified above
+4. STRICTLY use the terminal aesthetic colors (#0a0e14, #00ff41, #00d9ff) throughout
+5. Create 3-5 navigable pages (Home, About, Features/Products, Dashboard/Account, Contact/Support)
+6. Add working navigation between pages using JavaScript page switching (single-page app with hidden/shown sections)
+7. Include realistic content that matches the template type
+8. Show integration points visually (auth buttons, payment forms, API docs, etc.)
+9. Make each page visually impressive with the terminal theme
+10. Include navigation bar on every page with working links
+11. Responsive design (mobile-friendly)
+12. Add smooth transitions between pages
 
 OUTPUT FORMAT:
 Return ONLY the HTML code, wrapped in a code block:
@@ -437,7 +449,27 @@ function buildUserPrompt(
   // Template-specific guidance
   prompt += getTemplateGuidance(template);
 
-  prompt += `\nGenerate a visually stunning preview that incorporates these elements while maintaining the terminal aesthetic.`;
+  prompt += `
+
+MULTI-PAGE NAVIGATION IMPLEMENTATION:
+Structure your HTML like this:
+- Create separate <div> sections with ids like "page-home", "page-features", etc.
+- Only show one page at a time (use "hidden" class on inactive pages)
+- Add navigation links with onclick="showPage('page-features')" handlers
+- Include simple JavaScript to handle page switching:
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden'));
+      document.getElementById(pageId).classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+  </script>
+- Add smooth fade transitions with CSS
+- Ensure nav bar is visible on every page
+
+IMPORTANT: Make buttons, links, and nav items clickable and functional so users can explore the full app experience.
+
+Generate a visually stunning, MULTI-PAGE preview that incorporates these elements while STRICTLY maintaining the terminal aesthetic colors (#0a0e14, #00ff41, #00d9ff).`;
 
   return prompt;
 }
@@ -445,55 +477,93 @@ function buildUserPrompt(
 function getTemplateGuidance(template: string): string {
   const guidance: Record<string, string> = {
     saas: `TEMPLATE GUIDANCE (SaaS Starter):
-- Hero section with value proposition and terminal-styled CTA
-- Features grid showcasing key capabilities
-- Pricing cards with terminal window styling
-- Sign-up/Login buttons (auth integration)
-- Dashboard preview with metrics
-- Footer with links`,
+Create these navigable pages:
+1. HOME: Hero section with value proposition, terminal-styled CTA, features overview
+2. FEATURES: Detailed features grid with icons and descriptions
+3. PRICING: Pricing cards with terminal window styling showing different plans
+4. DASHBOARD: Mock dashboard with metrics, charts (if auth integration selected)
+5. CONTACT: Contact form with terminal styling
+
+Key elements:
+- Sign-up/Login buttons in nav (if auth integration selected)
+- Terminal-styled cards with glowing borders
+- Mock API key display (if API integration selected)
+- Footer on every page with links`,
 
     ecommerce: `TEMPLATE GUIDANCE (E-commerce):
-- Product catalog grid with terminal-styled cards
-- Shopping cart icon with count
-- Product detail view with "Add to Cart" button
-- Payment/checkout section (Stripe integration visual)
-- Category navigation
-- Search bar with terminal aesthetic`,
+Create these navigable pages:
+1. HOME: Hero banner, featured products grid
+2. PRODUCTS: Full product catalog with terminal-styled cards
+3. PRODUCT DETAIL: Single product view with "Add to Cart" button
+4. CART: Shopping cart page with checkout button
+5. ACCOUNT: User account/orders page (if auth integration)
+
+Key elements:
+- Shopping cart icon in nav with item count
+- Payment section showing Stripe/payment forms
+- Product filters with terminal aesthetic
+- Category navigation with green/cyan highlighting`,
 
     blog: `TEMPLATE GUIDANCE (Blog):
-- Article list with terminal-styled post cards
-- Post title, date, author, tags
-- Featured post with larger display
-- Sidebar with categories and recent posts
-- Newsletter signup form (email integration visual)
-- Syntax-highlighted code blocks`,
+Create these navigable pages:
+1. HOME: Latest posts list with terminal-styled cards
+2. POST: Full blog post with syntax-highlighted code blocks
+3. CATEGORIES: Category listing page
+4. ABOUT: About the blog/author
+5. NEWSLETTER: Subscription page (if email integration)
+
+Key elements:
+- Post metadata (date, author, tags) with cyan highlights
+- Code blocks with terminal colors
+- Sidebar with recent posts and categories
+- Newsletter signup form with terminal styling`,
 
     dashboard: `TEMPLATE GUIDANCE (Dashboard):
-- Metrics cards with terminal-styled stats
-- Charts/graphs with terminal colors (green/cyan)
-- Data tables with monospace font
+Create these navigable pages:
+1. HOME: Overview dashboard with key metrics
+2. ANALYTICS: Detailed charts and graphs with terminal colors
+3. DATA: Data tables with monospace font
+4. SETTINGS: Settings page with form inputs
+5. API: API keys and documentation (if API integration)
+
+Key elements:
 - Sidebar navigation with icons
-- Real-time data indicators
-- Settings/profile section`,
+- Metrics cards with green/cyan values
+- Real-time indicators (green dots, "online" status)
+- Terminal-styled forms and inputs`,
 
     "api-backend": `TEMPLATE GUIDANCE (API Backend):
-- API documentation page
-- Endpoint list with terminal-styled cards
-- Code examples in terminal windows
-- Authentication section showing API keys
-- Rate limiting info
-- Response examples with JSON formatting`,
+Create these navigable pages:
+1. HOME: API overview and getting started
+2. ENDPOINTS: Full API reference with endpoint list
+3. AUTHENTICATION: Auth docs showing API key usage
+4. EXAMPLES: Code examples in terminal windows
+5. CHANGELOG: Version history and updates
+
+Key elements:
+- Endpoint cards showing HTTP methods (GET, POST, etc.)
+- Code examples with syntax highlighting
+- Authentication section with API key mockup
+- Rate limiting info with terminal styling
+- Response examples with formatted JSON`,
 
     directory: `TEMPLATE GUIDANCE (Directory):
-- Listing grid with terminal-styled item cards
-- Search and filter controls
-- Category tags with terminal colors
-- Detail view with specifications
-- Submit/Add listing button
-- Pagination controls`,
+Create these navigable pages:
+1. HOME: Listing grid with featured items
+2. LISTINGS: Full directory with search and filters
+3. DETAIL: Single item detail page
+4. SUBMIT: Add new listing form
+5. ABOUT: About the directory
+
+Key elements:
+- Search bar with terminal aesthetic
+- Category filters with green/cyan tags
+- Listing cards with terminal borders and glow
+- Pagination controls with monospace numbers
+- Submit form with terminal-styled inputs`,
   };
 
-  return guidance[template] || "Create an impressive landing page for this template type.";
+  return guidance[template] || "Create a multi-page landing site with navigation for this template type.";
 }
 
 function extractHtmlFromResponse(text: string): string {

@@ -134,7 +134,7 @@ function buildArchitectureSummary(architecture: ProjectArchitecture): string {
 /**
  * Build a list of active integrations
  */
-function buildIntegrationsList(integrations: Record<string, string | null | undefined>): string {
+function buildIntegrationsList(integrations: Record<string, string | null | undefined> | object): string {
   const active = Object.entries(integrations)
     .filter(([_, value]) => value)
     .map(([type, provider]) => `- **${type}**: ${provider}`)

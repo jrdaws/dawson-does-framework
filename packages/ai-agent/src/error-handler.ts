@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { z } from "zod";
+import { type ZodError, type ZodIssue } from "zod";
 
 export class AIAgentError extends Error {
   constructor(
@@ -16,12 +16,13 @@ export class AIAgentError extends Error {
 export function handleLLMError(error: unknown): AIAgentError {
   // Handle Anthropic API errors
   if (error instanceof Anthropic.APIError) {
-    const retryable = error.status === 429 || (error.status >= 500 && error.status < 600);
+    const status = error.status || 500;
+    const retryable = status === 429 || (status >= 500 && status < 600);
 
     let message = "API Error";
     let code = `anthropic_${error.status}`;
 
-    switch (error.status) {
+    switch (status) {
       case 401:
         message = "Invalid API key. Please check your ANTHROPIC_API_KEY.";
         break;
@@ -43,7 +44,7 @@ export function handleLLMError(error: unknown): AIAgentError {
       code,
       message,
       retryable,
-      { status: error.status, originalMessage: error.message }
+      { status, originalMessage: error.message }
     );
   }
 
@@ -65,14 +66,14 @@ export function handleLLMError(error: unknown): AIAgentError {
   );
 }
 
-export function handleValidationError(error: z.ZodError): AIAgentError {
-  const errorMessages = error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ");
+export function handleValidationError(error: ZodError<any>): AIAgentError {
+  const errorMessages = error.issues.map((e: ZodIssue) => `${e.path.join(".")}: ${e.message}`).join(", ");
 
   return new AIAgentError(
     "validation_error",
     `Invalid AI output: ${errorMessages}`,
     true, // Retryable - AI might generate valid output on retry
-    { errors: error.errors }
+    { errors: error.issues }
   );
 }
 

@@ -72,6 +72,7 @@ export interface ConfiguratorState {
     version: string;
     auditLog: { action: string; reasoning: string; timestamp: number }[];
   }) => void;
+  setPreviewHtml: (html: string) => void;
   setGenerating: (isGenerating: boolean) => void;
   addIteration: (prompt: string) => void;
   setUserApiKey: (key: string) => void;
@@ -164,6 +165,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         auditLog: data.auditLog,
         isGenerating: false,
       }),
+
+      setPreviewHtml: (html) => set({ previewHtml: html }),
 
       setGenerating: (isGenerating) => set({ isGenerating }),
 

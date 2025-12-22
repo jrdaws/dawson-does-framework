@@ -9,15 +9,19 @@ import { assertValidTemplate, assertPackageJson, assertFilesExist } from '../uti
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATES_DIR = path.resolve(__dirname, '../../templates');
 
-// Get all template directories
+// Get all template directories that have package.json (complete templates)
 function getTemplates() {
   if (!fs.existsSync(TEMPLATES_DIR)) {
     return [];
   }
-  
+
   return fs.readdirSync(TEMPLATES_DIR).filter(name => {
     const templatePath = path.join(TEMPLATES_DIR, name);
-    return fs.statSync(templatePath).isDirectory();
+    if (!fs.statSync(templatePath).isDirectory()) return false;
+
+    // Only include templates that have package.json (skip incomplete ones)
+    const packageJsonPath = path.join(templatePath, 'package.json');
+    return fs.existsSync(packageJsonPath);
   });
 }
 
