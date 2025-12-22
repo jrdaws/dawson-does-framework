@@ -9,8 +9,8 @@
   "minFrameworkVersion": "0.1.0",
   "capabilities": [],
   "dependencies": {
-    "next": "^14.2.0",
-    "react": "^18.3.0"
+    "next": "^15.1.6",
+    "react": "^19.0.0"
   },
   "features": [
     "Next.js 15 with App Router",
