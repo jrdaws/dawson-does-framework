@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 2efa50e 2025-12-22 docs(agents): update Template Agent memory with dark mode session
 - dce6da7 2025-12-22 feat(website): improve configurator and add E2E tests
 - bb5dab3 2025-12-22 chore(templates): update seo-directory Next.js types
 - ea01403 2025-12-22 feat(templates): add dark mode support to all templates
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 5e8cd30 2025-12-21 chore: bump version to 0.3.1
 - b39f514 2025-12-21 chore: update framework map after test additions
 - d710faf 2025-12-21 docs(governance): add mandatory agent context verification system
-- b33247a 2025-12-21 feat(website): complete Projects API and CLI pull integration
 
 ## Agent Governance Structure
 
