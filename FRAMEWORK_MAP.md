@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 5cb5249 2025-12-21 feat(packages): add monorepo structure with ai-agent and collaboration packages
 - a5f829c 2025-12-21 feat(testing): comprehensive test infrastructure with CI/CD pipelines
 - c4c9e2e 2025-12-21 feat(website): add visual editor and project download endpoint
 - 6b14c7b 2025-12-21 feat(templates): add blog, dashboard, and landing-page templates
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 2639e84 2025-12-19 test(registry): add comprehensive template registry tests
 - 4ead1c7 2025-12-19 feat(cli): add framework templates command suite
 - 0170bae 2025-12-19 feat(templates): add template.json metadata to existing templates
-- 935dab3 2025-12-19 feat(registry): add template registry and discovery system
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

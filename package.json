@@ -42,7 +42,11 @@
     "health": "node --import tsx scripts/orchestrator/health.mjs",
     "entitlements:test": "node scripts/orchestrator/entitlements-test.mjs",
     "audit:tail": "node scripts/orchestrator/audit-tail.mjs",
-    "test": "node --test 'tests/*.test.mjs' 'tests/**/*.test.mjs'",
+    "test": "node --test 'tests/**/*.test.mjs' 'tests/*.test.mjs'",
+    "test:watch": "node --test --watch 'tests/**/*.test.mjs' 'tests/*.test.mjs'",
+    "test:coverage": "c8 --reporter=lcov --reporter=text --reporter=html npm test",
+    "test:cli": "node --test 'tests/cli/**/*.test.mjs'",
+    "test:integration": "node --test 'tests/integration/**/*.test.mjs'",
     "prepare": "husky",
     "prepublishOnly": "npm test && npm run caps:validate",
     "caps:validate": "node scripts/orchestrator/validate-capabilities.mjs",
@@ -53,6 +57,7 @@
     "changelog:generate": "node scripts/generate-changelog.mjs"
   },
   "devDependencies": {
+    "c8": "^10.1.2",
     "husky": "^9.1.7",
     "tsx": "^4.21.0"
   }

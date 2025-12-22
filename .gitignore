@@ -19,3 +19,10 @@ test-dryrun/
 *.tgz
 .dd/secrets.json
 .dd/secrets.enc
+
+# test coverage and artifacts
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+*.lcov
