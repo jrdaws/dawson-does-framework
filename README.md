@@ -71,8 +71,8 @@ framework export saas ./my-app \
   --email resend \
   --ai anthropic
 
-# Or pull from web configurator
-framework pull <token> --cursor
+# Or configure visually at dawson.dev, then pull
+framework pull <your-token> --cursor --open
 ```
 
 [Integration guides →](docs/integrations/README.md)
@@ -124,8 +124,8 @@ framework export saas ./my-app  # Plugin runs automatically
 Built for AI-assisted development with Cursor, Claude, and other AI coding tools:
 
 ```bash
-# Generate .cursorrules and context files
-framework pull <token> --cursor
+# Generate .cursorrules and START_PROMPT.md for AI context
+framework pull <token> --cursor --open
 
 # AI agent safety with checkpoints
 framework checkpoint create "before major refactor"
@@ -134,6 +134,10 @@ framework checkpoint restore <id>  # Rollback if needed
 # Drift detection
 framework drift  # See changes from template
 ```
+
+**The `--cursor` flag generates:**
+- `.cursorrules` - Project-specific AI guidelines with tech stack, context, and best practices
+- `START_PROMPT.md` - Ready-to-use prompt for onboarding AI assistants to your project
 
 [AI features →](docs/concepts/agent-safety.md)
 
@@ -223,10 +227,48 @@ npm run dev
 
 ### Pull from Web Configurator
 
+The web configurator at [dawson.dev](https://dawson.dev) lets you visually design your project. Once configured, pull it locally with a single command.
+
 ```bash
-# Configure at https://dawson.dev, get token
-framework pull abc123xyz --cursor --open
+# Basic pull - downloads project to default directory
+framework pull swift-eagle-1234
+
+# Pull to specific directory
+framework pull swift-eagle-1234 ./my-project
+
+# Pull with Cursor AI setup (generates .cursorrules and START_PROMPT.md)
+framework pull swift-eagle-1234 --cursor
+
+# Pull and open in Cursor immediately
+framework pull swift-eagle-1234 --cursor --open
+
+# Preview what will be downloaded (dry run)
+framework pull swift-eagle-1234 --dry-run
+
+# Force overwrite existing directory
+framework pull swift-eagle-1234 ./existing-project --force
 ```
+
+**What gets created:**
+- Complete Next.js project with your selected template
+- All configured integrations (auth, payments, etc.)
+- `.env.example` with all required environment variables
+- `.env.local` with any values you provided
+- Project context files in `.dd/` (vision, mission, success criteria)
+- `.cursorrules` and `START_PROMPT.md` (with `--cursor` flag)
+- Initialized git repository with initial commit
+
+**After pulling:**
+```bash
+cd my-project
+npm install
+npm run dev
+```
+
+**Troubleshooting:**
+- `Token not found` - Check the token is correct or hasn't expired (30-day expiry)
+- `Directory exists` - Use `--force` to overwrite, or choose different directory
+- `Network error` - Use `--dev` flag to test against localhost:3002
 
 ### Deploy to Production
 

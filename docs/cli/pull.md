@@ -75,7 +75,7 @@ framework pull abc123xyz --cursor
 
 **This creates:**
 - `.cursorrules` - Rules for Cursor AI
-- `.dd/START_PROMPT.md` - Project context for AI
+- `START_PROMPT.md` - Project context for AI (root directory)
 - `.dd/vision.md` - Project vision
 - `.dd/mission.md` - Project goals
 - `.dd/success-criteria.md` - Success metrics
@@ -230,7 +230,7 @@ Rules:
 - Write tests for critical paths
 ```
 
-**`.dd/START_PROMPT.md`** - Initial prompt for AI:
+**`START_PROMPT.md`** - Initial prompt for AI (root directory):
 
 ```markdown
 # Project Context
@@ -272,12 +272,13 @@ my-saas-app/
 ├── lib/                     # Utilities
 ├── .dd/                     # Framework files
 │   ├── manifest.json       # Project manifest
-│   ├── config.json         # Configuration
+│   ├── context.json        # Project context
 │   ├── vision.md          # Project vision (with --cursor)
 │   ├── mission.md         # Project mission (with --cursor)
 │   ├── success-criteria.md # Success metrics (with --cursor)
-│   └── START_PROMPT.md    # AI context (with --cursor)
+│   └── pull-metadata.json # Pull operation metadata
 ├── .cursorrules            # Cursor AI rules (with --cursor)
+├── START_PROMPT.md         # AI context (with --cursor)
 ├── .env.example            # Environment template
 ├── .env.local              # Pre-filled environment
 ├── package.json            # Dependencies
