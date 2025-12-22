@@ -29,6 +29,7 @@
 | 2024-12-22 | 20min | Session-2 | Added comprehensive API tests: Created tests/api/projects-save.test.mjs (60 tests) and tests/api/projects-fetch.test.mjs (67 tests) covering all success/error cases, response format validation, and API contract compliance. All 127 new tests passing. |
 | 2024-12-22 | 15min | Session-3 | Updated CLI pull command for new API format: Modified fetchProject(), generateEnvExample(), generateContext() to handle new camelCase response format with backward compatibility. Added 5 new tests. All 644 tests passing including API and CLI pull tests. |
 | 2024-12-22 | 60min | Session-4 | Fixed preview API contracts and added caching: Created lib/preview-cache.ts with Redis+memory fallback, updated /api/preview/generate to use API_CONTRACTS.md format, updated client types in preview-generator.ts, updated AIPreview.tsx component for new response format. Preview now caches all requests (not just seeded), improving speed for repeat configs. |
+| 2024-12-22 | 10min | Session-5 | Updated CLI error display: Modified bin/framework.js cmdPull() to display errorCode and recovery guidance. Errors now show "❌ Error: TOKEN_EXPIRED" with "💡 Recovery: [guidance]". Updated all project field references (projectName, outputDir, successCriteria) to handle both camelCase and snake_case. All tests passing. |
 
 ---
 
@@ -93,7 +94,7 @@
 - [ ] Add comprehensive preview endpoint tests (unit + integration)
 - [ ] Add cache metrics dashboard/monitoring
 - [ ] Add rate limiting improvements
-- [ ] Update CLI error display to show recovery guidance
+- [x] Update CLI error display to show recovery guidance
 
 ### Low Priority
 - [ ] Create `packages/collaboration/`
