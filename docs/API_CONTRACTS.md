@@ -1,6 +1,6 @@
 # API Contracts - Dawson-Does Framework
 
-> **Version:** 1.0
+> **Version:** 1.1
 > **Last Updated:** 2025-12-22
 > **Status:** Production
 
@@ -157,9 +157,9 @@ Content-Type: application/json
 
 ## Projects API
 
-### `POST /api/projects`
+### `POST /api/projects/save`
 
-Saves a configured project to Supabase and returns a unique token.
+Saves a configured project to Supabase and returns a unique token for later retrieval.
 
 #### Request
 
@@ -171,38 +171,101 @@ Content-Type: application/json
 **Body:**
 ```typescript
 {
-  template: string;
-  integrations: Record<string, string>;
-  projectName: string;
-  description?: string;
-  vision?: string;
-  mission?: string;
-  previewHtml?: string;
-  features?: string[];
-  // ... additional project config
+  template: string;                              // Required: Template type (saas, seo-directory, etc.)
+  project_name: string;                          // Required: Project name
+  output_dir?: string;                           // Optional: Output directory (default: "./my-app")
+  integrations?: Record<string, string>;         // Optional: Selected integrations (e.g., { auth: "supabase" })
+  env_keys?: Record<string, string>;             // Optional: Environment variables
+  vision?: string;                               // Optional: Project vision statement
+  mission?: string;                              // Optional: Project mission statement
+  success_criteria?: string;                     // Optional: Success criteria
+  inspirations?: Array<{                         // Optional: Inspiration references
+    type: string;                                // "url", "image", or "figma"
+    value: string;                               // URL or reference
+    preview?: string;                            // Optional: Preview URL
+  }>;
+  description?: string;                          // Optional: Project description
 }
 ```
 
+**Validation Rules:**
+- `template` must be non-empty string
+- `project_name` must be non-empty string
+- All other fields are optional
+
 #### Response (Success)
 
-**Status:** `200 OK`
+**Status:** `201 Created`
 
 **Body:**
 ```typescript
 {
   success: true;
-  token: string;           // 12-character unique token
-  pullCommand: string;     // Ready-to-use CLI command
+  data: {
+    token: string;              // Human-readable token (format: "adjective-noun-####")
+    expiresAt: string;          // ISO 8601 timestamp (30 days from creation)
+    pullCommand: string;        // Ready-to-use CLI command: "npx @jrdaws/framework pull {token}"
+    url: string;                // Configurator URL with project token
+  };
+  meta: {
+    timestamp: string;          // ISO 8601 timestamp of response
+  };
 }
 ```
 
+**Token Format:**
+- Pattern: `{adjective}-{noun}-{number}`
+- Example: `fast-lion-1234`, `bright-eagle-5678`
+- Length: Variable (~15-20 characters)
+- Unique: Collision detection with retry
+
 #### Response (Error)
 
-**Status:** `500 Internal Server Error`
+**Status:** `400 Bad Request` (Missing Required Field)
 ```typescript
 {
-  error: string;
-  message: string;
+  success: false;
+  error: {
+    code: "MISSING_FIELD";
+    message: string;                            // e.g., "Template is required"
+    details?: { field: string };                // Which field is missing
+    recovery: string;                           // Actionable guidance
+  };
+  meta: {
+    timestamp: string;
+  };
+}
+```
+
+**Status:** `429 Too Many Requests` (Rate Limited)
+```typescript
+{
+  success: false;
+  error: {
+    code: "RATE_LIMITED";
+    message: "Too many requests. Please try again later.";
+    details?: { resetAt: number };              // Unix timestamp
+    recovery: string;
+  };
+  meta: {
+    timestamp: string;
+  };
+}
+```
+
+**Status:** `500 Internal Server Error` (Database Error)
+```typescript
+{
+  success: false;
+  error: {
+    code: "DATABASE_ERROR" | "INTERNAL_ERROR";
+    message: string;
+    details?: any;                              // Only in development mode
+    recovery: string;
+  };
+  meta: {
+    timestamp: string;
+  };
 }
 ```
 
@@ -215,7 +278,7 @@ Retrieves a project configuration by token.
 #### Request
 
 **Parameters:**
-- `token` (path): 12-character project token
+- `token` (path): Human-readable project token (format: "adjective-noun-####")
 
 #### Response (Success)
 
@@ -224,28 +287,99 @@ Retrieves a project configuration by token.
 **Body:**
 ```typescript
 {
-  id: string;
-  token: string;
-  template: string;
-  integrations: Record<string, string>;
-  projectName: string;
-  description?: string;
-  vision?: string;
-  mission?: string;
-  previewHtml?: string;
-  features?: string[];
-  createdAt: string;
-  // ... additional fields
+  success: true;
+  data: {
+    id: string;
+    token: string;
+    template: string;
+    project_name: string;
+    output_dir: string;
+    integrations: Record<string, string>;
+    env_keys?: Record<string, string>;
+    vision?: string;
+    mission?: string;
+    success_criteria?: string;
+    inspirations?: Array<{
+      type: string;
+      value: string;
+      preview?: string;
+    }>;
+    description?: string;
+    created_at: string;                         // ISO 8601 timestamp
+    expires_at: string;                         // ISO 8601 timestamp
+    last_accessed_at: string;                   // ISO 8601 timestamp
+  };
+  meta: {
+    timestamp: string;
+  };
 }
 ```
 
 #### Response (Error)
 
-**Status:** `404 Not Found`
+**Status:** `404 Not Found` (Token Not Found)
 ```typescript
 {
-  error: "Project not found";
-  message: string;
+  success: false;
+  error: {
+    code: "TOKEN_NOT_FOUND";
+    message: string;                            // e.g., "Project with token 'xxx' not found"
+    recovery: string;                           // Guidance to verify token or create new project
+  };
+  meta: {
+    timestamp: string;
+  };
+}
+```
+
+**Status:** `410 Gone` (Token Expired)
+```typescript
+{
+  success: false;
+  error: {
+    code: "TOKEN_EXPIRED";
+    message: string;                            // e.g., "Project 'xxx' has expired"
+    details?: {
+      expiredAt: string;                        // ISO 8601 timestamp
+      helpUrl: string;                          // Configurator URL
+    };
+    recovery: string;                           // Guidance to create new project
+  };
+  meta: {
+    timestamp: string;
+  };
+}
+```
+
+**Status:** `429 Too Many Requests` (Rate Limited)
+```typescript
+{
+  success: false;
+  error: {
+    code: "RATE_LIMITED";
+    message: "Too many requests. Please try again later.";
+    details?: { resetAt: number };
+    recovery: string;
+  };
+  meta: {
+    timestamp: string;
+  };
+}
+```
+
+**Status:** `500 Internal Server Error` (Database Error)
+```typescript
+{
+  success: false;
+  error: {
+    code: "DATABASE_ERROR" | "INTERNAL_ERROR";
+    message: string;
+    details?: any;                              // Only in development mode
+    recovery: string;
+  };
+  meta: {
+    timestamp: string;
+  };
 }
 ```
 
@@ -253,12 +387,12 @@ Retrieves a project configuration by token.
 
 ### `GET /api/projects/[token]/download`
 
-Exports a project as a ZIP file.
+Downloads project configuration manifest for CLI consumption. Returns a JSON manifest containing project metadata, file lists, and CLI instructions.
 
 #### Request
 
 **Parameters:**
-- `token` (path): 12-character project token
+- `token` (path): Human-readable project token (format: "adjective-noun-####")
 
 #### Response (Success)
 
@@ -266,30 +400,193 @@ Exports a project as a ZIP file.
 
 **Headers:**
 ```http
-Content-Type: application/zip
-Content-Disposition: attachment; filename="[project-name].zip"
+Content-Type: application/json
+Content-Disposition: attachment; filename="[project-name]-config.json"
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization
 ```
 
-**Body:** Binary ZIP file
+**Body:**
+```typescript
+{
+  version: string;                              // Manifest version (e.g., "1.0.0")
+  token: string;                                // Project token
+  template: string;                             // Template name
+  project_name: string;
+  output_dir: string;
+  created_at: string;                           // ISO 8601 timestamp
+  expires_at: string;                           // ISO 8601 timestamp
+
+  config: {
+    integrations: Record<string, string>;       // Selected integrations
+    env_keys?: Record<string, string> | null;   // Environment variables
+    vision?: string | null;
+    mission?: string | null;
+    success_criteria?: string | null;
+    inspirations?: Array<{
+      type: string;
+      value: string;
+      preview?: string;
+    }> | null;
+    description?: string | null;
+  };
+
+  files: {
+    base: string[];                             // Base template files
+    integrations: string[];                     // Integration-specific files
+    total: number;                              // Total file count
+  };
+
+  cli: {
+    pullCommand: string;                        // Ready-to-use: "npx @jrdaws/framework pull {token}"
+    templatePath: string;                       // Template location: "templates/{template}"
+  };
+}
+```
+
+**Example Response:**
+```json
+{
+  "version": "1.0.0",
+  "token": "fast-lion-1234",
+  "template": "saas",
+  "project_name": "My SaaS App",
+  "output_dir": "./my-saas-app",
+  "created_at": "2025-12-22T10:00:00Z",
+  "expires_at": "2026-01-21T10:00:00Z",
+  "config": {
+    "integrations": {
+      "auth": "supabase",
+      "payments": "stripe"
+    },
+    "env_keys": {},
+    "vision": "Build the best SaaS product",
+    "mission": null,
+    "success_criteria": null,
+    "inspirations": [],
+    "description": "A modern SaaS application"
+  },
+  "files": {
+    "base": [
+      "app/layout.tsx",
+      "app/page.tsx",
+      "package.json",
+      "template.json"
+    ],
+    "integrations": [
+      "integrations/auth/supabase/lib/supabase.ts",
+      "integrations/payments/stripe/lib/stripe.ts"
+    ],
+    "total": 6
+  },
+  "cli": {
+    "pullCommand": "npx @jrdaws/framework pull fast-lion-1234",
+    "templatePath": "templates/saas"
+  }
+}
+```
 
 #### Response (Error)
 
-**Status:** `404 Not Found`
+**Status:** `400 Bad Request` (Missing Token)
 ```typescript
 {
-  error: "Project not found";
-  message: string;
+  success: false;
+  error: {
+    code: "MISSING_FIELD";
+    message: "Token is required";
+    details?: { field: "token" };
+    recovery: string;
+  };
+  meta: {
+    timestamp: string;
+  };
 }
 ```
 
-**Status:** `500 Internal Server Error`
+**Status:** `404 Not Found` (Token Not Found)
 ```typescript
 {
-  error: "Export failed";
-  message: string;
-  details?: string;
+  success: false;
+  error: {
+    code: "TOKEN_NOT_FOUND";
+    message: string;
+    recovery: string;
+  };
+  meta: {
+    timestamp: string;
+  };
 }
 ```
+
+**Status:** `410 Gone` (Token Expired)
+```typescript
+{
+  success: false;
+  error: {
+    code: "TOKEN_EXPIRED";
+    message: string;
+    details?: {
+      expiredAt: string;
+      helpUrl: string;
+    };
+    recovery: string;
+  };
+  meta: {
+    timestamp: string;
+  };
+}
+```
+
+**Status:** `429 Too Many Requests` (Rate Limited)
+```typescript
+{
+  success: false;
+  error: {
+    code: "RATE_LIMITED";
+    message: "Too many requests. Please try again later.";
+    details?: { resetAt: number };
+    recovery: string;
+  };
+  meta: {
+    timestamp: string;
+  };
+}
+```
+
+**Status:** `500 Internal Server Error` (Database Error)
+```typescript
+{
+  success: false;
+  error: {
+    code: "DATABASE_ERROR" | "INTERNAL_ERROR";
+    message: string;
+    details?: any;                              // Only in development mode
+    recovery: string;
+  };
+  meta: {
+    timestamp: string;
+  };
+}
+```
+
+#### Notes
+
+**File Manifests:**
+- Base template files are currently hardcoded in the route handler
+- Integration files are mapped based on selected integrations
+- **Future Enhancement**: Load file lists dynamically from `templates/*/template.json`
+
+**Rate Limiting:**
+- Downloads are rate-limited per IP address
+- Limit: 10 downloads per 15 minutes
+- Rate limit key format: `download:{clientIp}`
+
+**CORS:**
+- All endpoints include CORS headers for CLI access
+- Origin: `*` (public API)
+- Methods: `GET, OPTIONS`
 
 ---
 
@@ -297,28 +594,39 @@ Content-Disposition: attachment; filename="[project-name].zip"
 
 ### Standard Error Response Format
 
-All API errors follow this structure:
+All API errors follow this standardized structure implemented via `website/lib/api-errors.ts`:
 
 ```typescript
 {
-  error: string;        // Machine-readable error code
-  message: string;      // Human-readable error message
-  details?: any;        // Optional: Additional context
-  code?: string;        // Optional: Specific error code
+  success: false;
+  error: {
+    code: string;               // Machine-readable error code from ErrorCodes enum
+    message: string;            // Human-readable error message
+    details?: any;              // Optional: Additional error context
+    recovery: string;           // Required: Actionable recovery guidance
+  };
+  meta: {
+    timestamp: string;          // ISO 8601 timestamp
+  };
 }
 ```
 
 ### Error Codes
 
-| Code | Status | Description |
-|------|--------|-------------|
-| `BAD_REQUEST` | 400 | Invalid request parameters |
-| `UNAUTHORIZED` | 401 | Authentication failed |
-| `FORBIDDEN` | 403 | Insufficient permissions |
-| `NOT_FOUND` | 404 | Resource not found |
-| `RATE_LIMITED` | 429 | Rate limit exceeded |
-| `INTERNAL_ERROR` | 500 | Internal server error |
-| `SERVICE_UNAVAILABLE` | 503 | External service unavailable |
+| Code | Status | Description | Recovery Guidance |
+|------|--------|-------------|-------------------|
+| `BAD_REQUEST` | 400 | Invalid request parameters | Check your request format and try again |
+| `MISSING_FIELD` | 400 | Required field missing | Provide all required fields in the request |
+| `INVALID_INPUT` | 400 | Input validation failed | Check the format of your input and try again |
+| `UNAUTHORIZED` | 401 | Authentication failed | Provide valid authentication credentials |
+| `FORBIDDEN` | 403 | Insufficient permissions | You do not have permission to access this resource |
+| `NOT_FOUND` | 404 | Resource not found | Verify the resource exists and try again |
+| `TOKEN_NOT_FOUND` | 404 | Project token not found | Verify the token is correct or create a new project |
+| `TOKEN_EXPIRED` | 410 | Project token expired (30 days) | Create a new project configuration |
+| `RATE_LIMITED` | 429 | Rate limit exceeded | Wait a few minutes before trying again |
+| `DATABASE_ERROR` | 500 | Database operation failed | Try again in a few moments or contact support |
+| `INTERNAL_ERROR` | 500 | Internal server error | Try again in a few moments or contact support |
+| `SERVICE_UNAVAILABLE` | 503 | External service unavailable | Try again in a few minutes |
 
 ### Error Handling Best Practices
 
@@ -431,10 +739,24 @@ Users can bypass rate limiting by providing their own Anthropic API key via the 
 
 ## Changelog
 
+### Version 1.1 (2025-12-22)
+- **Projects API Documentation Fixed** (Platform Agent)
+  - Corrected endpoint path: `POST /api/projects` → `POST /api/projects/save`
+  - Fixed download endpoint response: Returns JSON manifest, not ZIP file
+  - Added complete request/response schemas with all fields
+  - Added missing error codes: `MISSING_FIELD`, `TOKEN_NOT_FOUND`, `TOKEN_EXPIRED`, `DATABASE_ERROR`
+  - Documented token format: "adjective-noun-####" (human-readable)
+  - Added project expiration details (30 days)
+  - Documented rate limiting per endpoint
+  - Added CORS header documentation
+  - Included complete JSON example for download endpoint
+  - Updated error response format to match actual implementation
+  - Added recovery guidance for all error codes
+
 ### Version 1.0 (2025-12-22)
 - Initial API contract documentation
 - Preview Generation API fully documented
-- Projects API documented
+- Projects API documented (contained inaccuracies, fixed in v1.1)
 - Error handling standards defined
 - Rate limiting specification added
 
