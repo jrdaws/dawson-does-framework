@@ -90,10 +90,19 @@ dawson-does-framework/
 - Don't add console.log debugging (use logger.mjs)
 - Don't commit .env files or secrets
 
+## Additional Reading (By Task Type)
+
+| If Working On... | Also Read |
+|------------------|-----------|
+| CLI/Core code | `docs/standards/CODING_STANDARDS.md` |
+| Website code | `docs/standards/CODING_STANDARDS.md` |
+| Templates | `docs/standards/CODING_STANDARDS.md` + template.json schema |
+| Any code | `FRAMEWORK_MAP.md` for architecture context |
+
 ## Before You Start
 1. Run `git status` to see current state
 2. Run `npm test` to ensure tests pass
-3. Read the specific files for your task area
+3. Read the specific files for your task area (see table above)
 4. Ask if anything is unclear
 
 ## When You're Done
