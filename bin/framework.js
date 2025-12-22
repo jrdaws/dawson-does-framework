@@ -1693,35 +1693,51 @@ Notes:
   const result = await fetchProject(token, apiUrl);
 
   if (!result.success) {
-    if (result.status === 404) {
-      console.error(`❌ Project not found: "${token}"`);
-      console.log("\nPossible reasons:");
-      console.log("  • Token is incorrect or misspelled");
-      console.log("  • Project was deleted");
-      console.log("  • Token has expired (projects expire after 30 days)");
-      console.log("\nTo create a new project, visit:");
-      console.log(`  ${apiUrl}/configure`);
-    } else if (result.status === 410) {
-      console.error(`❌ Project has expired: "${token}"`);
-      console.log("\nProjects created on the web platform expire after 30 days.");
-      console.log("Please create a new project at:");
-      console.log(`  ${apiUrl}/configure`);
+    // Display error with code if available
+    if (result.errorCode) {
+      console.error(`❌ Error: ${result.errorCode}`);
+      console.error(`   ${result.error}`);
     } else {
       console.error(`❌ Failed to fetch project: ${result.error}`);
     }
+
+    // Display recovery guidance if available
+    if (result.recovery) {
+      console.log(`\n💡 Recovery: ${result.recovery}`);
+    } else {
+      // Fallback recovery guidance for older API responses
+      if (result.status === 404) {
+        console.log("\nPossible reasons:");
+        console.log("  • Token is incorrect or misspelled");
+        console.log("  • Project was deleted");
+        console.log("  • Token has expired (projects expire after 30 days)");
+        console.log("\nTo create a new project, visit:");
+        console.log(`  ${apiUrl}/configure`);
+      } else if (result.status === 410) {
+        console.log("\nProjects created on the web platform expire after 30 days.");
+        console.log("Please create a new project at:");
+        console.log(`  ${apiUrl}/configure`);
+      }
+    }
+
     process.exit(1);
   }
 
   const project = result.project;
 
-  logger.log(`✅ Found project: "${project.project_name}"`);
+  // Handle both camelCase (new API) and snake_case (old API) field names
+  const projectName = project.projectName || project.project_name;
+  const outputDirFromProject = project.outputDir || project.output_dir;
+  const successCriteria = project.successCriteria || project.success_criteria;
+
+  logger.log(`✅ Found project: "${projectName}"`);
   logger.log(`   Template: ${project.template}`);
   logger.log(`   Integrations: ${formatIntegrations(project.integrations)}`);
   if (project.vision) logger.log(`   Vision: ${project.vision.substring(0, 60)}${project.vision.length > 60 ? '...' : ''}`);
   logger.log("");
 
   // Determine output directory
-  const targetDir = outputDir || project.output_dir || `./${project.project_name}`;
+  const targetDir = outputDir || outputDirFromProject || `./${projectName}`;
   const absTargetDir = path.resolve(targetDir);
 
   // Check if directory exists
@@ -1739,7 +1755,7 @@ Notes:
   // Dry run mode
   if (flags.dryRun) {
     console.log("DRY RUN - The following operations would be performed:\n");
-    console.log(`Project: ${project.project_name}`);
+    console.log(`Project: ${projectName}`);
     console.log(`Token: ${token}`);
     console.log(`Directory: ${absTargetDir}`);
     console.log(`Template: ${project.template}`);
@@ -1765,7 +1781,7 @@ Notes:
     console.log(`      - .dd/manifest.json (template manifest)`);
     if (project.vision) console.log(`      - .dd/vision.md`);
     if (project.mission) console.log(`      - .dd/mission.md`);
-    if (project.success_criteria) console.log(`      - .dd/success-criteria.md`);
+    if (successCriteria) console.log(`      - .dd/success-criteria.md`);
     if (project.description) console.log(`      - .dd/description.md`);
     if (project.inspirations?.length > 0) console.log(`      - .dd/inspirations.md`);
 
@@ -1821,8 +1837,8 @@ Notes:
   }
 
   // Add project name
-  if (project.project_name) {
-    exportFlags.push("--name", project.project_name);
+  if (projectName) {
+    exportFlags.push("--name", projectName);
   }
 
   // Add template version if specified
@@ -1860,8 +1876,8 @@ Notes:
     logger.stepSuccess("mission.md written");
   }
 
-  if (project.success_criteria) {
-    fs.writeFileSync(path.join(ddDir, "success-criteria.md"), project.success_criteria, "utf8");
+  if (successCriteria) {
+    fs.writeFileSync(path.join(ddDir, "success-criteria.md"), successCriteria, "utf8");
     logger.stepSuccess("success-criteria.md written");
   }
 

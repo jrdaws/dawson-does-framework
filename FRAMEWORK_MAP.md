@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: b41ff877de
 
 ## Recent changes
+- 3dac20f 2025-12-22 feat(platform): add preview caching infrastructure
 - c3bb46f 2025-12-22 docs(memory): update Platform, Website, and Template agent memories
 - b701664 2025-12-22 feat(pull): add support for new API response format with backward compatibility
 - ac4b076 2025-12-22 docs(memory): update CLI_MEMORY.md with session CLI-007
@@ -28,7 +29,6 @@ Hash: b41ff877de
 - 8acf17e 2025-12-22 fix(website): remove editor components for clean deployment
 - 3d4d4d8 2025-12-22 chore: update framework map after adding release notes
 - 6a8bc6b 2025-12-22 docs: add release notes for v0.3.1
-- 8f6eab2 2025-12-22 fix(website): simplify for production deployment
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
