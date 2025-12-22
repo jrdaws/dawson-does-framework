@@ -11,9 +11,33 @@ import { InspirationUpload } from "@/app/components/configurator/InspirationUplo
 import { ProjectDetails } from "@/app/components/configurator/ProjectDetails";
 import { IntegrationSelector } from "@/app/components/configurator/IntegrationSelector";
 import { EnvironmentKeys } from "@/app/components/configurator/EnvironmentKeys";
-// Temporarily using stubs during deployment - will restore after package publishing
-import { AIPreview } from "@/app/components/configurator/AIPreview-stub";
-import { ProjectGenerator } from "@/app/components/configurator/ProjectGenerator-stub";
+// Temporarily disabled during deployment - will restore after package publishing
+// import { AIPreview } from "@/app/components/configurator/AIPreview-stub";
+// import { ProjectGenerator } from "@/app/components/configurator/ProjectGenerator-stub";
+
+const AIPreview = (props: any) => (
+  <div className="flex items-center justify-center h-full p-8">
+    <div className="text-center space-y-4">
+      <div className="text-2xl">🚧</div>
+      <h3 className="text-lg font-semibold">AI Preview Temporarily Unavailable</h3>
+      <p className="text-sm text-muted-foreground max-w-md">
+        The AI preview feature is being updated. Use the Export tab to download your project configuration.
+      </p>
+    </div>
+  </div>
+);
+
+const ProjectGenerator = (props: any) => (
+  <div className="flex items-center justify-center h-full p-8">
+    <div className="text-center space-y-4">
+      <div className="text-2xl">🚧</div>
+      <h3 className="text-lg font-semibold">Project Generator Temporarily Unavailable</h3>
+      <p className="text-sm text-muted-foreground max-w-md">
+        The project generator is being updated. Use the Export tab to download your project configuration and run the CLI pull command.
+      </p>
+    </div>
+  </div>
+);
 import { ContextFields } from "@/app/components/configurator/ContextFields";
 import { ExportView } from "@/app/components/configurator/ExportView";
 import { Button } from "@/components/ui/button";

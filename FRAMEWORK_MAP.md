@@ -4,7 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
-- aedc083 2025-12-21 feat(deploy): add help flag handling and comprehensive help output
+- 1fe0c4e 2025-12-21 feat(deploy): add help flag handling and comprehensive help output
 - 8e652f9 2025-12-21 test(coverage): add 59 tests to push coverage to 69.99%
 - 24b5614 2025-12-21 docs(governance): update AGENT_CONTEXT.md with new doc references
 - 348fe28 2025-12-21 fix: temporarily disable editor features for production deployment
