@@ -5,8 +5,10 @@ node_modules
 .env
 *.log
 
-# Agent lock file (local only, not tracked)
+# Agent session files (local only, not tracked)
 .agent-lock
+.session-token
+.current-session
 
 # local dev scratch
 next-seo-template/

@@ -216,12 +216,27 @@ ls -la ~/.cursor/projects/*/terminals/
 
 ## 🛠️ Scripts for Agents
 
+### Session Management
+| Script | Usage |
+|--------|-------|
+| `./scripts/agent-session.sh start <role>` | Start session, display memory for continuity |
+| `./scripts/agent-session.sh end <role>` | End session, verify memory updated |
+| `./scripts/session-token.sh generate <role>` | Generate session token (include in first response) |
+| `./scripts/session-token.sh verify <token>` | Verify agent token is correct |
+
+### Lock & Sync
 | Script | Usage |
 |--------|-------|
 | `./scripts/agent-lock.sh acquire <role>` | Acquire workspace lock before starting |
 | `./scripts/agent-lock.sh release` | Release lock when done |
 | `./scripts/agent-lock.sh status` | Check if workspace is locked |
 | `./scripts/git-push-safe.sh` | Push with auto-retry on conflict |
+
+### Validation
+| Script | Usage |
+|--------|-------|
+| `./scripts/validate-agent-work.sh` | Validate agent followed governance rules |
+| `./scripts/validate-agent-work.sh --strict` | Strict mode (fail on warnings) |
 | `./scripts/install-hooks.sh` | Install git hooks (run once after clone) |
 
 ---

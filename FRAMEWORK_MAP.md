@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- dba703d 2025-12-22 feat(governance): add mandatory agent workflow and acknowledgment requirements
 - 87ac335 2025-12-22 feat(governance): add enforcement mechanisms for agent coordination
 - 6b09c0f 2025-12-22 test(website): improve configure page test reliability across browsers
 - ace4b27 2025-12-22 docs(agents): update Testing Agent memory with Stripe test enablement session
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 98af1c4 2025-12-22 docs(agents): update Template Agent memory with responsive design session
 - 472d98b 2025-12-22 feat(templates): add comprehensive responsive breakpoints to all templates
 - 4eb2b52 2025-12-22 fix(templates): update blog template for Next.js 15 async params
-- ada33cd 2025-12-22 chore: update Next.js types and fix E2E test selectors
 
 ## Agent Governance Structure
 
