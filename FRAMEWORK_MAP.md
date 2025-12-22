@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 24b5614 2025-12-21 docs(governance): update AGENT_CONTEXT.md with new doc references
 - 348fe28 2025-12-21 fix: temporarily disable editor features for production deployment
 - 9fca0a7 2025-12-21 docs(governance): add coding standards and governance roadmap
 - a6c8eb7 2025-12-21 docs(templates): add comprehensive template documentation
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 7099ddf 2025-12-20 chore: session recovery and framework state documentation
 - c086d40 2025-12-20 feat: production-ready deployment with AI preview
 - 196b128 2025-12-20 feat(configurator): add client-side ZIP download
-- 4678616 2025-12-20 fix(configurator): update AI model and improve env setup UX
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

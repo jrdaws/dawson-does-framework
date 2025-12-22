@@ -1,5 +1,8 @@
 "use client";
 
+// Force dynamic rendering to avoid prerender issues during build
+export const dynamic = 'force-dynamic';
+
 import { useConfiguratorStore, Step } from "@/lib/configurator-state";
 import { StepIndicator } from "@/app/components/configurator/StepIndicator";
 import { ModeToggle } from "@/app/components/configurator/ModeToggle";
@@ -8,8 +11,9 @@ import { InspirationUpload } from "@/app/components/configurator/InspirationUplo
 import { ProjectDetails } from "@/app/components/configurator/ProjectDetails";
 import { IntegrationSelector } from "@/app/components/configurator/IntegrationSelector";
 import { EnvironmentKeys } from "@/app/components/configurator/EnvironmentKeys";
-import { AIPreview } from "@/app/components/configurator/AIPreview";
-import { ProjectGenerator } from "@/app/components/configurator/ProjectGenerator";
+// Temporarily using stubs during deployment - will restore after package publishing
+import { AIPreview } from "@/app/components/configurator/AIPreview-stub";
+import { ProjectGenerator } from "@/app/components/configurator/ProjectGenerator-stub";
 import { ContextFields } from "@/app/components/configurator/ContextFields";
 import { ExportView } from "@/app/components/configurator/ExportView";
 import { Button } from "@/components/ui/button";
