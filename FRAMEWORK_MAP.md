@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- daef293 2025-12-22 chore: update agent memory, API docs, templates, and E2E tests
 - 47889c7 2025-12-22 docs(governance): create Documentation Agent memory file
 - 921f61c 2025-12-22 docs(governance): add comprehensive governance and standards documentation
 - 98af1c4 2025-12-22 docs(agents): update Template Agent memory with responsive design session
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 20a9f0a 2025-12-22 docs(cli): add CLI commands consistency audit to memory
 - 3539df2 2025-12-22 docs(api): fix Projects API documentation inconsistencies
 - 55fabd7 2025-12-22 fix(tests): make environment-dependent tests more resilient
-- 47308e7 2025-12-22 docs(cli): update CLI memory with documentation enhancement session
 
 ## Agent Governance Structure
 
