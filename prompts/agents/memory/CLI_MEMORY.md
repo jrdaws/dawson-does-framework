@@ -14,8 +14,9 @@
 4. ✅ CLI commands consistency audit completed
 5. ✅ Priority 1 consistency fixes implemented (export command)
 6. ✅ Priority 2 enhancements implemented (standardized error helpers)
-7. Consider Priority 3: Document CLI patterns in CONTRIBUTING.md
-8. Consider live API testing with production endpoint
+7. ✅ Priority 3 completed: CLI patterns documented in CONTRIBUTING.md
+8. All CLI consistency work complete
+9. Consider live API testing with production endpoint
 
 ---
 
@@ -26,6 +27,117 @@
 ---
 
 ## Session History
+
+### Session: 2025-12-22 (CLI Patterns Documentation - Priority 3)
+
+**Work Completed**
+- ✅ Implemented Priority 3: Document CLI patterns in CONTRIBUTING.md
+- ✅ Created comprehensive CONTRIBUTING.md file from scratch
+- ✅ Documented all 8 CLI patterns from consistency audit
+- ✅ Added code examples for each pattern
+- ✅ Included best practices and anti-patterns
+- ✅ Created command structure template
+- ✅ Added code style guide (JS and TS)
+- ✅ Documented testing requirements
+- ✅ Added commit conventions
+- ✅ Created PR process documentation
+
+**CONTRIBUTING.md Contents**
+1. **Getting Started** - Setup instructions and project structure
+2. **CLI Patterns** (main focus) - 8 comprehensive patterns:
+   - Help flag handling (--help, -h, help)
+   - Error message format (using new helpers)
+   - Flag parsing conventions
+   - Exit codes (0 for success, 1 for error)
+   - Dry-run support
+   - Emoji usage standards
+   - Output method (stdout vs stderr)
+   - Command structure template
+3. **Code Style** - JS (.mjs) and TS (.ts) conventions
+4. **Testing** - Running tests, writing tests, requirements
+5. **Commit Conventions** - Conventional commits format
+6. **Pull Request Process** - Before submitting, PR template, review process
+
+**CLI Patterns Documented**
+1. **Help Flag Handling**
+   - Must support --help, -h, and help
+   - Check before validation
+   - Use console.log (not console.error)
+   - Return without exit code
+   - Include usage, args, options, examples
+
+2. **Error Message Format**
+   - Use showError() helper
+   - Follow "What → Why → How" pattern
+   - Use showWarning(), showInfo(), showSuccess() helpers
+   - Full code examples provided
+
+3. **Flag Parsing**
+   - Dedicated parser functions
+   - Return object with defaults
+   - camelCase for flag names
+   - hasValue() check for value flags
+
+4. **Exit Codes**
+   - 0 (implicit) for success
+   - 1 for errors
+   - Consistent across all commands
+
+5. **Dry-Run Support**
+   - List all operations that would be performed
+   - Show step-by-step preview
+   - Clear separator and instructions
+
+6. **Emoji Usage**
+   - Standard emojis documented (✅❌⚠️ℹ️🔍📦🚀💡🤖)
+   - Consistent meaning across commands
+
+7. **Output Method**
+   - Help text → stdout (console.log)
+   - Errors → stderr (console.error)
+   - Logger helpers handle automatically
+
+8. **Command Structure Template**
+   - Complete template with all sections
+   - Ready to copy for new commands
+
+**Documentation Features**
+- ✅ vs ❌ examples for DO/DON'T
+- Complete code examples (copy-paste ready)
+- Real-world patterns from existing commands
+- Anti-patterns to avoid
+- Best practices throughout
+
+**File Statistics**
+- **File**: `CONTRIBUTING.md` (created)
+- **Lines**: ~600 lines
+- **Sections**: 6 major sections
+- **Code Examples**: 15+ complete examples
+
+**Impact**
+- Single source of truth for CLI patterns
+- New contributors can follow standards immediately
+- Existing code can be refactored to match patterns
+- Reduces inconsistency in new code
+- Documents all audit recommendations
+
+**Blockers Encountered**
+- None
+
+**Next Priorities**
+1. All CLI consistency work complete (Priorities 1-3)
+2. (Optional) Refactor existing commands to use new patterns
+3. (Optional) Live API testing with production endpoint
+4. Ready for new features or other work
+
+**Handoff Notes**
+- Priority 3 complete - all CLI consistency work done
+- CONTRIBUTING.md ready for contributors
+- Can link from README and other docs
+- Patterns documented, helpers available, guide complete
+- CLI consistency journey: B+ → A grade achieved
+
+---
 
 ### Session: 2025-12-22 (Standardized Error Helpers - Priority 2)
 
