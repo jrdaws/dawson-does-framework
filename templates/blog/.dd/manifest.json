@@ -1,0 +1,9 @@
+{
+  "template": "blog",
+  "version": "1.0.0",
+  "capabilities": ["content-management", "seo", "markdown"],
+  "description": "Blog template with dynamic routes and content management",
+  "framework": "next.js",
+  "styling": "tailwind",
+  "typescript": true
+}

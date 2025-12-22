@@ -1,0 +1,9 @@
+{
+  "template": "dashboard",
+  "version": "1.0.0",
+  "capabilities": ["admin-panel", "data-visualization", "settings"],
+  "description": "Admin dashboard template with sidebar navigation",
+  "framework": "next.js",
+  "styling": "tailwind",
+  "typescript": true
+}

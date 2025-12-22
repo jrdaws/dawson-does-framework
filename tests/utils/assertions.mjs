@@ -119,3 +119,33 @@ export function assertHasEnvVars(env, requiredVars) {
     assert.ok(env[varName], `Missing environment variable: ${varName}`);
   }
 }
+
+/**
+ * Alias for assertHasFiles (for backwards compatibility)
+ * @param {string} dirPath - Path to the directory
+ * @param {string[]} expectedFiles - Array of expected file names
+ */
+export function assertFilesExist(dirPath, expectedFiles) {
+  return assertHasFiles(dirPath, expectedFiles);
+}
+
+/**
+ * Asserts that a package.json file is valid
+ * @param {string} packageJsonPath - Path to package.json
+ */
+export function assertPackageJson(packageJsonPath) {
+  assert.ok(fs.existsSync(packageJsonPath), `package.json not found: ${packageJsonPath}`);
+
+  const content = fs.readFileSync(packageJsonPath, "utf-8");
+  let pkg;
+
+  try {
+    pkg = JSON.parse(content);
+  } catch (err) {
+    assert.fail(`package.json is not valid JSON: ${err.message}`);
+  }
+
+  // Check required fields
+  assert.ok(pkg.name, "package.json missing 'name' field");
+  assert.ok(pkg.version, "package.json missing 'version' field");
+}

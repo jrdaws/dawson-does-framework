@@ -119,3 +119,85 @@ export function readJSON(filePath) {
 export function writeJSON(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
+
+/**
+ * Creates a mock manifest file for testing
+ * @param {string} templatePath - Path to the template directory
+ * @param {object} overrides - Optional overrides for manifest fields
+ * @returns {string} Path to the created manifest
+ */
+export function createMockManifest(templatePath, overrides = {}) {
+  const ddDir = path.join(templatePath, ".dd");
+  fs.mkdirSync(ddDir, { recursive: true });
+
+  const manifest = {
+    template: "test-template",
+    version: "1.0.0",
+    capabilities: [],
+    ...overrides
+  };
+
+  const manifestPath = path.join(ddDir, "manifest.json");
+  writeJSON(manifestPath, manifest);
+
+  return manifestPath;
+}
+
+/**
+ * Creates a mock project configuration for testing
+ * @param {object} overrides - Optional overrides for project fields
+ * @returns {object} Mock project configuration
+ */
+export function createMockProject(overrides = {}) {
+  return {
+    id: "test-project-id",
+    token: "test-token-1234",
+    template: "saas",
+    project_name: "test-project",
+    output_dir: "./test-project",
+    integrations: {
+      auth: "supabase",
+      payments: "stripe"
+    },
+    env_keys: {
+      STRIPE_SECRET_KEY: ""
+    },
+    vision: "Test vision",
+    mission: "Test mission",
+    success_criteria: "Test success criteria",
+    created_at: new Date().toISOString(),
+    ...overrides
+  };
+}
+
+/**
+ * Creates a mock fetch function for testing API calls
+ * @param {object} responses - Map of URL patterns to responses
+ * @returns {Function} Mock fetch function
+ */
+export function createMockFetch(responses = {}) {
+  return async (url, options) => {
+    // Find matching response
+    for (const [pattern, response] of Object.entries(responses)) {
+      if (url.includes(pattern) || url.match(new RegExp(pattern))) {
+        if (typeof response === "function") {
+          return response(url, options);
+        }
+        return {
+          ok: response.ok ?? true,
+          status: response.status ?? 200,
+          json: async () => response.data ?? response,
+          text: async () => JSON.stringify(response.data ?? response)
+        };
+      }
+    }
+
+    // Default 404 response
+    return {
+      ok: false,
+      status: 404,
+      json: async () => ({ error: "Not found" }),
+      text: async () => JSON.stringify({ error: "Not found" })
+    };
+  };
+}
