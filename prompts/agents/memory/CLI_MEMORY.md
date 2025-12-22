@@ -24,7 +24,7 @@
 | Date | Duration | Session ID | Summary |
 |------|----------|------------|---------|
 | 2024-12-22 | Initial | Setup | Created memory file, established baseline |
-| | | | *Add your session here* |
+| 2024-12-22 | 30min | CLI-001 | Verified --cursor flag implementation complete, added comprehensive tests |
 
 ---
 
@@ -34,7 +34,7 @@
 |----------|-----------|------|
 | Use degit for templates | Avoids full git history, faster downloads | 2024-12-19 |
 | ESM over CJS | Modern Node.js, better tree-shaking | 2024-12-19 |
-| | *Add your decisions here* | |
+| Add comprehensive tests for cursorrules | No unit tests existed for generateCursorRules/generateStartPrompt - added 29 tests | 2024-12-22 |
 
 ---
 
@@ -42,14 +42,15 @@
 
 ### Current State
 - ✅ Export command working
-- ✅ Demo command working  
+- ✅ Demo command working
 - ✅ Doctor/drift commands working
-- ✅ Pull command basic implementation
-- ⚠️ Pull --cursor flag incomplete
+- ✅ Pull command with --cursor flag COMPLETE
+- ✅ .cursorrules and START_PROMPT.md generation working
+- ✅ Comprehensive tests for cursorrules (29 tests)
 - ❌ Deploy command not started
 
 ### In Progress
-- Pull command enhancement
+- None
 
 ### Blocked
 - None currently
@@ -59,7 +60,7 @@
 ## 📋 Task Queue
 
 ### High Priority
-- [ ] Complete `framework pull --cursor` with .cursorrules generation
+- [x] Complete `framework pull --cursor` with .cursorrules generation
 - [ ] Implement `framework deploy` with Vercel support
 
 ### Medium Priority
@@ -77,7 +78,6 @@
 
 | Issue | Severity | Notes |
 |-------|----------|-------|
-| Pull command incomplete | High | Needs --cursor flag |
 | No deploy command | High | Manual deployment required |
 | Some exit codes wrong | Medium | Error cases don't always exit(1) |
 
@@ -90,6 +90,8 @@
 3. **Step Logging**: Use `logger.startStep/stepSuccess/endStep` for user feedback
 4. **Error Format**: Always include recovery guidance in error messages
 5. **Testing**: Run `npm test` before committing - tests in `tests/`
+6. **Pull --cursor**: Already fully implemented in lines 1485-1499 of framework.js
+7. **Test Coverage**: Always check if functions have tests before assuming they're incomplete
 
 ---
 
@@ -103,6 +105,9 @@
 | `src/dd/logger.mjs` | Logging utilities |
 | `src/dd/manifest.mjs` | Manifest reading/writing |
 | `tests/export-args.test.mjs` | Flag parsing tests |
+| `tests/cli/cursorrules.test.mjs` | Cursorrules generation tests (29 tests) |
+| `tests/cli/pull.test.mjs` | Pull command tests |
+| `tests/cli/pull-integration.test.mjs` | Pull command integration tests |
 
 ---
 
@@ -118,5 +123,5 @@ At the end of your session, add:
 
 ---
 
-*Last Updated: 2024-12-22 by governance setup*
+*Last Updated: 2024-12-22 by CLI Agent (Session CLI-001)*
 
