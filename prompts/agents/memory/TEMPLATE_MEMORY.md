@@ -97,11 +97,14 @@
 
 ## 💭 Insights for Next Agent
 
-1. **Template Structure**: Must include template.json, package.json, next.config.js, tsconfig.json
-2. **Testing**: Run `npm install && npm run dev` to verify template works
-3. **Responsive**: Test at 375px, 768px, 1024px minimum
-4. **Accessibility**: Use semantic HTML, proper headings, ARIA where needed
-5. **Integration Ready**: Structure supports adding integrations later
+1. **Template Structure**: Must include template.json, package.json, next.config.js, tsconfig.json - ✅ All priority templates have this
+2. **Testing**: Run `npm install && npm run dev` to verify template works - ⚠️ Still needs actual runtime testing
+3. **Responsive**: Test at 375px, 768px, 1024px minimum - ✅ All templates use Tailwind responsive classes
+4. **Accessibility**: Use semantic HTML, proper headings, ARIA where needed - ✅ Templates use semantic HTML and ARIA labels
+5. **Integration Ready**: Structure supports adding integrations later - ✅ template.json has supportedIntegrations defined
+6. **Dark Mode Pattern**: All templates use localStorage persistence + Tailwind dark: classes + system preference detection
+7. **Component Library**: All templates use components/ui/ directory (likely shadcn/ui)
+8. **No Build Verification**: Templates have never been built or run - this should be priority for next session
 
 ---
 
@@ -128,5 +131,5 @@ At the end of your session, add:
 
 ---
 
-*Last Updated: 2024-12-22 by governance setup*
+*Last Updated: 2024-12-22 by Template Agent (Session P1-StatusCheck)*
 
