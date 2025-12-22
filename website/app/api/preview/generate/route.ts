@@ -1,20 +1,81 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { checkRateLimit, isRedisAvailable } from "@/lib/rate-limiter";
+import crypto from "crypto";
 
 interface GeneratePreviewRequest {
   template: string;
+  projectName?: string;
   integrations: Record<string, string>;
   inspirations: Array<{ type: string; value: string; preview?: string }>;
   description: string;
+  vision?: string;
+  mission?: string;
   userApiKey?: string;
   sessionId: string;
   seed?: number;
 }
 
+interface CacheEntry {
+  html: string;
+  components: string[];
+  generatedAt: string;
+  expiresAt: number;
+}
+
+// In-memory cache for preview results (production should use Redis)
+const previewCache = new Map<string, CacheEntry>();
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+
 // Cost control: Maximum tokens to prevent runaway generations
 const MAX_TOKENS = 4096;
 const MAX_INPUT_LENGTH = 10000; // Prevent extremely long prompts
+
+/**
+ * Generate a cache key from request parameters
+ */
+function generateCacheKey(params: {
+  template: string;
+  projectName?: string;
+  integrations: Record<string, string>;
+  description: string;
+  vision?: string;
+  mission?: string;
+  seed?: number;
+}): string {
+  const keyData = JSON.stringify({
+    template: params.template,
+    projectName: params.projectName || "",
+    integrations: params.integrations,
+    description: params.description,
+    vision: params.vision || "",
+    mission: params.mission || "",
+    seed: params.seed,
+  });
+  return crypto.createHash("sha256").update(keyData).digest("hex").slice(0, 16);
+}
+
+/**
+ * Extract component names from generated HTML
+ */
+function extractComponents(html: string): string[] {
+  const components: string[] = [];
+  
+  // Look for common section patterns in the HTML
+  if (/<(nav|header)/i.test(html)) components.push("Nav");
+  if (/hero|jumbotron/i.test(html)) components.push("Hero");
+  if (/features?(-section)?/i.test(html) || /feature-grid/i.test(html)) components.push("Features");
+  if (/pricing/i.test(html)) components.push("Pricing");
+  if (/testimonial/i.test(html)) components.push("Testimonials");
+  if (/<footer/i.test(html)) components.push("Footer");
+  if (/dashboard|metrics|stats/i.test(html)) components.push("Dashboard");
+  if (/sign.?(in|up)|log.?(in|out)|auth/i.test(html)) components.push("Auth");
+  if (/cart|checkout/i.test(html)) components.push("Cart");
+  if (/product/i.test(html)) components.push("ProductGrid");
+  if (/cta|call.?to.?action/i.test(html)) components.push("CTA");
+  
+  return components.length > 0 ? components : ["Hero", "Nav", "Footer"];
+}
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
@@ -23,9 +84,12 @@ export async function POST(request: NextRequest) {
     const body: GeneratePreviewRequest = await request.json();
     const {
       template,
+      projectName,
       integrations,
       inspirations,
       description,
+      vision,
+      mission,
       userApiKey,
       sessionId,
       seed,
@@ -56,6 +120,30 @@ export async function POST(request: NextRequest) {
         },
         { status: 400 }
       );
+    }
+
+    // Check cache first (only for deterministic requests with seed)
+    const cacheKey = generateCacheKey({
+      template,
+      projectName,
+      integrations,
+      description,
+      vision,
+      mission,
+      seed,
+    });
+
+    const cachedResult = previewCache.get(cacheKey);
+    if (cachedResult && cachedResult.expiresAt > Date.now()) {
+      console.log(`[Preview Cache Hit] ${template} | ${Date.now() - startTime}ms`);
+      return NextResponse.json({
+        success: true,
+        html: cachedResult.html,
+        components: cachedResult.components,
+        generatedAt: cachedResult.generatedAt,
+        cached: true,
+        remainingDemoGenerations: null, // Cache hit doesn't affect rate limit
+      });
     }
 
     // Rate limiting check (uses Redis in production)
@@ -89,14 +177,17 @@ export async function POST(request: NextRequest) {
     const anthropic = new Anthropic({ apiKey });
 
     // Construct system prompt
-    const systemPrompt = buildSystemPrompt(template, integrations);
+    const systemPrompt = buildSystemPrompt(template, integrations, projectName);
 
     // Construct user prompt
     const userPrompt = buildUserPrompt(
       template,
       integrations,
       inspirations,
-      description
+      description,
+      vision,
+      mission,
+      projectName
     );
 
     // Call Claude API - using claude-sonnet-4-20250514 (latest Sonnet model)
@@ -120,6 +211,26 @@ export async function POST(request: NextRequest) {
     }
 
     const html = extractHtmlFromResponse(content.text);
+    const components = extractComponents(html);
+    const generatedAt = new Date().toISOString();
+
+    // Cache the result
+    previewCache.set(cacheKey, {
+      html,
+      components,
+      generatedAt,
+      expiresAt: Date.now() + CACHE_TTL,
+    });
+
+    // Clean up old cache entries periodically
+    if (previewCache.size > 100) {
+      const now = Date.now();
+      for (const [key, entry] of previewCache.entries()) {
+        if (entry.expiresAt < now) {
+          previewCache.delete(key);
+        }
+      }
+    }
 
     // Log success metrics (for monitoring)
     const duration = Date.now() - startTime;
@@ -128,6 +239,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       html,
+      components,
+      generatedAt,
       seed: seed || Date.now(),
       usage: message.usage,
       remainingDemoGenerations: rateLimitResult.remaining >= 0 ? rateLimitResult.remaining : null,
@@ -202,7 +315,8 @@ export async function POST(request: NextRequest) {
 
 function buildSystemPrompt(
   template: string,
-  integrations: Record<string, string>
+  integrations: Record<string, string>,
+  projectName?: string
 ): string {
   const integrationsDesc = Object.entries(integrations)
     .filter(([_, value]) => value)
@@ -215,6 +329,7 @@ FRAMEWORK CONTEXT:
 - Framework: Next.js 15 with App Router, React 19, TypeScript
 - Styling: Tailwind CSS with terminal aesthetic
 - Template: ${template}
+- Project Name: ${projectName || "My App"}
 - Selected Integrations: ${integrationsDesc || "none"}
 
 TERMINAL AESTHETIC:
@@ -257,9 +372,28 @@ function buildUserPrompt(
   template: string,
   integrations: Record<string, string>,
   inspirations: Array<{ type: string; value: string; preview?: string }>,
-  description: string
+  description: string,
+  vision?: string,
+  mission?: string,
+  projectName?: string
 ): string {
-  let prompt = `Generate a preview for a ${template} project.\n\n`;
+  let prompt = `Generate a preview for a ${template} project`;
+  if (projectName) {
+    prompt += ` called "${projectName}"`;
+  }
+  prompt += `.\n\n`;
+
+  // Add vision/mission context for more relevant content
+  if (vision || mission) {
+    prompt += `PROJECT CONTEXT:\n`;
+    if (vision) {
+      prompt += `- Vision: ${vision}\n`;
+    }
+    if (mission) {
+      prompt += `- Mission: ${mission}\n`;
+    }
+    prompt += `\nUse this context to generate relevant headlines, copy, and feature descriptions.\n\n`;
+  }
 
   // Add integrations context
   const integrationsList = Object.entries(integrations)
@@ -269,6 +403,15 @@ function buildUserPrompt(
 
   if (integrationsList) {
     prompt += `INTEGRATIONS TO SHOWCASE:\n${integrationsList}\n\n`;
+    
+    // Add specific guidance for key integrations
+    if (integrations.auth) {
+      prompt += `AUTH INTEGRATION (${integrations.auth}): Include login/signup buttons in the navigation and/or a dedicated authentication section.\n`;
+    }
+    if (integrations.payments) {
+      prompt += `PAYMENTS INTEGRATION (${integrations.payments}): Include a pricing section with plan cards showing prices and features.\n`;
+    }
+    prompt += `\n`;
   }
 
   // Add inspirations
@@ -287,7 +430,7 @@ function buildUserPrompt(
   }
 
   // Add user description
-  if (description.trim()) {
+  if (description?.trim()) {
     prompt += `USER DESCRIPTION:\n${description}\n\n`;
   }
 

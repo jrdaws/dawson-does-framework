@@ -2,9 +2,12 @@
 
 export interface GeneratePreviewParams {
   template: string;
+  projectName?: string;
   integrations: Record<string, string>;
   inspirations: Array<{ type: string; value: string; preview?: string }>;
   description: string;
+  vision?: string;
+  mission?: string;
   userApiKey?: string;
   seed?: number;
 }
@@ -12,9 +15,15 @@ export interface GeneratePreviewParams {
 export interface GeneratePreviewResponse {
   success: boolean;
   html?: string;
+  components?: string[];
+  generatedAt?: string;
   seed?: number;
-  usage?: any;
+  usage?: {
+    input_tokens: number;
+    output_tokens: number;
+  };
   remainingDemoGenerations?: number | null;
+  cached?: boolean;
   error?: string;
   message?: string;
   rateLimited?: boolean;

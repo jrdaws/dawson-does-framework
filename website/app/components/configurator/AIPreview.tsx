@@ -16,10 +16,13 @@ import {
   Key,
   Eye,
   EyeOff,
-  Info
+  Info,
+  Edit3,
+  Code2
 } from "lucide-react";
 import { generatePreview } from "@/lib/preview-generator";
 import { useConfiguratorStore } from "@/lib/configurator-state";
+import { VisualEditor } from "@/app/components/editor";
 
 interface AIPreviewProps {
   template: string;
@@ -39,6 +42,9 @@ export function AIPreview({
     isGenerating,
     userApiKey,
     remainingDemoGenerations,
+    projectName,
+    vision,
+    mission,
     setGenerating,
     setUserApiKey,
     setRemainingDemoGenerations,
@@ -49,6 +55,10 @@ export function AIPreview({
   const [error, setError] = useState<string | null>(null);
   const [showApiKey, setShowApiKey] = useState(false);
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+  const [components, setComponents] = useState<string[]>([]);
+  const [generatedAt, setGeneratedAt] = useState<string | null>(null);
+  const [isCached, setIsCached] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const viewportWidths = {
     desktop: "100%",
@@ -61,13 +71,17 @@ export function AIPreview({
   const handleGenerate = async () => {
     setError(null);
     setGenerating(true);
+    setIsCached(false);
 
     try {
       const result = await generatePreview({
         template,
+        projectName: projectName || undefined,
         integrations,
         inspirations,
         description,
+        vision: vision || undefined,
+        mission: mission || undefined,
         userApiKey: userApiKey || undefined,
       });
 
@@ -83,6 +97,10 @@ export function AIPreview({
       }
 
       setLocalPreviewHtml(result.html || null);
+      setComponents(result.components || []);
+      setGeneratedAt(result.generatedAt || null);
+      setIsCached(result.cached || false);
+      
       if (result.remainingDemoGenerations !== undefined) {
         setRemainingDemoGenerations(result.remainingDemoGenerations);
       }
@@ -95,6 +113,9 @@ export function AIPreview({
 
   const handleRegenerate = () => {
     setLocalPreviewHtml(null);
+    setComponents([]);
+    setGeneratedAt(null);
+    setIsCached(false);
     handleGenerate();
   };
 
@@ -290,43 +311,68 @@ export function AIPreview({
             {/* Preview Generated - Show Controls */}
             {localPreviewHtml && !isGenerating && (
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setViewport("desktop")}
-                    className={`p-2 rounded transition-colors ${
-                      viewport === "desktop"
-                        ? "bg-terminal-accent text-terminal-bg"
-                        : "text-terminal-text hover:bg-terminal-text/10"
-                    }`}
-                    title="Desktop View"
-                  >
-                    <Monitor className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => setViewport("tablet")}
-                    className={`p-2 rounded transition-colors ${
-                      viewport === "tablet"
-                        ? "bg-terminal-accent text-terminal-bg"
-                        : "text-terminal-text hover:bg-terminal-text/10"
-                    }`}
-                    title="Tablet View"
-                  >
-                    <Tablet className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => setViewport("mobile")}
-                    className={`p-2 rounded transition-colors ${
-                      viewport === "mobile"
-                        ? "bg-terminal-accent text-terminal-bg"
-                        : "text-terminal-text hover:bg-terminal-text/10"
-                    }`}
-                    title="Mobile View"
-                  >
-                    <Smartphone className="h-4 w-4" />
-                  </button>
-                </div>
+                {!editMode && (
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setViewport("desktop")}
+                      className={`p-2 rounded transition-colors ${
+                        viewport === "desktop"
+                          ? "bg-terminal-accent text-terminal-bg"
+                          : "text-terminal-text hover:bg-terminal-text/10"
+                      }`}
+                      title="Desktop View"
+                    >
+                      <Monitor className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => setViewport("tablet")}
+                      className={`p-2 rounded transition-colors ${
+                        viewport === "tablet"
+                          ? "bg-terminal-accent text-terminal-bg"
+                          : "text-terminal-text hover:bg-terminal-text/10"
+                      }`}
+                      title="Tablet View"
+                    >
+                      <Tablet className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => setViewport("mobile")}
+                      className={`p-2 rounded transition-colors ${
+                        viewport === "mobile"
+                          ? "bg-terminal-accent text-terminal-bg"
+                          : "text-terminal-text hover:bg-terminal-text/10"
+                      }`}
+                      title="Mobile View"
+                    >
+                      <Smartphone className="h-4 w-4" />
+                    </button>
+                  </div>
+                )}
+                {editMode && <div />}
 
                 <div className="flex gap-2">
+                  <Button
+                    onClick={() => setEditMode(!editMode)}
+                    variant={editMode ? "default" : "outline"}
+                    size="sm"
+                    className={
+                      editMode
+                        ? "bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg"
+                        : "border-terminal-text/30 text-terminal-text hover:border-terminal-accent"
+                    }
+                  >
+                    {editMode ? (
+                      <>
+                        <Code2 className="mr-2 h-4 w-4" />
+                        View Only
+                      </>
+                    ) : (
+                      <>
+                        <Edit3 className="mr-2 h-4 w-4" />
+                        Edit Mode
+                      </>
+                    )}
+                  </Button>
                   <Button
                     onClick={handleOpenNewTab}
                     variant="outline"
@@ -353,33 +399,73 @@ export function AIPreview({
 
         {/* Preview Frame */}
         {localPreviewHtml && !isGenerating && (
-          <div className="terminal-window">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-dim ml-2 flex items-center gap-2">
-                <span className="text-terminal-accent">●</span>
-                Preview - {viewport.charAt(0).toUpperCase() + viewport.slice(1)} View
-              </span>
-            </div>
-            <div className="terminal-content bg-white p-4">
-              <div className="flex justify-center">
-                <div
-                  style={{ width: viewportWidths[viewport], maxWidth: "100%" }}
-                  className="transition-all duration-300"
-                >
-                  <iframe
-                    srcDoc={localPreviewHtml}
-                    className="w-full border border-gray-200 rounded"
-                    style={{ height: "600px" }}
-                    sandbox="allow-scripts allow-same-origin"
-                    title="AI Generated Preview"
+          <>
+            {editMode ? (
+              // Edit Mode - Full Visual Editor
+              <div className="terminal-window">
+                <div className="terminal-header">
+                  <div className="terminal-dot bg-terminal-error"></div>
+                  <div className="terminal-dot bg-terminal-warning"></div>
+                  <div className="terminal-dot bg-terminal-text"></div>
+                  <span className="text-xs text-terminal-dim ml-2 flex items-center gap-2">
+                    <Edit3 className="h-3 w-3 text-terminal-accent" />
+                    Visual Editor - Click elements to edit
+                  </span>
+                  {components.length > 0 && (
+                    <span className="ml-auto text-[10px] text-terminal-dim">
+                      Components: {components.join(" · ")}
+                    </span>
+                  )}
+                </div>
+                <div className="terminal-content p-0" style={{ height: "700px" }}>
+                  <VisualEditor
+                    html={localPreviewHtml}
+                    onHtmlChange={setLocalPreviewHtml}
+                    className="h-full"
                   />
                 </div>
               </div>
-            </div>
-          </div>
+            ) : (
+              // View Mode - Standard iframe with viewport controls
+              <div className="terminal-window">
+                <div className="terminal-header">
+                  <div className="terminal-dot bg-terminal-error"></div>
+                  <div className="terminal-dot bg-terminal-warning"></div>
+                  <div className="terminal-dot bg-terminal-text"></div>
+                  <span className="text-xs text-terminal-dim ml-2 flex items-center gap-2">
+                    <span className="text-terminal-accent">●</span>
+                    Preview - {viewport.charAt(0).toUpperCase() + viewport.slice(1)} View
+                    {isCached && (
+                      <span className="text-terminal-accent text-[10px] bg-terminal-accent/10 px-1.5 py-0.5 rounded">
+                        cached
+                      </span>
+                    )}
+                  </span>
+                  {components.length > 0 && (
+                    <span className="ml-auto text-[10px] text-terminal-dim">
+                      Components: {components.join(" · ")}
+                    </span>
+                  )}
+                </div>
+                <div className="terminal-content bg-white p-4">
+                  <div className="flex justify-center">
+                    <div
+                      style={{ width: viewportWidths[viewport], maxWidth: "100%" }}
+                      className="transition-all duration-300"
+                    >
+                      <iframe
+                        srcDoc={localPreviewHtml}
+                        className="w-full border border-gray-200 rounded"
+                        style={{ height: "600px" }}
+                        sandbox="allow-scripts allow-same-origin"
+                        title="AI Generated Preview"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {/* Info Box */}
@@ -392,6 +478,11 @@ export function AIPreview({
               <Info className="inline h-3 w-3 mr-1" />
               About AI Preview
             </span>
+            {generatedAt && (
+              <span className="ml-auto text-[10px] text-terminal-dim">
+                Generated: {new Date(generatedAt).toLocaleTimeString()}
+              </span>
+            )}
           </div>
           <div className="terminal-content space-y-3 text-sm text-terminal-dim">
             <p>
@@ -400,7 +491,12 @@ export function AIPreview({
             </p>
             <ul className="space-y-1 text-xs list-disc list-inside ml-2">
               <li>Full Next.js 15 project with your selected template</li>
-              <li>All {Object.keys(integrations).length} selected integrations pre-configured</li>
+              <li>All {Object.keys(integrations).filter(k => integrations[k]).length} selected integrations pre-configured</li>
+              {components.length > 0 && (
+                <li>
+                  Components shown: {components.join(", ")}
+                </li>
+              )}
               <li>Production-ready code with TypeScript and Tailwind CSS</li>
               <li>Complete documentation and setup instructions</li>
             </ul>
