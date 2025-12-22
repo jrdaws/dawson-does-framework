@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- aedc083 2025-12-21 feat(deploy): add help flag handling and comprehensive help output
 - 8e652f9 2025-12-21 test(coverage): add 59 tests to push coverage to 69.99%
 - 24b5614 2025-12-21 docs(governance): update AGENT_CONTEXT.md with new doc references
 - 348fe28 2025-12-21 fix: temporarily disable editor features for production deployment
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - a2d922f 2025-12-21 feat(website): integrate Supabase client library
 - 3abd367 2025-12-20 feat: implement framework pull command with web platform integration
 - 7099ddf 2025-12-20 chore: session recovery and framework state documentation
-- c086d40 2025-12-20 feat: production-ready deployment with AI preview
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

@@ -13,6 +13,12 @@ import { detectDeploymentProvider, detectProjectType } from '../dd/deployment-de
  * @param {string[]} args - Command arguments
  */
 export async function cmdDeploy(args) {
+  // Handle help flag
+  if (args.includes('--help') || args.includes('-h')) {
+    printDeployHelp();
+    return;
+  }
+
   const flags = parseDeployFlags(args);
 
   console.log("\n🚀 Framework Deploy\n");
@@ -313,6 +319,44 @@ async function loadProvider(providerName) {
 
   const module = await providers[providerName]();
   return module.default;
+}
+
+/**
+ * Print deploy command help
+ */
+function printDeployHelp() {
+  console.log(`
+Usage: framework deploy [options]
+
+Deploy your project to production or preview environments.
+
+Options:
+  --provider <name>    Specify deployment provider (vercel, netlify, railway)
+  --prod               Deploy to production (default: preview)
+  --dry-run            Preview deployment without executing
+  --no-logs            Disable real-time log streaming
+  --env <name>         Specify environment name
+  -h, --help           Show this help message
+
+Examples:
+  framework deploy                    # Auto-detect provider, deploy preview
+  framework deploy --prod             # Deploy to production
+  framework deploy --provider vercel  # Force specific provider
+  framework deploy --dry-run          # Preview without deploying
+
+Credential Management:
+  framework deploy:auth save <provider> <token>
+  framework deploy:auth list
+  framework deploy:auth test <provider>
+
+Providers:
+  - Vercel   (https://vercel.com)
+  - Netlify  (https://netlify.com)
+  - Railway  (https://railway.app)
+
+Documentation:
+  https://github.com/jrdaws/framework/docs/deploy
+`);
 }
 
 /**
