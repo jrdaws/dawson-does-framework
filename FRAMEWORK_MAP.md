@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- a5f829c 2025-12-21 feat(testing): comprehensive test infrastructure with CI/CD pipelines
 - c4c9e2e 2025-12-21 feat(website): add visual editor and project download endpoint
 - 6b14c7b 2025-12-21 feat(templates): add blog, dashboard, and landing-page templates
 - 7eb42c4 2025-12-21 feat(cli): implement framework pull command with full web platform integration
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 4ead1c7 2025-12-19 feat(cli): add framework templates command suite
 - 0170bae 2025-12-19 feat(templates): add template.json metadata to existing templates
 - 935dab3 2025-12-19 feat(registry): add template registry and discovery system
-- 619faad 2025-12-19 chore: bump version to v0.2.0
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
