@@ -26,7 +26,7 @@
 | Date | Duration | Session ID | Summary |
 |------|----------|------------|---------|
 | 2024-12-22 | Initial | Setup | Created memory file, established baseline |
-| | | | *Add your session here* |
+| 2024-12-22 | 60min | Session-1 | Built complete visual editor system: types, contexts, all components (VisualEditor, CollaborativeVisualEditor, PropertiesPanel, SelectionOverlay, etc.), iframe bridge utilities |
 
 ---
 
@@ -37,7 +37,9 @@
 | Terminal aesthetic | Matches CLI-first philosophy | 2024-12-19 |
 | Multi-step configurator | Better UX than single form | 2024-12-20 |
 | shadcn/ui | Accessible, customizable | 2024-12-19 |
-| | *Add your decisions here* | |
+| iframe-based editor | Isolation prevents style conflicts, postMessage for communication | 2024-12-22 |
+| Collaborative architecture | Built collaboration hooks even if not fully implemented yet | 2024-12-22 |
+| Three-panel layout | Properties left, preview center, structure right - standard IDE pattern | 2024-12-22 |
 
 ---
 
@@ -48,9 +50,12 @@
 - ✅ Configurator flow working
 - ✅ Export options (CLI, ZIP, Pull)
 - ✅ Supabase integration
+- ✅ Visual editor fully built and integrated
+- ✅ Editor components (VisualEditor, CollaborativeVisualEditor, PropertiesPanel, SelectionOverlay, ComponentTree, UndoRedoToolbar)
+- ✅ Editor utilities (types, iframe-bridge)
 - ⚠️ Preview generation slow
 - ⚠️ Mobile responsiveness issues
-- ❌ Visual editor not connected
+- ⚠️ Collaboration features stubbed (need WebSocket/Supabase Realtime)
 
 ### In Progress
 - Preview optimization
@@ -63,9 +68,10 @@
 ## 📋 Task Queue
 
 ### High Priority
-- [ ] Connect visual editor to preview
+- [x] Connect visual editor to preview
 - [ ] Fix mobile responsiveness
 - [ ] Add loading skeletons
+- [ ] Test visual editor end-to-end
 
 ### Medium Priority
 - [ ] Improve error states
@@ -86,7 +92,8 @@
 | Preview slow | High | 5+ seconds generation |
 | Mobile layout breaks | High | Sidebar doesn't collapse |
 | No loading states | Medium | Abrupt content changes |
-| Editor unused | Medium | Components exist but not connected |
+| Collaboration stubbed | Low | Hooks exist but no backend connection |
+| Editor needs E2E testing | Medium | Built but not tested in real scenario |
 
 ---
 
@@ -97,6 +104,9 @@
 3. **State Management**: Using React hooks, no external state library
 4. **API Routes**: In `website/app/api/`, use standard Response.json() format
 5. **Testing**: No E2E yet, Playwright setup needed
+6. **Editor Architecture**: iframe isolation with postMessage bridge, edit mode toggled in AIPreview.tsx
+7. **Editor Files**: All in `website/app/components/editor/`, utilities in `website/lib/editor/`
+8. **Next Steps**: Test editor, implement real collaboration, fix mobile responsiveness
 
 ---
 
@@ -125,5 +135,5 @@ At the end of your session, add:
 
 ---
 
-*Last Updated: 2024-12-22 by governance setup*
+*Last Updated: 2024-12-22 Session-1 by Website Agent*
 
