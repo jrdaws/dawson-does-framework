@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 3539df2 2025-12-22 docs(api): fix Projects API documentation inconsistencies
 - 55fabd7 2025-12-22 fix(tests): make environment-dependent tests more resilient
 - 47308e7 2025-12-22 docs(cli): update CLI memory with documentation enhancement session
 - 4922ba7 2025-12-22 docs(cli): add comprehensive pull command examples to README and docs
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 7eb42c4 2025-12-21 feat(cli): implement framework pull command with full web platform integration
 - a2d922f 2025-12-21 feat(website): integrate Supabase client library
 - 3abd367 2025-12-20 feat: implement framework pull command with web platform integration
-- 7099ddf 2025-12-20 chore: session recovery and framework state documentation
 
 ## Agent Governance Structure
 

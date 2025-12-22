@@ -11,8 +11,9 @@
 1. ✅ Pull command fully implemented and tested
 2. ✅ E2E integration tests passing (8/8 tests)
 3. ✅ Pull command examples added to README.md and docs/cli/pull.md
-4. Review other CLI commands for consistency with pull patterns
-5. Consider live API testing with production endpoint
+4. ✅ CLI commands consistency audit completed
+5. Implement consistency improvements (export command help support)
+6. Consider live API testing with production endpoint
 
 ---
 
@@ -23,6 +24,61 @@
 ---
 
 ## Session History
+
+### Session: 2025-12-22 (CLI Commands Consistency Audit)
+
+**Work Completed**
+- ✅ Audited 15+ CLI commands for consistency with pull command patterns
+- ✅ Reviewed help text handling across all commands
+- ✅ Analyzed error message formatting patterns
+- ✅ Verified flag parsing consistency
+- ✅ Checked dry-run support implementation
+- ✅ Documented findings and recommendations
+- ✅ Created comprehensive audit report with code examples
+
+**Commands Audited**
+- Core: export, pull, demo, deploy, templates
+- Utilities: doctor, drift, version, upgrade, checkpoint
+- Subcommands: llm, auth, plugin, capabilities, phrases, toggle
+
+**Key Findings**
+- **✅ Strong areas**: Flag parsing, exit codes, emoji indicators, dry-run support
+- **⚠️ Improvements needed**: export command missing --help support, mixed console.log/console.error usage for help text
+
+**Specific Issues Identified**
+1. **export command** (bin/framework.js:287):
+   - Missing --help/-h/help flag support
+   - Uses console.error for help text (should use console.log)
+2. **Error message formatting**: Varies across commands (some excellent, some basic)
+3. **Recovery guidance**: Not consistent across all error scenarios
+
+**Recommendations Documented**
+- **Priority 1 (Critical)**: Add help support to export command, fix help text output method
+- **Priority 2 (Enhancement)**: Standardize error message format with helper function
+- **Priority 3 (Documentation)**: Document CLI patterns in CONTRIBUTING.md
+
+**Overall Assessment**
+- Grade: B+ (Good with room for improvement)
+- Pull command sets excellent standard for CLI UX
+- Most commands follow good patterns
+- 2-3 specific improvements would bring all commands to A-level consistency
+
+**Blockers Encountered**
+- None
+
+**Next Priorities**
+1. Implement Priority 1 recommendations (export command fixes)
+2. Create standard error helper function (logger.mjs)
+3. Update CONTRIBUTING.md with CLI patterns
+4. Apply improvements to other commands as needed
+
+**Handoff Notes**
+- Comprehensive audit complete
+- Specific code changes documented with exact locations
+- Ready to implement improvements or handoff to another agent
+- All findings documented in session output above
+
+---
 
 ### Session: 2025-12-22 (Documentation Enhancement)
 
