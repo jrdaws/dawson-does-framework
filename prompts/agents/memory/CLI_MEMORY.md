@@ -105,6 +105,7 @@
 9. **Dispatcher Pattern**: All commands added around line 1747, use process.argv.slice to get args
 10. **Deploy Command**: FULLY implemented at src/commands/deploy.mjs - supports Vercel, Netlify, Railway
 11. **Always Check Implementation**: Memory can be outdated - verify files exist before assuming work needed
+12. **Deploy Tests**: 24 tests in tests/cli/deploy.test.mjs cover help, flags, providers, and credential management
 
 ---
 
@@ -117,10 +118,12 @@
 | `src/dd/cursorrules.mjs` | .cursorrules generation |
 | `src/dd/logger.mjs` | Logging utilities |
 | `src/dd/manifest.mjs` | Manifest reading/writing |
+| `src/commands/deploy.mjs` | Deploy command implementation |
 | `tests/export-args.test.mjs` | Flag parsing tests |
 | `tests/cli/cursorrules.test.mjs` | Cursorrules generation tests (29 tests) |
 | `tests/cli/pull.test.mjs` | Pull command tests |
 | `tests/cli/pull-integration.test.mjs` | Pull command integration tests |
+| `tests/cli/deploy.test.mjs` | Deploy command tests (24 tests) |
 
 ---
 
@@ -136,5 +139,5 @@ At the end of your session, add:
 
 ---
 
-*Last Updated: 2024-12-22 by CLI Agent (Session CLI-003)*
+*Last Updated: 2024-12-22 by CLI Agent (Session CLI-004)*
 
