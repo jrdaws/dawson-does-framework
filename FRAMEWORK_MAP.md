@@ -1,9 +1,10 @@
 # FRAMEWORK_MAP
 
 Generated: (deterministic)
-Hash: dd6ce1c0d2
+Hash: b41ff877de
 
 ## Recent changes
+- ec43c6a 2025-12-22 docs(cli): update memory with deploy test coverage
 - 6f26286 2025-12-22 fix(governance): address critical bootstrap issues and recreate DOCS_MEMORY
 - 3d553d9 2025-12-22 docs(cli): add deploy commands to help text and update CLI memory
 - 8dfcfdc 2025-12-22 feat(cli): add agent-prompt command for generating AI agent bootstrap prompts
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 1fe0c4e 2025-12-21 feat(deploy): add help flag handling and comprehensive help output
 - 8e652f9 2025-12-21 test(coverage): add 59 tests to push coverage to 69.99%
 - 24b5614 2025-12-21 docs(governance): update AGENT_CONTEXT.md with new doc references
-- 348fe28 2025-12-21 fix: temporarily disable editor features for production deployment
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
@@ -54,6 +54,7 @@ Used for: runtime reasoning, blast-radius analysis, debugging
   - `src/dd/agent-safety.mjs`
   - `src/dd/integrations.mjs`
   - `src/dd/pull.mjs`
+  - `src/dd/init.mjs`
   - `src/dd/cursorrules.mjs`
   - `scripts/orchestrator/project-config.mjs`
   - `scripts/orchestrator/capability-engine.mjs`
@@ -162,6 +163,8 @@ Used for: onboarding, refactors, capability ownership
 - `│     src/dd/integration-schema.mjs`
 - `├─ src/dd/pull.mjs`
 - `│  src/dd/pull.mjs`
+- `├─ src/dd/init.mjs`
+- `│  src/dd/init.mjs`
 - `├─ src/dd/cursorrules.mjs`
 - `│  src/dd/cursorrules.mjs`
 - `├─ scripts/orchestrator/project-config.mjs`
@@ -189,6 +192,7 @@ Used for: onboarding, refactors, capability ownership
 - `src/dd/agent-safety.mjs` <- `bin/framework.js`
 - `src/dd/integrations.mjs` <- `bin/framework.js`
 - `src/dd/pull.mjs` <- `bin/framework.js`
+- `src/dd/init.mjs` <- `bin/framework.js`
 - `src/dd/cursorrules.mjs` <- `bin/framework.js`
 - `scripts/orchestrator/project-config.mjs` <- `bin/framework.js`, `scripts/orchestrator/capability-engine.mjs`
 - `scripts/orchestrator/capability-engine.mjs` <- `bin/framework.js`
