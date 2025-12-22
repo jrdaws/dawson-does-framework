@@ -10,6 +10,7 @@ export {
   CollaborativeEditorProvider,
   useCollaborativeEditor,
 } from "./CollaborativeEditorContext";
+export { useCollaborativeHTML } from "./useCollaborativeHTML";
 export { SelectionOverlay } from "./SelectionOverlay";
 export { PropertiesPanel } from "./PropertiesPanel";
 export { ComponentTree } from "./ComponentTree";

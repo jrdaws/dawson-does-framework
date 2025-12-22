@@ -33,11 +33,13 @@ const MAX_INPUT_LENGTH = 10000; // Prevent extremely long prompts
 
 /**
  * Generate a cache key from request parameters
+ * Includes all parameters that affect the generated output
  */
 function generateCacheKey(params: {
   template: string;
   projectName?: string;
   integrations: Record<string, string>;
+  inspirations: Array<{ type: string; value: string; preview?: string }>;
   description: string;
   vision?: string;
   mission?: string;
@@ -47,6 +49,8 @@ function generateCacheKey(params: {
     template: params.template,
     projectName: params.projectName || "",
     integrations: params.integrations,
+    // Include inspirations to ensure different inspirations produce different cache keys
+    inspirations: params.inspirations.map(i => ({ type: i.type, value: i.value })),
     description: params.description,
     vision: params.vision || "",
     mission: params.mission || "",
@@ -130,6 +134,7 @@ export async function POST(request: NextRequest) {
         template,
         projectName,
         integrations,
+        inspirations,
         description,
         vision,
         mission,

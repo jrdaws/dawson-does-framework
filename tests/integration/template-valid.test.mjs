@@ -53,9 +53,11 @@ if (templates.length === 0) {
       assertFilesExist(templatePath, ['README.md']);
     });
 
-    test(`template ${templateName}: has Next.js app directory`, () => {
+    test(`template ${templateName}: has Next.js app or src directory`, () => {
       const appDir = path.join(templatePath, 'app');
-      assert(fs.existsSync(appDir), `${templateName}: missing app/ directory`);
+      const srcDir = path.join(templatePath, 'src');
+      const hasAppOrSrc = fs.existsSync(appDir) || fs.existsSync(srcDir);
+      assert(hasAppOrSrc, `${templateName}: missing app/ or src/ directory`);
     });
 
     test(`template ${templateName}: has tsconfig.json`, () => {

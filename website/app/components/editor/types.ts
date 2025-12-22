@@ -48,7 +48,8 @@ export interface EditorMessage {
     | "error"
     | "getHtml"
     | "setHtml"
-    | "html";
+    | "html"
+    | "selectById";
   payload?: any;
 }
 
