@@ -1,7 +1,7 @@
 {
   "all": true,
   "include": [
-    "src/dd/*.mjs",
+    "src/**/*.mjs",
     "bin/framework.js"
   ],
   "exclude": [
