@@ -4,6 +4,8 @@ Generated: (deterministic)
 Hash: b41ff877de
 
 ## Recent changes
+- 54535ac 2025-12-22 fix(templates): remove node_modules from landing-page template
+- 0f81301 2025-12-22 chore: add WIP files to .gitignore
 - de90a18 2025-12-22 test(api): add comprehensive tests for projects API endpoints
 - 2241da1 2025-12-22 feat(cli): update pull command to support new API response format
 - 3dac20f 2025-12-22 feat(platform): add preview caching infrastructure
@@ -27,8 +29,6 @@ Hash: b41ff877de
 - ba43919 2025-12-22 chore: final framework map sync
 - a0807e8 2025-12-22 chore: update framework map after push
 - ecbe086 2025-12-22 docs(patterns): add comprehensive component patterns guide
-- 67220e8 2025-12-22 docs: add comprehensive standards documentation
-- 8acf17e 2025-12-22 fix(website): remove editor components for clean deployment
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
