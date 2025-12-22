@@ -1,0 +1,9 @@
+{
+  "inputPlaceholder": "run /bootstrap to initialize agent",
+  "defaultPrompt": "/bootstrap",
+  "suggestedPrompts": [
+    "/bootstrap",
+    "/sync",
+    "/handoff"
+  ]
+}

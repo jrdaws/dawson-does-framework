@@ -4,6 +4,29 @@
 > 
 > **This file is automatically read by Claude Code CLI when starting a session in this project.**
 
+---
+
+## ⛔ STOP - READ THIS FIRST
+
+**You MUST complete the verification before doing ANY work.**
+
+If you skip this, your work will be rejected and you will need to start over.
+
+Your FIRST response MUST begin with:
+
+```
+## ✓ Governance Acknowledgment
+- Governance Version: 2.0
+- I have read CLAUDE.md and AGENT_CONTEXT.md
+- I understand: export-first philosophy, zero lock-in
+- I will NOT: delete protected files, create branches, skip sync
+- Pre-commit command: npm test
+```
+
+**Do not proceed until you have stated this acknowledgment.**
+
+---
+
 ## 🛑 MANDATORY FIRST STEPS (Do ALL Before Any Work)
 
 ### Step 0: Sync Check (CRITICAL - Do This FIRST)
@@ -115,18 +138,44 @@ If you cannot answer these, re-read AGENT_CONTEXT.md.
 
 ---
 
+## 🔐 Agent Lock System
+
+Before starting work, acquire a lock to prevent conflicts:
+
+```bash
+# Acquire lock (replace CLI with your role: Website, Template, etc.)
+./scripts/agent-lock.sh acquire CLI
+
+# Check lock status
+./scripts/agent-lock.sh status
+
+# Release when done
+./scripts/agent-lock.sh release
+```
+
+---
+
 ## 🏁 Before Ending Your Session
 
-**ALWAYS do these before ending:**
+**ALWAYS complete this checklist before ending:**
 
-1. **Run tests**: `npm test`
-2. **Commit your work**:
-   ```bash
-   git add -A
-   git commit -m "<type>(<scope>): <description>"
-   ```
-3. **Push to origin**: `git push origin main`
-4. **Update memory file** (if applicable): `prompts/agents/memory/[ROLE]_MEMORY.md`
+```bash
+# 1. Run tests
+npm test
+
+# 2. Update your memory file
+# Edit: prompts/agents/memory/[ROLE]_MEMORY.md
+
+# 3. Commit your work
+git add -A
+git commit -m "<type>(<scope>): <description>"
+
+# 4. Push with retry logic
+./scripts/git-push-safe.sh
+
+# 5. Release your lock
+./scripts/agent-lock.sh release
+```
 
 **Never leave uncommitted work** - the next agent won't see it!
 

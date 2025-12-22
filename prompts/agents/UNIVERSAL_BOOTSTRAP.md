@@ -1,5 +1,7 @@
 # Universal Bootstrap Prompt
 
+> **Governance Version: 2.0** | Last Updated: 2025-12-22
+> 
 > **Use this prompt to initialize ANY AI agent on ANY platform for dawson-does-framework work.**
 
 This prompt works with:
@@ -7,6 +9,39 @@ This prompt works with:
 - Cursor IDE
 - ChatGPT
 - Any other AI assistant
+
+---
+
+## ⚡ Quick Start: Complete Agent Workflow
+
+**Every AI agent session should follow this workflow:**
+
+```bash
+# 1. Install hooks (first time only)
+./scripts/install-hooks.sh
+
+# 2. Sync and check for other agents
+git pull origin main
+git log --oneline --since="10 minutes ago"  # Check for active agents
+
+# 3. Acquire workspace lock
+./scripts/agent-lock.sh acquire CLI  # Replace CLI with your role
+
+# 4. Do your work...
+# (Follow the bootstrap steps below)
+
+# 5. Run tests before committing
+npm test
+
+# 6. Commit (pre-commit hook verifies protected files)
+git add -A && git commit -m "feat(scope): description"
+
+# 7. Push with retry logic
+./scripts/git-push-safe.sh
+
+# 8. Release lock
+./scripts/agent-lock.sh release
+```
 
 ---
 
@@ -23,10 +58,25 @@ You are being assigned to work on the dawson-does-framework project.
 
 ## MANDATORY FIRST STEPS (Do these before ANY work)
 
+### Step 0: Setup & Lock Acquisition
+Run these commands FIRST:
+```bash
+# Sync with remote
+git pull origin main
+
+# Check for other active agents
+git log --oneline --since="10 minutes ago"
+
+# Acquire lock for your role (replace CLI with your role)
+./scripts/agent-lock.sh acquire CLI
+```
+
+If lock acquisition fails, another agent is working. Coordinate or wait.
+
 ### Step 1: Read Governance
 Read and understand the project governance:
 - Read: `AGENT_CONTEXT.md` - Project vision, philosophy, standards
-- Read: `prompts/agents/AGENT_POLICIES.md` - Agent policies (version 1.0)
+- Read: `prompts/agents/AGENT_POLICIES.md` - Agent policies
 
 ### Step 2: Identify Your Role
 Based on the task I'll give you, identify which role applies:
@@ -80,11 +130,30 @@ Then say: "Ready for task assignment."
 
 ## At Session End (MANDATORY)
 
-Before ending, you MUST:
-1. Update your memory file with session entry
-2. Provide Summary of achievements
-3. Provide Suggestions (including recommended next agent)
-4. Provide Continuation Prompt for next agent
+Before ending, you MUST complete this checklist:
+
+```bash
+# 1. Run tests
+npm test
+
+# 2. Update your memory file
+# Add session entry to: prompts/agents/memory/[ROLE]_MEMORY.md
+
+# 3. Commit your work
+git add -A
+git commit -m "<type>(<scope>): <description>"
+
+# 4. Push with retry logic
+./scripts/git-push-safe.sh
+
+# 5. Release your lock
+./scripts/agent-lock.sh release
+```
+
+Then in your final response, provide:
+1. **Summary** of achievements
+2. **Suggestions** (including recommended next agent)
+3. **Continuation Prompt** for next agent (copy-paste ready)
 
 ---
 
@@ -170,5 +239,5 @@ If they don't, remind them to complete the bootstrap steps.
 
 ---
 
-*Bootstrap Version: 1.0 | Created: 2024-12-22*
+*Bootstrap Version: 2.0 | Updated: 2025-12-22*
 

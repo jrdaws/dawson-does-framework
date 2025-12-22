@@ -1,6 +1,26 @@
 # Dawson-Does Framework - Cursor Rules
 # Governance Version: 2.0 | Last Updated: 2025-12-22
 
+---
+
+## ⛔ STOP - READ THIS FIRST
+
+**You MUST complete the verification before doing ANY work.**
+
+Your FIRST response MUST begin with:
+
+```
+## ✓ Governance Acknowledgment
+- Governance Version: 2.0
+- I have read .cursorrules and AGENT_CONTEXT.md
+- I understand: export-first philosophy, zero lock-in
+- I will NOT: delete protected files, create branches, skip sync
+```
+
+**Do not proceed until you have stated this acknowledgment.**
+
+---
+
 ## 🛑 MANDATORY FIRST STEPS - DO NOT SKIP
 
 Before responding to ANY prompt or doing ANY work:
