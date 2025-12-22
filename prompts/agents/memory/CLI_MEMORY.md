@@ -15,8 +15,9 @@
 5. ✅ Priority 1 consistency fixes implemented (export command)
 6. ✅ Priority 2 enhancements implemented (standardized error helpers)
 7. ✅ Priority 3 completed: CLI patterns documented in CONTRIBUTING.md
-8. All CLI consistency work complete
-9. Consider live API testing with production endpoint
+8. ✅ Pull command updated for new standardized API format
+9. All CLI work complete and synced with Platform API
+10. (Optional) Live API testing with production endpoint
 
 ---
 
@@ -27,6 +28,76 @@
 ---
 
 ## Session History
+
+### Session: 2025-12-22 (Pull Command API Format Update)
+
+**Work Completed**
+- ✅ Updated pull command to support new standardized Projects API format
+- ✅ Enhanced fetchProject() to handle nested error structure (error.message, error.recovery)
+- ✅ Added support for new data structure (data.data vs data.project)
+- ✅ Maintained backwards compatibility with old API format
+- ✅ Updated unit tests to reflect new API format
+- ✅ Created 5 new integration tests for API format handling
+- ✅ Fixed commands.test.mjs to reflect Priority 1 export changes
+- ✅ All 599 tests passing
+
+**API Format Changes**
+- **New Success Format**: `{ success: true, data: {...}, meta: {...} }`
+- **New Error Format**: `{ success: false, error: { code, message, recovery }, meta: {...} }`
+- **Old Format**: Still supported during transition period
+
+**Changes Made**
+1. **src/dd/pull.mjs** (+24 lines):
+   - Updated fetchProject() to check for nested error format first
+   - Falls back to old format if new format not detected
+   - Extracts recovery guidance from API responses
+   - Supports both `data.data` and `data.project` keys
+
+2. **tests/cli/pull.test.mjs** (+12 lines):
+   - Updated mock API responses to use new format
+   - Added assertions for error.recovery field
+   - Tests verify proper error extraction
+
+3. **tests/integration/cli-pull-integration.test.mjs** (NEW, 237 lines):
+   - Integration: CLI pull handles new API success format
+   - Integration: CLI pull handles new API error format with recovery
+   - Integration: CLI pull handles TOKEN_NOT_FOUND error
+   - Integration: CLI pull handles rate limit error
+   - Integration: CLI pull backwards compatible with old API format
+
+4. **tests/cli/commands.test.mjs** (+2 lines, -2 lines):
+   - Fixed "export requires templateId and projectDir" test
+   - `framework export` with no args now shows help (exit 0), not error
+   - Reflects Priority 1 changes where help support was added
+
+**Testing Results**
+- ✅ 599 tests passing (was 583, added 5 new integration tests, fixed 1)
+- ✅ All CLI pull tests passing
+- ✅ New integration tests passing
+- ✅ Backwards compatibility verified
+- ✅ Commands test suite fixed
+
+**Impact**
+- Pull command now works with standardized API format
+- Better error messages with recovery guidance
+- Backwards compatible - no breaking changes
+- Ready for production use with new API
+
+**Blockers Encountered**
+- None - All tests passing after updates
+
+**Next Priorities**
+1. All CLI work complete and up to date with Platform API changes
+2. (Optional) Live API testing with production endpoint
+3. Ready for new features or other work
+
+**Handoff Notes**
+- Pull command updated for new API format
+- All tests passing (599/599)
+- Backwards compatibility maintained
+- CLI is in sync with Platform API standardization
+
+---
 
 ### Session: 2025-12-22 (CLI Patterns Documentation - Priority 3)
 
