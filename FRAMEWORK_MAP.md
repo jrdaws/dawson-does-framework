@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: b41ff877de
 
 ## Recent changes
+- e6acc1e 2025-12-22 feat(cli): implement framework init and enhance pull command
 - 04e76bd 2025-12-22 docs(memory): update DOCS_MEMORY with Documentation Agent sessions P2-P5
 - 9f54054 2025-12-22 test(cli): add comprehensive tests for init command
 - ec43c6a 2025-12-22 docs(cli): update memory with deploy test coverage
@@ -28,7 +29,6 @@ Hash: b41ff877de
 - 1ee384f 2025-12-22 docs(patterns): add comprehensive integration patterns guide
 - dfed0f2 2025-12-22 docs(standards): add comprehensive file structure guide
 - 86d8845 2025-12-21 feat(editor): restore visual editor with full functionality
-- 1fe0c4e 2025-12-21 feat(deploy): add help flag handling and comprehensive help output
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
