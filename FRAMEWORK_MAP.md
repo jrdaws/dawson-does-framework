@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 348fe28 2025-12-21 fix: temporarily disable editor features for production deployment
 - 9fca0a7 2025-12-21 docs(governance): add coding standards and governance roadmap
 - a6c8eb7 2025-12-21 docs(templates): add comprehensive template documentation
 - 5e8cd30 2025-12-21 chore: bump version to 0.3.1
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - c086d40 2025-12-20 feat: production-ready deployment with AI preview
 - 196b128 2025-12-20 feat(configurator): add client-side ZIP download
 - 4678616 2025-12-20 fix(configurator): update AI model and improve env setup UX
-- 3ce10db 2025-12-20 fix(website): resolve hydration mismatch and URL parsing errors
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |

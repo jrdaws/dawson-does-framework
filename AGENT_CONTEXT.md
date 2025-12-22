@@ -44,6 +44,16 @@ Build a hybrid platform where users can prototype apps in a web UI, then export 
 4. **Transparency**: Explicit complexity, no magic black boxes
 5. **Developer-Centric**: Built for developers, by developers
 
+## Constitutional Invariants
+AI agents working on this codebase must follow the rules in `docs/AI_GOVERNANCE.md`:
+- **No Hidden Behavior**: All actions explainable, mutations visible
+- **Explicit Consent**: Destructive operations require approval
+- **Reversibility**: Every mutation should be reversible
+- **Determinism**: Same inputs → predictable outputs
+- **Zero Lock-in**: Exported projects work standalone
+
+See `docs/AI_GOVERNANCE.md` for permission boundaries (✅ allowed / ⚠️ checkpoint / 🛑 forbidden).
+
 ## Architecture Overview
 ```
 dawson-does-framework/
@@ -94,10 +104,14 @@ dawson-does-framework/
 
 | If Working On... | Also Read |
 |------------------|-----------|
-| CLI/Core code | `docs/standards/CODING_STANDARDS.md` |
-| Website code | `docs/standards/CODING_STANDARDS.md` |
-| Templates | `docs/standards/CODING_STANDARDS.md` + template.json schema |
-| Any code | `FRAMEWORK_MAP.md` for architecture context |
+| **Governance/Process** | `docs/GOVERNANCE_ROADMAP.md` + `docs/AI_GOVERNANCE.md` |
+| **CLI/Core code** | `docs/standards/CODING_STANDARDS.md` + `docs/FRAMEWORK_MAP.md` |
+| **Website code** | `docs/standards/CODING_STANDARDS.md` + `docs/FRAMEWORK_MAP.md` |
+| **Templates** | `docs/standards/CODING_STANDARDS.md` + `docs/templates/creating-templates.md` + `docs/TEMPLATE_REGISTRY.md` |
+| **Integrations** | `docs/HOW_TO_ADD_PROVIDER.md` + relevant `docs/integrations/{type}/` |
+| **Capabilities** | `docs/HOW_TO_ADD_CAPABILITY.md` + `docs/concepts/capabilities.md` |
+| **CLI Commands** | Relevant file in `docs/cli/{command}.md` |
+| **Any code** | `docs/FRAMEWORK_MAP.md` for architecture context |
 
 ## Before You Start
 1. Run `git status` to see current state
@@ -110,6 +124,13 @@ dawson-does-framework/
 2. Run `npm run lint` if available
 3. Commit with conventional commit message
 4. Note any follow-up tasks needed
+
+## Maintaining This Document
+When creating new governance, standards, or how-to documentation:
+1. Add it to the "Additional Reading" table above
+2. Update GOVERNANCE_ROADMAP.md with the new doc
+3. Consider if it needs to be mentioned in CLAUDE.md or .cursorrules
+4. Update this section with any new invariants or rules
 
 ---
 *This context applies to all agents working on dawson-does-framework.*
