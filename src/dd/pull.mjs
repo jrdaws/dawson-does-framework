@@ -65,14 +65,27 @@ export function getApiUrl(dev = false) {
  * Fetch project from API
  * @param {string} token - Project token
  * @param {string} apiUrl - API base URL
- * @returns {Promise<{success: boolean, project?: object, error?: string, status?: number}>}
+ * @returns {Promise<{success: boolean, project?: object, error?: string, errorCode?: string, recovery?: string, status?: number}>}
  */
 export async function fetchProject(token, apiUrl) {
   try {
     const response = await fetch(`${apiUrl}/api/projects/${token}`);
-    
+
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+
+      // Handle new API error format: { success: false, error: { code, message, recovery } }
+      if (errorData.error && typeof errorData.error === 'object') {
+        return {
+          success: false,
+          error: errorData.error.message || 'Unknown error',
+          errorCode: errorData.error.code,
+          recovery: errorData.error.recovery,
+          status: response.status,
+        };
+      }
+
+      // Fallback for old format or malformed errors
       return {
         success: false,
         error: errorData.message || errorData.error || `HTTP ${response.status}`,
@@ -80,10 +93,29 @@ export async function fetchProject(token, apiUrl) {
       };
     }
 
-    const data = await response.json();
+    const responseData = await response.json();
+
+    // Handle new API success format: { success: true, data: { ...project } }
+    if (responseData.success && responseData.data) {
+      return {
+        success: true,
+        project: responseData.data,
+      };
+    }
+
+    // Fallback for old format: { project: { ...project } }
+    // Allow project to be null for edge cases
+    if ('project' in responseData) {
+      return {
+        success: true,
+        project: responseData.project,
+      };
+    }
+
+    // If neither format matches, something is wrong
     return {
-      success: true,
-      project: data.project,
+      success: false,
+      error: 'Invalid API response format',
     };
   } catch (error) {
     return {
@@ -100,7 +132,7 @@ export async function fetchProject(token, apiUrl) {
  */
 export function generateEnvExample(project) {
   const lines = [];
-  
+
   lines.push('# Environment Variables');
   lines.push('# Copy this file to .env.local and fill in your values');
   lines.push(`# Generated from: framework pull ${project.token}`);
@@ -111,10 +143,11 @@ export function generateEnvExample(project) {
   lines.push('NEXT_PUBLIC_APP_URL=http://localhost:3000');
   lines.push('');
 
-  // Add env_keys from project if provided
-  if (project.env_keys && Object.keys(project.env_keys).length > 0) {
+  // Add env_keys from project if provided (handle both camelCase and snake_case)
+  const envKeys = project.envKeys || project.env_keys;
+  if (envKeys && Object.keys(envKeys).length > 0) {
     lines.push('# Project-specific keys');
-    for (const [key, value] of Object.entries(project.env_keys)) {
+    for (const [key, value] of Object.entries(envKeys)) {
       lines.push(`${key}=${value || ''}`);
     }
     lines.push('');
@@ -234,11 +267,15 @@ export function generateEnvExample(project) {
  * @returns {object} - Context object
  */
 export function generateContext(project) {
+  // Handle both camelCase (new API) and snake_case (old API) field names
+  const projectName = project.projectName || project.project_name;
+  const successCriteria = project.successCriteria || project.success_criteria;
+
   return {
     schemaVersion: 1,
     generatedAt: new Date().toISOString(),
     project: {
-      name: project.project_name,
+      name: projectName,
       template: project.template,
       token: project.token,
     },
@@ -246,7 +283,7 @@ export function generateContext(project) {
       vision: project.vision || null,
       mission: project.mission || null,
       description: project.description || null,
-      successCriteria: project.success_criteria || null,
+      successCriteria: successCriteria || null,
       inspirations: project.inspirations || [],
     },
     integrations: project.integrations || {},
