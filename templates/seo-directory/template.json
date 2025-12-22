@@ -12,6 +12,14 @@
     "next": "^15.1.6",
     "react": "^19.0.0"
   },
+  "supportedIntegrations": {
+    "database": ["postgres", "supabase"],
+    "auth": ["supabase", "clerk"],
+    "cms": ["contentful", "sanity"],
+    "analytics": ["posthog", "plausible"]
+  },
+  "defaultIntegrations": [],
+  "requiredIntegrations": [],
   "features": [
     "Next.js 15 with App Router",
     "Static site generation",
