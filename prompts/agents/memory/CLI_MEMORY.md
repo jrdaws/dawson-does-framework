@@ -25,6 +25,7 @@
 |------|----------|------------|---------|
 | 2024-12-22 | Initial | Setup | Created memory file, established baseline |
 | 2024-12-22 | 30min | CLI-001 | Verified --cursor flag implementation complete, added comprehensive tests |
+| 2024-12-22 | 45min | CLI-002 | Added agent-prompt command with --role and --task flags for generating bootstrap prompts |
 
 ---
 
@@ -35,6 +36,8 @@
 | Use degit for templates | Avoids full git history, faster downloads | 2024-12-19 |
 | ESM over CJS | Modern Node.js, better tree-shaking | 2024-12-19 |
 | Add comprehensive tests for cursorrules | No unit tests existed for generateCursorRules/generateStartPrompt - added 29 tests | 2024-12-22 |
+| Output agent-prompt to stdout | Allows easy copy-paste into AI platforms, avoids file management | 2024-12-22 |
+| Extract only key sections from memory | Full memory too verbose, focus on recent sessions, queue, issues | 2024-12-22 |
 
 ---
 
@@ -47,6 +50,7 @@
 - ✅ Pull command with --cursor flag COMPLETE
 - ✅ .cursorrules and START_PROMPT.md generation working
 - ✅ Comprehensive tests for cursorrules (29 tests)
+- ✅ Agent-prompt command COMPLETE (generates bootstrap prompts)
 - ❌ Deploy command not started
 
 ### In Progress
@@ -92,6 +96,8 @@
 5. **Testing**: Run `npm test` before committing - tests in `tests/`
 6. **Pull --cursor**: Already fully implemented in lines 1485-1499 of framework.js
 7. **Test Coverage**: Always check if functions have tests before assuming they're incomplete
+8. **Agent-prompt**: New command at line 1086, uses extractSection helper to parse memory files
+9. **Dispatcher Pattern**: All commands added around line 1747, use process.argv.slice to get args
 
 ---
 
@@ -123,5 +129,5 @@ At the end of your session, add:
 
 ---
 
-*Last Updated: 2024-12-22 by CLI Agent (Session CLI-001)*
+*Last Updated: 2024-12-22 by CLI Agent (Session CLI-002)*
 

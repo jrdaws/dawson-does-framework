@@ -888,6 +888,7 @@ async function cmdHelp() {
   framework drift [projectDir]
   framework plugin <add|remove|list|hooks|info>
   framework templates <list|search|info|categories|tags>
+  framework agent-prompt --role <ROLE> --task "<TASK>"
   framework export <templateId> <projectDir> [options]
   framework pull <token> [output-dir] [options]
   framework <templateId> <projectDir>
@@ -919,6 +920,8 @@ Examples:
   framework phrases .
   framework toggle figma.parse on .
   framework doctor .
+  framework agent-prompt --role CLI --task "Add deploy command"          # Generate agent bootstrap prompt
+  framework agent-prompt --role Website --task "Update landing page"     # For Website agent
   framework export seo-directory ~/Documents/Cursor/my-app
   framework export saas ~/Documents/Cursor/my-saas --remote https://github.com/me/my-saas.git --push
   framework pull fast-lion-1234                      # Pull project from web platform
@@ -1081,6 +1084,165 @@ async function cmdVersion() {
   const version = getCurrentVersion();
   const packageName = getPackageName();
   console.log(`${packageName} v${version}`);
+}
+
+async function cmdAgentPrompt(args) {
+  // Parse flags
+  let role = null
+  let task = null
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === "--role" && args[i + 1]) {
+      role = args[i + 1]
+      i++
+    } else if (args[i] === "--task" && args[i + 1]) {
+      task = args[i + 1]
+      i++
+    }
+  }
+
+  // Validate required args
+  if (!role || !task) {
+    console.error(`
+Usage: framework agent-prompt --role <ROLE> --task "<TASK>"
+
+Generates a ready-to-use bootstrap prompt for an AI agent with current memory state.
+
+Arguments:
+  --role <ROLE>    Agent role (CLI, Website, Template, Integration, Platform, Docs, Testing)
+  --task <TASK>    Task description for the agent
+
+Example:
+  framework agent-prompt --role CLI --task "Add deploy command"
+  framework agent-prompt --role Website --task "Update landing page"
+`)
+    process.exit(1)
+  }
+
+  // Normalize role name
+  const roleUpper = role.toUpperCase()
+  const validRoles = ["CLI", "WEBSITE", "TEMPLATE", "INTEGRATION", "PLATFORM", "DOCS", "TESTING"]
+
+  if (!validRoles.includes(roleUpper)) {
+    console.error(`Error: Invalid role "${role}"`)
+    console.error(`Valid roles: ${validRoles.join(", ")}`)
+    process.exit(1)
+  }
+
+  // Check if memory file exists
+  const memoryFile = path.join(PKG_ROOT, "prompts/agents/memory", `${roleUpper}_MEMORY.md`)
+
+  if (!fs.existsSync(memoryFile)) {
+    console.error(`Error: Memory file not found: ${memoryFile}`)
+    process.exit(1)
+  }
+
+  // Read memory file
+  const memoryContent = fs.readFileSync(memoryFile, "utf8")
+
+  // Extract key info from memory
+  const sessionHistory = extractSection(memoryContent, "📅 Session History") || "No previous sessions"
+  const taskQueue = extractSection(memoryContent, "📋 Task Queue") || "No tasks in queue"
+  const knownIssues = extractSection(memoryContent, "🐛 Known Issues") || "No known issues"
+
+  // Generate the bootstrap prompt
+  const prompt = `# ${roleUpper} Agent Session - Dawson-Does Framework
+
+## 🛑 MANDATORY FIRST STEPS
+
+### Step 1: Read Governance
+\`\`\`bash
+cat AGENT_CONTEXT.md
+cat prompts/agents/AGENT_POLICIES.md
+\`\`\`
+
+Answer the 5 verification questions from AGENT_CONTEXT.md in your first response.
+
+### Step 2: Confirm Your Role
+**You are the ${roleUpper} Agent.**
+
+### Step 3: Load Your Memory
+\`\`\`bash
+cat prompts/agents/roles/${roleUpper}_AGENT.md
+cat prompts/agents/memory/${roleUpper}_MEMORY.md
+\`\`\`
+
+### Step 4: Review Current State
+
+**Recent Sessions:**
+${sessionHistory}
+
+**Task Queue:**
+${taskQueue}
+
+**Known Issues:**
+${knownIssues}
+
+---
+
+## 🎯 YOUR TASK
+
+${task}
+
+---
+
+## ✅ Success Criteria
+
+- [ ] Task completed according to requirements
+- [ ] All tests pass (\`npm test\`)
+- [ ] Code follows project standards (see AGENT_CONTEXT.md)
+- [ ] Memory file updated with session entry
+- [ ] Handoff prompt provided for next agent
+
+---
+
+## 📋 Remember
+
+**Philosophy**: Export-first, zero lock-in, Cursor-native, transparent, fail gracefully
+
+**Code Style**:
+- JavaScript (.mjs): No semicolons, 2-space indent
+- TypeScript: Semicolons, 2-space indent
+
+**Before Ending**:
+1. Update \`prompts/agents/memory/${roleUpper}_MEMORY.md\`
+2. Provide Summary of achievements
+3. Provide Suggestions with recommended next agent
+4. Provide Continuation Prompt for next agent
+
+---
+
+**Now proceed with the initialization steps and begin your task.**
+`
+
+  console.log(prompt)
+}
+
+// Helper to extract markdown sections
+function extractSection(content, heading) {
+  const lines = content.split("\n")
+  let capturing = false
+  let section = []
+
+  for (const line of lines) {
+    // Check if this is the heading we want
+    if (line.includes(heading)) {
+      capturing = true
+      continue
+    }
+
+    // Stop if we hit another heading (starts with ## or #)
+    if (capturing && line.match(/^#{1,2} /)) {
+      break
+    }
+
+    // Capture lines in this section
+    if (capturing && line.trim()) {
+      section.push(line)
+    }
+  }
+
+  return section.length > 0 ? section.slice(0, 10).join("\n") : null
 }
 
 async function cmdCheckpoint(args) {
@@ -1585,6 +1747,11 @@ if (isEntrypoint) {
   if (a === "drift") { await cmdDrift(b); process.exit(0); }
   if (a === "version") { await cmdVersion(); process.exit(0); }
   if (a === "upgrade") { await cmdUpgrade(b === "--dry-run"); process.exit(0); }
+  if (a === "agent-prompt") {
+    const agentArgs = process.argv.slice(3); // Everything after "framework agent-prompt"
+    await cmdAgentPrompt(agentArgs);
+    process.exit(0);
+  }
   if (a === "llm") { await cmdLLM([b, c, d]); process.exit(0); }
   if (a === "auth") { await cmdAuth([b, c, d]); process.exit(0); }
   if (a === "plugin") { await cmdPlugin([b, c, d]); process.exit(0); }
