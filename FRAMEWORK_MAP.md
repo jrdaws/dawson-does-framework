@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 5e8cd30 2025-12-21 chore: bump version to 0.3.1
 - b39f514 2025-12-21 chore: update framework map after test additions
 - d710faf 2025-12-21 docs(governance): add mandatory agent context verification system
 - b33247a 2025-12-21 feat(website): complete Projects API and CLI pull integration
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 3ce10db 2025-12-20 fix(website): resolve hydration mismatch and URL parsing errors
 - e890aff 2025-12-20 docs(configurator): add comprehensive shipping status documentation
 - 8f5a146 2025-12-20 feat(configurator): implement all 8 steps with full UI
-- 8e5b829 2025-12-20 feat(configurator): implement Phase 2 core user flow
 
 ## Capability registry
 | id | tier | optional | color | phrase | command | paths |
