@@ -22,6 +22,47 @@
 
 ## Session History
 
+### Session: 2025-12-23 03:00 - Production Deployment Preparation (P1)
+
+**Work Completed**
+- Updated `vercel.json` with security headers, function timeouts, and regions
+- Updated `next.config.js` with production optimizations (HSTS, compression, strict mode)
+- Created `.env.example` documenting all environment variables
+- Created comprehensive `docs/deploy/VERCEL_DEPLOYMENT.md` with:
+  - Environment variable reference (required/optional)
+  - Deployment steps for initial and subsequent deployments
+  - Domain and SSL configuration
+  - Smoke test checklist
+  - Rollback procedures
+  - Monitoring recommendations
+
+**Files Created/Modified**
+- `website/vercel.json` - Added headers, function config
+- `website/next.config.js` - Production optimizations
+- `website/.env.example` - Environment variable template
+- `docs/deploy/VERCEL_DEPLOYMENT.md` - New deployment guide
+
+**Configuration Details**
+- Function timeouts: generate=60s, preview=30s, download=30s
+- Security headers: HSTS, X-Frame-Options, X-Content-Type-Options
+- Regions: iad1 (US East, closest to Supabase)
+
+**Test Results**
+- ✅ Production build succeeds
+- ✅ Bundle sizes reasonable (107kB first load for homepage)
+
+**Next Priorities**
+1. Coordinate with Platform Agent on API rate limiting
+2. Actual Vercel deployment when ready
+3. Set up monitoring (Sentry, PostHog)
+
+**Handoff Notes**
+- Ready for production deployment
+- All environment variables documented
+- Smoke test checklist ready for post-deploy verification
+
+---
+
 ### Session: 2025-12-22 21:30 - Streaming UI Enhancements (P2)
 
 **Work Completed**
