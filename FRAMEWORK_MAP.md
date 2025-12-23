@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 85832b3 2025-12-22 feat(ai-agent): reduce code generation token limit for cost optimization
 - 80d8d73 2025-12-22 docs(cli): complete P2 deploy command verification audit
 - fc1b156 2025-12-22 feat(templates): add .env.example to all templates, fix saas type error
 - 88fc4b7 2025-12-22 test(governance): verify validation workflow
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - b930b1b 2025-12-22 perf(ai-agent): remove redundant meta-instructions from prompts
 - c2f00e8 2025-12-22 perf(ai-agent): remove redundant meta-instructions from prompts
 - 7942d7d 2025-12-22 docs(ai-agent): add verified cost estimates and token tracking documentation
-- 091d4ce 2025-12-22 perf(ai-agent): optimize whitespace in prompt files
 
 ## Agent Governance Structure
 
