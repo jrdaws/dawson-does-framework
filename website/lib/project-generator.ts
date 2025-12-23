@@ -2,6 +2,8 @@
  * Client-side wrapper for AI project generation
  */
 
+export type ModelTier = 'fast' | 'balanced' | 'quality';
+
 export interface ProjectGenerationParams {
   description: string;
   projectName?: string;
@@ -12,6 +14,7 @@ export interface ProjectGenerationParams {
   userApiKey?: string;
   sessionId: string;
   seed?: number;
+  modelTier?: ModelTier;
 }
 
 export interface ProjectGenerationResult {

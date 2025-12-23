@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useConfiguratorStore, Step } from "@/lib/configurator-state";
+import { useConfiguratorStore, Step, ModelTier } from "@/lib/configurator-state";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TEMPLATES } from "@/lib/templates";
@@ -37,6 +37,7 @@ export default function ConfigurePage() {
     vision,
     mission,
     successCriteria,
+    modelTier,
     setStep,
     completeStep,
     setMode,
@@ -51,6 +52,7 @@ export default function ConfigurePage() {
     setVision,
     setMission,
     setSuccessCriteria,
+    setModelTier,
   } = useConfiguratorStore();
 
   const selectedTemplate = TEMPLATES[template as keyof typeof TEMPLATES];
@@ -217,6 +219,27 @@ export default function ConfigurePage() {
                 </button>
               </div>
 
+              {/* Model Tier Selector - Only show for Full Project Generator tab */}
+              {aiTab === "generate" && (
+                <div className="flex items-center gap-4 mb-6 p-4 border border-terminal-text/20 rounded-lg bg-terminal-bg/50">
+                  <label className="text-sm font-mono text-terminal-dim">Model Quality:</label>
+                  <select
+                    value={modelTier}
+                    onChange={(e) => setModelTier(e.target.value as ModelTier)}
+                    className="bg-terminal-bg border border-terminal-text/30 text-terminal-text px-3 py-2 rounded font-mono text-sm focus:border-terminal-accent focus:outline-none"
+                  >
+                    <option value="fast">⚡ Fast (~$0.02) - Quickest, uses Haiku</option>
+                    <option value="balanced">⚖️ Balanced (~$0.08) - Best value</option>
+                    <option value="quality">✨ Quality (~$0.18) - Most reliable, uses Sonnet</option>
+                  </select>
+                  <span className="text-xs text-terminal-dim">
+                    {modelTier === 'fast' && 'Fastest generation, may have occasional issues'}
+                    {modelTier === 'balanced' && 'Recommended for most projects'}
+                    {modelTier === 'quality' && 'Best for complex or critical projects'}
+                  </span>
+                </div>
+              )}
+
               {/* Tab Content */}
               {aiTab === "preview" ? (
                 <AIPreview
@@ -231,6 +254,7 @@ export default function ConfigurePage() {
                   integrations={integrations}
                   inspirations={inspirations}
                   description={description}
+                  modelTier={modelTier}
                 />
               )}
             </div>

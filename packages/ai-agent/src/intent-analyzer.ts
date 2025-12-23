@@ -1,4 +1,4 @@
-import { LLMClient } from "./utils/llm-client.js";
+import { LLMClient, type StreamCallback } from "./utils/llm-client.js";
 import { PromptLoader } from "./utils/prompt-loader.js";
 import { withRetry } from "./utils/retry-strategy.js";
 import { handleLLMError, handleValidationError } from "./error-handler.js";
@@ -10,6 +10,8 @@ import type { ProjectInput, ProjectIntent } from "./types.js";
 export interface IntentOptions {
   apiKey?: string;
   model?: string;
+  stream?: boolean;
+  onStream?: StreamCallback;
 }
 
 /**
@@ -48,6 +50,8 @@ export async function analyzeIntent(
             },
           ],
           system: systemPrompt,
+          stream: opts.stream,
+          onStream: opts.onStream,
         },
         "intent" // Track as intent stage
       );

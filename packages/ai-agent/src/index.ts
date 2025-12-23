@@ -19,6 +19,9 @@ export type {
   TemplateMetadata,
   Inspiration,
   ModelTier,
+  StreamProgressCallback,
+  StreamEvent,
+  GenerateProjectOptions,
 } from "./types.js";
 
 // Export error types
@@ -39,7 +42,7 @@ import { generateArchitecture } from "./architecture-generator.js";
 import { generateCode } from "./code-generator.js";
 import { buildCursorContext } from "./context-builder.js";
 import { getGlobalTracker, resetGlobalTracker } from "./utils/token-tracker.js";
-import type { ProjectInput, ProjectIntent, ProjectArchitecture, GeneratedCode, CursorContext, ModelTier } from "./types.js";
+import type { ProjectInput, ProjectIntent, ProjectArchitecture, GeneratedCode, CursorContext, ModelTier, GenerateProjectOptions, StreamProgressCallback } from "./types.js";
 
 export interface GenerateProjectResult {
   intent: ProjectIntent;
@@ -96,35 +99,36 @@ export const DEFAULT_MODEL_TIER: ModelTier = "balanced";
  *
  * @example
  * ```typescript
- * // Default (quality tier - recommended)
+ * // Default (balanced tier)
  * const result = await generateProject({
  *   description: 'A fitness tracking app with social features',
  *   projectName: 'FitTrack'
  * });
  *
- * // With options
+ * // With streaming enabled
  * const result = await generateProject(
  *   { description: '...' },
- *   { modelTier: 'fast', logTokenUsage: true } // Use Haiku where possible
+ *   {
+ *     stream: true,
+ *     onProgress: (event) => {
+ *       if (event.type === 'chunk') {
+ *         process.stdout.write(event.chunk);
+ *       }
+ *     }
+ *   }
  * );
  * ```
  */
-export interface GenerateProjectOptions {
-  apiKey?: string;
-  logTokenUsage?: boolean;
-  /**
-   * Model tier selection:
-   * - 'fast': Haiku everywhere (~$0.02/gen, less reliable)
-   * - 'balanced': Haiku + Sonnet for code (~$0.08/gen) [DEFAULT]
-   * - 'quality': Sonnet everywhere (~$0.18/gen, most reliable)
-   */
-  modelTier?: ModelTier;
-}
+
+/** Callback for streaming text chunks */
+export type StreamCallback = (chunk: string, accumulated: string) => void;
 
 /** Options passed to individual generators */
 export interface GeneratorOptions {
   apiKey?: string;
   model?: string;
+  stream?: boolean;
+  onStream?: StreamCallback;
 }
 
 export async function generateProject(
@@ -136,23 +140,52 @@ export async function generateProject(
     ? { apiKey: apiKeyOrOptions, logTokenUsage: true }
     : { logTokenUsage: true, ...apiKeyOrOptions };
 
-  const { apiKey, logTokenUsage } = options;
+  const { apiKey, logTokenUsage, stream, onProgress } = options;
   const tier = options.modelTier || DEFAULT_MODEL_TIER;
   const models = MODEL_TIERS[tier];
+
+  // Helper to emit progress events
+  const emit = (stage: 'intent' | 'architecture' | 'code' | 'context', type: 'start' | 'chunk' | 'complete', data?: { chunk?: string; accumulated?: string; message?: string }) => {
+    if (onProgress) {
+      onProgress({ stage, type, ...data });
+    }
+  };
 
   // Reset token tracker for new generation
   resetGlobalTracker();
 
   // Step 1: Analyze intent
-  const intent = await analyzeIntent(input, { apiKey, model: models.intent });
+  emit('intent', 'start', { message: 'Analyzing project intent...' });
+  const intent = await analyzeIntent(input, {
+    apiKey,
+    model: models.intent,
+    stream,
+    onStream: stream ? (chunk, accumulated) => emit('intent', 'chunk', { chunk, accumulated }) : undefined,
+  });
+  emit('intent', 'complete', { message: 'Intent analysis complete' });
 
   // Step 2: Generate architecture
-  const architecture = await generateArchitecture(intent, { apiKey, model: models.architecture });
+  emit('architecture', 'start', { message: 'Designing architecture...' });
+  const architecture = await generateArchitecture(intent, {
+    apiKey,
+    model: models.architecture,
+    stream,
+    onStream: stream ? (chunk, accumulated) => emit('architecture', 'chunk', { chunk, accumulated }) : undefined,
+  });
+  emit('architecture', 'complete', { message: 'Architecture design complete' });
 
   // Step 3: Generate code
-  const code = await generateCode(architecture, input, { apiKey, model: models.code });
+  emit('code', 'start', { message: 'Generating code files...' });
+  const code = await generateCode(architecture, input, {
+    apiKey,
+    model: models.code,
+    stream,
+    onStream: stream ? (chunk, accumulated) => emit('code', 'chunk', { chunk, accumulated }) : undefined,
+  });
+  emit('code', 'complete', { message: 'Code generation complete' });
 
   // Step 4: Build Cursor context
+  emit('context', 'start', { message: 'Building Cursor context...' });
   const context = await buildCursorContext(
     {
       intent,
@@ -161,8 +194,14 @@ export async function generateProject(
       projectName: input.projectName,
       description: input.description,
     },
-    { apiKey, model: models.context }
+    {
+      apiKey,
+      model: models.context,
+      stream,
+      onStream: stream ? (chunk, accumulated) => emit('context', 'chunk', { chunk, accumulated }) : undefined,
+    }
   );
+  emit('context', 'complete', { message: 'Cursor context complete' });
 
   // Log token usage summary
   if (logTokenUsage) {

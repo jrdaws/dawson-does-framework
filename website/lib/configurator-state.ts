@@ -5,6 +5,8 @@ export type Mode = 'beginner' | 'advanced';
 
 export type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
+export type ModelTier = 'fast' | 'balanced' | 'quality';
+
 export interface Inspiration {
   id: string;
   type: 'image' | 'url' | 'figma';
@@ -47,6 +49,7 @@ export interface ConfiguratorState {
   iterationHistory: string[];
   userApiKey: string;
   remainingDemoGenerations: number | null;
+  modelTier: ModelTier;
 
   // Step 7: Context
   vision: string;
@@ -77,6 +80,7 @@ export interface ConfiguratorState {
   addIteration: (prompt: string) => void;
   setUserApiKey: (key: string) => void;
   setRemainingDemoGenerations: (count: number | null) => void;
+  setModelTier: (tier: ModelTier) => void;
   setVision: (vision: string) => void;
   setMission: (mission: string) => void;
   setSuccessCriteria: (criteria: string) => void;
@@ -103,6 +107,7 @@ const initialState = {
   iterationHistory: [],
   userApiKey: '',
   remainingDemoGenerations: null,
+  modelTier: 'balanced' as ModelTier,
   vision: '',
   mission: '',
   successCriteria: '',
@@ -178,6 +183,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       setRemainingDemoGenerations: (count) => set({ remainingDemoGenerations: count }),
 
+      setModelTier: (tier) => set({ modelTier: tier }),
+
       setVision: (vision) => set({ vision }),
 
       setMission: (mission) => set({ mission }),
@@ -200,6 +207,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         outputDir: state.outputDir,
         integrations: state.integrations,
         userApiKey: state.userApiKey, // Persist user's API key choice
+        modelTier: state.modelTier, // Persist model tier preference
         vision: state.vision,
         mission: state.mission,
         successCriteria: state.successCriteria,

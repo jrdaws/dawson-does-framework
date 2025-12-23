@@ -1,6 +1,17 @@
 // Model tier selection for cost/quality tradeoff
 export type ModelTier = 'fast' | 'balanced' | 'quality';
 
+// Streaming callback for real-time progress
+export type StreamProgressCallback = (event: StreamEvent) => void;
+
+export interface StreamEvent {
+  stage: 'intent' | 'architecture' | 'code' | 'context';
+  type: 'start' | 'chunk' | 'complete';
+  chunk?: string;        // New text chunk (only for type: 'chunk')
+  accumulated?: string;  // Full accumulated text so far
+  message?: string;      // Status message (for start/complete)
+}
+
 // Core Input Types
 export interface ProjectInput {
   description: string;
@@ -9,6 +20,15 @@ export interface ProjectInput {
   vision?: string;
   mission?: string;
   inspirations?: Inspiration[];
+}
+
+// Options for project generation
+export interface GenerateProjectOptions {
+  apiKey?: string;
+  logTokenUsage?: boolean;
+  modelTier?: ModelTier;
+  stream?: boolean;                    // Enable streaming output
+  onProgress?: StreamProgressCallback; // Callback for streaming progress
 }
 
 export interface Inspiration {

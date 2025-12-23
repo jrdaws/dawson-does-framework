@@ -1,4 +1,4 @@
-import { LLMClient } from "./utils/llm-client.js";
+import { LLMClient, type StreamCallback } from "./utils/llm-client.js";
 import { PromptLoader } from "./utils/prompt-loader.js";
 import { withRetry } from "./utils/retry-strategy.js";
 import { handleLLMError } from "./error-handler.js";
@@ -16,6 +16,8 @@ export interface ContextInput {
 export interface ContextOptions {
   apiKey?: string;
   model?: string;
+  stream?: boolean;
+  onStream?: StreamCallback;
 }
 
 // Delimiters for parsing combined response
@@ -99,6 +101,8 @@ Do NOT include any other text before ${CURSORRULES_DELIMITER} or after the START
             },
           ],
           system: consolidatedPrompt,
+          stream: opts.stream,
+          onStream: opts.onStream,
         },
         "context" // Track as context stage
       );

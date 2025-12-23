@@ -3,6 +3,8 @@ import { generateProject } from "@dawson-framework/ai-agent";
 import { checkRateLimit, isRedisAvailable } from "@/lib/rate-limiter";
 import crypto from "crypto";
 
+type ModelTier = 'fast' | 'balanced' | 'quality';
+
 interface GenerateProjectRequest {
   description: string;
   projectName?: string;
@@ -13,6 +15,7 @@ interface GenerateProjectRequest {
   userApiKey?: string;
   sessionId: string;
   seed?: number;
+  modelTier?: ModelTier;
 }
 
 interface CacheEntry {
@@ -65,6 +68,7 @@ export async function POST(request: NextRequest) {
       userApiKey,
       sessionId,
       seed,
+      modelTier,
     } = body;
 
     // Validate required fields
@@ -144,8 +148,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate modelTier if provided
+    const validTiers: ModelTier[] = ['fast', 'balanced', 'quality'];
+    const tier = modelTier && validTiers.includes(modelTier) ? modelTier : 'balanced';
+
     // Call AI agent package
-    console.log(`[Project Generation] Starting for: ${projectName || "Untitled"}`);
+    console.log(`[Project Generation] Starting for: ${projectName || "Untitled"} (tier: ${tier})`);
 
     const result = await generateProject(
       {
@@ -160,7 +168,7 @@ export async function POST(request: NextRequest) {
           preview: i.preview,
         })),
       },
-      apiKey
+      { apiKey, modelTier: tier }
     );
 
     const generatedAt = new Date().toISOString();

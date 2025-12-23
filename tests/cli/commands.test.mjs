@@ -154,19 +154,19 @@ test("CLI: capabilities command", () => {
 });
 
 test("CLI: doctor command shows help or runs", () => {
-  // Doctor requires a project with .dd/health.sh to run properly
-  // This test just verifies the command is recognized and doesn't crash unexpectedly
+  // Doctor runs checks on the project
+  // This test verifies the command is recognized and produces expected output
   const result = runFramework(["doctor", "."]);
   
-  // Either it runs (exit 0) or it gives a clear error about missing health.sh
+  // Doctor command produces output about checks (repo, git, node, tests)
   const output = result.stdout + result.stderr;
   const validOutput = 
-    result.status === 0 ||  // Success
-    output.includes("Missing") ||  // Clear error about missing file
-    output.includes("health") ||  // References health script
-    output.includes(".dd");  // References .dd directory
+    result.status === 0 ||  // Success (all checks pass)
+    output.includes("==") ||  // Section headers in output (== repo ==, == git ==, etc.)
+    output.includes("checks") ||  // References checks section
+    output.includes("test");  // References test runner
   
-  assert.ok(validOutput, `Doctor command should succeed or give clear error. Got: ${output.slice(0, 200)}`);
+  assert.ok(validOutput, `Doctor command should succeed or produce check output. Got: ${output.slice(0, 200)}`);
 });
 
 test("CLI: pull command without token shows usage", () => {

@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
-import { LLMClient } from "./utils/llm-client.js";
+import { LLMClient, type StreamCallback } from "./utils/llm-client.js";
 import { PromptLoader } from "./utils/prompt-loader.js";
 import { withRetry } from "./utils/retry-strategy.js";
 import { handleLLMError, handleValidationError } from "./error-handler.js";
@@ -12,6 +12,8 @@ import type { ProjectArchitecture, GeneratedCode, ProjectInput } from "./types.j
 export interface CodeOptions {
   apiKey?: string;
   model?: string;
+  stream?: boolean;
+  onStream?: StreamCallback;
 }
 
 /**
@@ -58,6 +60,8 @@ export async function generateCode(
             },
           ],
           system: systemPrompt,
+          stream: opts.stream,
+          onStream: opts.onStream,
         },
         "code" // Track as code stage
       );

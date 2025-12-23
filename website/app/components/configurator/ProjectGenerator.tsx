@@ -8,11 +8,14 @@ import { useConfiguratorStore } from "@/lib/configurator-state";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
+type ModelTier = 'fast' | 'balanced' | 'quality';
+
 interface ProjectGeneratorProps {
   template: string;
   integrations: Record<string, string>;
   inspirations: Array<{ type: string; value: string; preview?: string }>;
   description: string;
+  modelTier?: ModelTier;
 }
 
 function getUserId(): string {
@@ -30,6 +33,7 @@ export function ProjectGenerator({
   integrations,
   inspirations,
   description,
+  modelTier = 'balanced',
 }: ProjectGeneratorProps) {
   const {
     userApiKey,
@@ -61,6 +65,7 @@ export function ProjectGenerator({
         userApiKey: userApiKey || undefined,
         sessionId: getUserId(),
         seed: undefined, // Allow variation
+        modelTier,
       });
 
       if (!generationResult.success) {
