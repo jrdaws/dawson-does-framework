@@ -1,0 +1,92 @@
+name: 🤖 AI Project Generation
+description: Request AI to generate a project from this issue
+title: "[Generate] "
+labels: ["ai-generate"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## AI Project Generation
+        
+        Fill out this form to have the AI generate a project for you.
+        A PR will be created automatically with the generated code.
+
+  - type: input
+    id: project
+    attributes:
+      label: Project Name
+      description: Name for the generated project (will be kebab-cased)
+      placeholder: my-awesome-app
+    validations:
+      required: true
+
+  - type: dropdown
+    id: template
+    attributes:
+      label: Template
+      description: Which template should be used as a base?
+      options:
+        - saas
+        - dashboard
+        - blog
+        - landing-page
+        - seo-directory
+        - flagship-saas
+      default: 0
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: integrations
+    attributes:
+      label: Integrations
+      description: Select the integrations you need
+      options:
+        - label: "Auth: Supabase"
+        - label: "Auth: Clerk"
+        - label: "Payments: Stripe"
+        - label: "Payments: Paddle"
+        - label: "Email: Resend"
+        - label: "Email: SendGrid"
+        - label: "AI: Anthropic (Claude)"
+        - label: "AI: OpenAI (GPT)"
+        - label: "Analytics: PostHog"
+        - label: "Analytics: Plausible"
+        - label: "Storage: Supabase"
+        - label: "Storage: S3"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Project Description
+      description: Describe what you want to build. Be as detailed as you like.
+      placeholder: |
+        I want to build a project management tool for small teams.
+        
+        Features needed:
+        - User authentication with team invites
+        - Project boards with drag-and-drop tasks
+        - Real-time collaboration
+        - Email notifications for task updates
+        - Dashboard with project analytics
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Requirements
+      description: Any specific requirements or constraints?
+      placeholder: |
+        - Must support dark mode
+        - Needs to be mobile-responsive
+        - Should integrate with existing API at api.example.com
+
+  - type: checkboxes
+    id: acknowledgment
+    attributes:
+      label: Acknowledgment
+      options:
+        - label: I understand this will create a PR with generated code that I should review before merging
+          required: true
+

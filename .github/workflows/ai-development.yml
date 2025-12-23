@@ -1,0 +1,209 @@
+# AI Development Workflow
+# Triggers project generation from GitHub Issues
+#
+# Usage:
+#   1. Create an issue with the "ai-generate" label
+#   2. Include in issue body:
+#      - template: saas (or other template name)
+#      - project: my-project-name
+#      - integrations: auth:supabase, payments:stripe
+#      - description: What you want to build
+#   3. The workflow will generate the project and create a PR
+
+name: AI Development
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  generate-from-issue:
+    if: github.event.label.name == 'ai-generate'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install framework
+        run: npm install -g @jrdaws/framework
+      
+      - name: Parse issue for project spec
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || '';
+            
+            // Extract template (default: saas)
+            const templateMatch = body.match(/template:\s*(\w+)/i);
+            const template = templateMatch ? templateMatch[1].toLowerCase() : 'saas';
+            
+            // Extract project name
+            const nameMatch = body.match(/project:\s*([^\n]+)/i);
+            let projectName = nameMatch ? nameMatch[1].trim() : `issue-${context.payload.issue.number}`;
+            // Sanitize project name
+            projectName = projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+            
+            // Extract integrations
+            const intMatch = body.match(/integrations?:\s*([^\n]+)/i);
+            const integrations = intMatch ? intMatch[1].trim() : '';
+            
+            // Extract description
+            const descMatch = body.match(/description:\s*([\s\S]*?)(?=\n\n|template:|project:|integrations?:|$)/i);
+            const description = descMatch ? descMatch[1].trim() : '';
+            
+            console.log('Parsed issue:');
+            console.log('  Template:', template);
+            console.log('  Project:', projectName);
+            console.log('  Integrations:', integrations);
+            console.log('  Description:', description.substring(0, 100) + '...');
+            
+            return { template, projectName, integrations, description };
+      
+      - name: Build export command
+        id: command
+        run: |
+          TEMPLATE="${{ fromJson(steps.parse.outputs.result).template }}"
+          NAME="${{ fromJson(steps.parse.outputs.result).projectName }}"
+          INTEGRATIONS="${{ fromJson(steps.parse.outputs.result).integrations }}"
+          
+          CMD="framework export $TEMPLATE ./$NAME --cursor"
+          
+          # Parse integrations (format: auth:supabase, payments:stripe)
+          if [ -n "$INTEGRATIONS" ]; then
+            for integration in $(echo "$INTEGRATIONS" | tr ',' ' '); do
+              TYPE=$(echo "$integration" | cut -d: -f1 | tr -d ' ')
+              PROVIDER=$(echo "$integration" | cut -d: -f2 | tr -d ' ')
+              if [ -n "$TYPE" ] && [ -n "$PROVIDER" ]; then
+                CMD="$CMD --$TYPE $PROVIDER"
+              fi
+            done
+          fi
+          
+          echo "command=$CMD" >> $GITHUB_OUTPUT
+          echo "project_name=$NAME" >> $GITHUB_OUTPUT
+          echo "Executing: $CMD"
+      
+      - name: Generate project
+        run: |
+          ${{ steps.command.outputs.command }}
+          
+          # Add generation metadata
+          PROJECT="${{ steps.command.outputs.project_name }}"
+          cat >> "$PROJECT/GENERATION_INFO.md" << EOF
+          # Generation Info
+          
+          - **Issue**: #${{ github.event.issue.number }}
+          - **Template**: ${{ fromJson(steps.parse.outputs.result).template }}
+          - **Generated**: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          - **Workflow Run**: ${{ github.run_id }}
+          
+          ## Original Request
+          
+          ${{ fromJson(steps.parse.outputs.result).description }}
+          EOF
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: "feat: Generate ${{ fromJson(steps.parse.outputs.result).projectName }} from #${{ github.event.issue.number }}"
+          body: |
+            ## Auto-Generated Project
+            
+            This PR was automatically generated from issue #${{ github.event.issue.number }}.
+            
+            ### Configuration
+            
+            | Setting | Value |
+            |---------|-------|
+            | Template | `${{ fromJson(steps.parse.outputs.result).template }}` |
+            | Project | `${{ fromJson(steps.parse.outputs.result).projectName }}` |
+            | Integrations | `${{ fromJson(steps.parse.outputs.result).integrations }}` |
+            
+            ### Generated Files
+            
+            - Full Next.js 15 project structure
+            - Integration configurations
+            - `.cursorrules` for AI development
+            - `START_PROMPT.md` for Claude context
+            
+            ### Next Steps
+            
+            1. Review the generated code
+            2. Test locally: `cd ${{ steps.command.outputs.project_name }} && npm install && npm run dev`
+            3. Customize as needed
+            4. Merge when ready
+            
+            ---
+            
+            *Generated by [Dawson Does Framework](https://github.com/jrdaws/dawson-does-framework) AI Development workflow*
+          branch: "ai-gen/issue-${{ github.event.issue.number }}"
+          labels: |
+            ai-generated
+            needs-review
+          commit-message: "feat: generate project from issue #${{ github.event.issue.number }}"
+      
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const template = '${{ fromJson(steps.parse.outputs.result).template }}';
+            const projectName = '${{ steps.command.outputs.project_name }}';
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: `## 🤖 Project Generated!
+            
+            Your project has been generated and a PR has been created.
+            
+            **Template**: \`${template}\`
+            **Project**: \`${projectName}\`
+            
+            ### What's Next?
+            
+            1. Review the PR that was just created
+            2. Once merged, you can clone and run:
+               \`\`\`bash
+               git clone <repo-url>
+               cd ${projectName}
+               npm install
+               npm run dev
+               \`\`\`
+            
+            ---
+            
+            *Generated by Dawson Does Framework*`
+            });
+      
+      - name: Remove ai-generate label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              name: 'ai-generate'
+            });
+            
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              labels: ['ai-generated', 'has-pr']
+            });
+
