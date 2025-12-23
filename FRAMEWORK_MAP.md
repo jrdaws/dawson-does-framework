@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 9bf32fe 2025-12-22 fix(cli): improve deploy command help and error handling
 - 6e2e120 2025-12-22 docs(guides): create Quick Start Guide for new users
 - 5b9087b 2025-12-22 docs(agents): verify P2 parallel execution task already complete
 - 069de06 2025-12-22 perf(ai-agent): run code and context generation in parallel
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - b9e0f53 2025-12-22 perf(ai-agent): optimize prompts with 32% token reduction
 - 32bd821 2025-12-22 docs(agents): update Platform Agent memory with cost optimization session
 - 4c3cf19 2025-12-22 feat(ai-agent): optimize Anthropic API token usage
-- 8a0a34f 2025-12-22 chore(test): remove test validation file
 
 ## Agent Governance Structure
 

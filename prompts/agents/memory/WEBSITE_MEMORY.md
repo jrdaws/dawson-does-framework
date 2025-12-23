@@ -22,6 +22,47 @@
 
 ## Session History
 
+### Session: 2025-12-22 20:00 - Streaming UI Integration
+
+**Work Completed**
+- Added SSE streaming support to `/api/generate/project` route
+- Updated `lib/project-generator.ts` with `StreamProgressEvent` type and callback support
+- Added progress state and real-time UI feedback to `ProjectGenerator` component
+- Progress bar shows stage completion (intent → architecture → code/context)
+- Stage indicators highlight current and completed stages
+
+**Files Modified**
+- `website/app/api/generate/project/route.ts` - Added streaming response with SSE
+- `website/lib/project-generator.ts` - Added StreamProgressCallback and streaming support
+- `website/app/components/configurator/ProjectGenerator.tsx` - Added progress display
+
+**Technical Details**
+- SSE streaming via POST request with ReadableStream
+- Progress events: type=progress (stage, eventType, message)
+- Complete event: type=complete (full result payload)
+- Error event: type=error (error, message, retryable)
+- Backward compatible - non-streaming still works without callback
+
+**Blockers Encountered**
+- None
+
+**Test Results**
+- ✅ Website builds successfully
+- ✅ No linter errors
+- ✅ Test failure unrelated (temp dir permission issue)
+
+**Next Priorities**
+1. Live testing with streaming enabled
+2. Add error recovery for dropped connections
+3. Consider adding estimated time remaining
+
+**Handoff Notes**
+- Streaming UI ready for testing
+- Uses ai-agent's `stream: true` and `onProgress` callback
+- Code/context stages run in parallel (both show ~50%)
+
+---
+
 ### Session: 2025-12-22 17:50 - Model Tier Toggle Implementation
 
 **Work Completed**

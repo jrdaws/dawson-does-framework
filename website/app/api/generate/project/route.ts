@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateProject } from "@dawson-framework/ai-agent";
+import { generateProject, type StreamEvent } from "@dawson-framework/ai-agent";
 import { checkRateLimit, isRedisAvailable } from "@/lib/rate-limiter";
 import crypto from "crypto";
 
@@ -16,6 +16,7 @@ interface GenerateProjectRequest {
   sessionId: string;
   seed?: number;
   modelTier?: ModelTier;
+  stream?: boolean;
 }
 
 interface CacheEntry {
@@ -69,6 +70,7 @@ export async function POST(request: NextRequest) {
       sessionId,
       seed,
       modelTier,
+      stream: enableStreaming,
     } = body;
 
     // Validate required fields
@@ -111,6 +113,34 @@ export async function POST(request: NextRequest) {
     const cachedResult = projectCache.get(cacheKey);
     if (cachedResult && cachedResult.expiresAt > Date.now()) {
       console.log(`[Project Cache Hit] ${Date.now() - startTime}ms`);
+      
+      // For cached results with streaming, send as single complete event
+      if (enableStreaming) {
+        const encoder = new TextEncoder();
+        const stream = new ReadableStream({
+          start(controller) {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ 
+              type: 'complete', 
+              result: {
+                success: true,
+                ...cachedResult.result,
+                generatedAt: cachedResult.generatedAt,
+                cached: true,
+                remainingDemoGenerations: null,
+              }
+            })}\n\n`));
+            controller.close();
+          }
+        });
+        return new Response(stream, {
+          headers: {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+          },
+        });
+      }
+      
       return NextResponse.json({
         success: true,
         ...cachedResult.result,
@@ -153,21 +183,124 @@ export async function POST(request: NextRequest) {
     const tier = modelTier && validTiers.includes(modelTier) ? modelTier : 'balanced';
 
     // Call AI agent package
-    console.log(`[Project Generation] Starting for: ${projectName || "Untitled"} (tier: ${tier})`);
+    console.log(`[Project Generation] Starting for: ${projectName || "Untitled"} (tier: ${tier}, stream: ${enableStreaming})`);
 
+    const projectInput = {
+      description,
+      projectName,
+      template,
+      vision,
+      mission,
+      inspirations: inspirations?.map(i => ({
+        type: i.type as "url" | "image" | "figma",
+        value: i.value,
+        preview: i.preview,
+      })),
+    };
+
+    // Handle streaming response
+    if (enableStreaming) {
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream({
+        async start(controller) {
+          try {
+            const result = await generateProject(
+              projectInput,
+              { 
+                apiKey, 
+                modelTier: tier,
+                stream: true,
+                onProgress: (event: StreamEvent) => {
+                  // Send progress events
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+                    type: 'progress',
+                    stage: event.stage,
+                    eventType: event.type,
+                    message: event.message,
+                  })}\n\n`));
+                }
+              }
+            );
+
+            const generatedAt = new Date().toISOString();
+
+            // Cache the result
+            projectCache.set(cacheKey, {
+              result: {
+                intent: result.intent,
+                architecture: result.architecture,
+                files: result.code.files,
+                integrationCode: result.code.integrationCode,
+                cursorrules: result.context.cursorrules,
+                startPrompt: result.context.startPrompt,
+              },
+              generatedAt,
+              expiresAt: Date.now() + CACHE_TTL,
+            });
+
+            // Clean up old cache entries
+            if (projectCache.size > 100) {
+              const now = Date.now();
+              for (const [key, entry] of projectCache.entries()) {
+                if (entry.expiresAt < now) {
+                  projectCache.delete(key);
+                }
+              }
+            }
+
+            // Log success metrics
+            const duration = Date.now() - startTime;
+            console.log(
+              `[Project Generated] ${projectName || "Untitled"} | ${duration}ms | Template: ${result.intent.suggestedTemplate} | Files: ${result.code.files.length} | Redis: ${isRedisAvailable()}`
+            );
+
+            // Send final complete event with full result
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+              type: 'complete',
+              result: {
+                success: true,
+                intent: result.intent,
+                architecture: result.architecture,
+                files: result.code.files,
+                integrationCode: result.code.integrationCode,
+                cursorrules: result.context.cursorrules,
+                startPrompt: result.context.startPrompt,
+                generatedAt,
+                seed: seed || Date.now(),
+                remainingDemoGenerations:
+                  rateLimitResult.remaining >= 0 ? rateLimitResult.remaining : null,
+                redisEnabled: isRedisAvailable(),
+              }
+            })}\n\n`));
+            controller.close();
+          } catch (error: any) {
+            const duration = Date.now() - startTime;
+            console.error(`[Project Generation Error] ${duration}ms`, error);
+            
+            // Send error event
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+              type: 'error',
+              error: error?.code || 'generation_failed',
+              message: error?.message || 'Failed to generate project',
+              retryable: error?.retryable || false,
+            })}\n\n`));
+            controller.close();
+          }
+        }
+      });
+
+      return new Response(stream, {
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        },
+      });
+    }
+
+    // Non-streaming response (original behavior)
     const result = await generateProject(
-      {
-        description,
-        projectName,
-        template,
-        vision,
-        mission,
-        inspirations: inspirations?.map(i => ({
-          type: i.type as "url" | "image" | "figma",
-          value: i.value,
-          preview: i.preview,
-        })),
-      },
+      projectInput,
       { apiKey, modelTier: tier }
     );
 

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, Download, Sparkles, AlertCircle, Check, Code2, FileText } from "lucide-react";
-import { generateProject, type ProjectGenerationResult, type ProjectGenerationError } from "@/lib/project-generator";
+import { generateProject, type ProjectGenerationResult, type ProjectGenerationError, type StreamProgressEvent } from "@/lib/project-generator";
 import { useConfiguratorStore } from "@/lib/configurator-state";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -16,6 +16,21 @@ interface ProjectGeneratorProps {
   inspirations: Array<{ type: string; value: string; preview?: string }>;
   description: string;
   modelTier?: ModelTier;
+}
+
+// Stage labels and order for progress display
+const STAGE_CONFIG: Record<string, { label: string; percent: number }> = {
+  intent: { label: 'Analyzing Intent', percent: 0 },
+  architecture: { label: 'Designing Architecture', percent: 25 },
+  code: { label: 'Generating Code', percent: 50 },
+  context: { label: 'Building Context', percent: 50 }, // Runs parallel with code
+};
+
+interface ProgressState {
+  stage: string;
+  message: string;
+  percent: number;
+  isActive: boolean;
 }
 
 function getUserId(): string {
@@ -48,25 +63,78 @@ export function ProjectGenerator({
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ProjectGenerationResult | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [progress, setProgress] = useState<ProgressState>({
+    stage: '',
+    message: '',
+    percent: 0,
+    isActive: false,
+  });
+
+  // Track completed stages for progress calculation
+  const [completedStages, setCompletedStages] = useState<Set<string>>(new Set());
+
+  // Progress callback for streaming
+  const handleProgress = useCallback((event: StreamProgressEvent) => {
+    const stageConfig = STAGE_CONFIG[event.stage] || { label: event.stage, percent: 0 };
+    
+    if (event.eventType === 'start') {
+      setProgress({
+        stage: event.stage,
+        message: event.message || stageConfig.label + '...',
+        percent: stageConfig.percent,
+        isActive: true,
+      });
+    } else if (event.eventType === 'complete') {
+      setCompletedStages(prev => new Set([...prev, event.stage]));
+      
+      // Calculate percent based on completed stages
+      // intent=25%, architecture=25%, code+context=50% (run parallel)
+      let percent = 0;
+      setCompletedStages(prev => {
+        const updated = new Set([...prev, event.stage]);
+        if (updated.has('intent')) percent += 25;
+        if (updated.has('architecture')) percent += 25;
+        if (updated.has('code') || updated.has('context')) percent += 25;
+        if (updated.has('code') && updated.has('context')) percent += 25;
+        return updated;
+      });
+      
+      setProgress(prev => ({
+        ...prev,
+        message: event.message || stageConfig.label + ' complete',
+        percent: Math.min(percent, 95), // Cap at 95 until fully done
+      }));
+    }
+  }, []);
 
   const handleGenerate = async () => {
     setIsGenerating(true);
     setError(null);
     setResult(null);
+    setCompletedStages(new Set());
+    setProgress({
+      stage: '',
+      message: 'Starting generation...',
+      percent: 0,
+      isActive: true,
+    });
 
     try {
-      const generationResult = await generateProject({
-        description: description || "A new web application",
-        projectName: projectName || "MyApp",
-        template,
-        vision,
-        mission,
-        inspirations,
-        userApiKey: userApiKey || undefined,
-        sessionId: getUserId(),
-        seed: undefined, // Allow variation
-        modelTier,
-      });
+      const generationResult = await generateProject(
+        {
+          description: description || "A new web application",
+          projectName: projectName || "MyApp",
+          template,
+          vision,
+          mission,
+          inspirations,
+          userApiKey: userApiKey || undefined,
+          sessionId: getUserId(),
+          seed: undefined, // Allow variation
+          modelTier,
+        },
+        handleProgress // Enable streaming with progress callback
+      );
 
       if (!generationResult.success) {
         const errorResult = generationResult as ProjectGenerationError;
@@ -80,6 +148,7 @@ export function ProjectGenerator({
 
       const successResult = generationResult as ProjectGenerationResult;
       setResult(successResult);
+      setProgress(prev => ({ ...prev, percent: 100, isActive: false }));
 
       if (successResult.remainingDemoGenerations !== undefined && successResult.remainingDemoGenerations !== null) {
         setRemainingDemoGenerations(successResult.remainingDemoGenerations);
@@ -89,6 +158,7 @@ export function ProjectGenerator({
       setError(err instanceof Error ? err.message : "Failed to generate project");
     } finally {
       setIsGenerating(false);
+      setProgress(prev => ({ ...prev, isActive: false }));
     }
   };
 
@@ -217,6 +287,44 @@ Generated on ${new Date(result.generatedAt).toLocaleString()}
           </>
         )}
       </Button>
+
+      {/* Progress Display */}
+      {isGenerating && progress.isActive && (
+        <div className="border rounded-lg p-4 space-y-3 bg-card">
+          <div className="flex items-center justify-between text-sm">
+            <span className="font-medium text-muted-foreground">
+              {progress.message}
+            </span>
+            <span className="text-muted-foreground">
+              {progress.percent}%
+            </span>
+          </div>
+          
+          {/* Progress Bar */}
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-primary transition-all duration-500 ease-out rounded-full"
+              style={{ width: `${progress.percent}%` }}
+            />
+          </div>
+
+          {/* Stage indicators */}
+          <div className="flex justify-between text-xs text-muted-foreground pt-1">
+            <span className={completedStages.has('intent') ? 'text-primary font-medium' : progress.stage === 'intent' ? 'text-foreground' : ''}>
+              Intent
+            </span>
+            <span className={completedStages.has('architecture') ? 'text-primary font-medium' : progress.stage === 'architecture' ? 'text-foreground' : ''}>
+              Architecture
+            </span>
+            <span className={completedStages.has('code') ? 'text-primary font-medium' : progress.stage === 'code' ? 'text-foreground' : ''}>
+              Code
+            </span>
+            <span className={completedStages.has('context') ? 'text-primary font-medium' : progress.stage === 'context' ? 'text-foreground' : ''}>
+              Context
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Error Display */}
       {error && (
