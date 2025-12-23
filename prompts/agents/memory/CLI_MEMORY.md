@@ -16,8 +16,9 @@
 6. ✅ Priority 2 enhancements implemented (standardized error helpers)
 7. ✅ Priority 3 completed: CLI patterns documented in CONTRIBUTING.md
 8. ✅ Pull command updated for new standardized API format
-9. All CLI work complete and synced with Platform API
-10. (Optional) Live API testing with production endpoint
+9. ✅ Deploy command enhanced (P2 task completed)
+10. All CLI work complete and synced with Platform API
+11. (Optional) Live API testing with production endpoint
 
 ---
 
@@ -28,6 +29,70 @@
 ---
 
 ## Session History
+
+### Session: 2025-12-22 (Deploy Command Enhancement - P2 Task)
+
+**Work Completed**
+- ✅ Executed P2 task: Deploy command enhancement
+- ✅ Audited deploy command against CLI consistency standards
+- ✅ Added help flag support (--help, -h, help) to cmdDeploy
+- ✅ Added help flag support (--help, -h) to cmdDeployAuth
+- ✅ Updated all error handling to use showError() helper
+- ✅ Fixed code style (removed semicolons for .mjs convention)
+- ✅ All 668 tests passing
+- ✅ Created audit notes in output/cli-agent/workspace/deploy-audit.txt
+
+**Issues Found & Fixed**
+1. **Help flags not working** - Fixed
+   - `--help`, `-h`, `help` all now show comprehensive help text
+   - Help uses console.log (stdout), not console.error
+
+2. **Error handling inconsistent** - Fixed
+   - Provider detection error → showError with reasons/solutions
+   - Provider load error → showError with reasons/solutions
+   - Credentials not found → showError with reasons/solutions
+   - Credentials invalid → showError with reasons/solutions
+   - Deployment failed → showError with reasons/solutions
+
+3. **Code style mixed** - Fixed
+   - Removed all semicolons (now matches .mjs convention)
+   - Renamed shadowed variables to avoid conflicts
+
+**Files Modified**
+- `src/commands/deploy.mjs` - Complete overhaul of error handling
+  - Added help flag handling at start of cmdDeploy()
+  - Added help flag handling to cmdDeployAuth()
+  - Replaced 8 console.error() calls with showError()
+  - Removed ~100 semicolons for .mjs style compliance
+
+**Testing Results**
+- ✅ `framework deploy --help` → Shows help, exit 0
+- ✅ `framework deploy -h` → Shows help, exit 0
+- ✅ `framework deploy help` → Shows help, exit 0
+- ✅ `framework deploy:auth --help` → Shows help, exit 0
+- ✅ npm test → 668 tests passing
+
+**Impact**
+- Deploy command now matches CLI consistency standards
+- Better UX with recovery guidance on errors
+- Follows "What → Why → How" error pattern
+- Consistent with export/pull/demo commands
+
+**Blockers Encountered**
+- None
+
+**Next Priorities**
+1. All CLI consistency work complete
+2. Deploy command is now A-grade
+3. Ready for new features or other work
+
+**Handoff Notes**
+- P2 task complete: Deploy command enhanced
+- Audit notes saved in output/cli-agent/workspace/deploy-audit.txt
+- All tests passing (668/668)
+- CLI commands are now consistently excellent
+
+---
 
 ### Session: 2025-12-22 (Pull Command API Format Update)
 

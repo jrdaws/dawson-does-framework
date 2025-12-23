@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 6e2e120 2025-12-22 docs(guides): create Quick Start Guide for new users
 - 5b9087b 2025-12-22 docs(agents): verify P2 parallel execution task already complete
 - 069de06 2025-12-22 perf(ai-agent): run code and context generation in parallel
 - aaeb3a5 2025-12-22 docs(agents): update Platform Memory with complete optimization summary
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 32bd821 2025-12-22 docs(agents): update Platform Agent memory with cost optimization session
 - 4c3cf19 2025-12-22 feat(ai-agent): optimize Anthropic API token usage
 - 8a0a34f 2025-12-22 chore(test): remove test validation file
-- a397272 2025-12-22 test(governance): verify and enhance validation workflow
 
 ## Agent Governance Structure
 

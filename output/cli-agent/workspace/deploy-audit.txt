@@ -1,0 +1,112 @@
+================================================================================
+DEPLOY COMMAND AUDIT - 2025-12-22
+================================================================================
+
+## Audit Summary
+
+Reviewed: framework deploy command
+Location: src/commands/deploy.mjs
+Agent: CLI Agent
+Task: P2-task-deploy-command-enhancement
+
+================================================================================
+## BEFORE (Issues Found)
+================================================================================
+
+### 1. Help Flag Support - ❌ NOT WORKING
+- `framework deploy --help` → Ran deploy (showed "No provider detected")
+- `framework deploy -h` → Ran deploy (showed "No provider detected")
+- `framework deploy help` → Ran deploy (showed "No provider detected")
+
+### 2. Error Handling - ⚠️ INCONSISTENT
+- Used raw `console.error()` instead of `showError()` helper
+- Error messages scattered throughout code
+- Recovery guidance was present but not following standardized pattern
+
+### 3. Output Consistency - ✅ GOOD
+- Used appropriate emojis (✅❌⚠️🔍📦🚀)
+- Success messages clear
+- Dry-run mode available and working
+
+### 4. Flag Parsing - ✅ GOOD
+- Had dedicated `parseDeployFlags()` function
+- Returned object with defaults
+- Used camelCase flag names
+
+### 5. Code Style - ⚠️ MIXED
+- File had semicolons (should be no semicolons for .mjs)
+- Mixed style conventions
+
+================================================================================
+## AFTER (Changes Made)
+================================================================================
+
+### 1. Help Flag Support - ✅ FIXED
+Added help handling at the start of cmdDeploy():
+- `--help`, `-h`, `help` all now show comprehensive help text
+- Help text uses console.log (stdout), not console.error
+- Returns without error code
+
+Added help handling to cmdDeployAuth():
+- `--help`, `-h` variants now work
+
+### 2. Error Handling - ✅ FIXED
+Updated all error messages to use `showError()` helper:
+- Provider detection error → showError with reasons/solutions
+- Provider load error → showError with reasons/solutions  
+- Credentials not found → showError with reasons/solutions
+- Credentials invalid → showError with reasons/solutions
+- Deployment failed → showError with reasons/solutions
+- Final deployment error → showError with reasons/solutions
+- cmdDeployAuth errors → showError for missing args
+
+### 3. Code Style - ✅ FIXED
+- Removed all semicolons to match .mjs style
+- Consistent 2-space indentation
+- Renamed shadowed variables (error → err, logErr, testErr)
+- Renamed parameter shadows (provider → guideProvider, etc.)
+
+================================================================================
+## Verification
+================================================================================
+
+### Help Flags Tested:
+✅ `framework deploy --help` → Shows help text, exit 0
+✅ `framework deploy -h` → Shows help text, exit 0  
+✅ `framework deploy help` → Shows help text, exit 0
+✅ `framework deploy:auth --help` → Shows help text, exit 0
+✅ `framework deploy:auth -h` → Shows help text, exit 0
+
+### Tests Run:
+✅ npm test → 668 tests passed
+
+================================================================================
+## Audit Checklist (Completed)
+================================================================================
+
+### 1. Help Flag Support
+- [x] `framework deploy --help` works
+- [x] `framework deploy -h` works
+- [x] `framework deploy help` works
+- [x] Help text uses console.log (not console.error)
+- [x] Help includes all options, examples
+
+### 2. Error Handling
+- [x] Uses showError() helper
+- [x] Errors include recovery guidance
+- [x] Error messages follow "What → Why → How" pattern
+
+### 3. Output Consistency
+- [x] Uses appropriate emojis (✅❌⚠️ℹ️)
+- [x] Success messages are clear
+- [x] Dry-run mode available and working
+
+### 4. Flag Parsing
+- [x] Dedicated parser function
+- [x] Returns object with defaults
+- [x] camelCase flag names
+
+================================================================================
+END OF AUDIT
+================================================================================
+
