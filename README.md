@@ -5,6 +5,9 @@
 Transform ideas into deployed applications in minutes, not days. The Dawson Does Framework combines production-ready templates, powerful integrations, and intelligent automation to accelerate your development workflow.
 
 [![npm version](https://badge.fury.io/js/@jrdaws%2Fframework.svg)](https://www.npmjs.com/package/@jrdaws/framework)
+[![CI](https://github.com/jrdaws/dawson-does-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/jrdaws/dawson-does-framework/actions/workflows/ci.yml)
+[![Tests](https://github.com/jrdaws/dawson-does-framework/actions/workflows/test.yml/badge.svg)](https://github.com/jrdaws/dawson-does-framework/actions/workflows/test.yml)
+[![Governance](https://github.com/jrdaws/dawson-does-framework/actions/workflows/governance-check.yml/badge.svg)](https://github.com/jrdaws/dawson-does-framework/actions/workflows/governance-check.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
@@ -214,6 +217,7 @@ npx @jrdaws/framework export saas ./my-app
 ## Documentation
 
 ### Getting Started
+- **[Quick Start Guide](docs/guides/QUICK_START.md)** - Zero to running app in minutes
 - [Installation](docs/getting-started/installation.md)
 - [Your First Project](docs/getting-started/first-project.md)
 - [Project Structure](docs/getting-started/project-structure.md)
@@ -447,4 +451,4 @@ framework export saas ./my-app
 cd my-app && npm install && npm run dev
 ```
 
-[Get Started →](docs/getting-started/README.md) | [View Templates →](docs/templates/README.md) | [Deploy Guide →](docs/deploy/README.md)
+[Quick Start →](docs/guides/QUICK_START.md) | [View Templates →](docs/templates/README.md) | [Deploy Guide →](docs/deploy/README.md)
