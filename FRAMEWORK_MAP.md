@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 579cbe6 2025-12-22 chore(curator): complete cycle 2 - distribute Phase 2 tasks
 - 8b43d96 2025-12-22 docs(strategy): create Phase 2 kickoff strategy and task prompts
 - 2ee953a 2025-12-22 docs(development): add comprehensive agent inbox watcher guide
 - 0414454 2025-12-22 feat(scripts): add watcher setup script and complete template audit
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 4d6a150 2025-12-22 feat(website): add streaming UI for project generation progress
 - 9bf32fe 2025-12-22 fix(cli): improve deploy command help and error handling
 - 6e2e120 2025-12-22 docs(guides): create Quick Start Guide for new users
-- 5b9087b 2025-12-22 docs(agents): verify P2 parallel execution task already complete
 
 ## Agent Governance Structure
 

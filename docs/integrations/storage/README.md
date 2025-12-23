@@ -1,12 +1,23 @@
 # Storage Integrations
 
-Store and serve files with Supabase Storage.
+Store and serve files with type-safe uploads and CDN delivery.
 
 ## Available Providers
 
 | Provider | Best For | Features | Setup |
 |----------|----------|----------|-------|
+| **UploadThing** | Type-safe uploads, SaaS apps | React components, TypeScript, CDN, middleware auth | [Guide →](uploadthing.md) |
 | **Supabase** | PostgreSQL-integrated storage | File uploads, image transformations, CDN, Row Level Security | [Guide →](supabase.md) |
+
+## Quick Comparison
+
+| Feature | UploadThing | Supabase Storage |
+|---------|-------------|------------------|
+| **Setup Time** | Minutes | Minutes |
+| **Type Safety** | ✅ Full TypeScript | ⚠️ Partial |
+| **Free Tier** | 2GB storage | 1GB storage |
+| **React Components** | ✅ Built-in | ❌ Manual |
+| **Best For** | Quick setup, SaaS | DB-integrated storage |
 
 ## Why Supabase Storage
 
