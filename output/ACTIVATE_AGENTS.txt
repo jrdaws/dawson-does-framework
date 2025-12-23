@@ -1,38 +1,82 @@
 AGENT ACTIVATION COMMANDS
 Copy the line under each agent name into a new Cursor chat
+Last Updated: 2025-12-23 06:00 by CURATOR Agent
 
 ================================================================================
-PRIORITY 1 - Production Readiness
+PRIORITY 1 - Critical Gap (Storage Integration)
 ================================================================================
 
-PLATFORM AGENT
-Read and execute the task in output/platform-agent/inbox/20251223-0300-P1-task-production-deployment-prep.txt
+INTEGRATION AGENT
+Read and execute the task in output/integration-agent/inbox/20251223-0600-P1-task-uploadthing-integration.txt
 
-WEBSITE AGENT
-Read and execute the task in output/website-agent/inbox/20251223-0300-P1-task-production-deployment.txt
+================================================================================
+PRIORITY 2 - Feature Enhancement
+================================================================================
 
 TESTING AGENT
-Read and execute the task in output/testing-agent/inbox/20251223-0300-P1-task-production-smoke-tests.txt
+Read and execute the task in output/testing-agent/inbox/20251223-0600-P2-task-integration-unit-tests.txt
 
-================================================================================
-PRIORITY 2 - Feature Expansion
-================================================================================
+PLATFORM AGENT
+Read and execute the task in output/platform-agent/inbox/20251223-0600-P2-task-chunked-code-generation.txt
 
 CLI AGENT
-Read and execute the task in output/cli-agent/inbox/20251223-0300-P2-task-generate-command.txt
-
-TEMPLATE AGENT
-Read and execute the task in output/template-agent/inbox/20251223-0300-P2-task-template-quality-audit.txt
+Read and execute the task in output/cli-agent/inbox/20251223-0600-P2-task-integration-selection-ux.txt
 
 DOCUMENTATION AGENT
 Read and execute the task in output/documentation-agent/inbox/20251223-0300-P2-task-api-documentation.txt
 
-INTEGRATION AGENT
-Read and execute the task in output/integration-agent/inbox/20251223-0300-P2-task-integration-expansion.txt
-
 ================================================================================
-LEGACY TASK
+COMPLETED TASKS (Reference)
 ================================================================================
 
-TEMPLATE AGENT
-Read and execute the task in output/template-agent/inbox/20251222-2000-P2-task-template-health-check.txt
+The following tasks from the previous cycle are COMPLETE:
+
+✅ TESTING AGENT - Live API Validation (P1)
+   Report: output/testing-agent/outbox/20251223-0500-COMPLETED-live-api-validation.txt
+
+✅ WEBSITE AGENT - Production Deployment Prep (P1)
+   Report: output/website-agent/outbox/20251223-0300-completion-production-deployment.txt
+
+✅ PLATFORM AGENT - Production Deployment Prep (P1)
+   Report: output/platform-agent/outbox/20251223-production-deployment-prep-complete.md
+
+✅ TEMPLATE AGENT - Quality Audit (P2)
+   Report: output/template-agent/outbox/20251223-quality-audit-report.md
+
+✅ INTEGRATION AGENT - Integration Expansion (P2)
+   Report: output/integration-agent/outbox/20251223-integration-expansion-complete.md
+
+✅ CLI AGENT - Generate Command (P2)
+   Done: output/cli-agent/done/20251223-0300-P2-task-generate-command.txt
+
+✅ DOCUMENTATION AGENT - User Guide (P2)
+   Done: output/documentation-agent/done/20251222-2000-P2-task-user-guide-creation.txt
+
+================================================================================
+PRODUCTION DEPLOYMENT (HUMAN ACTION REQUIRED)
+================================================================================
+
+The Website and Platform agents have completed production deployment PREPARATION.
+Actual deployment requires human action.
+
+Follow: docs/deploy/VERCEL_DEPLOYMENT.md
+
+Required environment variables documented in: website/.env.example
+
+================================================================================
+CYCLE SUMMARY
+================================================================================
+
+Cycle: 2
+Curator: CURATOR Agent
+Date: 2025-12-23 06:00
+
+Tasks Distributed: 5
+- P1: 1 (UploadThing Integration)
+- P2: 4 (Testing, Platform, CLI, Documentation)
+
+Average Quality Score: 8.4/10
+
+Full Report: output/shared/reports/cycle-summary-20251223-0600.txt
+
+================================================================================
