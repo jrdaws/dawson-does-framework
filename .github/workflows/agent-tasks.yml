@@ -1,0 +1,102 @@
+name: Agent Task Monitor
+
+on:
+  push:
+    paths:
+      - 'output/*/inbox/*.txt'
+      - 'output/*/outbox/*.txt'
+  pull_request:
+    paths:
+      - 'output/*/inbox/*.txt'
+  schedule:
+    # Run every 6 hours to check for stale tasks
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      check_only:
+        description: 'Only check status, do not process'
+        required: false
+        default: 'true'
+
+jobs:
+  check-pending-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check for pending tasks
+        id: check
+        run: |
+          echo "## 📋 Agent Task Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          TOTAL_PENDING=0
+          
+          for agent_dir in output/*-agent; do
+            if [ -d "$agent_dir/inbox" ]; then
+              AGENT_NAME=$(basename "$agent_dir" | sed 's/-agent//' | tr '[:lower:]' '[:upper:]')
+              TASK_COUNT=$(find "$agent_dir/inbox" -name "*.txt" 2>/dev/null | wc -l | tr -d ' ')
+              
+              if [ "$TASK_COUNT" -gt 0 ]; then
+                echo "### ${AGENT_NAME} Agent: ${TASK_COUNT} pending" >> $GITHUB_STEP_SUMMARY
+                find "$agent_dir/inbox" -name "*.txt" -exec basename {} \; >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+                TOTAL_PENDING=$((TOTAL_PENDING + TASK_COUNT))
+              fi
+            fi
+          done
+          
+          if [ "$TOTAL_PENDING" -eq 0 ]; then
+            echo "✅ No pending tasks" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Total pending: $TOTAL_PENDING tasks**" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "total=$TOTAL_PENDING" >> $GITHUB_OUTPUT
+
+      - name: Check for completed tasks
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## ✅ Recently Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          COMPLETED=0
+          for agent_dir in output/*-agent; do
+            if [ -d "$agent_dir/done" ]; then
+              DONE_COUNT=$(find "$agent_dir/done" -name "*.txt" -mtime -1 2>/dev/null | wc -l | tr -d ' ')
+              if [ "$DONE_COUNT" -gt 0 ]; then
+                AGENT_NAME=$(basename "$agent_dir" | sed 's/-agent//' | tr '[:lower:]' '[:upper:]')
+                echo "- ${AGENT_NAME}: ${DONE_COUNT} completed (last 24h)" >> $GITHUB_STEP_SUMMARY
+                COMPLETED=$((COMPLETED + DONE_COUNT))
+              fi
+            fi
+          done
+          
+          if [ "$COMPLETED" -eq 0 ]; then
+            echo "No tasks completed in last 24 hours" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Alert on stale tasks
+        if: github.event_name == 'schedule'
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## ⚠️ Stale Task Check" >> $GITHUB_STEP_SUMMARY
+          
+          STALE=0
+          for agent_dir in output/*-agent; do
+            if [ -d "$agent_dir/inbox" ]; then
+              # Find tasks older than 24 hours
+              STALE_TASKS=$(find "$agent_dir/inbox" -name "*.txt" -mtime +1 2>/dev/null)
+              if [ -n "$STALE_TASKS" ]; then
+                AGENT_NAME=$(basename "$agent_dir" | sed 's/-agent//' | tr '[:lower:]' '[:upper:]')
+                echo "⚠️ ${AGENT_NAME} has stale tasks (>24h old)" >> $GITHUB_STEP_SUMMARY
+                STALE=1
+              fi
+            fi
+          done
+          
+          if [ "$STALE" -eq 0 ]; then
+            echo "✅ No stale tasks found" >> $GITHUB_STEP_SUMMARY
+          fi
+

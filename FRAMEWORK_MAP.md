@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 700a1e5 2025-12-22 docs(cli): complete P2 generate command task
 - 78c9f27 2025-12-22 feat(integrations): complete integration expansion planning
 - a72d538 2025-12-22 docs(api): create comprehensive API documentation
 - f237029 2025-12-22 docs(agents): update website memory with production deployment session
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - b23be67 2025-12-22 docs(governance): add PROMPT_STANDARDS.md references to all governance files
 - a4b8c61 2025-12-22 feat(ai-agent): add streaming support for real-time progress
 - 2c0d346 2025-12-22 feat(website): add model tier toggle to project generator
-- 3d585b3 2025-12-22 docs(governance): update Agent Identity Rule format to parentheses
 
 ## Agent Governance Structure
 
