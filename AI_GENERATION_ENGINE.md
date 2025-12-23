@@ -456,16 +456,22 @@ resetGlobalTracker();
 
 ### Prompt Token Usage (After Optimization)
 
-*Prompts optimized on 2025-12-22 with 32% token reduction.*
+*Prompts optimized on 2025-12-22 with comprehensive token reduction.*
 
-| Prompt File | Before | After | Reduction |
-|-------------|--------|-------|-----------|
-| intent-analysis.md | ~663 tokens | ~449 tokens | -32% |
-| architecture-design.md | ~681 tokens | ~493 tokens | -28% |
-| code-generation.md | ~959 tokens | ~453 tokens | -53% |
-| cursor-rules.md | ~839 tokens | ~640 tokens | -24% |
-| start-prompt.md | ~1,100 tokens | ~847 tokens | -23% |
-| **Total Prompts** | **~4,242 tokens** | **~2,884 tokens** | **-32%** |
+**Optimization Passes:**
+1. Initial optimization: 32% reduction
+2. Comprehensive rewrite: Additional 24.5% reduction
+
+| Prompt File | Original | After Pass 1 | After Pass 2 | Total Reduction |
+|-------------|----------|--------------|--------------|-----------------|
+| intent-analysis.md | ~663 | ~449 | ~393 | **-41%** |
+| architecture-design.md | ~681 | ~493 | ~361 | **-47%** |
+| code-generation.md | ~959 | ~453 | ~306 | **-68%** |
+| cursor-rules.md | ~839 | ~640 | ~334 | **-60%** |
+| start-prompt.md | ~1,100 | ~847 | ~344 | **-69%** |
+| **Total Prompts** | **~4,242** | **~2,884** | **~1,738** | **-59%** |
+
+**Techniques Applied:** See [Prompt Standards](docs/standards/PROMPT_STANDARDS.md) for the optimization techniques used.
 
 ## Prompts
 
@@ -494,6 +500,21 @@ await prompts.load('intent-analysis', {
 3. **Examples** - Show desired format
 4. **Constraints** - Limit creativity where needed
 5. **Context** - Provide template info, patterns
+
+### Token Optimization Standards
+
+All prompts must follow the optimization techniques in **[Prompt Standards](docs/standards/PROMPT_STANDARDS.md)**:
+
+| Technique | Description |
+|-----------|-------------|
+| Concise pattern notation | Use `→` and `\|` for relationships |
+| Inline schemas | Single-line OUTPUT specs |
+| No redundant headers | Skip when inline works |
+| Minimal whitespace | Pipe-delimited lists |
+| No meta-instructions | Only actionable patterns |
+| Condensed code patterns | Single-line examples |
+
+**Target:** All prompts combined should be ≤2,000 tokens (currently ~1,738).
 
 ## Deployment Considerations
 

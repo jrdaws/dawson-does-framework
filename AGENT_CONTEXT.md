@@ -238,13 +238,13 @@ ls -la ~/.cursor/projects/*/terminals/
 **Every agent MUST end their final response with their role declaration:**
 
 ```
-I am the [ROLE] Agent.
+(I am the [ROLE] Agent.)
 ```
 
 Examples:
-- "I am the CLI Agent."
-- "I am the Platform Agent."
-- "I am the Documentation Agent."
+- "(I am the CLI Agent.)"
+- "(I am the Platform Agent.)"
+- "(I am the Documentation Agent.)"
 
 This rule is non-negotiable and applies to ALL responses, regardless of task complexity or context.
 

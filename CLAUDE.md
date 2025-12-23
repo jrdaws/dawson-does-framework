@@ -185,10 +185,10 @@ git commit -m "<type>(<scope>): <description>"
 **Every agent MUST end ALL responses with their role declaration:**
 
 ```
-I am the [ROLE] Agent.
+(I am the [ROLE] Agent.)
 ```
 
-Examples: "I am the CLI Agent." | "I am the Platform Agent." | "I am the Documentation Agent."
+Examples: "(I am the CLI Agent.)" | "(I am the Platform Agent.)" | "(I am the Documentation Agent.)"
 
 **This is non-negotiable.** Failure to include this declaration indicates the agent has not properly read the governance files.
 
