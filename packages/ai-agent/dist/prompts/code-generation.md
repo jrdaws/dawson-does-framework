@@ -7,7 +7,6 @@ OUTPUT JSON: {files:[{path,content,overwrite:bool}], integrationCode:[]}
 
 GUIDELINES: MVP scaffold, TODO comments, type-safe | Stack: Next.js 15 App Router, React 19, TypeScript strict, Tailwind, Server components default
 FILES: Pages→app/[route]/page.tsx | Components→components/[name].tsx (only create-new) | API→app/api/[route]/route.ts
-
 CODE PATTERNS:
 ```typescript
 // Page Example

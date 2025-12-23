@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 7942d7d 2025-12-22 docs(ai-agent): add verified cost estimates and token tracking documentation
 - 091d4ce 2025-12-22 perf(ai-agent): optimize whitespace in prompt files
 - 412a6fe 2025-12-22 docs(agents): update Platform Agent memory with session 5
 - 7a51531 2025-12-22 perf(ai-agent): compress JSON schema declarations in prompts
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - fb218db 2025-12-22 chore: cleanup and standardize post-session changes
 - 0a489c6 2025-12-22 feat(governance): add parallel agent coordination policies
 - 39cc1b1 2025-12-22 feat(templates): add supportedIntegrations to seo-directory template
-- b5f0491 2025-12-22 chore: update framework map after push
 
 ## Agent Governance Structure
 
