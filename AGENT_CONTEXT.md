@@ -65,6 +65,7 @@ dawson-does-framework/
 ## Coding Standards
 - **Language**: TypeScript for website, JavaScript (.mjs) for CLI
 - **Style**: 2-space indent, no semicolons in .mjs, semicolons in .ts
+- **AI Prompts**: Follow `docs/standards/PROMPT_STANDARDS.md` (token-optimized from start)
 - **Naming**: camelCase for functions/variables, PascalCase for components/classes
 - **Commits**: Conventional commits (`feat:`, `fix:`, `docs:`, `chore:`)
 - **Testing**: Node.js test runner for CLI, Playwright for E2E

@@ -1,6 +1,6 @@
 # CLAUDE.md - Automatic Context for Claude Code CLI
 
-> **Governance Version: 2.1** | Last Updated: 2025-12-22
+> **Governance Version: 2.2** | Last Updated: 2025-12-22
 > 
 > **This file is automatically read by Claude Code CLI when starting a session in this project.**
 
@@ -24,10 +24,11 @@ This is non-negotiable. Every new conversation starts with bootstrap.
 
 ```
 ## ✓ Governance Acknowledgment
-- Governance Version: 2.1
+- Governance Version: 2.2
 - I have read CLAUDE.md and AGENT_CONTEXT.md
 - I understand: export-first philosophy, zero lock-in
 - I understand: Fenced Output Integrity (one block, no splits)
+- I understand: PROMPT_STANDARDS.md (no role padding, no output reminders)
 - I will NOT: delete protected files, create branches, skip sync, split fenced output
 - Pre-commit command: npm test
 ```
@@ -103,6 +104,7 @@ A hybrid platform for building web apps with a visual configurator, then exporti
 ### Coding Standards
 - **JavaScript (.mjs)**: No semicolons, 2-space indent
 - **TypeScript (.ts/.tsx)**: Semicolons, 2-space indent
+- **AI Prompts**: Follow `docs/standards/PROMPT_STANDARDS.md` (token-optimized, no verbose schemas)
 - **Commits**: Conventional format (`feat:`, `fix:`, `docs:`, `chore:`)
 - **Tests**: Run `npm test` before committing
 
@@ -125,6 +127,10 @@ framework pull <token>      # Pull from platform
 - ❌ **Delete protected files** (see `.protected-files`)
 - ❌ **Create feature branches** (always work on `main`)
 - ❌ **Skip the sync check** (Step 0 above)
+- ❌ **Write unoptimized AI prompts** - see `docs/standards/PROMPT_STANDARDS.md`
+  - No "You are an expert..." role declarations
+  - No "IMPORTANT/CRITICAL/NOTE" markers  
+  - No duplicate "Return ONLY JSON" reminders
 
 ### Important Files
 - `AGENT_CONTEXT.md` - Full context (READ THIS)

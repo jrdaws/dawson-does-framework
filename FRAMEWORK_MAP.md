@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- a4b8c61 2025-12-22 feat(ai-agent): add streaming support for real-time progress
 - 2c0d346 2025-12-22 feat(website): add model tier toggle to project generator
 - 3d585b3 2025-12-22 docs(governance): update Agent Identity Rule format to parentheses
 - 5a8244f 2025-12-22 docs(standards): add PROMPT_STANDARDS.md and update token counts
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 6bee923 2025-12-22 docs: review and update cherry-picked documentation
 - 0e2b3ae 2025-12-22 docs: cherry-pick documentation and tests from stale branches
 - bdd877d 2025-12-22 feat(governance): add session management, validation, and token authentication
-- dba703d 2025-12-22 feat(governance): add mandatory agent workflow and acknowledgment requirements
 
 ## Agent Governance Structure
 

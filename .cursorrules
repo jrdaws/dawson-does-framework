@@ -1,5 +1,5 @@
 # Dawson-Does Framework - Cursor Rules
-# Governance Version: 2.1 | Last Updated: 2025-12-22
+# Governance Version: 2.2 | Last Updated: 2025-12-22
 
 ---
 
@@ -19,10 +19,11 @@ No trigger command needed. Whatever the user's first message is, you MUST:
 
 ```
 ## ✓ Governance Acknowledgment
-- Governance Version: 2.1
+- Governance Version: 2.2
 - I have read .cursorrules and AGENT_CONTEXT.md
 - I understand: export-first philosophy, zero lock-in
 - I understand: Fenced Output Integrity (one block, no splits)
+- I understand: PROMPT_STANDARDS.md (no role padding, no output reminders)
 - I will NOT: delete protected files, create branches, skip sync, split fenced output
 ```
 
@@ -70,6 +71,7 @@ Before starting work, read AGENT_CONTEXT.md for project vision, philosophy, and 
 ## Code Style
 - CLI/Core: JavaScript ESM (.mjs), no semicolons, 2-space indent
 - Website: TypeScript, semicolons, 2-space indent
+- **AI Prompts**: Follow `docs/standards/PROMPT_STANDARDS.md` (token-optimized)
 - Use existing patterns - check similar files first
 - Prefer explicit over clever
 
@@ -99,6 +101,10 @@ Use conventional commits:
 - **Deleting protected files** (see `.protected-files`)
 - **Creating feature branches** (always work on `main`)
 - **Skipping the sync check** (Step 0 above)
+- **Writing unoptimized prompts** (see `docs/standards/PROMPT_STANDARDS.md`)
+  - No "You are an expert..." role declarations
+  - No "IMPORTANT/CRITICAL/NOTE" markers
+  - No duplicate "Return ONLY JSON" reminders
 
 ## 🛡️ Protected Files - NEVER DELETE
 - `AGENT_CONTEXT.md`, `CLAUDE.md`, `.cursorrules`
