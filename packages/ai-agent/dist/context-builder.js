@@ -71,6 +71,8 @@ Do NOT include any other text before ${CURSORRULES_DELIMITER} or after the START
                     },
                 ],
                 system: consolidatedPrompt,
+                stream: opts.stream,
+                onStream: opts.onStream,
             }, "context" // Track as context stage
             );
             // Parse the combined response

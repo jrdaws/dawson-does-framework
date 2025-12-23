@@ -1,8 +1,11 @@
+import { type StreamCallback } from "./utils/llm-client.js";
 import type { ProjectIntent, ProjectArchitecture } from "./types.js";
 /** Options for architecture generation */
 export interface ArchitectureOptions {
     apiKey?: string;
     model?: string;
+    stream?: boolean;
+    onStream?: StreamCallback;
 }
 /**
  * Generate project architecture from analyzed intent

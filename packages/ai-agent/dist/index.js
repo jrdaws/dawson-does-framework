@@ -53,25 +53,59 @@ export async function generateProject(input, apiKeyOrOptions) {
     const options = typeof apiKeyOrOptions === "string"
         ? { apiKey: apiKeyOrOptions, logTokenUsage: true }
         : { logTokenUsage: true, ...apiKeyOrOptions };
-    const { apiKey, logTokenUsage } = options;
+    const { apiKey, logTokenUsage, stream, onProgress } = options;
     const tier = options.modelTier || DEFAULT_MODEL_TIER;
     const models = MODEL_TIERS[tier];
+    // Helper to emit progress events
+    const emit = (stage, type, data) => {
+        if (onProgress) {
+            onProgress({ stage, type, ...data });
+        }
+    };
     // Reset token tracker for new generation
     resetGlobalTracker();
     // Step 1: Analyze intent
-    const intent = await analyzeIntent(input, { apiKey, model: models.intent });
+    emit('intent', 'start', { message: 'Analyzing project intent...' });
+    const intent = await analyzeIntent(input, {
+        apiKey,
+        model: models.intent,
+        stream,
+        onStream: stream ? (chunk, accumulated) => emit('intent', 'chunk', { chunk, accumulated }) : undefined,
+    });
+    emit('intent', 'complete', { message: 'Intent analysis complete' });
     // Step 2: Generate architecture
-    const architecture = await generateArchitecture(intent, { apiKey, model: models.architecture });
+    emit('architecture', 'start', { message: 'Designing architecture...' });
+    const architecture = await generateArchitecture(intent, {
+        apiKey,
+        model: models.architecture,
+        stream,
+        onStream: stream ? (chunk, accumulated) => emit('architecture', 'chunk', { chunk, accumulated }) : undefined,
+    });
+    emit('architecture', 'complete', { message: 'Architecture design complete' });
     // Step 3: Generate code
-    const code = await generateCode(architecture, input, { apiKey, model: models.code });
+    emit('code', 'start', { message: 'Generating code files...' });
+    const code = await generateCode(architecture, input, {
+        apiKey,
+        model: models.code,
+        stream,
+        onStream: stream ? (chunk, accumulated) => emit('code', 'chunk', { chunk, accumulated }) : undefined,
+    });
+    emit('code', 'complete', { message: 'Code generation complete' });
     // Step 4: Build Cursor context
+    emit('context', 'start', { message: 'Building Cursor context...' });
     const context = await buildCursorContext({
         intent,
         architecture,
         code,
         projectName: input.projectName,
         description: input.description,
-    }, { apiKey, model: models.context });
+    }, {
+        apiKey,
+        model: models.context,
+        stream,
+        onStream: stream ? (chunk, accumulated) => emit('context', 'chunk', { chunk, accumulated }) : undefined,
+    });
+    emit('context', 'complete', { message: 'Cursor context complete' });
     // Log token usage summary
     if (logTokenUsage) {
         const tracker = getGlobalTracker();

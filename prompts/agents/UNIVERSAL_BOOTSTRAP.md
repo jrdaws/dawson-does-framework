@@ -4,11 +4,17 @@
 > 
 > **Use this prompt to initialize ANY AI agent on ANY platform for dawson-does-framework work.**
 
+## ⚡ AUTO-BOOTSTRAP (Default Behavior)
+
+**For Cursor IDE and Claude Code CLI**: Bootstrap happens **automatically** on any first message. No trigger command needed - just start talking and the agent will bootstrap first, then handle your request.
+
+**For other platforms** (ChatGPT, etc.): Copy the bootstrap prompt below and paste it before your first task.
+
 This prompt works with:
-- Claude Code CLI
-- Cursor IDE
-- ChatGPT
-- Any other AI assistant
+- Claude Code CLI (auto-bootstrap)
+- Cursor IDE (auto-bootstrap)
+- ChatGPT (manual paste)
+- Any other AI assistant (manual paste)
 
 ---
 
@@ -50,9 +56,9 @@ git add -A && git commit -m "feat(scope): description"
 
 ---
 
-## 🚀 The Bootstrap Prompt
+## 🚀 The Bootstrap Prompt (For Non-Auto Platforms)
 
-**Copy and paste this entire prompt when starting a new AI agent session:**
+**For ChatGPT or other platforms without auto-loading**: Copy and paste this entire prompt when starting a new AI agent session:
 
 ---
 

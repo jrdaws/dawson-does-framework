@@ -1,8 +1,8 @@
 # Agent Policies
 
-> **Version**: 1.1
+> **Version**: 1.2
 > **Effective Date**: 2025-12-22
-> **Output Integrity Update**: Added Fenced Output Integrity standards
+> **Latest Update**: Added AI Prompt Forbidden Patterns and PROMPT_STANDARDS.md reference
 > **Purpose**: Define operational policies and protocols for AI agents working on dawson-does-framework
 
 ---
@@ -242,6 +242,17 @@ Agents must NEVER:
 - Work outside their assigned role domain
 - Skip the memory update at session end
 
+### AI Prompt Forbidden Patterns
+
+When writing AI prompts (in `packages/ai-agent/src/prompts/`), agents must NEVER:
+- Start with "You are an expert..." (use action verbs)
+- Add "IMPORTANT/CRITICAL/NOTE" markers (state constraints inline)
+- Repeat "Return ONLY JSON" at the end (say it once in OUTPUT)
+- Use verbose JSON schemas (use inline notation)
+- Include explanatory prose about what AI should do (show patterns)
+
+**Full guide:** `docs/standards/PROMPT_STANDARDS.md`
+
 ### Required Actions
 
 Agents must ALWAYS:
@@ -252,6 +263,7 @@ Agents must ALWAYS:
 - Update documentation when behavior changes
 - Provide actionable error messages
 - Follow the coding style for each language
+- **Follow PROMPT_STANDARDS.md when writing AI prompts**
 - Update their memory file at session end
 
 ---
@@ -386,6 +398,12 @@ test(integration): add E2E tests for configurator flow
 ---
 
 ## Version History
+
+### Version 1.2 (2025-12-22)
+- Added **AI Prompt Forbidden Patterns** section
+- Added prompt writing to Required Actions
+- Referenced `docs/standards/PROMPT_STANDARDS.md` for full prompt guidelines
+- Agents must write token-optimized prompts from the start
 
 ### Version 1.1 (2025-12-22)
 - Added **Fenced Output Integrity** standards

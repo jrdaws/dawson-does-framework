@@ -42,6 +42,8 @@ export async function generateCode(architecture, input, options) {
                     },
                 ],
                 system: systemPrompt,
+                stream: opts.stream,
+                onStream: opts.onStream,
             }, "code" // Track as code stage
             );
             // Extract and parse JSON with repair fallback

@@ -43,6 +43,8 @@ export async function generateArchitecture(intent, options) {
                     },
                 ],
                 system: systemPrompt,
+                stream: opts.stream,
+                onStream: opts.onStream,
             }, "architecture" // Track as architecture stage
             );
             // Extract and parse JSON with repair fallback

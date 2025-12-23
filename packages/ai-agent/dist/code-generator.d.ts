@@ -1,8 +1,11 @@
+import { type StreamCallback } from "./utils/llm-client.js";
 import type { ProjectArchitecture, GeneratedCode, ProjectInput } from "./types.js";
 /** Options for code generation */
 export interface CodeOptions {
     apiKey?: string;
     model?: string;
+    stream?: boolean;
+    onStream?: StreamCallback;
 }
 /**
  * Generate code files from project architecture

@@ -1,4 +1,12 @@
 export type ModelTier = 'fast' | 'balanced' | 'quality';
+export type StreamProgressCallback = (event: StreamEvent) => void;
+export interface StreamEvent {
+    stage: 'intent' | 'architecture' | 'code' | 'context';
+    type: 'start' | 'chunk' | 'complete';
+    chunk?: string;
+    accumulated?: string;
+    message?: string;
+}
 export interface ProjectInput {
     description: string;
     template?: string;
@@ -6,6 +14,13 @@ export interface ProjectInput {
     vision?: string;
     mission?: string;
     inspirations?: Inspiration[];
+}
+export interface GenerateProjectOptions {
+    apiKey?: string;
+    logTokenUsage?: boolean;
+    modelTier?: ModelTier;
+    stream?: boolean;
+    onProgress?: StreamProgressCallback;
 }
 export interface Inspiration {
     type: 'url' | 'image' | 'figma';

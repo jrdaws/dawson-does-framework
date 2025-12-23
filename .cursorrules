@@ -3,11 +3,19 @@
 
 ---
 
-## ⛔ STOP - READ THIS FIRST
+## ⚡ AUTO-BOOTSTRAP (Triggers on ANY First Message)
 
-**You MUST complete the verification before doing ANY work.**
+**This bootstrap sequence activates AUTOMATICALLY when you receive your first message in a new conversation.**
 
-Your FIRST response MUST begin with:
+No trigger command needed. Whatever the user's first message is, you MUST:
+1. Complete the bootstrap steps below FIRST
+2. Then address the user's actual request
+
+---
+
+## ⛔ STOP - BOOTSTRAP REQUIRED
+
+**Your FIRST response in any new conversation MUST begin with:**
 
 ```
 ## ✓ Governance Acknowledgment
@@ -18,13 +26,13 @@ Your FIRST response MUST begin with:
 - I will NOT: delete protected files, create branches, skip sync, split fenced output
 ```
 
-**Do not proceed until you have stated this acknowledgment.**
+**Then immediately proceed with the mandatory steps below, followed by the user's request.**
 
 ---
 
-## 🛑 MANDATORY FIRST STEPS - DO NOT SKIP
+## 🛑 MANDATORY FIRST STEPS - AUTO-EXECUTE ON FIRST MESSAGE
 
-Before responding to ANY prompt or doing ANY work:
+These steps run AUTOMATICALLY as part of your first response:
 
 ### Step 0: Sync Check (CRITICAL)
 ```bash
@@ -42,10 +50,10 @@ cat AGENT_CONTEXT.md
 ### Step 2: Pass Verification
 Answer the 5 verification questions from AGENT_CONTEXT.md in your first response.
 
-### Step 3: Proceed
-Only after Steps 0-2, proceed with the user's request.
+### Step 3: Identify Role & Proceed
+Based on the user's request, identify your agent role, then proceed with their task.
 
-**Work submitted without context verification may be rejected.**
+**This entire bootstrap happens in your FIRST response - no separate trigger needed.**
 
 ---
 

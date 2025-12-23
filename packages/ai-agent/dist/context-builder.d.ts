@@ -1,3 +1,4 @@
+import { type StreamCallback } from "./utils/llm-client.js";
 import type { ProjectIntent, ProjectArchitecture, GeneratedCode, CursorContext } from "./types.js";
 export interface ContextInput {
     intent: ProjectIntent;
@@ -10,6 +11,8 @@ export interface ContextInput {
 export interface ContextOptions {
     apiKey?: string;
     model?: string;
+    stream?: boolean;
+    onStream?: StreamCallback;
 }
 /**
  * Build Cursor context files (.cursorrules and START_PROMPT.md)

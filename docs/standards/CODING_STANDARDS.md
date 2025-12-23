@@ -345,6 +345,39 @@ describe("parseExportFlags", () => {
 
 ---
 
+## AI Prompts
+
+### Location
+- `packages/ai-agent/src/prompts/*.md`
+
+### Prompt Standards (MANDATORY)
+
+All AI prompts must follow `docs/standards/PROMPT_STANDARDS.md`. Key rules:
+
+```markdown
+# ❌ FORBIDDEN patterns
+You are an expert project analyzer...     # Role declarations waste tokens
+IMPORTANT: Return ONLY valid JSON...      # Emphasis markers add nothing
+Return ONLY the JSON object...            # Duplicate output reminders
+
+# ✅ REQUIRED patterns
+Analyze project, extract intent.          # Action-verb first line
+OUTPUT JSON: {category,features[]}        # Single OUTPUT declaration
+DETECT: saas→subscription|users|auth      # Pattern notation
+```
+
+### Quick Checklist
+- [ ] Starts with action verb (Analyze, Generate, Design)
+- [ ] NO "You are an expert" declarations
+- [ ] NO "IMPORTANT/CRITICAL/NOTE" markers
+- [ ] NO duplicate "Return ONLY JSON" reminders
+- [ ] Uses `→` and `|` notation for patterns
+- [ ] Single-line OUTPUT schema
+
+**Full guide:** `docs/standards/PROMPT_STANDARDS.md`
+
+---
+
 ## Verification Checklist
 
 Before submitting code, verify:
@@ -357,9 +390,10 @@ Before submitting code, verify:
 - [ ] Error messages include recovery guidance
 - [ ] Public functions have JSDoc comments
 - [ ] File is <300 lines
+- [ ] **AI prompts follow PROMPT_STANDARDS.md**
 - [ ] Tests pass: `npm test`
 
 ---
 
-*Last updated: 2024-12-21*
+*Last updated: 2025-12-22*
 

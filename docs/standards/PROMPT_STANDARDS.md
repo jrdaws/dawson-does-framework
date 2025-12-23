@@ -1,6 +1,6 @@
 # Prompt Standards
 
-> **Version: 1.0** | Last Updated: 2025-12-22
+> **Version: 2.0** | Last Updated: 2025-12-22
 > 
 > **Required reading for all agents writing AI prompts in dawson-does-framework.**
 
@@ -10,18 +10,100 @@ This document defines the standards for writing token-efficient, high-quality AI
 
 **Goal:** Maximize output quality while minimizing token usage.
 
+**These standards apply to all new prompts.** Do not write prompts that require future optimization - write optimized prompts from the start.
+
 ---
 
 ## Quick Reference
 
 | Principle | Description | Example |
 |-----------|-------------|---------|
+| Action-verb first line | Start with verb, not role | `Analyze project...` not `You are an expert...` |
 | Concise pattern notation | Use arrows and pipes | `template→pages\|components\|routes` |
 | Inline schemas | Single-line OUTPUT specs | `OUTPUT: {name,type,props{}}` |
 | No redundant headers | Skip "## Section" when inline works | Just write the content |
 | Minimal whitespace | Condensed structure | Pipe-delimited lists |
 | No meta-instructions | Remove explanatory prose | Keep only actionable patterns |
+| No role padding | Skip "You are an expert" | Claude performs at expert level regardless |
+| No output reminders | Don't repeat "Return ONLY JSON" | Say it once in OUTPUT spec |
+| No emphasis markers | Avoid IMPORTANT/CRITICAL/NOTE | State constraints once, inline |
 | Condensed code patterns | Single-line examples | Inline pattern syntax |
+
+---
+
+## Critical Rules (MUST Follow)
+
+These rules are non-negotiable. All prompts MUST follow these patterns.
+
+### Rule 1: Action-Verb First Line
+
+Start every prompt with an action verb describing the task. Never start with "You are..." declarations.
+
+```markdown
+# ❌ FORBIDDEN: Role declarations
+You are an expert project analyzer for the Dawson Framework.
+Your task is to analyze the user's project description and extract structured intent.
+
+# ✅ REQUIRED: Action-verb start
+Analyze project description, extract intent for Dawson Framework.
+```
+
+**Why:** Claude performs at expert level regardless. Role padding wastes tokens and adds nothing.
+
+### Rule 2: No Duplicate Output Reminders
+
+Specify the output format ONCE using the `OUTPUT:` declaration. Never add reminders at the end.
+
+```markdown
+# ❌ FORBIDDEN: Repeated reminders
+OUTPUT: {category, confidence, features[]}
+
+... (prompt content) ...
+
+IMPORTANT: Return ONLY valid JSON without markdown formatting.
+Return ONLY the JSON object, no additional text or markdown formatting.
+
+# ✅ REQUIRED: Single OUTPUT declaration
+OUTPUT JSON: {category, confidence, features[]}
+
+... (prompt content, no closing reminder) ...
+```
+
+**Why:** If you ask for JSON with a schema, Claude returns JSON. Reminders are redundant.
+
+### Rule 3: No Emphasis Markers
+
+State constraints once, inline. Don't use IMPORTANT, CRITICAL, or NOTE markers.
+
+```markdown
+# ❌ FORBIDDEN: Emphasis markers
+IMPORTANT: Make sure to include all features.
+CRITICAL: Ensure the JSON is valid.
+NOTE: Remember to check for edge cases.
+
+# ✅ REQUIRED: Inline constraints
+CONSTRAINTS: include all features | valid JSON | handle edge cases
+```
+
+**Why:** Every instruction is important. Markers add tokens without changing behavior.
+
+### Rule 4: No Explanatory Prose
+
+Don't explain what the AI should do. Show the pattern directly.
+
+```markdown
+# ❌ FORBIDDEN: Explanatory prose
+You should analyze the user's description and determine which template 
+category it belongs to. Consider the keywords and characteristics of 
+each category. When you identify relevant keywords, assign higher confidence.
+
+# ✅ REQUIRED: Direct patterns
+DETECT TEMPLATE:
+saas→subscription|users|auth|dashboard|billing|platform
+landing→marketing|conversion|launch|showcase|website
+```
+
+**Why:** Showing patterns is more precise and uses fewer tokens than explaining rules.
 
 ---
 
@@ -273,14 +355,18 @@ OUTPUT: {category,confidence:0-1,reasoning,suggestedTemplate,features[],integrat
 
 ### Do Include
 
-- ✅ Clear task statement (first line)
-- ✅ Input variable declaration
+- ✅ **Action-verb first line** (Analyze, Generate, Design, Extract)
+- ✅ Input variable declaration (inline)
 - ✅ Detection patterns with trigger words
-- ✅ Output schema (inline JSON notation)
+- ✅ Output schema (single-line JSON notation)
 - ✅ Default values where applicable
+- ✅ Constraints inline with content
 
-### Do Not Include
+### Do Not Include (FORBIDDEN)
 
+- ❌ **"You are an expert..."** - Role declarations waste tokens
+- ❌ **"Return ONLY JSON..."** - Duplicate output reminders
+- ❌ **"IMPORTANT/CRITICAL/NOTE"** - Emphasis markers add nothing
 - ❌ Explanatory prose about what the AI should do
 - ❌ Multiple examples (one pattern is enough)
 - ❌ Verbose JSON schemas (use inline notation)
@@ -294,10 +380,16 @@ OUTPUT: {category,confidence:0-1,reasoning,suggestedTemplate,features[],integrat
 
 Before committing a prompt file, verify:
 
-- [ ] First line is a clear task description
+### Critical Rules (MUST pass)
+- [ ] First line starts with action verb (Analyze, Generate, Design, etc.)
+- [ ] NO "You are an expert" or role declarations
+- [ ] NO "Return ONLY JSON" or duplicate output reminders
+- [ ] NO "IMPORTANT/CRITICAL/NOTE" emphasis markers
+- [ ] Output schema appears ONCE (single-line)
+
+### Optimization (SHOULD pass)
 - [ ] Input variables declared inline
 - [ ] Uses arrow/pipe notation for patterns
-- [ ] Output schema is single-line
 - [ ] No explanatory meta-instructions
 - [ ] No redundant headers
 - [ ] Minimal blank lines
@@ -353,6 +445,16 @@ When optimizing existing prompts:
 ---
 
 ## Version History
+
+### Version 2.0 (2025-12-22)
+- **Added Critical Rules section** - Non-negotiable patterns all prompts must follow
+- Added Rule 1: Action-verb first line (no role declarations)
+- Added Rule 2: No duplicate output reminders
+- Added Rule 3: No emphasis markers (IMPORTANT/CRITICAL/NOTE)
+- Added Rule 4: No explanatory prose
+- Updated Quick Reference with new principles
+- Updated validation checklist with critical/optimization tiers
+- Expanded "Do Not Include" with forbidden patterns
 
 ### Version 1.0 (2025-12-22)
 - Initial release

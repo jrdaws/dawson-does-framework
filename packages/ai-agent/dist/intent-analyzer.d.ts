@@ -1,8 +1,11 @@
+import { type StreamCallback } from "./utils/llm-client.js";
 import type { ProjectInput, ProjectIntent } from "./types.js";
 /** Options for intent analysis */
 export interface IntentOptions {
     apiKey?: string;
     model?: string;
+    stream?: boolean;
+    onStream?: StreamCallback;
 }
 /**
  * Analyze user's project description and extract structured intent

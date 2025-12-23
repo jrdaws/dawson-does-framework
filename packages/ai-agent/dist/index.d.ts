@@ -2,14 +2,15 @@ export { analyzeIntent } from "./intent-analyzer.js";
 export { generateArchitecture } from "./architecture-generator.js";
 export { generateCode } from "./code-generator.js";
 export { buildCursorContext } from "./context-builder.js";
-export type { ProjectInput, ProjectIntent, ProjectArchitecture, GeneratedCode, CursorContext, PageDefinition, ComponentDefinition, RouteDefinition, FileDefinition, IntegrationRequirements, TemplateMetadata, Inspiration, ModelTier, } from "./types.js";
+export type { ProjectInput, ProjectIntent, ProjectArchitecture, GeneratedCode, CursorContext, PageDefinition, ComponentDefinition, RouteDefinition, FileDefinition, IntegrationRequirements, TemplateMetadata, Inspiration, ModelTier, StreamProgressCallback, StreamEvent, GenerateProjectOptions, } from "./types.js";
 export { AIAgentError, handleLLMError, handleValidationError } from "./error-handler.js";
-export { LLMClient } from "./utils/llm-client.js";
+export { LLMClient, type StreamCallback } from "./utils/llm-client.js";
 export { PromptLoader } from "./utils/prompt-loader.js";
 export { TemplateSelector } from "./template-selector.js";
 export { TokenTracker, getGlobalTracker, resetGlobalTracker } from "./utils/token-tracker.js";
 export type { TokenUsage, TokenSummary, PipelineStage } from "./utils/token-tracker.js";
-import type { ProjectInput, ProjectIntent, ProjectArchitecture, GeneratedCode, CursorContext, ModelTier } from "./types.js";
+import type { ProjectInput, ProjectIntent, ProjectArchitecture, GeneratedCode, CursorContext, ModelTier, GenerateProjectOptions } from "./types.js";
+import type { StreamCallback } from "./utils/llm-client.js";
 export interface GenerateProjectResult {
     intent: ProjectIntent;
     architecture: ProjectArchitecture;
@@ -45,34 +46,32 @@ export declare const DEFAULT_MODEL_TIER: ModelTier;
  *
  * @example
  * ```typescript
- * // Default (quality tier - recommended)
+ * // Default (balanced tier)
  * const result = await generateProject({
  *   description: 'A fitness tracking app with social features',
  *   projectName: 'FitTrack'
  * });
  *
- * // With options
+ * // With streaming enabled
  * const result = await generateProject(
  *   { description: '...' },
- *   { modelTier: 'fast', logTokenUsage: true } // Use Haiku where possible
+ *   {
+ *     stream: true,
+ *     onProgress: (event) => {
+ *       if (event.type === 'chunk') {
+ *         process.stdout.write(event.chunk);
+ *       }
+ *     }
+ *   }
  * );
  * ```
  */
-export interface GenerateProjectOptions {
-    apiKey?: string;
-    logTokenUsage?: boolean;
-    /**
-     * Model tier selection:
-     * - 'fast': Haiku everywhere (~$0.02/gen, less reliable)
-     * - 'balanced': Haiku + Sonnet for code (~$0.08/gen) [DEFAULT]
-     * - 'quality': Sonnet everywhere (~$0.18/gen, most reliable)
-     */
-    modelTier?: ModelTier;
-}
 /** Options passed to individual generators */
 export interface GeneratorOptions {
     apiKey?: string;
     model?: string;
+    stream?: boolean;
+    onStream?: StreamCallback;
 }
 export declare function generateProject(input: ProjectInput, apiKeyOrOptions?: string | GenerateProjectOptions): Promise<GenerateProjectResult>;
 //# sourceMappingURL=index.d.ts.map

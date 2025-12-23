@@ -28,7 +28,7 @@ export type {
 export { AIAgentError, handleLLMError, handleValidationError } from "./error-handler.js";
 
 // Export utilities
-export { LLMClient } from "./utils/llm-client.js";
+export { LLMClient, type StreamCallback } from "./utils/llm-client.js";
 export { PromptLoader } from "./utils/prompt-loader.js";
 export { TemplateSelector } from "./template-selector.js";
 
@@ -42,7 +42,8 @@ import { generateArchitecture } from "./architecture-generator.js";
 import { generateCode } from "./code-generator.js";
 import { buildCursorContext } from "./context-builder.js";
 import { getGlobalTracker, resetGlobalTracker } from "./utils/token-tracker.js";
-import type { ProjectInput, ProjectIntent, ProjectArchitecture, GeneratedCode, CursorContext, ModelTier, GenerateProjectOptions, StreamProgressCallback } from "./types.js";
+import type { ProjectInput, ProjectIntent, ProjectArchitecture, GeneratedCode, CursorContext, ModelTier, GenerateProjectOptions } from "./types.js";
+import type { StreamCallback } from "./utils/llm-client.js";
 
 export interface GenerateProjectResult {
   intent: ProjectIntent;
@@ -119,9 +120,6 @@ export const DEFAULT_MODEL_TIER: ModelTier = "balanced";
  * );
  * ```
  */
-
-/** Callback for streaming text chunks */
-export type StreamCallback = (chunk: string, accumulated: string) => void;
 
 /** Options passed to individual generators */
 export interface GeneratorOptions {

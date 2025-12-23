@@ -69,15 +69,17 @@ export class LLMClient {
       const maxTokens = req.maxTokens || 4096;
       const temperature = req.temperature ?? 0;
 
+      const messages: { role: "user" | "assistant"; content: string }[] = nonSystemMessages.map((m) => ({
+        role: m.role === "assistant" ? "assistant" as const : "user" as const,
+        content: m.content,
+      }));
+
       const messageParams = {
         model,
         max_tokens: maxTokens,
         temperature,
         system: systemPrompt || undefined,
-        messages: nonSystemMessages.map((m) => ({
-          role: m.role === "assistant" ? "assistant" : "user" as const,
-          content: m.content,
-        })),
+        messages,
       };
 
       // Use streaming if requested

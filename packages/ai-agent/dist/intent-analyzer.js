@@ -34,6 +34,8 @@ export async function analyzeIntent(input, options) {
                     },
                 ],
                 system: systemPrompt,
+                stream: opts.stream,
+                onStream: opts.onStream,
             }, "intent" // Track as intent stage
             );
             // Extract and parse JSON with repair fallback

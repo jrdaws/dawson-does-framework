@@ -6,13 +6,21 @@
 
 ---
 
-## ⛔ STOP - READ THIS FIRST
+## ⚡ AUTO-BOOTSTRAP (Triggers on ANY First Message)
 
-**You MUST complete the verification before doing ANY work.**
+**This bootstrap sequence activates AUTOMATICALLY when you receive your first message in a new conversation.**
 
-If you skip this, your work will be rejected and you will need to start over.
+No trigger command needed (no "/bootstrap", no "activate bootstrap"). Whatever the user's first message is - even just "hi" or a direct task - you MUST:
+1. Complete the bootstrap steps below FIRST
+2. Then address the user's actual request
 
-Your FIRST response MUST begin with:
+This is non-negotiable. Every new conversation starts with bootstrap.
+
+---
+
+## ⛔ STOP - BOOTSTRAP REQUIRED
+
+**Your FIRST response in any new conversation MUST begin with:**
 
 ```
 ## ✓ Governance Acknowledgment
@@ -24,11 +32,11 @@ Your FIRST response MUST begin with:
 - Pre-commit command: npm test
 ```
 
-**Do not proceed until you have stated this acknowledgment.**
+**Then immediately proceed with the mandatory steps below, followed by the user's request.**
 
 ---
 
-## 🛑 MANDATORY FIRST STEPS (Do ALL Before Any Work)
+## 🛑 MANDATORY FIRST STEPS (Auto-Execute on First Message)
 
 ### Step 0: Sync Check (CRITICAL - Do This FIRST)
 
@@ -63,11 +71,11 @@ State in your response:
 - The coding standards for your task area
 - What you should NOT do (including protected files)
 
-### Step 3: Proceed with Work
+### Step 3: Identify Role & Proceed
 
-Only after completing Steps 0-2, proceed with the user's request.
+Based on the user's request, identify your agent role, then proceed with their task.
 
-**If you skip these steps, your work may be rejected for not following project standards.**
+**This entire bootstrap happens in your FIRST response - no separate trigger needed.**
 
 ---
 

@@ -1,6 +1,6 @@
 # Agent Context - Read This First
 
-> **Governance Version: 2.1** | Last Updated: 2025-12-22
+> **Governance Version: 2.2** | Last Updated: 2025-12-22
 > 
 > This file provides essential context for AI agents working on the dawson-does-framework.
 > **Every agent must read this file before starting work.**
@@ -94,6 +94,10 @@ dawson-does-framework/
 - **Don't delete protected files** (see below)
 - **Don't create feature branches** (work on `main` only)
 - **Don't split fenced output** (see Fenced Output Integrity below)
+- **Don't write unoptimized prompts** (see `docs/standards/PROMPT_STANDARDS.md`)
+  - No "You are an expert..." role declarations
+  - No "IMPORTANT/CRITICAL/NOTE" markers
+  - No duplicate "Return ONLY JSON" reminders
 
 ---
 
@@ -254,6 +258,8 @@ This rule is non-negotiable and applies to ALL responses, regardless of task com
 
 | Document | Purpose |
 |----------|---------|
+| `docs/standards/PROMPT_STANDARDS.md` | **Required** - Token-optimized AI prompt writing |
+| `docs/standards/CODING_STANDARDS.md` | Code style and conventions |
 | `prompts/agents/UNIVERSAL_BOOTSTRAP.md` | For initializing agents on any platform |
 | `prompts/agents/roles/ROLE_PROTOCOL.md` | Agent lifecycle and memory management |
 | `prompts/agents/MEMORY_FORMAT.md` | Standard format for memory files (append-only) |
