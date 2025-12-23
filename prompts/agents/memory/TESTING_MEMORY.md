@@ -11,10 +11,11 @@
 1. ✅ ~~Document Haiku model limitations for schema-constrained AI outputs~~
 2. ✅ ~~Add more robust JSON repair for truncated AI outputs~~
 3. ✅ ~~Fix code generation truncation (increase maxTokens to 32K for Sonnet)~~
-4. Maintain and expand E2E test coverage for website
+4. ✅ ~~Maintain and expand E2E test coverage for website~~
 5. ✅ ~~Set up CI/CD for automated test runs~~
 6. Add integration tests for JSON repair functions
 7. ✅ ~~Re-run live API tests after code generation fix~~ - **ALL PASSING**
+8. ✅ ~~Create production smoke tests~~
 
 ---
 
@@ -25,6 +26,71 @@
 ---
 
 ## Session History
+
+### Session: 2025-12-23 05:30 (P1 Production Smoke Tests - COMPLETE ✅)
+
+**Work Completed**
+- ✅ Created production smoke test suite (`website/tests/smoke/production.spec.ts`)
+- ✅ Verified health endpoint exists and works (`/api/health`)
+- ✅ Created GitHub Actions workflow for smoke tests (`.github/workflows/smoke-tests.yml`)
+- ✅ Added npm scripts for running smoke tests
+- ✅ All 8 smoke tests pass in 19.5 seconds (under 30s target)
+- ✅ All 668 project tests still passing
+
+**Smoke Test Coverage**
+
+| Test | Description | Status |
+|------|-------------|--------|
+| Health endpoint | Verifies `/api/health` returns healthy status | ✅ |
+| Homepage loads | Checks h1 visible, no JS errors | ✅ |
+| Configure page | Verifies no React errors, interactive content | ✅ |
+| API responds | Tests API endpoint returns JSON | ✅ |
+| Static assets | Verifies CSS and Next.js bundles load | ✅ |
+| Navigation | Tests internal link navigation | ✅ |
+| Response times | API responses under 3 seconds | ✅ |
+| No 500 errors | Scans main pages for server errors | ✅ |
+
+**Files Created**
+- `website/tests/smoke/production.spec.ts` - 8 smoke tests
+- `.github/workflows/smoke-tests.yml` - CI workflow with failure notifications
+
+**Files Modified**
+- `website/playwright.config.ts` - Added smoke test configuration
+- `website/package.json` - Added `test:smoke` and `test:smoke:prod` scripts
+
+**CI/CD Features**
+- Manual trigger with custom URL input
+- Scheduled nightly runs at 6 AM UTC
+- Runs after successful Vercel deployments
+- Automatic issue creation on failure
+- Health check summary in workflow
+
+**Usage**
+```bash
+# Run against localhost
+npm run test:smoke
+
+# Run against production
+SMOKE_TEST_URL=https://your-site.vercel.app npm run test:smoke:prod
+```
+
+**Blockers Encountered**
+- None
+
+**Next Priorities**
+1. Monitor smoke tests in production
+2. Add more smoke tests as new features are deployed
+3. Consider adding visual regression to smoke tests
+
+**Handoff Notes**
+- **Production smoke tests are ready!**
+- 8 tests covering all critical paths
+- Runs in under 20 seconds
+- GitHub workflow triggers on deployment, nightly, or manual
+- Health endpoint already existed and works correctly
+- All 668 tests passing
+
+---
 
 ### Session: 2025-12-23 05:00 (P1 Live API Validation - COMPLETE ✅)
 

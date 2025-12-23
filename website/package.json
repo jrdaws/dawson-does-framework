@@ -10,6 +10,8 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
+    "test:smoke": "SMOKE_TEST=true playwright test tests/smoke/ --project=chromium",
+    "test:smoke:prod": "SMOKE_TEST=true SMOKE_TEST_URL=$SMOKE_TEST_URL playwright test tests/smoke/ --project=chromium",
     "collab-server": "node collaboration-server.js"
   },
   "dependencies": {

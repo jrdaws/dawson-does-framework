@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 849c3f4 2025-12-22 docs(deploy): add Vercel deployment guide and production optimizations
 - 247c696 2025-12-22 docs(templates): complete P2 template health check
 - 88b4cad 2025-12-22 docs(agents): verify quick start guide task completion
 - c48b2d7 2025-12-22 docs(platform): update memory with cost optimization session
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 68e325d 2025-12-22 feat(ai-agent): implement model tier selection with Haiku default
 - 15e93b0 2025-12-22 docs(governance): add mandatory Agent Identity Rule to all responses
 - 98a56d3 2025-12-22 perf(ai-agent): comprehensive prompt optimization rewrite
-- 5a1c4ce 2025-12-22 feat(ai-agent): add JSON repair utility and model tier selection
 
 ## Agent Governance Structure
 
