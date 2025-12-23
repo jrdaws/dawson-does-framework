@@ -6,6 +6,11 @@ export interface ContextInput {
     projectName?: string;
     description?: string;
 }
+/** Options for context building */
+export interface ContextOptions {
+    apiKey?: string;
+    model?: string;
+}
 /**
  * Build Cursor context files (.cursorrules and START_PROMPT.md)
  *
@@ -13,8 +18,8 @@ export interface ContextInput {
  * This reduces API calls from 2 to 1 (~$0.02 savings per generation)
  *
  * @param input - Project context (intent, architecture, code)
- * @param apiKey - Optional Anthropic API key
+ * @param options - Optional API key and model configuration
  * @returns Cursor context files
  */
-export declare function buildCursorContext(input: ContextInput, apiKey?: string): Promise<CursorContext>;
+export declare function buildCursorContext(input: ContextInput, options?: string | ContextOptions): Promise<CursorContext>;
 //# sourceMappingURL=context-builder.d.ts.map

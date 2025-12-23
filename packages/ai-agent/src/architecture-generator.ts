@@ -7,18 +7,25 @@ import { TemplateSelector } from "./template-selector.js";
 import { repairAndParseJSON } from "./utils/json-repair.js";
 import type { ProjectIntent, ProjectArchitecture } from "./types.js";
 
+/** Options for architecture generation */
+export interface ArchitectureOptions {
+  apiKey?: string;
+  model?: string;
+}
+
 /**
  * Generate project architecture from analyzed intent
  *
  * @param intent - Analyzed project intent
- * @param apiKey - Optional Anthropic API key
+ * @param options - Optional API key and model configuration
  * @returns Project architecture with pages, components, and routes
  */
 export async function generateArchitecture(
   intent: ProjectIntent,
-  apiKey?: string
+  options?: string | ArchitectureOptions
 ): Promise<ProjectArchitecture> {
-  const client = new LLMClient(apiKey);
+  const opts: ArchitectureOptions = typeof options === "string" ? { apiKey: options } : options || {};
+  const client = new LLMClient(opts.apiKey);
   const prompts = new PromptLoader();
   const selector = new TemplateSelector();
 
@@ -38,11 +45,11 @@ export async function generateArchitecture(
         supportedIntegrations: JSON.stringify(template.supportedIntegrations, null, 2),
       });
 
-      // Call Claude Sonnet for reliable architecture design
-      // Haiku failed to follow schema constraints reliably (validation errors)
+      // Use configured model (default to Haiku for cost efficiency)
+      const model = opts.model || "claude-3-haiku-20240307";
       const response = await client.complete(
         {
-          model: "claude-sonnet-4-20250514",
+          model,
           temperature: 0, // Deterministic
           maxTokens: 4096,
           messages: [

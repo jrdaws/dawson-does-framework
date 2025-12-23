@@ -8,20 +8,27 @@ import { CodeSchema } from "./validators/code-schema.js";
 import { repairAndParseJSON } from "./utils/json-repair.js";
 import type { ProjectArchitecture, GeneratedCode, ProjectInput } from "./types.js";
 
+/** Options for code generation */
+export interface CodeOptions {
+  apiKey?: string;
+  model?: string;
+}
+
 /**
  * Generate code files from project architecture
  *
  * @param architecture - Project architecture definition
  * @param input - Original project input (for context)
- * @param apiKey - Optional Anthropic API key
+ * @param options - Optional API key and model configuration
  * @returns Generated code files
  */
 export async function generateCode(
   architecture: ProjectArchitecture,
   input?: ProjectInput,
-  apiKey?: string
+  options?: string | CodeOptions
 ): Promise<GeneratedCode> {
-  const client = new LLMClient(apiKey);
+  const opts: CodeOptions = typeof options === "string" ? { apiKey: options } : options || {};
+  const client = new LLMClient(opts.apiKey);
   const prompts = new PromptLoader();
 
   return withRetry(async () => {
@@ -36,12 +43,12 @@ export async function generateCode(
         templateReference,
       });
 
-      // Call Claude Sonnet for complex code generation (requires reasoning)
+      // Use configured model (default to Sonnet for code quality)
       // Token limit set to 12000 for complete multi-file output
-      // Tested: 4096, 6144, 8192 all truncated for TodoApp-sized projects
+      const model = opts.model || "claude-sonnet-4-20250514";
       const response = await client.complete(
         {
-          model: "claude-sonnet-4-20250514",
+          model,
           temperature: 0, // Deterministic
           maxTokens: 12000,
           messages: [

@@ -11,11 +11,12 @@ import { repairAndParseJSON } from "./utils/json-repair.js";
  *
  * @param architecture - Project architecture definition
  * @param input - Original project input (for context)
- * @param apiKey - Optional Anthropic API key
+ * @param options - Optional API key and model configuration
  * @returns Generated code files
  */
-export async function generateCode(architecture, input, apiKey) {
-    const client = new LLMClient(apiKey);
+export async function generateCode(architecture, input, options) {
+    const opts = typeof options === "string" ? { apiKey: options } : options || {};
+    const client = new LLMClient(opts.apiKey);
     const prompts = new PromptLoader();
     return withRetry(async () => {
         try {
@@ -27,11 +28,11 @@ export async function generateCode(architecture, input, apiKey) {
                 projectName: input?.projectName || "MyApp",
                 templateReference,
             });
-            // Call Claude Sonnet for complex code generation (requires reasoning)
+            // Use configured model (default to Sonnet for code quality)
             // Token limit set to 12000 for complete multi-file output
-            // Tested: 4096, 6144, 8192 all truncated for TodoApp-sized projects
+            const model = opts.model || "claude-sonnet-4-20250514";
             const response = await client.complete({
-                model: "claude-sonnet-4-20250514",
+                model,
                 temperature: 0, // Deterministic
                 maxTokens: 12000,
                 messages: [

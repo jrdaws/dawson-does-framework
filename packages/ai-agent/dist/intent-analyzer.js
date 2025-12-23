@@ -8,11 +8,12 @@ import { repairAndParseJSON } from "./utils/json-repair.js";
  * Analyze user's project description and extract structured intent
  *
  * @param input - Project input with description and optional metadata
- * @param apiKey - Optional Anthropic API key (uses env var if not provided)
+ * @param options - Optional API key and model configuration
  * @returns Structured project intent with template suggestion and integrations
  */
-export async function analyzeIntent(input, apiKey) {
-    const client = new LLMClient(apiKey);
+export async function analyzeIntent(input, options) {
+    const opts = typeof options === "string" ? { apiKey: options } : options || {};
+    const client = new LLMClient(opts.apiKey);
     const prompts = new PromptLoader();
     return withRetry(async () => {
         try {
@@ -20,11 +21,10 @@ export async function analyzeIntent(input, apiKey) {
             const systemPrompt = await prompts.load("intent-analysis", {
                 description: input.description,
             });
-            // Call Claude Sonnet for reliable intent analysis
-            // Haiku failed to reliably follow enum constraints - validation errors frequent
-            // Intent is the foundation; reliability outweighs cost savings here
+            // Use configured model (default to Haiku for cost efficiency)
+            const model = opts.model || "claude-3-haiku-20240307";
             const response = await client.complete({
-                model: "claude-sonnet-4-20250514",
+                model,
                 temperature: 0, // Deterministic
                 maxTokens: 2048,
                 messages: [

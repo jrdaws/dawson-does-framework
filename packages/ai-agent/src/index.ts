@@ -50,23 +50,26 @@ export interface GenerateProjectResult {
 
 /**
  * Model configuration for each tier
+ * 
+ * Haiku: $0.25/1M input, $1.25/1M output (fast, cheap, less reliable for schemas)
+ * Sonnet: $3.00/1M input, $15.00/1M output (slower, expensive, reliable)
  */
 export const MODEL_TIERS: Record<ModelTier, { intent: string; architecture: string; code: string; context: string }> = {
-  // Fast: Haiku everywhere except code (not recommended - Haiku unreliable for schemas)
+  // Fast: Haiku everywhere (cheapest, uses JSON repair for reliability)
   fast: {
     intent: "claude-3-haiku-20240307",
     architecture: "claude-3-haiku-20240307",
-    code: "claude-sonnet-4-20250514", // Code always needs Sonnet
+    code: "claude-3-haiku-20240307",
     context: "claude-3-haiku-20240307",
   },
-  // Balanced: Haiku for intent, Sonnet for everything else
+  // Balanced: Haiku for simple tasks, Sonnet for complex (default)
   balanced: {
     intent: "claude-3-haiku-20240307",
-    architecture: "claude-sonnet-4-20250514",
-    code: "claude-sonnet-4-20250514",
-    context: "claude-sonnet-4-20250514",
+    architecture: "claude-3-haiku-20240307",
+    code: "claude-sonnet-4-20250514", // Code generation needs Sonnet for quality
+    context: "claude-3-haiku-20240307",
   },
-  // Quality: Sonnet everywhere (recommended - reliable output)
+  // Quality: Sonnet everywhere (most reliable, highest cost)
   quality: {
     intent: "claude-sonnet-4-20250514",
     architecture: "claude-sonnet-4-20250514",
@@ -74,6 +77,9 @@ export const MODEL_TIERS: Record<ModelTier, { intent: string; architecture: stri
     context: "claude-sonnet-4-20250514",
   },
 };
+
+/** Default model tier - balanced for cost/quality tradeoff */
+export const DEFAULT_MODEL_TIER: ModelTier = "balanced";
 
 /**
  * Generate a complete project from a description
@@ -108,11 +114,17 @@ export interface GenerateProjectOptions {
   logTokenUsage?: boolean;
   /**
    * Model tier selection:
-   * - 'fast': Use Haiku where possible (~$0.05/gen, less reliable)
-   * - 'balanced': Mix of Haiku and Sonnet (~$0.10/gen)
-   * - 'quality': Sonnet everywhere (~$0.18/gen, most reliable) [DEFAULT]
+   * - 'fast': Haiku everywhere (~$0.02/gen, less reliable)
+   * - 'balanced': Haiku + Sonnet for code (~$0.08/gen) [DEFAULT]
+   * - 'quality': Sonnet everywhere (~$0.18/gen, most reliable)
    */
   modelTier?: ModelTier;
+}
+
+/** Options passed to individual generators */
+export interface GeneratorOptions {
+  apiKey?: string;
+  model?: string;
 }
 
 export async function generateProject(
@@ -125,18 +137,20 @@ export async function generateProject(
     : { logTokenUsage: true, ...apiKeyOrOptions };
 
   const { apiKey, logTokenUsage } = options;
+  const tier = options.modelTier || DEFAULT_MODEL_TIER;
+  const models = MODEL_TIERS[tier];
 
   // Reset token tracker for new generation
   resetGlobalTracker();
 
   // Step 1: Analyze intent
-  const intent = await analyzeIntent(input, apiKey);
+  const intent = await analyzeIntent(input, { apiKey, model: models.intent });
 
   // Step 2: Generate architecture
-  const architecture = await generateArchitecture(intent, apiKey);
+  const architecture = await generateArchitecture(intent, { apiKey, model: models.architecture });
 
   // Step 3: Generate code
-  const code = await generateCode(architecture, input, apiKey);
+  const code = await generateCode(architecture, input, { apiKey, model: models.code });
 
   // Step 4: Build Cursor context
   const context = await buildCursorContext(
@@ -147,7 +161,7 @@ export async function generateProject(
       projectName: input.projectName,
       description: input.description,
     },
-    apiKey
+    { apiKey, model: models.context }
   );
 
   // Log token usage summary

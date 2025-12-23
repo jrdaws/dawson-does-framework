@@ -12,11 +12,12 @@ const STARTPROMPT_DELIMITER = "---STARTPROMPT---";
  * This reduces API calls from 2 to 1 (~$0.02 savings per generation)
  *
  * @param input - Project context (intent, architecture, code)
- * @param apiKey - Optional Anthropic API key
+ * @param options - Optional API key and model configuration
  * @returns Cursor context files
  */
-export async function buildCursorContext(input, apiKey) {
-    const client = new LLMClient(apiKey);
+export async function buildCursorContext(input, options) {
+    const opts = typeof options === "string" ? { apiKey: options } : options || {};
+    const client = new LLMClient(opts.apiKey);
     const prompts = new PromptLoader();
     // Build architecture summary
     const architectureSummary = buildArchitectureSummary(input.architecture);
@@ -57,9 +58,10 @@ ${STARTPROMPT_DELIMITER}
 [START_PROMPT.md content here]
 
 Do NOT include any other text before ${CURSORRULES_DELIMITER} or after the START_PROMPT.md content.`;
-            // Single consolidated API call (saves ~$0.02 per generation)
+            // Use configured model (default to Haiku for cost efficiency)
+            const model = opts.model || "claude-3-haiku-20240307";
             const response = await client.complete({
-                model: "claude-sonnet-4-20250514",
+                model,
                 temperature: 0.3, // Slightly creative for documentation
                 maxTokens: 8192, // Combined limit for both files
                 messages: [

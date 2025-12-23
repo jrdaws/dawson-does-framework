@@ -12,6 +12,12 @@ export interface ContextInput {
   description?: string;
 }
 
+/** Options for context building */
+export interface ContextOptions {
+  apiKey?: string;
+  model?: string;
+}
+
 // Delimiters for parsing combined response
 const CURSORRULES_DELIMITER = "---CURSORRULES---";
 const STARTPROMPT_DELIMITER = "---STARTPROMPT---";
@@ -23,14 +29,15 @@ const STARTPROMPT_DELIMITER = "---STARTPROMPT---";
  * This reduces API calls from 2 to 1 (~$0.02 savings per generation)
  *
  * @param input - Project context (intent, architecture, code)
- * @param apiKey - Optional Anthropic API key
+ * @param options - Optional API key and model configuration
  * @returns Cursor context files
  */
 export async function buildCursorContext(
   input: ContextInput,
-  apiKey?: string
+  options?: string | ContextOptions
 ): Promise<CursorContext> {
-  const client = new LLMClient(apiKey);
+  const opts: ContextOptions = typeof options === "string" ? { apiKey: options } : options || {};
+  const client = new LLMClient(opts.apiKey);
   const prompts = new PromptLoader();
 
   // Build architecture summary
@@ -78,10 +85,11 @@ ${STARTPROMPT_DELIMITER}
 
 Do NOT include any other text before ${CURSORRULES_DELIMITER} or after the START_PROMPT.md content.`;
 
-      // Single consolidated API call (saves ~$0.02 per generation)
+      // Use configured model (default to Haiku for cost efficiency)
+      const model = opts.model || "claude-3-haiku-20240307";
       const response = await client.complete(
         {
-          model: "claude-sonnet-4-20250514",
+          model,
           temperature: 0.3, // Slightly creative for documentation
           maxTokens: 8192, // Combined limit for both files
           messages: [

@@ -18,6 +18,9 @@ export interface GenerateProjectResult {
 }
 /**
  * Model configuration for each tier
+ *
+ * Haiku: $0.25/1M input, $1.25/1M output (fast, cheap, less reliable for schemas)
+ * Sonnet: $3.00/1M input, $15.00/1M output (slower, expensive, reliable)
  */
 export declare const MODEL_TIERS: Record<ModelTier, {
     intent: string;
@@ -25,6 +28,8 @@ export declare const MODEL_TIERS: Record<ModelTier, {
     code: string;
     context: string;
 }>;
+/** Default model tier - balanced for cost/quality tradeoff */
+export declare const DEFAULT_MODEL_TIER: ModelTier;
 /**
  * Generate a complete project from a description
  *
@@ -58,11 +63,16 @@ export interface GenerateProjectOptions {
     logTokenUsage?: boolean;
     /**
      * Model tier selection:
-     * - 'fast': Use Haiku where possible (~$0.05/gen, less reliable)
-     * - 'balanced': Mix of Haiku and Sonnet (~$0.10/gen)
-     * - 'quality': Sonnet everywhere (~$0.18/gen, most reliable) [DEFAULT]
+     * - 'fast': Haiku everywhere (~$0.02/gen, less reliable)
+     * - 'balanced': Haiku + Sonnet for code (~$0.08/gen) [DEFAULT]
+     * - 'quality': Sonnet everywhere (~$0.18/gen, most reliable)
      */
     modelTier?: ModelTier;
+}
+/** Options passed to individual generators */
+export interface GeneratorOptions {
+    apiKey?: string;
+    model?: string;
 }
 export declare function generateProject(input: ProjectInput, apiKeyOrOptions?: string | GenerateProjectOptions): Promise<GenerateProjectResult>;
 //# sourceMappingURL=index.d.ts.map
