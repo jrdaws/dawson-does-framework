@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 88fc4b7 2025-12-22 test(governance): verify validation workflow
 - baea471 2025-12-22 fix(ai-agent): fix code generation truncation, increase maxTokens to 32K
 - 34b1cec 2025-12-22 feat(website): enhance streaming UI with retry logic and time estimates
 - c505fb3 2025-12-22 fix(ai-agent): fix live API validation - all tests passing
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 091d4ce 2025-12-22 perf(ai-agent): optimize whitespace in prompt files
 - 412a6fe 2025-12-22 docs(agents): update Platform Agent memory with session 5
 - 7a51531 2025-12-22 perf(ai-agent): compress JSON schema declarations in prompts
-- 2e9c3a8 2025-12-22 chore(ai-agent): sync dist files and additional prompt optimizations
 
 ## Agent Governance Structure
 
