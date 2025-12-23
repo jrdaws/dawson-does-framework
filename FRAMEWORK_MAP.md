@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 32bd821 2025-12-22 docs(agents): update Platform Agent memory with cost optimization session
 - 4c3cf19 2025-12-22 feat(ai-agent): optimize Anthropic API token usage
 - 8a0a34f 2025-12-22 chore(test): remove test validation file
 - a397272 2025-12-22 test(governance): verify and enhance validation workflow
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 3a4615a 2025-12-22 feat(integrations): add Clerk auth integration for saas template
 - 5063e8f 2025-12-22 docs(agents): update DOCS_MEMORY with handoff note
 - d0c5b93 2025-12-22 feat(templates): complete flagship-saas template with advanced features
-- f1feb26 2025-12-22 feat(templates): add subscription management to saas Stripe integration
 
 ## Agent Governance Structure
 

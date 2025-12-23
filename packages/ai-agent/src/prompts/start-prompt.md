@@ -1,23 +1,9 @@
-You are generating a START_PROMPT.md file for Cursor AI.
+Generate START_PROMPT.md for Cursor AI (welcoming, actionable).
+PROJECT: {projectName} | DESCRIPTION: {description} | TEMPLATE: {template}
+ARCHITECTURE: {architectureSummary}
+FEATURES: {features} | INTEGRATIONS: {integrations}
 
-TASK: Create a welcoming and actionable starting prompt for developers.
-
-PROJECT CONTEXT:
-- Project Name: {projectName}
-- Description: {description}
-- Template: {template}
-
-ARCHITECTURE:
-{architectureSummary}
-
-FEATURES:
-{features}
-
-INTEGRATIONS:
-{integrations}
-
-OUTPUT FORMAT:
-Return markdown content for START_PROMPT.md (no JSON, no code blocks around the entire output):
+OUTPUT: Markdown for START_PROMPT.md (no JSON wrapper):
 
 ---
 
@@ -60,23 +46,11 @@ Add the following required environment variables to `.env.local`:
 {env vars list based on integrations}
 ```
 
-### 2. Install Dependencies
-
+### 2. Install & Run
 ```bash
-npm install
-# or
-pnpm install
-# or
-yarn install
+npm install && npm run dev
 ```
-
-### 3. Run Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to see your application.
+Open [http://localhost:3000](http://localhost:3000)
 
 ## Implementation Guide
 
@@ -119,55 +93,21 @@ The generated scaffold includes TODO comments throughout the code. Here are the 
 ```
 
 ### Integration Documentation
+{Integration 1}: Setup→[link] | API→[link] | Example→`app/api/...`
+{Integration 2}: Setup→[link] | API→[link] | Example→`...`
 
-**{Integration 1}:**
-- Setup guide: [link]
-- API reference: [link]
-- Example implementation: See `app/api/...` or `lib/...`
+## Workflow
+1. Data models → 2. API routes → 3. UI components → 4. Integrations → 5. Testing → 6. Deploy (`framework deploy` or Vercel)
 
-**{Integration 2}:**
-- Setup guide: [link]
-- API reference: [link]
-- Example implementation: See `...`
-
-## Development Workflow
-
-1. **Start with data**: Define your data models and database schema
-2. **Build API layer**: Implement API routes for data operations
-3. **Create UI components**: Build out the user interface
-4. **Add integrations**: Configure auth, payments, etc.
-5. **Test thoroughly**: Write tests for critical flows
-6. **Deploy**: Use `framework deploy` or deploy manually to Vercel
-
-## Helpful Commands
-
-```bash
-# Development
-npm run dev              # Start dev server
-npm run build           # Build for production
-npm run start           # Start production server
-
-# Code Quality
-npm run lint            # Lint code
-npm run type-check      # TypeScript type checking
-
-# Testing
-npm test                # Run tests
-```
+## Commands
+`npm run dev` (start) | `npm run build` (production) | `npm run lint` (code quality) | `npm test` (testing)
 
 ## Resources
-
-- **Dawson Framework Docs**: [https://docs.dawson.dev](https://docs.dawson.dev)
-- **Next.js 15 Docs**: [https://nextjs.org/docs](https://nextjs.org/docs)
-- **Template Guide**: See `templates/{template}/README.md`
-- **Integration Guides**: Check `integrations/[integration]/README.md`
+- [Dawson Framework Docs](https://docs.dawson.dev) | [Next.js 15](https://nextjs.org/docs)
+- Template: `templates/{template}/README.md` | Integrations: `integrations/[integration]/README.md`
 
 ## Need Help?
-
-- Check `.cursorrules` for project-specific guidelines
-- Review generated TODO comments in code
-- Refer to template examples for patterns
-- Consult integration documentation for setup
+Check `.cursorrules`, review TODO comments, template examples, integration docs
 
 ## Continue Development
 

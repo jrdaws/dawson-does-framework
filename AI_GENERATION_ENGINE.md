@@ -409,14 +409,27 @@ Validates:
 - **Code Generation:** 8,192 tokens
 - **Cursor Context:** 4,096 tokens
 
-### Cost Estimates (Approximate)
-- **Intent:** ~$0.01 per generation
-- **Architecture:** ~$0.02 per generation
-- **Code:** ~$0.05 per generation
-- **Context:** ~$0.02 per generation
-- **Total:** ~$0.10 per complete project
+### Prompt Token Usage (After Optimization)
 
-*Actual costs depend on project complexity and description length.*
+*Prompts optimized on 2025-12-22 with 32% token reduction.*
+
+| Prompt File | Before | After | Reduction |
+|-------------|--------|-------|-----------|
+| intent-analysis.md | ~663 tokens | ~449 tokens | -32% |
+| architecture-design.md | ~681 tokens | ~493 tokens | -28% |
+| code-generation.md | ~959 tokens | ~453 tokens | -53% |
+| cursor-rules.md | ~839 tokens | ~640 tokens | -24% |
+| start-prompt.md | ~1,100 tokens | ~847 tokens | -23% |
+| **Total Prompts** | **~4,242 tokens** | **~2,884 tokens** | **-32%** |
+
+### Cost Estimates (Approximate)
+- **Intent:** ~$0.008 per generation
+- **Architecture:** ~$0.015 per generation
+- **Code:** ~$0.04 per generation
+- **Context:** ~$0.015 per generation
+- **Total:** ~$0.08 per complete project
+
+*32% reduction from prompt optimization. Actual costs depend on project complexity and description length.*
 
 ## Prompts
 

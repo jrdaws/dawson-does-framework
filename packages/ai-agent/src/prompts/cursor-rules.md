@@ -1,20 +1,9 @@
-You are generating a .cursorrules file for Cursor AI continuation.
+Generate .cursorrules file for Cursor AI continuation.
+PROJECT: {projectName} | TEMPLATE: {template} | DESCRIPTION: {description}
+ARCHITECTURE: {architectureSummary}
+INTEGRATIONS: {integrations}
 
-TASK: Create a comprehensive .cursorrules file that guides future development.
-
-PROJECT CONTEXT:
-- Project Name: {projectName}
-- Template: {template}
-- Description: {description}
-
-ARCHITECTURE SUMMARY:
-{architectureSummary}
-
-INTEGRATIONS:
-{integrations}
-
-OUTPUT FORMAT:
-Return plain text content for the .cursorrules file (no JSON, no markdown code blocks):
+OUTPUT: Plain text for .cursorrules (no JSON, no markdown code blocks):
 
 ---
 
@@ -50,38 +39,20 @@ Return plain text content for the .cursorrules file (no JSON, no markdown code b
 ## Code Style Guidelines
 
 ### TypeScript
-- Strict mode enabled
-- Define interfaces for all props and complex types
-- Use type inference where obvious
-- Avoid `any` type - use `unknown` if type is truly unknown
+Strict mode, interfaces for props/types, type inference where obvious, avoid `any` (use `unknown`)
 
 ### React Components
-- Server components by default
-- Use "use client" only when necessary:
-  - Interactive elements (onClick, form handling)
-  - React hooks (useState, useEffect, etc.)
-  - Browser APIs
-- Async data fetching in server components
-- Keep components focused and single-purpose
+Server components by default, "use client" only for: onClick, form handling, hooks (useState, useEffect), browser APIs
+Async data fetching in server components, keep components focused
 
 ### File Organization
-- Pages: `app/[route]/page.tsx`
-- Components: `components/[name].tsx`
-- API Routes: `app/api/[route]/route.ts`
-- Types: `types/[name].ts`
-- Utils: `lib/[name].ts`
+Pages→`app/[route]/page.tsx` | Components→`components/[name].tsx` | API→`app/api/[route]/route.ts` | Types→`types/[name].ts` | Utils→`lib/[name].ts`
 
 ### Styling
-- Use Tailwind CSS utility classes
-- Follow mobile-first responsive design
-- Keep styles co-located with components
-- Use template's design system as reference
+Tailwind CSS utilities, mobile-first, styles co-located, use template's design system
 
 ### Data Fetching
-- Server components: Direct async/await
-- Client components: Use React hooks or SWR/TanStack Query
-- Error handling: Try/catch with user-friendly messages
-- Loading states: Suspense boundaries where appropriate
+Server: async/await | Client: hooks/SWR/TanStack | Error handling: try/catch | Loading: Suspense boundaries
 
 ## Integration Patterns
 
@@ -89,31 +60,20 @@ Return plain text content for the .cursorrules file (no JSON, no markdown code b
 
 ## Common Tasks
 
-### Adding a New Page
-1. Create `app/[route]/page.tsx`
-2. Define the page component (server component by default)
-3. Add any route-specific layouts if needed
-4. Update navigation if public page
+### Adding Page
+Create `app/[route]/page.tsx` → server component → add layouts if needed → update nav
 
-### Adding a New Component
-1. Create `components/ComponentName.tsx`
-2. Define props interface
-3. Implement component logic
-4. Export and use in pages
+### Adding Component
+Create `components/Name.tsx` → define props → implement → export
 
-### Adding an API Route
-1. Create `app/api/[route]/route.ts`
-2. Export handler functions (GET, POST, etc.)
-3. Add error handling and validation
-4. Return JSON responses with NextResponse
+### Adding API Route
+Create `app/api/[route]/route.ts` → export handlers (GET, POST) → add validation/error handling → NextResponse.json
 
 ### Adding Integration Features
 {template-specific integration instructions}
 
 ## Testing
-- Test files: `*.test.ts` or `*.test.tsx`
-- Run tests: `npm test`
-- Focus on critical business logic and user flows
+Files: `*.test.ts(x)` | Run: `npm test` | Focus: critical logic and user flows
 
 ## Environment Variables
 Required variables in `.env.local`:
@@ -126,9 +86,4 @@ Required variables in `.env.local`:
 ---
 
 GUIDELINES FOR CURSOR AI:
-- Follow the code style guidelines above
-- Maintain consistency with existing code
-- Ask for clarification if requirements are ambiguous
-- Prioritize type safety and error handling
-- Keep components simple and focused
-- Test critical functionality
+Follow code style above, maintain consistency, ask for clarification if ambiguous, prioritize type safety/error handling, keep components simple, test critical functionality

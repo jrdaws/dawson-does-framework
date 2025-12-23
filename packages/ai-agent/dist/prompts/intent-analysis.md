@@ -21,12 +21,12 @@ Return ONLY valid JSON without markdown formatting or code blocks:
   "suggestedTemplate": "template-id",
   "features": ["feature1", "feature2", "feature3"],
   "integrations": {
-    "auth": "supabase|clerk|null",
-    "payments": "stripe|paddle|null",
-    "email": "resend|sendgrid|null",
-    "db": "supabase|planetscale|null",
-    "ai": "openai|anthropic|null",
-    "analytics": "posthog|plausible|null"
+    "auth": "supabase" | "clerk" | null,
+    "payments": "stripe" | "paddle" | null,
+    "email": "resend" | "sendgrid" | null,
+    "db": "supabase" | "planetscale" | null,
+    "ai": "openai" | "anthropic" | null,
+    "analytics": "posthog" | "plausible" | null
   },
   "complexity": "simple|moderate|complex",
   "keyEntities": ["Entity1", "Entity2"]
