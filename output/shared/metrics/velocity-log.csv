@@ -2,4 +2,6 @@ date,cycle_id,tasks_created,tasks_completed,avg_quality_score,cycle_duration_min
 2025-12-23,20251223-0300,0,0,0,0,Initial setup - no previous cycle
 2025-12-23,20251223-0600,5,7,8.4,20,Cycle 2 - Direct curator cycle based on completion reports
 2025-12-23,20251223-0630,3,0,7.9,15,Cycle 3 - Curated Strategist drafts (6 reviewed 3 approved 1 merged 1 rejected)
+2025-12-23,20251223-1900,8,2,8.1,25,Cycle 5 - Full PDCA cycle (Auditor+Curator). 8 tasks distributed across 5 agents.
+2025-12-23,20251223-2330,0,0,8.0,15,Cycle 6 - Cleanup/consolidation. Archived 12 duplicate tasks. 9 active tasks remain.
 

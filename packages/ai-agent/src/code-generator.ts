@@ -37,12 +37,16 @@ export async function generateCode(
     try {
       // Load template reference file to show AI the style
       const templateReference = await loadTemplateReference(architecture.template);
+      
+      // Load design quality reference
+      const designReference = await loadDesignReference();
 
       // Prepare prompt variables
       const systemPrompt = await prompts.load("code-generation", {
         architecture: JSON.stringify(architecture, null, 2),
         projectName: input?.projectName || "MyApp",
         templateReference,
+        designReference,
       });
 
       // Use configured model (default to Sonnet for code quality)
@@ -105,5 +109,22 @@ async function loadTemplateReference(templateId: string): Promise<string> {
   } catch (error) {
     console.warn(`[CodeGenerator] Could not load template reference: ${(error as Error).message}`);
     return "// Template reference not available";
+  }
+}
+
+/**
+ * Load design quality reference standards
+ */
+async function loadDesignReference(): Promise<string> {
+  try {
+    // Try to load from prompts directory first
+    const promptsDir = join(process.cwd(), "packages", "ai-agent", "src", "prompts");
+    const designPath = join(promptsDir, "design-quality.md");
+    const content = await readFile(designPath, "utf-8");
+    return content;
+  } catch {
+    // Fallback to inline reference
+    return `DESIGN: Modern SaaS aesthetic (Linear/Vercel inspired), shadcn/ui patterns, 
+consistent Tailwind spacing, dark mode ready, WCAG AA contrast, NO generic AI slop`;
   }
 }

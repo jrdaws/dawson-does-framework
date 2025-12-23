@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 1ad8d63 2025-12-23 feat(integration): complete UploadThing storage integration task
 - 3b80fa3 2025-12-23 docs(automation): add automation setup guide
 - ca5daf9 2025-12-23 feat(automation): add comprehensive automation playbook and scripts
 - 2b24f8d 2025-12-23 chore(curator): complete cycle 3 - curate Strategist drafts
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - fc1b156 2025-12-22 feat(templates): add .env.example to all templates, fix saas type error
 - 88fc4b7 2025-12-22 test(governance): verify validation workflow
 - baea471 2025-12-22 fix(ai-agent): fix code generation truncation, increase maxTokens to 32K
-- 34b1cec 2025-12-22 feat(website): enhance streaming UI with retry logic and time estimates
 
 ## Agent Governance Structure
 

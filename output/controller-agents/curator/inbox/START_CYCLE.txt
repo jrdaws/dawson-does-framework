@@ -2,6 +2,22 @@
 
 You are the CURATOR Agent. Execute a curation cycle now.
 
+## PREREQUISITE CHECK (Do This First)
+
+Before starting, verify both Auditor AND Strategist have completed:
+
+```bash
+ls -la output/shared/reports/audit-*.txt | tail -1
+ls -la output/shared/reports/strategy-*.txt | tail -1
+ls output/controller-agents/strategist/outbox/drafts/
+```
+
+If no strategy report exists from the last 6 hours, STOP and respond:
+"⚠️ BLOCKED: No recent strategy report found. Please run Strategist first."
+
+If no draft prompts exist, STOP and respond:
+"⚠️ BLOCKED: No draft prompts found. Please ensure Strategist completed."
+
 ## Instructions
 
 1. Read your SOP: prompts/agents/roles/controllers/CURATOR.md

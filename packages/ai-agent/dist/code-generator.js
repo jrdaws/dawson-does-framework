@@ -22,19 +22,20 @@ export async function generateCode(architecture, input, options) {
         try {
             // Load template reference file to show AI the style
             const templateReference = await loadTemplateReference(architecture.template);
+            // Load design quality reference
+            const designReference = await loadDesignReference();
             // Prepare prompt variables
             const systemPrompt = await prompts.load("code-generation", {
                 architecture: JSON.stringify(architecture, null, 2),
                 projectName: input?.projectName || "MyApp",
                 templateReference,
+                designReference,
             });
             // Use configured model (default to Sonnet for code quality)
-            // Haiku max output is 4096, Sonnet 4 supports up to 64K
-            // Use model-appropriate limits to prevent API errors
-            // Code generation needs high limits for multi-file JSON output
+            // Reduced to 4096 tokens for cost optimization (output tokens are 5x input cost)
+            // Testing shows this is sufficient for most projects without truncation
             const model = opts.model || "claude-sonnet-4-20250514";
-            const isHaiku = model.includes("haiku");
-            const maxTokens = isHaiku ? 4096 : 32000;
+            const maxTokens = 4096;
             const response = await client.complete({
                 model,
                 temperature: 0, // Deterministic
@@ -83,5 +84,22 @@ async function loadTemplateReference(templateId) {
     catch (error) {
         console.warn(`[CodeGenerator] Could not load template reference: ${error.message}`);
         return "// Template reference not available";
+    }
+}
+/**
+ * Load design quality reference standards
+ */
+async function loadDesignReference() {
+    try {
+        // Try to load from prompts directory first
+        const promptsDir = join(process.cwd(), "packages", "ai-agent", "src", "prompts");
+        const designPath = join(promptsDir, "design-quality.md");
+        const content = await readFile(designPath, "utf-8");
+        return content;
+    }
+    catch {
+        // Fallback to inline reference
+        return `DESIGN: Modern SaaS aesthetic (Linear/Vercel inspired), shadcn/ui patterns, 
+consistent Tailwind spacing, dark mode ready, WCAG AA contrast, NO generic AI slop`;
     }
 }

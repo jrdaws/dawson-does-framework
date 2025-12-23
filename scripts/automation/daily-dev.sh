@@ -53,7 +53,8 @@ log "Step 4: Preparing context..."
 
 # Get active task if any
 ACTIVE_TASK=""
-INBOX_DIR="output/${ROLE,,}-agent/inbox"
+ROLE_LOWER=$(echo "$ROLE" | tr '[:upper:]' '[:lower:]')
+INBOX_DIR="output/${ROLE_LOWER}-agent/inbox"
 if [ -d "$INBOX_DIR" ]; then
     TASK_FILE=$(ls -1 "$INBOX_DIR"/*.txt 2>/dev/null | head -1)
     if [ -n "$TASK_FILE" ] && [ -f "$TASK_FILE" ]; then
@@ -87,7 +88,7 @@ CONTEXT=$(cat <<EOF
 
 **Role**: $ROLE Agent
 **Time**: $(date '+%Y-%m-%d %H:%M:%S')
-**Tab**: \`$ROLE $(date '+%H:%M')\`
+**Tab**: \\\`$ROLE $(date '+%H:%M')\\\`
 **Branch**: $(git branch --show-current 2>/dev/null || echo "unknown")
 **Last Commit**: $(git log -1 --oneline 2>/dev/null || echo "unknown")
 
