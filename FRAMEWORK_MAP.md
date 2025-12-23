@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- ca5daf9 2025-12-23 feat(automation): add comprehensive automation playbook and scripts
 - 2b24f8d 2025-12-23 chore(curator): complete cycle 3 - curate Strategist drafts
 - dd95924 2025-12-23 feat(integrations): add UploadThing storage integration
 - 579cbe6 2025-12-22 chore(curator): complete cycle 2 - distribute Phase 2 tasks
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - baea471 2025-12-22 fix(ai-agent): fix code generation truncation, increase maxTokens to 32K
 - 34b1cec 2025-12-22 feat(website): enhance streaming UI with retry logic and time estimates
 - c505fb3 2025-12-22 fix(ai-agent): fix live API validation - all tests passing
-- 4d6a150 2025-12-22 feat(website): add streaming UI for project generation progress
 
 ## Agent Governance Structure
 
