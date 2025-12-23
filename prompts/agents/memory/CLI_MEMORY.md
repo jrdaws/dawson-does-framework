@@ -17,8 +17,9 @@
 7. ✅ Priority 3 completed: CLI patterns documented in CONTRIBUTING.md
 8. ✅ Pull command updated for new standardized API format
 9. ✅ Deploy command enhanced (P2 task completed)
-10. All CLI work complete and synced with Platform API
-11. (Optional) Live API testing with production endpoint
+10. ✅ Generate command implemented (AI-powered project generation)
+11. All CLI work complete and synced with Platform API
+12. (Optional) Live API testing with production endpoint
 
 ---
 
@@ -29,6 +30,65 @@
 ---
 
 ## Session History
+
+### Session: 2025-12-22 22:15 PST (Generate Command Implementation)
+
+**Work Completed**
+- ✅ Executed P2 task: CLI Generate Command Implementation
+- ✅ Created `src/dd/generate.mjs` with core generation logic
+- ✅ Added `framework generate` command to `bin/framework.js`
+- ✅ Implemented interactive mode with prompts
+- ✅ Added progress spinners for visual feedback
+- ✅ Integrated with `@dawson-framework/ai-agent` package
+- ✅ Created 25 new tests in `tests/cli/generate.test.mjs`
+- ✅ Updated README.md with generate command documentation
+- ✅ All 693 tests passing (was 668)
+
+**Command Interface**
+```bash
+framework generate [options]
+
+Options:
+  -d, --description   Project description (required)
+  -n, --name          Project name
+  -t, --template      Template to use
+  --tier              Model tier: fast, balanced, quality
+  -o, --output        Output directory
+  --no-stream         Disable streaming progress
+```
+
+**Features Implemented**
+1. **Flag Parsing**: `parseGenerateFlags()` with all options
+2. **Interactive Mode**: Prompts user for missing description/name/template
+3. **Progress Display**: Spinner showing generation stages
+4. **Error Handling**: Uses `showError()` with recovery guidance
+5. **File Writing**: Writes generated files to disk with .dd metadata
+6. **Token Usage**: Displays token summary at completion
+
+**Files Created**
+- `src/dd/generate.mjs` - Core generation logic (~350 lines)
+- `tests/cli/generate.test.mjs` - Comprehensive tests (25 tests)
+
+**Files Modified**
+- `bin/framework.js` - Added import and dispatcher for generate command
+- `bin/framework.js` - Updated help text with generate options
+- `README.md` - Added generate command documentation
+
+**Blockers Encountered**
+- None
+
+**Next Priorities**
+1. Generate command is production-ready
+2. (Optional) Add more integration tests with live API
+3. Ready for new features or other work
+
+**Handoff Notes**
+- P2 task complete: Generate command implemented
+- Requires `ANTHROPIC_API_KEY` environment variable
+- Uses ai-agent package from packages/ai-agent
+- All CLI patterns followed (help flags, error handling, etc.)
+
+---
 
 ### Session: 2025-12-22 21:35 PST (Deploy Command Verification Audit)
 
