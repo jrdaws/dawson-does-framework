@@ -1,23 +1,29 @@
 AGENT ACTIVATION COMMANDS
 Copy the line under each agent name into a new Cursor chat
-Last Updated: 2025-12-23 06:00 by CURATOR Agent
+Last Updated: 2025-12-23 06:30 by CURATOR Agent (Cycle 3)
 
 ================================================================================
-PRIORITY 1 - Critical Gap (Storage Integration)
+PRIORITY 1 - Critical Gaps
 ================================================================================
 
 INTEGRATION AGENT
 Read and execute the task in output/integration-agent/inbox/20251223-0600-P1-task-uploadthing-integration.txt
 
+PLATFORM AGENT
+Read and execute the task in output/platform-agent/inbox/20251223-0600-P2-task-chunked-code-generation.txt
+
 ================================================================================
 PRIORITY 2 - Feature Enhancement
 ================================================================================
 
-TESTING AGENT
+WEBSITE AGENT
+Read and execute the task in output/website-agent/inbox/20251223-0630-P2-task-user-feedback-api.txt
+
+TESTING AGENT (Unit Tests)
 Read and execute the task in output/testing-agent/inbox/20251223-0600-P2-task-integration-unit-tests.txt
 
-PLATFORM AGENT
-Read and execute the task in output/platform-agent/inbox/20251223-0600-P2-task-chunked-code-generation.txt
+TESTING AGENT (Build Tests)
+Read and execute the task in output/testing-agent/inbox/20251223-0630-P2-task-integration-build-tests.txt
 
 CLI AGENT
 Read and execute the task in output/cli-agent/inbox/20251223-0600-P2-task-integration-selection-ux.txt
@@ -26,57 +32,48 @@ DOCUMENTATION AGENT
 Read and execute the task in output/documentation-agent/inbox/20251223-0300-P2-task-api-documentation.txt
 
 ================================================================================
-COMPLETED TASKS (Reference)
+PRIORITY 3 - Enhancement
 ================================================================================
 
-The following tasks from the previous cycle are COMPLETE:
-
-✅ TESTING AGENT - Live API Validation (P1)
-   Report: output/testing-agent/outbox/20251223-0500-COMPLETED-live-api-validation.txt
-
-✅ WEBSITE AGENT - Production Deployment Prep (P1)
-   Report: output/website-agent/outbox/20251223-0300-completion-production-deployment.txt
-
-✅ PLATFORM AGENT - Production Deployment Prep (P1)
-   Report: output/platform-agent/outbox/20251223-production-deployment-prep-complete.md
-
-✅ TEMPLATE AGENT - Quality Audit (P2)
-   Report: output/template-agent/outbox/20251223-quality-audit-report.md
-
-✅ INTEGRATION AGENT - Integration Expansion (P2)
-   Report: output/integration-agent/outbox/20251223-integration-expansion-complete.md
-
-✅ CLI AGENT - Generate Command (P2)
-   Done: output/cli-agent/done/20251223-0300-P2-task-generate-command.txt
-
-✅ DOCUMENTATION AGENT - User Guide (P2)
-   Done: output/documentation-agent/done/20251222-2000-P2-task-user-guide-creation.txt
+TEMPLATE AGENT
+Read and execute the task in output/template-agent/inbox/20251223-0630-P3-task-flagship-saas-integrations.txt
 
 ================================================================================
 PRODUCTION DEPLOYMENT (HUMAN ACTION REQUIRED)
 ================================================================================
 
-The Website and Platform agents have completed production deployment PREPARATION.
-Actual deployment requires human action.
+All AI agent prep work is complete. Actual deployment requires human action.
+
+Strategist recommendation: Deploy to Vercel following the checklist.
 
 Follow: docs/deploy/VERCEL_DEPLOYMENT.md
+Environment vars: website/.env.example
 
-Required environment variables documented in: website/.env.example
+Smoke tests ready in: output/testing-agent/outbox/
 
 ================================================================================
 CYCLE SUMMARY
 ================================================================================
 
-Cycle: 2
+Cycle: 3 (Strategist + Curator)
 Curator: CURATOR Agent
-Date: 2025-12-23 06:00
+Date: 2025-12-23 06:30
 
-Tasks Distributed: 5
-- P1: 1 (UploadThing Integration)
-- P2: 4 (Testing, Platform, CLI, Documentation)
+**Strategist Drafts Reviewed:** 6
+**Approved:** 3 (T3, T5, T6)
+**Merged:** 1 (T4 merged into existing Documentation task)
+**Skipped:** 1 (T2 already in inbox)
+**Rejected:** 1 (T1 requires human action)
 
-Average Quality Score: 8.4/10
+**Tasks in System:** 8 total
+- P1: 2 (UploadThing, Chunked Generation)
+- P2: 5 (Feedback API, Unit Tests, Build Tests, CLI UX, API Docs)
+- P3: 1 (Flagship-SaaS Integrations)
 
-Full Report: output/shared/reports/cycle-summary-20251223-0600.txt
+Average Quality Score: 7.9/10
+
+Full Reports:
+- Strategy: output/shared/reports/strategy-20251223-0600.txt
+- Cycle Summary: output/shared/reports/cycle-summary-20251223-0630.txt
 
 ================================================================================

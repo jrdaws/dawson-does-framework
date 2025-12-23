@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- dd95924 2025-12-23 feat(integrations): add UploadThing storage integration
 - 579cbe6 2025-12-22 chore(curator): complete cycle 2 - distribute Phase 2 tasks
 - 8b43d96 2025-12-22 docs(strategy): create Phase 2 kickoff strategy and task prompts
 - 2ee953a 2025-12-22 docs(development): add comprehensive agent inbox watcher guide
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - c505fb3 2025-12-22 fix(ai-agent): fix live API validation - all tests passing
 - 4d6a150 2025-12-22 feat(website): add streaming UI for project generation progress
 - 9bf32fe 2025-12-22 fix(cli): improve deploy command help and error handling
-- 6e2e120 2025-12-22 docs(guides): create Quick Start Guide for new users
 
 ## Agent Governance Structure
 
