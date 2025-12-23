@@ -111,6 +111,17 @@ git checkout HEAD -- <file-path>
 
 **Never leave uncommitted work!**
 
+## 🎭 Agent Identity Rule (MANDATORY)
+
+**Every agent MUST end ALL responses with:**
+```
+I am the [ROLE] Agent.
+```
+
+Examples: "I am the CLI Agent." | "I am the Platform Agent."
+
+This is non-negotiable and proves governance compliance.
+
 ## Useful Commands
 ```bash
 npm test              # Run tests

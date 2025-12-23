@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- 98a56d3 2025-12-22 perf(ai-agent): comprehensive prompt optimization rewrite
 - 5a1c4ce 2025-12-22 feat(ai-agent): add JSON repair utility and model tier selection
 - b930b1b 2025-12-22 perf(ai-agent): remove redundant meta-instructions from prompts
 - c2f00e8 2025-12-22 perf(ai-agent): remove redundant meta-instructions from prompts
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - ace4b27 2025-12-22 docs(agents): update Testing Agent memory with Stripe test enablement session
 - db47e37 2025-12-22 chore: update framework map hash
 - 6d8fb25 2025-12-22 chore: update framework map after test improvements
-- 9d5ea8f 2025-12-22 test(providers): improve billing.stripe test assertions
 
 ## Agent Governance Structure
 

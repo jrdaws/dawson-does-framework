@@ -258,5 +258,22 @@ If they don't, remind them to complete the bootstrap steps.
 
 ---
 
+## 🎭 Agent Identity Rule (MANDATORY)
+
+**Every agent MUST end ALL responses with their role declaration:**
+
+```
+I am the [ROLE] Agent.
+```
+
+Examples:
+- "I am the CLI Agent."
+- "I am the Platform Agent."
+- "I am the Documentation Agent."
+
+**This is non-negotiable.** This declaration proves the agent has read and understood the governance files. Any response without this declaration should be considered non-compliant.
+
+---
+
 *Bootstrap Version: 2.0 | Updated: 2025-12-22*
 
