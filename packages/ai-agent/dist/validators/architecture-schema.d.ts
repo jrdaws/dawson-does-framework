@@ -35,6 +35,7 @@ export declare const RouteDefinitionSchema: z.ZodObject<{
         POST: "POST";
         PUT: "PUT";
         DELETE: "DELETE";
+        PATCH: "PATCH";
     }>>;
     description: z.ZodString;
 }, z.core.$strip>;
@@ -76,6 +77,7 @@ export declare const ArchitectureSchema: z.ZodObject<{
             POST: "POST";
             PUT: "PUT";
             DELETE: "DELETE";
+            PATCH: "PATCH";
         }>>;
         description: z.ZodString;
     }, z.core.$strip>>;

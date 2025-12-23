@@ -11,46 +11,20 @@ OUTPUT: Markdown for START_PROMPT.md (no JSON wrapper):
 
 {description}
 
-## What's Been Generated
+## Generated
+Scaffolded via **Dawson Framework** ({template} template) + AI architecture generation.
 
-This project was scaffolded using **Dawson Framework** with the **{template}** template and enhanced with AI-powered architecture generation.
+### Structure
+Pages: {pages} | Components: {components} | API: {api_routes}
 
-### Project Structure
+### Integrations
+{integrations with setup}
 
-**Pages:**
-{list pages with descriptions}
-
-**Custom Components:**
-{list custom components that were generated}
-
-**API Routes:**
-{list API endpoints}
-
-### Integrations Configured
-
-{list integrations with setup instructions}
-
-## Getting Started
-
-### 1. Environment Setup
-
-Copy the example environment file and add your API keys:
-
+## Setup
 ```bash
-cp .env.example .env.local
+cp .env.example .env.local  # Add: {env vars}
+npm install && npm run dev  # Open http://localhost:3000
 ```
-
-Add the following required environment variables to `.env.local`:
-
-```bash
-{env vars list based on integrations}
-```
-
-### 2. Install & Run
-```bash
-npm install && npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000)
 
 ## Implementation Guide
 

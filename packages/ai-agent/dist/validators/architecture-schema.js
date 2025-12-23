@@ -16,7 +16,7 @@ export const ComponentDefinitionSchema = z.object({
 export const RouteDefinitionSchema = z.object({
     path: z.string(),
     type: z.enum(["page", "api"]),
-    method: z.enum(["GET", "POST", "PUT", "DELETE"]).optional(),
+    method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]).optional(),
     description: z.string(),
 });
 export const ArchitectureSchema = z.object({

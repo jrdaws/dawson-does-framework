@@ -119,3 +119,62 @@ framework drift .     # Check template drift
 git pull origin main  # Sync before starting
 ```
 
+---
+
+## 📝 Fenced Output Integrity (CRITICAL)
+
+**This section governs how you output code blocks, prompts, and documents.**
+
+### The One Block Rule
+When outputting fenced code blocks, prompts, or documents:
+
+1. **ONE BLOCK**: All related content goes in ONE fenced block - NEVER split
+2. **NO MID-FENCE BREAKS**: Never close a fence to add explanation, then reopen
+3. **COMMENTS OVER INTERRUPTIONS**: If clarification needed, use inline comments inside the fence
+4. **PRE-FLIGHT CHECK**: Before closing \`\`\`, verify: "Have I included ALL the requested content?"
+5. **EXPLANATION PLACEMENT**:
+   - Explanations go BEFORE the opening fence
+   - Follow-up notes go AFTER the closing fence
+   - NOTHING goes between multiple fences that should be one
+
+### Structure for Long Outputs
+When outputting long content, use this exact structure:
+1. Brief explanation (1-2 sentences max)
+2. ONE complete fenced block with ALL content
+3. Any follow-up notes AFTER the fence closes
+
+### Pre-Output Verification Checklist
+Before outputting fenced content, mentally verify:
+- [ ] Is this ONE continuous block?
+- [ ] Does it contain EVERYTHING requested?
+- [ ] Am I about to break out of the fence to explain something? (DON'T - use comments instead)
+- [ ] Is everything included?
+
+### ❌ Anti-Pattern (DO NOT DO THIS)
+```
+Here's the first part:
+\`\`\`
+partial content...
+\`\`\`
+And here's more:
+\`\`\`
+rest of content...
+\`\`\`
+```
+
+### ✅ Correct Pattern (DO THIS)
+```
+Here's the complete content:
+\`\`\`
+ALL content in one block...
+including everything...
+nothing left out...
+\`\`\`
+```
+
+### Content Too Long?
+If content is genuinely too long to output in one block:
+1. **SAY SO EXPLICITLY**: "This content is too long for one block. Would you like me to split it into logical sections?"
+2. **ASK FIRST**: Don't silently split - get user confirmation
+3. **USE LOGICAL BOUNDARIES**: If splitting, split at natural boundaries (e.g., by file, by section)
+

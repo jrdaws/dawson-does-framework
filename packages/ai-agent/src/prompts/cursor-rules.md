@@ -26,64 +26,34 @@ OUTPUT: Plain text for .cursorrules (no JSON, no markdown code blocks):
 ### API Routes
 {list API endpoints}
 
-## Technology Stack
+## Stack
+Next.js 15 App Router | TypeScript strict | Tailwind CSS | React 19 Server Components
+Integrations: {integrations}
 
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript (strict mode)
-- **Styling**: Tailwind CSS
-- **React**: Version 19 with Server Components
+## Code Style
+TypeScript: strict, interfaces, infer types, avoid `any`→use `unknown`
+React: server default | "use client" for: onClick|forms|useState|useEffect|browser APIs | async fetch server-side
+Files: pages→app/[route]/page.tsx | components→components/[name].tsx | API→app/api/[route]/route.ts | types→types/ | utils→lib/
+Styling: Tailwind utilities, mobile-first, co-located
+Data: server=async/await | client=hooks/SWR | errors=try/catch | loading=Suspense
 
-### Integrations
-{list active integrations with brief descriptions}
+## Patterns
+{integration-specific code patterns}
 
-## Code Style Guidelines
-
-### TypeScript
-Strict mode, interfaces for props/types, type inference where obvious, avoid `any` (use `unknown`)
-
-### React Components
-Server components by default, "use client" only for: onClick, form handling, hooks (useState, useEffect), browser APIs
-Async data fetching in server components, keep components focused
-
-### File Organization
-Pages→`app/[route]/page.tsx` | Components→`components/[name].tsx` | API→`app/api/[route]/route.ts` | Types→`types/[name].ts` | Utils→`lib/[name].ts`
-
-### Styling
-Tailwind CSS utilities, mobile-first, styles co-located, use template's design system
-
-### Data Fetching
-Server: async/await | Client: hooks/SWR/TanStack | Error handling: try/catch | Loading: Suspense boundaries
-
-## Integration Patterns
-
-{integration-specific code patterns based on active integrations}
-
-## Common Tasks
-
-### Adding Page
-Create `app/[route]/page.tsx` → server component → add layouts if needed → update nav
-
-### Adding Component
-Create `components/Name.tsx` → define props → implement → export
-
-### Adding API Route
-Create `app/api/[route]/route.ts` → export handlers (GET, POST) → add validation/error handling → NextResponse.json
-
-### Adding Integration Features
-{template-specific integration instructions}
+## Tasks
+Page: app/[route]/page.tsx → server component → layouts → nav
+Component: components/Name.tsx → props → implement → export
+API: app/api/[route]/route.ts → GET|POST handlers → validation → NextResponse.json
+Integration: {template-specific instructions}
 
 ## Testing
-Files: `*.test.ts(x)` | Run: `npm test` | Focus: critical logic and user flows
+Files: *.test.ts(x) | Run: npm test | Focus: critical logic+user flows
 
-## Environment Variables
-Required variables in `.env.local`:
-{list required env vars based on integrations}
+## Env
+Required in `.env.local`: {env vars based on integrations}
 
-## Next Steps for Development
-
-{suggested next steps based on generated architecture}
+## Next Steps
+{suggested next steps}
 
 ---
-
-GUIDELINES FOR CURSOR AI:
-Follow code style above, maintain consistency, ask for clarification if ambiguous, prioritize type safety/error handling, keep components simple, test critical functionality
+AI GUIDELINES: Follow style above | maintain consistency | clarify ambiguity | prioritize types+errors | simple components | test critical paths

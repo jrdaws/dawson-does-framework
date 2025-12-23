@@ -27,12 +27,12 @@ export async function generateCode(architecture, input, apiKey) {
                 templateReference,
             });
             // Call Claude Sonnet for complex code generation (requires reasoning)
-            // Token limit reduced from 8192 to 4096 (output tokens are 5x cost of input)
-            // If truncation occurs, consider dynamic sizing based on architecture.pages.length
+            // Token limit set to 6144 (balance between cost and completeness)
+            // 4096 was too low and caused truncation; 8192 is overkill for most projects
             const response = await client.complete({
                 model: "claude-sonnet-4-20250514",
                 temperature: 0, // Deterministic
-                maxTokens: 4096,
+                maxTokens: 6144,
                 messages: [
                     {
                         role: "user",
