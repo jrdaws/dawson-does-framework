@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 0414454 2025-12-22 feat(scripts): add watcher setup script and complete template audit
 - 801691a 2025-12-22 feat(ci): add agent task monitoring system (A+C+D hybrid)
 - 3f15b77 2025-12-22 feat(ci): add agent task monitoring workflow
 - 700a1e5 2025-12-22 docs(cli): complete P2 generate command task
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 5b9087b 2025-12-22 docs(agents): verify P2 parallel execution task already complete
 - 069de06 2025-12-22 perf(ai-agent): run code and context generation in parallel
 - aaeb3a5 2025-12-22 docs(agents): update Platform Memory with complete optimization summary
-- b23be67 2025-12-22 docs(governance): add PROMPT_STANDARDS.md references to all governance files
 
 ## Agent Governance Structure
 
