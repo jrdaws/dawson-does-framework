@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: dd6ce1c0d2
 
 ## Recent changes
+- fc1b156 2025-12-22 feat(templates): add .env.example to all templates, fix saas type error
 - 88fc4b7 2025-12-22 test(governance): verify validation workflow
 - baea471 2025-12-22 fix(ai-agent): fix code generation truncation, increase maxTokens to 32K
 - 34b1cec 2025-12-22 feat(website): enhance streaming UI with retry logic and time estimates
@@ -28,7 +29,6 @@ Hash: dd6ce1c0d2
 - 7942d7d 2025-12-22 docs(ai-agent): add verified cost estimates and token tracking documentation
 - 091d4ce 2025-12-22 perf(ai-agent): optimize whitespace in prompt files
 - 412a6fe 2025-12-22 docs(agents): update Platform Agent memory with session 5
-- 7a51531 2025-12-22 perf(ai-agent): compress JSON schema declarations in prompts
 
 ## Agent Governance Structure
 
