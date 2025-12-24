@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 18fe75f 2025-12-24 test(media-pipeline): complete E2E verification - 47/47 checks pass
 - 0afd7f5 2025-12-24 test(sop): verify checkpoint protocol is actionable
 - 88350b7 2025-12-24 docs(governance): enhance Permission Probing Protocol (v2.9)
 - 7cb5739 2025-12-24 docs(sops): add Session Checkpoint SOP for progress offloading
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - eaf359b 2025-12-23 docs(agents): update MINDFRAME + AGENT_CONTEXT with shadcn SOP and UX work
 - 74c555b 2025-12-23 docs: add SOP proposal for Vercel monorepo deployment best practices
 - 8cc4df8 2025-12-23 fix(website): add stubs for workspace packages to enable Vercel build
-- def604d 2025-12-23 fix: make husky prepare script fail gracefully for CI
 
 ## Agent Governance Structure
 
