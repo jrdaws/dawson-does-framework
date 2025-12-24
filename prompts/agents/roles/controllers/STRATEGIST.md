@@ -122,14 +122,14 @@ Your strategy report MUST include:
 ## Handoff Protocol
 
 1. Save strategy report to `output/shared/reports/strategy-YYYYMMDD-HHMM.txt`
-2. Save draft prompts to `output/controller-agents/strategist/outbox/drafts/`
-3. Copy strategy report to `output/controller-agents/curator/inbox/`
+2. Save draft prompts to `output/agents/strategist/outbox/drafts/`
+3. Copy strategy report to `output/agents/curator/inbox/`
 4. End response with:
 
 ```
 STRATEGIST HANDOFF COMPLETE
 Report: output/shared/reports/strategy-YYYYMMDD-HHMM.txt
-Drafts: output/controller-agents/strategist/outbox/drafts/
+Drafts: output/agents/strategist/outbox/drafts/
 Next: Launch Curator Agent
 ```
 

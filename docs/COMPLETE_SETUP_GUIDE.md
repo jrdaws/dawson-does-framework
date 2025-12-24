@@ -372,27 +372,27 @@ Every 6 Hours:
 
 | Agent | Code | Inbox Location | Memory File | Purpose |
 |-------|------|----------------|-------------|---------|
-| CLI | `CLI` | `output/cli-agent/inbox/` | `CLI_MEMORY.md` | CLI features |
-| Website | `WEB` | `output/website-agent/inbox/` | `WEBSITE_MEMORY.md` | Web UI features |
-| Platform | `PLT` | `output/platform-agent/inbox/` | `PLATFORM_MEMORY.md` | Infrastructure |
-| Testing | `TST` | `output/testing-agent/inbox/` | `TESTING_MEMORY.md` | Tests, validation |
-| Template | `TPL` | `output/template-agent/inbox/` | `TEMPLATE_MEMORY.md` | Template maintenance |
-| Documentation | `DOC` | `output/documentation-agent/inbox/` | `DOCS_MEMORY.md` | Docs |
-| Integration | `INT` | `output/integration-agent/inbox/` | `INTEGRATION_MEMORY.md` | Integrations |
+| CLI | `CLI` | `output/agents/cli/inbox/` | `CLI_MEMORY.md` | CLI features |
+| Website | `WEB` | `output/agents/website/inbox/` | `WEBSITE_MEMORY.md` | Web UI features |
+| Platform | `PLT` | `output/agents/platform/inbox/` | `PLATFORM_MEMORY.md` | Infrastructure |
+| Testing | `TST` | `output/agents/testing/inbox/` | `TESTING_MEMORY.md` | Tests, validation |
+| Template | `TPL` | `output/agents/template/inbox/` | `TEMPLATE_MEMORY.md` | Template maintenance |
+| Documentation | `DOC` | `output/agents/documentation/inbox/` | `DOCS_MEMORY.md` | Docs |
+| Integration | `INT` | `output/agents/integration/inbox/` | `INTEGRATION_MEMORY.md` | Integrations |
 
 ### 4.4 Media Pipeline Agents (3)
 
 | Agent | Code | Inbox Location | Memory File | Purpose |
 |-------|------|----------------|-------------|---------|
-| Research | `RES` | `output/media-pipeline/research-agent/inbox/` | `RESEARCH_MEMORY.md` | Asset briefs |
-| Media | `MED` | `output/media-pipeline/media-agent/inbox/` | `MEDIA_MEMORY.md` | Image generation |
-| Quality | `QUA` | `output/media-pipeline/quality-agent/inbox/` | `QUALITY_MEMORY.md` | Asset review |
+| Research | `RES` | `output/agents/research/inbox/` | `RESEARCH_MEMORY.md` | Asset briefs |
+| Media | `MED` | `output/agents/media/inbox/` | `MEDIA_MEMORY.md` | Image generation |
+| Quality | `QUA` | `output/agents/quality/inbox/` | `QUALITY_MEMORY.md` | Asset review |
 
 **Pipeline Flow**: Research → Media → Quality → Template/Website Agent
 
 **Activation**:
 ```bash
-cat output/media-pipeline/ACTIVATE_MEDIA_PIPELINE.txt
+cat output/shared/media/ACTIVATE_MEDIA_PIPELINE.txt
 ```
 
 ### 4.5 Activate Automation
@@ -447,12 +447,12 @@ Research Agent → Media Agent → Quality Agent → (Feedback Loop if needed)
 
 **Activate the pipeline:**
 ```bash
-cat output/media-pipeline/ACTIVATE_MEDIA_PIPELINE.txt
+cat output/shared/media/ACTIVATE_MEDIA_PIPELINE.txt
 ```
 
 **Full documentation:**
 ```
-output/media-pipeline/MEDIA_PIPELINE.md
+output/shared/media/MEDIA_PIPELINE.md
 ```
 
 ---

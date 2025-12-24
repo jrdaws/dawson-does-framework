@@ -540,6 +540,12 @@ If you hit a permission error mid-session, you failed to predict your needs. Not
    - After creating 3+ files
    - Every 15-20 minutes of active work
    
+   **Graceful Stop Rule:**
+   - Complete quick tasks (< 2 min remaining)
+   - Find a safe stopping point (no broken code)
+   - Complete current file edits before stopping
+   - Document partial work clearly
+   
    **Pre-Check (FIRST!):**
    - Review recent commits for governance/SOP changes
    - Re-read if `AGENT_POLICIES.md` or `CHECKPOINT_SOP.md` updated

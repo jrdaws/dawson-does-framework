@@ -22,7 +22,7 @@ The Media Agent is the second agent in the Media Generation Pipeline. It receive
 ### Key Files
 - SOP: `prompts/agents/roles/media-pipeline/MEDIA_AGENT.md`
 - Output: `output/agents/media/`
-- Assets: `output/media-pipeline/shared/assets/[project]/`
+- Assets: `output/shared/media/assets/[project]/`
 
 ---
 
@@ -195,7 +195,7 @@ Read prompts/agents/roles/media-pipeline/MEDIA_AGENT.md and generate assets from
 - Media Agent is the SECOND agent in the Media Pipeline
 - REQUIRES brief from Research Agent
 - Verify prompts include camera/lens before generating
-- Generated assets go to: `output/media-pipeline/shared/assets/[project]/`
+- Generated assets go to: `output/shared/media/assets/[project]/`
 - Create review request in Quality Agent inbox for handoff
 - Max 3 iterations per asset before escalation
 

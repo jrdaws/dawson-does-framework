@@ -26,7 +26,7 @@
 **EVERY session must begin with reading the photorealistic prompt guide:**
 
 ```bash
-cat output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md
+cat output/shared/media/PHOTOREALISTIC_PROMPT_GUIDE.md
 ```
 
 **CRITICAL REQUIREMENT**: All generated images must be indistinguishable from professional photography. They must NOT look obviously AI-generated (no plastic skin, oversaturation, or uncanny valley effects).
@@ -37,7 +37,7 @@ cat output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md
 
 Activated when asset brief appears in:
 ```
-output/media-pipeline/media-agent/inbox/
+output/agents/media/inbox/
 ```
 
 ---
@@ -70,17 +70,17 @@ STABILITY_API_KEY=sk-...     # For Stable Diffusion
 
 ```bash
 # Check inbox
-ls output/media-pipeline/media-agent/inbox/
+ls output/agents/media/inbox/
 
 # Read the brief
-cat output/media-pipeline/media-agent/inbox/[project]-asset-brief.md
+cat output/agents/media/inbox/[project]-asset-brief.md
 ```
 
 ### Step 2: Prepare Workspace
 
 ```bash
 # Create project folder
-mkdir -p output/media-pipeline/media-agent/workspace/[project-name]/{raw,optimized,metadata}
+mkdir -p output/agents/media/workspace/[project-name]/{raw,optimized,metadata}
 ```
 
 ### Step 2.5: Verify Prompt Quality (ENFORCEMENT CHECKPOINT)
@@ -151,7 +151,7 @@ const response = await fetch('https://api.stability.ai/v1/generation/stable-diff
 #### Option C: Manual Generation (Cursor can't run these directly)
 If using Midjourney or local tools, document the prompts used:
 ```
-output/media-pipeline/media-agent/workspace/[project]/metadata/generation-log.md
+output/agents/media/workspace/[project]/metadata/generation-log.md
 ```
 
 ### Step 4: Optimize Assets
@@ -173,7 +173,7 @@ svgo input.svg -o output.svg
 
 ### Step 5: Create Asset Manifest
 
-Write to `output/media-pipeline/media-agent/workspace/[project]/asset-manifest.json`:
+Write to `output/agents/media/workspace/[project]/asset-manifest.json`:
 
 ```json
 {
@@ -202,16 +202,16 @@ Write to `output/media-pipeline/media-agent/workspace/[project]/asset-manifest.j
 
 ```bash
 # Copy workspace to shared assets
-cp -r output/media-pipeline/media-agent/workspace/[project] \
-      output/media-pipeline/shared/assets/
+cp -r output/agents/media/workspace/[project] \
+      output/shared/media/assets/
 
 # Create handoff file
-echo "Assets ready for review: output/media-pipeline/shared/assets/[project]/" > \
-     output/media-pipeline/quality-agent/inbox/review-[project].txt
+echo "Assets ready for review: output/shared/media/assets/[project]/" > \
+     output/agents/quality/inbox/review-[project].txt
 
 # Move task to done
-mv output/media-pipeline/media-agent/inbox/[brief-file] \
-   output/media-pipeline/media-agent/done/
+mv output/agents/media/inbox/[brief-file] \
+   output/agents/media/done/
 ```
 
 ---
@@ -222,10 +222,10 @@ If Quality Agent returns feedback:
 
 ```bash
 # Check for feedback
-ls output/media-pipeline/media-agent/inbox/feedback-*
+ls output/agents/media/inbox/feedback-*
 
 # Read feedback
-cat output/media-pipeline/media-agent/inbox/feedback-[project].md
+cat output/agents/media/inbox/feedback-[project].md
 ```
 
 For each asset needing revision:
@@ -239,9 +239,9 @@ For each asset needing revision:
 
 ## Output Requirements
 
-1. **Generated Assets**: `output/media-pipeline/shared/assets/[project]/optimized/`
-2. **Asset Manifest**: `output/media-pipeline/shared/assets/[project]/asset-manifest.json`
-3. **Generation Log**: `output/media-pipeline/shared/assets/[project]/metadata/generation-log.md`
+1. **Generated Assets**: `output/shared/media/assets/[project]/optimized/`
+2. **Asset Manifest**: `output/shared/media/assets/[project]/asset-manifest.json`
+3. **Generation Log**: `output/shared/media/assets/[project]/metadata/generation-log.md`
 4. **Handoff**: Notification in Quality Agent inbox
 
 ---
@@ -292,7 +292,7 @@ For EACH generated image, verify:
 
 Copy this to activate:
 
-Read output/media-pipeline/quality-agent/inbox/review-[project].txt and review the generated assets. Apply the photorealism checklist and approve or provide specific revision feedback.
+Read output/agents/quality/inbox/review-[project].txt and review the generated assets. Apply the photorealism checklist and approve or provide specific revision feedback.
 ```
 
 ### 2. Research Agent Prompt (If revisions needed - fix-it prompt)
@@ -301,7 +301,7 @@ Read output/media-pipeline/quality-agent/inbox/review-[project].txt and review t
 
 If Quality Agent rejects due to brief issues, copy this:
 
-Read output/media-pipeline/research-agent/inbox/fix-[project].txt and revise the asset brief based on Quality Agent feedback. Update prompts to address the identified issues.
+Read output/agents/research/inbox/fix-[project].txt and revise the asset brief based on Quality Agent feedback. Update prompts to address the identified issues.
 ```
 
 This ensures seamless handoff to the next agent(s) in the pipeline.

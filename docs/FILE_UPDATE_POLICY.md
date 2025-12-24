@@ -42,7 +42,7 @@ These files update when specific events occur:
 |------|---------------|------------|----------------|
 | `docs/COMPLETE_SETUP_GUIDE.md` | Infrastructure change | Any agent | HIGH - setup fails |
 | `FRAMEWORK_MAP.md` | Architecture change | CLI/Platform Agent | MEDIUM |
-| `output/media-pipeline/shared/assets/*/asset-manifest.json` | Asset generation | Media Agent | LOW |
+| `output/shared/media/assets/*/asset-manifest.json` | Asset generation | Media Agent | LOW |
 | `templates/*/template.json` | Template change | Template Agent | MEDIUM |
 
 ---

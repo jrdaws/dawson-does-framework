@@ -162,7 +162,7 @@ Create a `.txt` file in any agent's inbox:
 
 ```bash
 # Example: Create a task for the CLI agent
-echo "Task: Update deploy command documentation" > output/cli-agent/inbox/task-001.txt
+echo "Task: Update deploy command documentation" > output/agents/cli/inbox/task-001.txt
 ```
 
 ### Task File Naming
@@ -249,7 +249,7 @@ Agent: CLI
 File:  task-001.txt
 
 Launch command:
-Read and execute the task in /Users/.../output/cli-agent/inbox/task-001.txt
+Read and execute the task in /Users/.../output/agents/cli/inbox/task-001.txt
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -277,11 +277,11 @@ Output:
 ═══════════════════════════════════════════════════════════════
 
 CLI (2 task(s))
-  Read and execute the task in output/cli-agent/inbox/task-001.txt
-  Read and execute the task in output/cli-agent/inbox/task-002.txt
+  Read and execute the task in output/agents/cli/inbox/task-001.txt
+  Read and execute the task in output/agents/cli/inbox/task-002.txt
 
 DOCUMENTATION (1 task(s))
-  Read and execute the task in output/documentation-agent/inbox/api-docs.txt
+  Read and execute the task in output/agents/documentation/inbox/api-docs.txt
 ```
 
 ---
@@ -500,10 +500,10 @@ Usage:
 
 ```bash
 # After completing a task
-mv output/cli-agent/inbox/task-001.txt output/cli-agent/done/
+mv output/agents/cli/inbox/task-001.txt output/agents/cli/done/
 
 # Create completion report
-echo "Task completed successfully" > output/cli-agent/outbox/task-001-completion.md
+echo "Task completed successfully" > output/agents/cli/outbox/task-001-completion.md
 ```
 
 ---
@@ -601,10 +601,10 @@ echo "Task completed successfully" > output/cli-agent/outbox/task-001-completion
 
 ```bash
 # Create inbox
-mkdir -p output/documentation-agent/inbox
+mkdir -p output/agents/documentation/inbox
 
 # Create task file
-cat > output/documentation-agent/inbox/20251223-P2-api-docs.txt <<'EOF'
+cat > output/agents/documentation/inbox/20251223-P2-api-docs.txt <<'EOF'
 # Task: API Documentation
 
 **Priority:** P2
@@ -642,7 +642,7 @@ EOF
 ```bash
 # Create multiple tasks at once
 for i in {1..3}; do
-  echo "Task $i: Review and update" > "output/cli-agent/inbox/task-00$i.txt"
+  echo "Task $i: Review and update" > "output/agents/cli/inbox/task-00$i.txt"
 done
 
 # Watcher detects all 3 files
@@ -652,13 +652,13 @@ done
 
 ```bash
 # P1 - Urgent
-echo "Fix critical bug" > output/platform-agent/inbox/$(date +%Y%m%d)-P1-critical-bug.txt
+echo "Fix critical bug" > output/agents/platform/inbox/$(date +%Y%m%d)-P1-critical-bug.txt
 
 # P2 - Normal
-echo "Add new feature" > output/platform-agent/inbox/$(date +%Y%m%d)-P2-feature.txt
+echo "Add new feature" > output/agents/platform/inbox/$(date +%Y%m%d)-P2-feature.txt
 
 # P3 - Low priority
-echo "Update docs" > output/documentation-agent/inbox/$(date +%Y%m%d)-P3-docs.txt
+echo "Update docs" > output/agents/documentation/inbox/$(date +%Y%m%d)-P3-docs.txt
 ```
 
 ---

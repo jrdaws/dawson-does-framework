@@ -573,7 +573,7 @@ Read prompts/agents/roles/PLATFORM_AGENT.md and prepare for deployment. All test
 
 Copy this to activate:
 
-Read output/testing-agent/outbox/test-failures-[date].txt and fix the failing UI tests. See specific failures and screenshots in the report.
+Read output/agents/testing/outbox/test-failures-[date].txt and fix the failing UI tests. See specific failures and screenshots in the report.
 ```
 
 ### If CLI TESTS FAIL → CLI Agent (for fixes)
@@ -582,7 +582,7 @@ Read output/testing-agent/outbox/test-failures-[date].txt and fix the failing UI
 
 Copy this to activate:
 
-Read output/testing-agent/outbox/test-failures-[date].txt and fix the failing CLI tests. See error details in the report.
+Read output/agents/testing/outbox/test-failures-[date].txt and fix the failing CLI tests. See error details in the report.
 ```
 
 ### If INTEGRATION TESTS FAIL → Integration Agent (for fixes)
@@ -591,7 +591,7 @@ Read output/testing-agent/outbox/test-failures-[date].txt and fix the failing CL
 
 Copy this to activate:
 
-Read output/testing-agent/outbox/test-failures-[date].txt and fix the failing integration tests. Provider connections may need attention.
+Read output/agents/testing/outbox/test-failures-[date].txt and fix the failing integration tests. Provider connections may need attention.
 ```
 
 ### If MEDIA ASSETS FAIL → Quality Agent (for re-review)
@@ -600,7 +600,7 @@ Read output/testing-agent/outbox/test-failures-[date].txt and fix the failing in
 
 Copy this to activate:
 
-Read output/testing-agent/outbox/asset-test-failures-[date].txt and re-evaluate the media assets that failed visual testing.
+Read output/agents/testing/outbox/asset-test-failures-[date].txt and re-evaluate the media assets that failed visual testing.
 ```
 
 ---

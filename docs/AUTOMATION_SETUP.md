@@ -193,7 +193,7 @@ tail -50 logs/cycles.log
 ### No Tasks Generated
 - Check if audit report was created
 - Verify Strategist ran after Auditor
-- Check draft prompts in `output/controller-agents/strategist/outbox/drafts/`
+- Check draft prompts in `output/agents/strategist/outbox/drafts/`
 
 ## Alternative: Launchd (macOS)
 

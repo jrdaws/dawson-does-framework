@@ -23,6 +23,23 @@ When user says: `checkpoint`, `cp`, `save`, `commit`, or `end session`
 
 **Shorthand:** `cp` = run checkpoint immediately
 
+### Graceful Stop Rule
+
+Before checkpointing, agents MUST:
+
+1. **Complete quick tasks** - If a task is 80%+ done, finish it (< 2 min remaining)
+2. **Find a safe stopping point** - Don't leave code in broken state
+3. **Document partial work** - Note what's done and what remains
+4. **Avoid mid-file edits** - Complete the current file before stopping
+
+**Quick Stop Checklist:**
+- [ ] Current file edit complete?
+- [ ] No syntax errors introduced?
+- [ ] Tests still pass (if applicable)?
+- [ ] Clear handoff notes for next agent?
+
+**If task is complex:** State "Stopping at safe point" and explain what was completed vs remaining.
+
 ---
 
 ## Mandatory Checkpoint Steps

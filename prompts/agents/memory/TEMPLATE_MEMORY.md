@@ -35,7 +35,7 @@
 **Work Completed**
 - ✅ Read TEMPLATE_AGENT role documentation
 - ✅ Located approved media assets from media pipeline
-  - Source: `output/media-pipeline/shared/assets/e2e-test-project/optimized/`
+  - Source: `output/shared/media/assets/e2e-test-project/optimized/`
   - Manifest: `asset-manifest.json` with 5 assets documented
 - ✅ Created `templates/saas/public/images/` directory
 - ✅ Copied all 5 optimized assets:

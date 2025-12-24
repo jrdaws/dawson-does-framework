@@ -95,7 +95,7 @@ Your audit report MUST include:
 ## Handoff Protocol
 
 1. Save audit report to `output/shared/reports/audit-YYYYMMDD-HHMM.txt`
-2. Copy to `output/controller-agents/strategist/inbox/`
+2. Copy to `output/agents/strategist/inbox/`
 3. Update `output/shared/workspace/PROJECT_STATUS.md`
 4. End response with:
 

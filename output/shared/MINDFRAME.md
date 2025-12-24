@@ -86,6 +86,11 @@ cd /Users/joseph.dawson/Documents/dawson-does-framework && cat docs/automation/A
 
 **Trigger**: `checkpoint` or `cp`
 
+**Graceful Stop First:**
+- Complete quick tasks (< 2 min remaining)
+- Find safe stopping point (no broken code)
+- Complete current file before stopping
+
 **Steps:**
 1. **Pre-Check**: Review recent commits for governance changes
 2. **Stage**: `git add -A` (do NOT commit directly)

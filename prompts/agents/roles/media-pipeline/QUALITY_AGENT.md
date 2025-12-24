@@ -18,7 +18,7 @@
 | Rule | Requirement |
 |------|-------------|
 | **Identify** | During ANY review, note repeated issues or unclear processes that could benefit from an SOP |
-| **Record** | Log all SOP ideas to `output/media-pipeline/quality-agent/workspace/sop-opportunities.md` |
+| **Record** | Log all SOP ideas to `output/agents/quality/workspace/sop-opportunities.md` |
 | **Create** | When a process is used 3+ times without documentation, draft an SOP proposal |
 | **Track** | Maintain version tracking for all SOPs you help create or identify |
 | **Feedback Loop** | Use your quality feedback to identify SOP gaps |
@@ -26,7 +26,7 @@
 ### SOP Registry
 
 **Quality Agent must maintain this file:**
-`output/media-pipeline/quality-agent/workspace/SOP_REGISTRY.md`
+`output/agents/quality/workspace/SOP_REGISTRY.md`
 
 ```markdown
 # Quality Agent SOP Registry
@@ -38,7 +38,7 @@
 | Bug Triage | docs/sops/BUG_TRIAGE_SOP.md | 1.0.0 | 2025-12-23 | ✅ Current |
 | Doc Sync | docs/sops/DOCUMENTATION_SYNC_SOP.md | 1.0.0 | 2025-12-23 | ✅ Current |
 | Deployment | docs/sops/DEPLOYMENT_SOP.md | 1.0.1 | 2025-12-23 | ✅ Current |
-| Photorealistic Prompting | output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md | 1.0 | 2025-12-23 | ✅ Current |
+| Photorealistic Prompting | output/shared/media/PHOTOREALISTIC_PROMPT_GUIDE.md | 1.0 | 2025-12-23 | ✅ Current |
 
 ## Pending SOP Proposals
 
@@ -68,7 +68,7 @@ If you identify a critical SOP gap:
 
 Copy this to activate:
 
-Read output/media-pipeline/quality-agent/workspace/sop-opportunities.md and review the proposed SOP for [topic]. Create a formal SOP if warranted.
+Read output/agents/quality/workspace/sop-opportunities.md and review the proposed SOP for [topic]. Create a formal SOP if warranted.
 ```
 
 ---
@@ -78,8 +78,8 @@ Read output/media-pipeline/quality-agent/workspace/sop-opportunities.md and revi
 **EVERY session must begin with reading the photorealistic prompt guide:**
 
 ```bash
-cat output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md
-cat output/media-pipeline/shared/REJECTION_CRITERIA.md
+cat output/shared/media/PHOTOREALISTIC_PROMPT_GUIDE.md
+cat output/shared/media/REJECTION_CRITERIA.md
 ```
 
 **CRITICAL REQUIREMENT**: All approved images must be indistinguishable from professional photography. REJECT any image that looks obviously AI-generated.
@@ -90,7 +90,7 @@ cat output/media-pipeline/shared/REJECTION_CRITERIA.md
 
 Activated when review request appears in:
 ```
-output/media-pipeline/quality-agent/inbox/
+output/agents/quality/inbox/
 ```
 
 ---
@@ -115,16 +115,16 @@ output/media-pipeline/quality-agent/inbox/
 
 ```bash
 # Check inbox
-ls output/media-pipeline/quality-agent/inbox/
+ls output/agents/quality/inbox/
 
 # Read review request
-cat output/media-pipeline/quality-agent/inbox/review-[project].txt
+cat output/agents/quality/inbox/review-[project].txt
 
 # Read original brief
-cat output/media-pipeline/shared/briefs/[project]-asset-brief.md
+cat output/shared/media/briefs/[project]-asset-brief.md
 
 # Read asset manifest
-cat output/media-pipeline/shared/assets/[project]/asset-manifest.json
+cat output/shared/media/assets/[project]/asset-manifest.json
 ```
 
 ### Step 2: Review Each Asset
@@ -158,8 +158,8 @@ For each asset, evaluate against these criteria:
 - Any check fails: **AUTOMATIC REJECTION** - Do not score other categories
 
 Reference: 
-- `output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md`
-- `output/media-pipeline/shared/REJECTION_CRITERIA.md`
+- `output/shared/media/PHOTOREALISTIC_PROMPT_GUIDE.md`
+- `output/shared/media/REJECTION_CRITERIA.md`
 
 #### Brand Alignment (30 points)
 | Criterion | Points | Check |
@@ -183,7 +183,7 @@ Reference:
 
 ### Step 3: Create Review Report
 
-Write to `output/media-pipeline/quality-agent/workspace/[project]-review.md`:
+Write to `output/agents/quality/workspace/[project]-review.md`:
 
 ```markdown
 # Asset Review: [Project Name]
@@ -241,23 +241,23 @@ Suggested prompt adjustment: "[original prompt], no hands visible, abstract styl
 
 ```bash
 # Move assets to approved folder
-cp -r output/media-pipeline/shared/assets/[project]/optimized/* \
-      output/media-pipeline/shared/approved/[project]/
+cp -r output/shared/media/assets/[project]/optimized/* \
+      output/shared/media/approved/[project]/
 
 # Create approval certificate
 echo "APPROVED: All assets meet quality standards" > \
-     output/media-pipeline/shared/approved/[project]/APPROVAL.txt
+     output/shared/media/approved/[project]/APPROVAL.txt
 
 # Determine target: TEMPLATE or PROJECT
 # Read from original brief or request file
 
 # === OPTION A: For TEMPLATE assets (design-time) ===
 # Handoff to Template Agent
-mkdir -p output/template-agent/inbox/media-[project]
-cp -r output/media-pipeline/shared/approved/[project]/* \
-      output/template-agent/inbox/media-[project]/
+mkdir -p output/agents/template/inbox/media-[project]
+cp -r output/shared/media/approved/[project]/* \
+      output/agents/template/inbox/media-[project]/
 
-cat > output/template-agent/inbox/media-[project]/INTEGRATE.txt << 'EOF'
+cat > output/agents/template/inbox/media-[project]/INTEGRATE.txt << 'EOF'
 MEDIA INTEGRATION TASK (TEMPLATE)
 
 Source: Media Pipeline (Quality Approved)
@@ -279,11 +279,11 @@ EOF
 # Handoff to Website Agent for platform-hosted projects
 # OR handoff to CLI Agent for exported projects
 
-mkdir -p output/website-agent/inbox/media-[project]
-cp -r output/media-pipeline/shared/approved/[project]/* \
-      output/website-agent/inbox/media-[project]/
+mkdir -p output/agents/website/inbox/media-[project]
+cp -r output/shared/media/approved/[project]/* \
+      output/agents/website/inbox/media-[project]/
 
-cat > output/website-agent/inbox/media-[project]/INTEGRATE.txt << 'EOF'
+cat > output/agents/website/inbox/media-[project]/INTEGRATE.txt << 'EOF'
 MEDIA INTEGRATION TASK (PROJECT)
 
 Source: Media Pipeline (Quality Approved)
@@ -305,8 +305,8 @@ FOR EXPORTED PROJECTS:
 EOF
 
 # Archive the project
-mv output/media-pipeline/quality-agent/inbox/review-[project].txt \
-   output/media-pipeline/quality-agent/done/
+mv output/agents/quality/inbox/review-[project].txt \
+   output/agents/quality/done/
 
 echo "✅ Assets approved and sent to Template Agent inbox"
 ```
@@ -317,7 +317,7 @@ echo "✅ Assets approved and sent to Template Agent inbox"
 # Create feedback file for Media Agent
 # Extract revision requirements from review
 
-cat > output/media-pipeline/media-agent/inbox/feedback-[project].md << 'EOF'
+cat > output/agents/media/inbox/feedback-[project].md << 'EOF'
 # Revision Request: [Project Name]
 
 **Iteration**: 2 of 3
@@ -352,11 +352,11 @@ echo "⚠️ Feedback sent to Media Agent - awaiting revisions"
 
 ```bash
 # Approve best available versions
-cp -r output/media-pipeline/shared/assets/[project]/optimized/* \
-      output/media-pipeline/shared/approved/[project]/
+cp -r output/shared/media/assets/[project]/optimized/* \
+      output/shared/media/approved/[project]/
 
 # Document any remaining issues
-cat > output/media-pipeline/shared/approved/[project]/NOTES.txt << 'EOF'
+cat > output/shared/media/approved/[project]/NOTES.txt << 'EOF'
 APPROVED WITH NOTES
 
 The following assets have known issues but have reached max iterations:
@@ -372,15 +372,15 @@ echo "⚠️ Approved with notes after max iterations"
 
 ## Output Requirements
 
-1. **Review Report**: `output/media-pipeline/quality-agent/workspace/[project]-review.md`
-2. **If Approved**: Assets in `output/media-pipeline/shared/approved/[project]/`
-3. **If Revisions**: Feedback in `output/media-pipeline/media-agent/inbox/feedback-[project].md`
+1. **Review Report**: `output/agents/quality/workspace/[project]-review.md`
+2. **If Approved**: Assets in `output/shared/media/approved/[project]/`
+3. **If Revisions**: Feedback in `output/agents/media/inbox/feedback-[project].md`
 
 ---
 
 ## Quality Metrics to Track
 
-Log to `output/media-pipeline/shared/metrics/quality-log.csv`:
+Log to `output/shared/media/metrics/quality-log.csv`:
 
 ```csv
 date,project,total_assets,approved_first,revisions_needed,avg_score,iterations_used
@@ -398,7 +398,7 @@ Once approved, assets should be:
 
 ```bash
 # Example: Copy to SaaS template
-cp -r output/media-pipeline/shared/approved/[project]/* \
+cp -r output/shared/media/approved/[project]/* \
       templates/saas/public/images/
 ```
 
@@ -414,7 +414,7 @@ cp -r output/media-pipeline/shared/approved/[project]/* \
 
 Copy this to activate:
 
-Read output/website-agent/inbox/media-[project]/INTEGRATE.txt and implement the approved assets. Copy to public/ folders and update component references.
+Read output/agents/website/inbox/media-[project]/INTEGRATE.txt and implement the approved assets. Copy to public/ folders and update component references.
 ```
 
 ### If REVISIONS NEEDED → Media Agent Prompt
@@ -423,7 +423,7 @@ Read output/website-agent/inbox/media-[project]/INTEGRATE.txt and implement the 
 
 Copy this to activate:
 
-Read output/media-pipeline/media-agent/inbox/feedback-[project].md and regenerate the flagged assets. Address each issue in the feedback specifically.
+Read output/agents/media/inbox/feedback-[project].md and regenerate the flagged assets. Address each issue in the feedback specifically.
 ```
 
 ### If BRIEF ISSUES → Research Agent Prompt
@@ -432,7 +432,7 @@ Read output/media-pipeline/media-agent/inbox/feedback-[project].md and regenerat
 
 Copy this to activate:
 
-Read output/media-pipeline/research-agent/inbox/revise-[project].txt and update the asset brief. The current prompts are producing suboptimal results.
+Read output/agents/research/inbox/revise-[project].txt and update the asset brief. The current prompts are producing suboptimal results.
 ```
 
 ### Quick Reference - All Pipeline Prompts
@@ -449,7 +449,7 @@ Read prompts/agents/roles/media-pipeline/MEDIA_AGENT.md and generate assets from
 Read prompts/agents/roles/media-pipeline/QUALITY_AGENT.md and review the assets waiting in your inbox.
 
 4. WEBSITE AGENT (after approval):
-Read output/website-agent/inbox/media-[project]/INTEGRATE.txt and implement the approved assets.
+Read output/agents/website/inbox/media-[project]/INTEGRATE.txt and implement the approved assets.
 ```
 
 This ensures seamless handoff to ANY agent in the pipeline based on review outcome.

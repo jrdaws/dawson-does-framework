@@ -14,8 +14,8 @@
 | Agent Policies | `prompts/agents/AGENT_POLICIES.md` | General rules |
 | File Update Policy | `docs/FILE_UPDATE_POLICY.md` | What to update when |
 | Continuous Improvement | `output/CONTINUOUS_IMPROVEMENT_SYSTEM.md` | Auditor→Strategist→Curator |
-| Media Pipeline | `output/media-pipeline/MEDIA_PIPELINE.md` | Image generation workflow |
-| Photorealistic Prompts | `output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md` | AI image quality |
+| Media Pipeline | `output/shared/media/MEDIA_PIPELINE.md` | Image generation workflow |
+| Photorealistic Prompts | `output/shared/media/PHOTOREALISTIC_PROMPT_GUIDE.md` | AI image quality |
 | Prompt Output SOP | `prompts/agents/AGENT_POLICIES.md` | Save prompts to .txt files |
 
 ---

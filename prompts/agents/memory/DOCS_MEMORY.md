@@ -398,9 +398,9 @@ Task file: `output/agents/documentation/done/TASK-media-pipeline-sop-enforcement
 
 ### Files Created
 
-- `output/media-pipeline/shared/ENFORCEMENT_CHECKLIST.md`
-- `output/media-pipeline/shared/REJECTION_CRITERIA.md`
-- `output/media-pipeline/shared/QUICK_REFERENCE_CARDS.md`
+- `output/shared/media/ENFORCEMENT_CHECKLIST.md`
+- `output/shared/media/REJECTION_CRITERIA.md`
+- `output/shared/media/QUICK_REFERENCE_CARDS.md`
 - `output/agents/documentation/outbox/media-pipeline-audit-report.txt`
 
 ### Files Modified

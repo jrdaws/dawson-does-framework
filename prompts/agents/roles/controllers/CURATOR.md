@@ -44,7 +44,7 @@ Internalize:
 
 ### Step 3: Review Draft Prompts (10 min)
 
-Read each draft prompt from: `output/controller-agents/strategist/outbox/drafts/`
+Read each draft prompt from: `output/agents/strategist/outbox/drafts/`
 
 Evaluate each against Quality Criteria (see below).
 

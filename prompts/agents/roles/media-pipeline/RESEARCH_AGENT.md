@@ -11,7 +11,7 @@
 **EVERY session must begin with reading the photorealistic prompt guide:**
 
 ```bash
-cat output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md
+cat output/shared/media/PHOTOREALISTIC_PROMPT_GUIDE.md
 ```
 
 **CRITICAL REQUIREMENT**: All generated images must be indistinguishable from professional photography. They must NOT look obviously AI-generated (no plastic skin, oversaturation, or uncanny valley effects).
@@ -22,7 +22,7 @@ cat output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md
 
 Activated when a new project needs media assets OR receives a request in:
 ```
-output/media-pipeline/research-agent/inbox/
+output/agents/research/inbox/
 ```
 
 ---
@@ -34,7 +34,7 @@ output/media-pipeline/research-agent/inbox/
 Read the project information:
 ```bash
 # Check for project request
-ls output/media-pipeline/research-agent/inbox/
+ls output/agents/research/inbox/
 
 # Read design tokens if available
 cat templates/saas/design/tokens.json 2>/dev/null || echo "No tokens found"
@@ -102,7 +102,7 @@ distorted features, extra limbs, malformed hands, text, watermark, signature
 
 Write a comprehensive brief to:
 ```
-output/media-pipeline/shared/briefs/[project-name]-asset-brief.md
+output/shared/media/briefs/[project-name]-asset-brief.md
 ```
 
 Use this template:
@@ -158,12 +158,12 @@ For AI image generation, use these prompts:
 
 ```bash
 # Copy brief to Media Agent inbox
-cp output/media-pipeline/shared/briefs/[project-name]-asset-brief.md \
-   output/media-pipeline/media-agent/inbox/
+cp output/shared/media/briefs/[project-name]-asset-brief.md \
+   output/agents/media/inbox/
 
 # Move your task to done
-mv output/media-pipeline/research-agent/inbox/[task-file] \
-   output/media-pipeline/research-agent/done/
+mv output/agents/research/inbox/[task-file] \
+   output/agents/research/done/
 ```
 
 ---
@@ -177,7 +177,7 @@ mv output/media-pipeline/research-agent/inbox/[task-file] \
 
 Copy this to activate:
 
-Read output/media-pipeline/media-agent/inbox/[project-name]-asset-brief.md and generate all assets following the specifications. Use Stable Diffusion for drafts and ensure photorealistic quality.
+Read output/agents/media/inbox/[project-name]-asset-brief.md and generate all assets following the specifications. Use Stable Diffusion for drafts and ensure photorealistic quality.
 ```
 
 This ensures seamless handoff to the next agent in the pipeline.
@@ -186,8 +186,8 @@ This ensures seamless handoff to the next agent in the pipeline.
 
 ## Output Requirements
 
-1. **Asset Brief**: `output/media-pipeline/shared/briefs/[project]-asset-brief.md`
-2. **Reference Collection**: `output/media-pipeline/shared/references/[project]/`
+1. **Asset Brief**: `output/shared/media/briefs/[project]-asset-brief.md`
+2. **Reference Collection**: `output/shared/media/references/[project]/`
 3. **Handoff File**: Copy brief to Media Agent inbox
 
 ---

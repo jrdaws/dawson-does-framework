@@ -21,9 +21,9 @@ The Quality Agent is the third and final agent in the Media Generation Pipeline.
 
 ### Key Files
 - SOP: `prompts/agents/roles/media-pipeline/QUALITY_AGENT.md`
-- Prompt Guide: `output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md`
+- Prompt Guide: `output/shared/media/PHOTOREALISTIC_PROMPT_GUIDE.md`
 - Output: `output/agents/quality/`
-- Approved: `output/media-pipeline/shared/approved/[project]/`
+- Approved: `output/shared/media/approved/[project]/`
 
 ---
 
@@ -55,8 +55,8 @@ The Quality Agent is the third and final agent in the Media Generation Pipeline.
 - **AI illustration quality high**: export-success-graphic.webp scored 98/100
 
 #### Documentation Created
-- `output/media-pipeline/shared/COLOR_PHILOSOPHY.md` - Official color guidelines
-- `output/media-pipeline/shared/UX_MULTI_STEP_GUIDE.md` - Multi-step wizard UX patterns
+- `output/shared/media/COLOR_PHILOSOPHY.md` - Official color guidelines
+- `output/shared/media/UX_MULTI_STEP_GUIDE.md` - Multi-step wizard UX patterns
 
 ---
 
@@ -254,6 +254,6 @@ Read prompts/agents/roles/media-pipeline/QUALITY_AGENT.md and review the assets 
 - REQUIRES assets from Media Agent
 - All images must pass photorealism checklist
 - Max 3 iterations before forced approval with notes
-- Approved assets go to: `output/media-pipeline/shared/approved/[project]/`
+- Approved assets go to: `output/shared/media/approved/[project]/`
 - Handoff to Template Agent or Website Agent based on Asset Target
 

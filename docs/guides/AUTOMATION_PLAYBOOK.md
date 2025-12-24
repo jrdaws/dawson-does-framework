@@ -933,7 +933,7 @@ END OF TASK
 ================================================================================
 ]], os.date("%Y-%m-%d %H:%M"), changedFiles)
 
-    local taskFile = projectPath .. "/output/documentation-agent/inbox/auto-doc-" .. os.date("%Y%m%d-%H%M%S") .. ".txt"
+    local taskFile = projectPath .. "/output/agents/documentation/inbox/auto-doc-" .. os.date("%Y%m%d-%H%M%S") .. ".txt"
     local file = io.open(taskFile, "w")
     if file then
         file:write(taskContent)
@@ -1481,7 +1481,7 @@ local function triggerDocUpdate()
         return
     end
     
-    local taskPath = projectPath .. "/output/documentation-agent/inbox/auto-doc-" .. 
+    local taskPath = projectPath .. "/output/agents/documentation/inbox/auto-doc-" .. 
                      os.date("%Y%m%d-%H%M%S") .. ".txt"
     
     local content = string.format([[

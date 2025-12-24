@@ -20,8 +20,8 @@ The Research Agent is the first agent in the Media Generation Pipeline. It analy
 
 ### Key Files
 - SOP: `prompts/agents/roles/media-pipeline/RESEARCH_AGENT.md`
-- Prompt Guide: `output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md`
-- Brief Template: `output/media-pipeline/shared/briefs/BRIEF_TEMPLATE.md`
+- Prompt Guide: `output/shared/media/PHOTOREALISTIC_PROMPT_GUIDE.md`
+- Brief Template: `output/shared/media/briefs/BRIEF_TEMPLATE.md`
 - Output: `output/agents/research/`
 
 ---
@@ -234,6 +234,6 @@ Read prompts/agents/roles/media-pipeline/RESEARCH_AGENT.md and create an asset b
 - Research Agent is the FIRST agent in the Media Pipeline
 - MUST read PHOTOREALISTIC_PROMPT_GUIDE.md before creating prompts
 - All prompts MUST include camera + lens + lighting
-- Brief goes to: `output/media-pipeline/shared/briefs/[project]-asset-brief.md`
+- Brief goes to: `output/shared/media/briefs/[project]-asset-brief.md`
 - Copy to Media Agent inbox for handoff
 
