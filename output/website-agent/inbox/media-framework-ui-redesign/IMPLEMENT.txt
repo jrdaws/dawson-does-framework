@@ -26,35 +26,20 @@ All approved assets are in:
 
 ---
 
-## ⚠️ BLOCKED ASSET: terminal-mockup-clean.webp
+## ⚠️ PENDING ASSET: terminal-mockup-clean.webp
 
-**Status**: Requires MANUAL CREATION
+**Status**: Awaiting Media Agent iteration 3
 
-**Why**: AI generation failed after 2 iterations:
-- Iteration 1: Generated industrial device with LED bars
-- Iteration 2: Generated Kanban dashboard with colored cards
-- The AI cannot generate a clean macOS terminal window mockup
+**Why**: AI generation failed after 2 iterations. Media Agent is attempting iteration 3.
 
-**Manual Creation Instructions**:
+**For Website Agent**:
+- Proceed with integrating the 17 approved assets
+- Leave a placeholder for the terminal mockup
+- The Media Agent will deliver the final asset or escalate for manual creation
 
-1. **Option A - Screenshot**:
-   - Open Terminal.app on macOS
-   - Run a demo of the framework CLI (e.g., `framework doctor .`)
-   - Take a screenshot
-   - Crop and optimize
+**Do NOT create this asset yourself** - the Media Agent is responsible for asset creation.
 
-2. **Option B - Design Tool**:
-   - Create in Figma/Sketch
-   - Use macOS window chrome (rounded corners, traffic lights)
-   - Dark background (#1E1E1E or similar)
-   - Green/cyan command text
-   - Include sample CLI output
-
-3. **Option C - Use Real Screenshot**:
-   - Use `website/public/images/terminal-example.png` if it exists
-   - Create new screenshot during implementation
-
-**Target Location**: `website/public/images/redesign/screenshots/terminal-mockup-clean.webp`
+**Target Location** (when ready): `website/public/images/redesign/screenshots/terminal-mockup-clean.webp`
 
 ---
 
