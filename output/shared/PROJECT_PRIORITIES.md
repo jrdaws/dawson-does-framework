@@ -26,7 +26,7 @@
 
 | Priority | Task | Best Agent | Reason | Added By |
 |----------|------|------------|--------|----------|
-| P2 | Complete Vercel deployment | Platform | Production ready | AUD |
+| P2 | **Vercel deployment** (user auth required) | User/Platform | Needs `vercel login` | PLT |
 | P2 | Test UploadThing integration | Integration | Feature complete | AUD |
 | P2 | Add UI tests for configurator | Testing | Coverage gap | WEB |
 
@@ -65,6 +65,7 @@ Current recommended order based on dependencies:
 
 | Task | Agent | Date | Notes |
 |------|-------|------|-------|
+| Vercel deployment prep | PLT | 2025-12-23 | Build verified, scripts created, awaiting auth |
 | Verify Priority SOPs | TST | 2025-12-23 | All 3 SOPs verified actionable |
 | Create Shared Mindframe | DOC | 2025-12-23 | MINDFRAME.md + certify.sh |
 | Context Freshness System | DOC | 2025-12-23 | check-context-freshness.sh |

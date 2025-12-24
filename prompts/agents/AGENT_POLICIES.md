@@ -1,8 +1,8 @@
 # Agent Policies
 
-> **Version**: 2.2
+> **Version**: 2.4
 > **Effective Date**: 2025-12-22
-> **Latest Update**: Standardized handoff prompt format with role identity
+> **Latest Update**: Added SOP Proposal Process for all agents
 > **Purpose**: Define operational policies and protocols for AI agents working on dawson-does-framework
 
 ---
@@ -83,21 +83,119 @@ Each agent has a specific domain of responsibility. Agents must:
 
 See `output/media-pipeline/MEDIA_PIPELINE.md` for full pipeline documentation.
 
-### Quality Agent: SOP Guardian Role (MANDATORY)
+### SOP Guardian Roles (MANDATORY)
 
-**Quality Agent has a special cross-cutting responsibility:**
+**Three agents share SOP Guardian responsibility:**
 
-The Quality Agent must be **vigilant for opportunities to create SOPs** across the entire framework. This includes:
+| Agent | Role | Responsibility |
+|-------|------|----------------|
+| **Quality Agent** | Proposer | Identify gaps, maintain registry, propose new SOPs |
+| **Testing Agent** | Verifier | Test SOPs work, identify gaps during testing |
+| **Auditor Agent** | Approver | Approve SOPs, audit compliance, enforce updates |
 
-| Responsibility | Action |
-|----------------|--------|
-| **Identify gaps** | Note repeated issues or unclear processes during ANY review |
-| **Maintain registry** | Track all SOPs in `output/media-pipeline/quality-agent/workspace/SOP_REGISTRY.md` |
-| **Version checking** | Verify SOPs are current before referencing them |
-| **Feedback → SOP** | Convert repeated feedback into formal SOP proposals |
-| **Escalate** | Notify Documentation Agent when new SOP is needed |
+**All three agents must:**
+- Review their memory for SOP opportunities
+- Log patterns to `output/media-pipeline/quality-agent/workspace/sop-opportunities.md`
+- Update existing SOPs when inaccuracies found
+- Notify Documentation Agent for major SOP creation
 
-**Rule**: If Quality Agent sees the same issue or process 3+ times without documentation, they MUST propose an SOP.
+**Rule**: If any Guardian sees the same issue 3+ times without documentation, they MUST propose an SOP.
+
+---
+
+### SOP Proposal Workflow (ALL AGENTS)
+
+**Any agent can propose SOP changes. All proposals go to Documentation Agent.**
+
+```
+ANY AGENT → Proposes → DOCUMENTATION AGENT → Drafts → AUDITOR AGENT → Approves → Published
+```
+
+#### How to Submit a Proposal
+
+1. Create proposal file:
+   ```bash
+   cd /Users/joseph.dawson/Documents/dawson-does-framework
+   touch output/shared/sop-proposals/PROPOSAL-$(date +%Y%m%d)-[short-name].md
+   ```
+
+2. Use template from `docs/sops/SOP_PROPOSAL_PROCESS.md`
+
+3. Documentation Agent will:
+   - Review proposal
+   - Draft formal SOP if valid
+   - Send to Auditor for approval
+
+4. Auditor Agent will:
+   - Review for conflicts and alignment
+   - Approve, request revision, or reject
+   - Provide feedback
+
+5. If approved:
+   - Documentation Agent publishes to `docs/sops/`
+   - Updates AGENT_POLICIES.md
+   - Updates MINDFRAME.md
+
+**Proposal Location**: `output/shared/sop-proposals/`
+**Full Process**: See `docs/sops/SOP_PROPOSAL_PROCESS.md`
+
+---
+
+### Sequence Verification Protocol (MANDATORY)
+
+**All agents must verify they're in the correct sequence before starting work.**
+
+#### Before Starting Any Task:
+
+```markdown
+## Sequence Check
+
+Current task: [Task name]
+Prerequisites:
+- [ ] Required certifications present in MINDFRAME.md?
+- [ ] Dependencies completed?
+
+**Sequence Status**: ✅ Correct / ⚠️ Out of Order
+```
+
+#### If Out of Sequence:
+
+1. **NOTIFY**: "⚠️ Sequence Issue: This task should wait for [Agent] to complete [Task] first."
+2. **RECOMMEND**: Provide the correct prompt for the correct agent
+3. **OFFER**: "I can proceed with what's possible, or wait. Your choice."
+4. **CONTINUE**: If user approves, proceed with available work
+
+#### Sequence Violation Response Format:
+
+```markdown
+⚠️ **Sequence Issue Detected**
+
+This task requires certification from [Agent] first.
+Current MINDFRAME.md shows: [Status]
+
+**Recommended Action:**
+
+## Redirect to: [Agent] Agent
+
+```
+Confirm you are the [Agent] Agent.
+[Corrected task for that agent]
+```
+
+**What I can do now:** [List available actions]
+Would you like me to proceed with what's possible?
+```
+
+#### Certification Requirements Matrix:
+
+| Task Type | Requires Certification From | Before |
+|-----------|---------------------------|--------|
+| **Deployment** | Testing (tests pass) | Platform deploys |
+| **Feature Release** | Testing + Documentation | Announcement |
+| **Template Update** | Template + Testing | Export to users |
+| **Media Integration** | Quality Agent | Website/Template uses |
+| **Code Merge** | Testing | Merge to main |
+| **SOP Creation** | Documentation | All agents use it |
 
 ---
 
@@ -854,9 +952,21 @@ test(integration): add E2E tests for configurator flow
 
 ## Version History
 
+### Version 2.4 (2025-12-23)
+- Added **SOP Proposal Process** - any agent can propose SOPs
+- Created `docs/sops/SOP_PROPOSAL_PROCESS.md`
+- Workflow: Any Agent → Documentation → Auditor → Published
+- Proposal folder: `output/shared/sop-proposals/`
+
+### Version 2.3 (2025-12-23)
+- Added **Sequence Verification Protocol** - agents must check order before work
+- Expanded **SOP Guardian** to Testing and Auditor (3-agent responsibility)
+- Added **Certification Requirements Matrix**
+- Agents must notify user if sequence is wrong and offer redirect
+
 ### Version 2.2 (2025-12-23)
 - Standardized **Handoff Prompt Format** with role identity
-- Prompts must start with "You are the [Role] Agent."
+- Prompts must start with "Confirm you are the [Role] Agent."
 - Removed "Copy this to activate:" text
 - Added Step 4e for handoff format
 
@@ -943,6 +1053,7 @@ The following SOPs define mandatory processes that ALL agents must follow:
 | **Bug Triage** | `docs/sops/BUG_TRIAGE_SOP.md` | P0-P3 severity classification, agent routing |
 | **Documentation Sync** | `docs/sops/DOCUMENTATION_SYNC_SOP.md` | Keep docs current with code |
 | **Deployment** | `docs/sops/DEPLOYMENT_SOP.md` | Pre-deploy checklists, rollback procedures |
+| **SOP Proposal Process** | `docs/sops/SOP_PROPOSAL_PROCESS.md` | How to propose and adopt new SOPs |
 
 ### SOP Compliance
 

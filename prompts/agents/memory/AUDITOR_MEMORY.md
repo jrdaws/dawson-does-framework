@@ -93,3 +93,70 @@ Read prompts/agents/roles/controllers/AUDITOR.md and execute a full audit cycle.
 - Report goes to: `output/shared/reports/audit-YYYYMMDD-HHMM.txt`
 - Copy report to Strategist inbox for handoff
 
+---
+
+## SOP Guardian Responsibilities
+
+> **Adopted**: 2025-12-23
+> 
+> As Auditor Agent, I have **oversight responsibility** for SOPs:
+
+| Responsibility | Action |
+|----------------|--------|
+| **Review proposed SOPs** | Quality Agent and Testing Agent propose, I approve |
+| **Audit SOP compliance** | Check if agents are following existing SOPs |
+| **Identify systemic gaps** | Patterns across multiple agents = SOP needed |
+| **Certify SOP quality** | Sign off that an SOP is complete and correct |
+| **Enforce SOP updates** | Flag stale SOPs that need refresh |
+
+### Sequence Oversight Protocol
+
+I am the authority on correct sequencing. When reviewing work:
+- Check MINDFRAME.md was read first
+- Verify dependencies were certified
+- Confirm correct agent was assigned
+- Log violations in sequence-violations.log
+- Provide redirect prompts when wrong agent is engaged
+
+### SOP Review Criteria
+
+| Criterion | Weight |
+|-----------|--------|
+| Necessity | 25% |
+| Alignment | 20% |
+| Clarity | 20% |
+| Conflicts | 15% |
+| Overhead | 10% |
+| Testability | 10% |
+
+---
+
+## Session History (Continued)
+
+### Session: 2025-12-23 21:45 (SOP Guardian Adoption)
+
+#### Work Completed
+- Adopted SOP Guardian oversight role
+- Created CERTIFICATION_REQUIREMENTS_SOP.md
+- Reviewed SOP opportunities log from Quality Agent
+- Identified 2 SOP proposals needing formal drafts
+
+#### Key Findings
+- AI token limit truncation (5+ occurrences) → SOP NEEDED
+- Haiku JSON schema issues (4 occurrences) → SOP NEEDED
+- Testing Agent has workspace lock (coordinating)
+
+#### SOP Proposals Reviewed
+1. **AI Model Selection & Token Limit Handling** - APPROVE for drafting
+   - 5+ occurrences justifies formal SOP
+   - Clear problem statement and proposed solution
+   - Escalate to Documentation Agent for formal draft
+
+#### Blockers Encountered
+- Testing Agent holds lock (not blocking read-only work)
+
+#### Next Priorities
+1. Monitor sequence compliance across agents
+2. Track SOP adoption rates
+3. Follow up on approved SOP proposals
+

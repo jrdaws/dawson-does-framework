@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 980c076 2025-12-23 chore(agents): mark context freshness task complete, update MINDFRAME
 - 1677a3b 2025-12-23 feat(website): implement PhaseIndicator with 3-phase grouped UX
 - 268ad8f 2025-12-23 docs(governance): update MINDFRAME and AGENT_CONTEXT for v2.3
 - c8d4859 2025-12-23 docs(agents): update Quality Agent memory, add media pipeline role codes
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 0414454 2025-12-22 feat(scripts): add watcher setup script and complete template audit
 - 801691a 2025-12-22 feat(ci): add agent task monitoring system (A+C+D hybrid)
 - 3f15b77 2025-12-22 feat(ci): add agent task monitoring workflow
-- 700a1e5 2025-12-22 docs(cli): complete P2 generate command task
 
 ## Agent Governance Structure
 
