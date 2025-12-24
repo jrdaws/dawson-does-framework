@@ -1,8 +1,8 @@
 # Agent Policies
 
-> **Version**: 2.5
+> **Version**: 2.6
 > **Effective Date**: 2025-12-22
-> **Latest Update**: Made Handoff Prompt a BLOCKING requirement with strict format
+> **Latest Update**: Made Quick Actions section a BLOCKING requirement for EVERY response
 > **Purpose**: Define operational policies and protocols for AI agents working on dawson-does-framework
 
 ---
@@ -580,6 +580,36 @@ Before ending a session, you must:
    **⏱️ Auto-continue**: If no response, proceed with Option 1
    ```
 
+### Step 4d: Quick Actions Section (BLOCKING REQUIREMENT)
+
+   ⛔ **EVERY RESPONSE MUST END WITH A QUICK ACTIONS SECTION**
+   
+   This is not optional. ALL agents must include numbered quick actions at the END of EVERY response.
+   
+   **EXACT FORMAT:**
+   
+   ```
+   ## Quick Actions (reply with number):
+   
+   1. **[Agent Role]**: [Brief action description] ← DEFAULT
+   2. **[Alternative action]**: [Description]
+   3. **[Useful command]**: `cd /Users/joseph.dawson/Documents/dawson-does-framework && [command]`
+   4. No further action needed
+   
+   **⏱️ Auto-continue**: If no response in 5 minutes, proceed with Option 1
+   ```
+   
+   **Rules:**
+   - Always include at least 3 options
+   - Option 1 should be the DEFAULT (most logical next step)
+   - Include at least one useful terminal command
+   - Always include "No further action needed" as last option
+   - Include the auto-continue timer notice
+   
+   **This allows users to quickly select next actions by typing a single number.**
+
+---
+
 ### Step 4e: Handoff Prompt Format (BLOCKING REQUIREMENT)
    
    ⛔ **SESSION CANNOT END WITHOUT A VALID HANDOFF PROMPT**
@@ -980,6 +1010,11 @@ test(integration): add E2E tests for configurator flow
 ---
 
 ## Version History
+
+### Version 2.6 (2025-12-23)
+- Made **Quick Actions section a BLOCKING requirement** for EVERY response
+- Users can reply with a number for quick selection
+- Must include DEFAULT option and auto-continue timer
 
 ### Version 2.5 (2025-12-23)
 - Made **Handoff Prompt a BLOCKING requirement** - sessions cannot end without one

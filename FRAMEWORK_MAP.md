@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- c7b4d7a 2025-12-23 docs(deploy): integrate Vercel monorepo deployment SOP into existing docs
 - 711788a 2025-12-23 docs(policies): make handoff prompt a BLOCKING requirement
 - 9f56e1c 2025-12-23 docs: update MINDFRAME and PLATFORM_MEMORY with deployment session
 - eaf359b 2025-12-23 docs(agents): update MINDFRAME + AGENT_CONTEXT with shadcn SOP and UX work
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - c826163 2025-12-23 feat(media-pipeline): add E2E media production system with asset integration
 - a236262 2025-12-23 docs(media-pipeline): add SOP enforcement checkpoints and rejection criteria
 - 5e996d3 2025-12-23 feat(curator): complete cycle 8 curation - 5 drafts approved, execution focus
-- 1091a9f 2025-12-23 feat(strategist): complete cycle 7 strategy - execution focus
 
 ## Agent Governance Structure
 
