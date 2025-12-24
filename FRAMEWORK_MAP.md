@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- d63568e 2025-12-24 docs(audit): add 4 more tasks from user feedback
 - 75f9a55 2025-12-24 docs(audit): add P0/P1 tasks from configurator review
 - 1a9a64d 2025-12-24 feat(governance): add cumulative memory sections to checkpoint
 - 2fe8dea 2025-12-24 feat(governance): enforce 5 distillation categories in checkpoint
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 38c004c 2025-12-23 feat(website): implement configurator sidebar navigation
 - 573afea 2025-12-23 docs(governance): make permission request BLOCKING + add Reply Rules to MINDFRAME
 - d48758e 2025-12-23 feat(website): complete shadcn P0 component migration
-- c151a93 2025-12-23 feat(website): add P0 configurator sidebar icons and integrate category icons
 
 ## Agent Governance Structure
 

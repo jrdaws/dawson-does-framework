@@ -135,8 +135,16 @@ export function ProjectDetails({
                   <span className="text-muted-foreground">Project will be created at:</span>
                 </div>
                 <code className="block text-primary font-mono text-sm bg-muted/50 p-3 rounded border border-primary/20">
-                  {outputDir}/{slugifiedName}
+                  {/* Avoid double nesting: if outputDir already ends with slugifiedName, use outputDir directly */}
+                  {outputDir.endsWith(`/${slugifiedName}`) || outputDir.endsWith(slugifiedName) 
+                    ? outputDir 
+                    : `${outputDir}/${slugifiedName}`}
                 </code>
+                {(outputDir.endsWith(`/${slugifiedName}`) || outputDir.endsWith(slugifiedName)) && (
+                  <p className="text-xs text-muted-foreground">
+                    ℹ️ Output directory already includes project name
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>

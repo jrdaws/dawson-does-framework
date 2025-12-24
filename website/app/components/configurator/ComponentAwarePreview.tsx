@@ -257,51 +257,79 @@ export function ComponentAwarePreview({
         {/* Section Reorder Editor */}
         {showSectionEditor && (
           <div className="bg-card border border-border rounded-xl p-4">
-            <h3 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
-              <Layers className="h-4 w-4" />
-              Section Order
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-medium text-foreground flex items-center gap-2">
+                <Layers className="h-4 w-4" />
+                Customize Page Layout
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Use ↑↓ arrows to reorder • Preview updates automatically
+              </p>
+            </div>
+            
+            {/* Instructions banner */}
+            <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-lg p-3 mb-4">
+              <p className="text-xs text-indigo-300">
+                <strong>How it works:</strong> Click the up/down arrows to move sections. 
+                Required sections (Nav, Footer) stay in the layout. 
+                Click × to hide optional sections, or click items on the right to add them back.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Active Sections */}
               <div>
-                <p className="text-xs text-muted-foreground mb-2">Active Sections (drag to reorder)</p>
-                <div className="space-y-1">
+                <p className="text-xs font-medium text-foreground mb-2 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  Active Sections ({sectionOrder.length})
+                </p>
+                <div className="space-y-1.5">
                   {sectionOrder.map((componentName, index) => {
                     const section = composition.sections.find(s => s.component === componentName);
+                    const isFirst = index === 0;
+                    const isLast = index === sectionOrder.length - 1;
+                    
                     return (
                       <div
                         key={componentName}
-                        className="flex items-center gap-2 bg-background border border-border rounded-lg px-3 py-2"
+                        className="flex items-center gap-2 bg-background border border-border rounded-lg px-3 py-2.5 group hover:border-primary/30 transition-colors"
                       >
-                        <GripVertical className="h-4 w-4 text-muted-foreground cursor-move" />
-                        <span className="text-sm flex-1">{componentName}</span>
+                        <div className="flex items-center justify-center w-6 h-6 rounded bg-muted text-xs font-mono text-muted-foreground">
+                          {index + 1}
+                        </div>
+                        <span className="text-sm flex-1 font-medium">{componentName}</span>
                         {section?.required && (
-                          <span className="text-[10px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded">
+                          <span className="text-[10px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded font-medium">
                             required
                           </span>
                         )}
-                        <div className="flex gap-1">
+                        <div className="flex gap-0.5">
                           <button
                             onClick={() => moveSection(index, "up")}
-                            disabled={index === 0}
-                            className="p-1 hover:bg-accent/10 rounded disabled:opacity-30"
+                            disabled={isFirst}
+                            className="p-1.5 hover:bg-primary/10 rounded disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                            title={isFirst ? "Already at top" : "Move up"}
                           >
-                            ↑
+                            <span className="text-sm">↑</span>
                           </button>
                           <button
                             onClick={() => moveSection(index, "down")}
-                            disabled={index === sectionOrder.length - 1}
-                            className="p-1 hover:bg-accent/10 rounded disabled:opacity-30"
+                            disabled={isLast}
+                            className="p-1.5 hover:bg-primary/10 rounded disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                            title={isLast ? "Already at bottom" : "Move down"}
                           >
-                            ↓
+                            <span className="text-sm">↓</span>
                           </button>
-                          {!section?.required && (
+                          {!section?.required ? (
                             <button
                               onClick={() => toggleSection(componentName)}
-                              className="p-1 hover:bg-destructive/10 text-destructive rounded"
+                              className="p-1.5 hover:bg-destructive/20 text-destructive/70 hover:text-destructive rounded transition-colors"
+                              title="Remove section"
                             >
-                              ×
+                              <span className="text-sm">×</span>
                             </button>
+                          ) : (
+                            <div className="w-7" /> // Spacer for alignment
                           )}
                         </div>
                       </div>
@@ -312,18 +340,26 @@ export function ComponentAwarePreview({
 
               {/* Available Sections */}
               <div>
-                <p className="text-xs text-muted-foreground mb-2">Available Sections (click to add)</p>
-                <div className="space-y-1">
+                <p className="text-xs font-medium text-foreground mb-2 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-muted-foreground"></span>
+                  Hidden Sections ({availableSections.length})
+                </p>
+                <div className="space-y-1.5">
                   {availableSections.length === 0 ? (
-                    <p className="text-xs text-muted-foreground italic">All sections active</p>
+                    <div className="bg-background/50 border border-dashed border-border rounded-lg px-3 py-6 text-center">
+                      <p className="text-xs text-muted-foreground">All sections are visible</p>
+                      <p className="text-[10px] text-muted-foreground/70 mt-1">Remove sections to see them here</p>
+                    </div>
                   ) : (
                     availableSections.map(componentName => (
                       <button
                         key={componentName}
                         onClick={() => toggleSection(componentName)}
-                        className="w-full flex items-center gap-2 bg-background/50 border border-dashed border-border rounded-lg px-3 py-2 hover:border-primary/50 hover:bg-primary/5 transition-colors"
+                        className="w-full flex items-center gap-2 bg-background/50 border border-dashed border-border rounded-lg px-3 py-2.5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
                       >
-                        <span className="text-sm text-muted-foreground">+ {componentName}</span>
+                        <span className="text-primary opacity-50 group-hover:opacity-100 transition-opacity">+</span>
+                        <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{componentName}</span>
+                        <span className="text-[10px] text-muted-foreground/50 ml-auto group-hover:text-muted-foreground transition-colors">click to add</span>
                       </button>
                     ))
                   )}
