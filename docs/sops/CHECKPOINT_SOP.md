@@ -1,219 +1,266 @@
-# Session Checkpoint SOP
+# Checkpoint SOP
 
 > **Version**: 1.0.0 | **Last Updated**: 2025-12-24
 > 
-> **Purpose**: Ensure agents periodically offload progress to the framework during long sessions
-> **Audience**: All agents
-> **Principle**: "If it's not committed, it doesn't exist"
+> **Purpose**: Standardize checkpoint process with mandatory memory updates
+> **Audience**: All 13 agents
+> **Maintained By**: Auditor Agent
 
 ---
 
-## Table of Contents
+## Overview
 
-1. [Overview](#1-overview)
-2. [Checkpoint Triggers](#2-checkpoint-triggers)
-3. [What to Offload](#3-what-to-offload)
-4. [Checkpoint Format](#4-checkpoint-format)
-5. [Offload Locations](#5-offload-locations)
-6. [Examples](#6-examples)
+A "checkpoint" is a mid-session or end-session save point. It ensures:
+1. Work is committed and pushed
+2. Memory is updated for continuity
+3. State is certified in MINDFRAME
 
 ---
 
-## 1. Overview
+## Checkpoint Trigger
 
-### Problem
-
-- Long chat sessions accumulate important information
-- Crashes or disconnects can lose valuable progress
-- Other agents can't see updates until session ends
-- User has no visibility into what's been "saved"
-
-### Solution
-
-Periodic checkpoints where agents:
-1. Commit code changes to git
-2. Update shared state files (MINDFRAME.md)
-3. Note progress in memory files
-4. Output a clear checkpoint indicator
-
-### Benefit
-
-- **Persistence**: Work is saved incrementally
-- **Visibility**: User knows what's been offloaded
-- **Collaboration**: Other agents can see progress
-- **Recovery**: Crashes don't lose significant work
+When user says: `checkpoint`, `save`, `commit`, or `end session`
 
 ---
 
-## 2. Checkpoint Triggers
-
-### Mandatory Triggers (MUST checkpoint)
-
-| Trigger | Reason |
-|---------|--------|
-| **After completing a significant task** | Preserve the work |
-| **After creating 3+ files** | Batch commit |
-| **After making decisions affecting other agents** | Shared visibility |
-| **After updating SOPs or governance** | Critical changes |
-| **Before any destructive operation** | Safety checkpoint |
-| **Before ending session** | Final state capture |
-
-### Recommended Triggers (SHOULD checkpoint)
-
-| Trigger | Reason |
-|---------|--------|
-| **Every 15-20 minutes of active work** | Regular saves |
-| **When context is getting long (50+ exchanges)** | Memory management |
-| **After discovering important information** | Knowledge capture |
-| **After resolving a complex problem** | Solution preservation |
-| **When switching between major tasks** | Clean transitions |
-
-### Time-Based Guideline
+## Mandatory Checkpoint Steps
 
 ```
-0-15 min:  Work freely
-15-20 min: Consider checkpoint
-20-30 min: Checkpoint recommended
-30+ min:   Checkpoint required
+┌─────────────────────────────────────────────────────────────────┐
+│                    CHECKPOINT PROTOCOL                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  1. RUN TESTS                                                    │
+│     npm test                                                     │
+│     └── Must pass before continuing                             │
+│                                                                  │
+│  2. COMMIT & PUSH                                                │
+│     git add -A && git commit && git push                        │
+│     └── Use conventional commit format                          │
+│                                                                  │
+│  3. UPDATE MEMORY (MANDATORY)                                   │
+│     prompts/agents/memory/[ROLE]_MEMORY.md                      │
+│     └── Add session entry with required fields                 │
+│                                                                  │
+│  4. CERTIFY (if significant work)                               │
+│     ./scripts/certify.sh [CODE] [AREA] [STATUS] [VIBE] [NOTES] │
+│     └── Updates MINDFRAME.md                                    │
+│                                                                  │
+│  5. OUTPUT SUMMARY                                               │
+│     └── Show checkpoint confirmation to user                   │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 3. What to Offload
+## Memory Update Requirements
 
-### Category Matrix
-
-| Category | File Location | Update Frequency |
-|----------|--------------|------------------|
-| **Code Changes** | Git commit | Every checkpoint |
-| **Decisions Made** | Memory file | Every checkpoint |
-| **Discoveries** | MINDFRAME.md | When significant |
-| **SOPs Identified** | sop-opportunities.md | When observed |
-| **Certifications** | MINDFRAME.md | When earned |
-| **Task Progress** | Outbox file | When complete |
-| **Blockers** | PROJECT_PRIORITIES.md | Immediately |
-| **New Tasks** | PROJECT_PRIORITIES.md | When identified |
-
-### What NOT to Offload Mid-Session
-
-- Incomplete code (commit only working code)
-- Speculative decisions (wait for confirmation)
-- Trivial changes (batch with significant ones)
-
----
-
-## 4. Checkpoint Format
-
-### Standard Checkpoint Block
+### Mandatory Fields (Every Checkpoint)
 
 ```markdown
-## 📦 Checkpoint [HH:MM]
+### Session: [DATE] [TIME] ([Brief Label])
 
-### Offloaded:
-- ✅ [file/change 1]
-- ✅ [file/change 2]
-- ✅ [file/change 3]
+#### Work Completed
+- [Bullet list of completed tasks]
 
-### Committed:
-`[hash] [message]`
+#### Key Decisions
+- [Decision]: [Reasoning]
 
-### Updated:
-- **MINDFRAME**: [section] → [new value]
-- **Memory**: [what noted]
+#### Blockers/Issues
+- [Any problems encountered]
 
-### In Progress:
-- [remaining task 1]
-- [remaining task 2]
+#### Time Spent
+- [Estimated duration]
 
----
+#### Files Changed
+- [List of key files modified]
 ```
 
-### Minimal Checkpoint (for small updates)
+### Optional Fields (When Applicable)
 
 ```markdown
-## 📦 Checkpoint [HH:MM]
-Committed: `[hash] [message]`
-Updated: [file] with [change]
+#### Errors Encountered
+- [Error]: [How resolved]
 
----
+#### User Questions Answered
+- Q: [Question]
+- A: [Brief answer]
+
+#### Patterns Observed
+- [Pattern that might need SOP]
+
+#### Performance Notes
+- [Slow operations, optimizations made]
+
+#### Alternative Approaches Considered
+- [Approach]: [Why rejected]
 ```
 
 ---
 
-## 5. Offload Locations
+## Distillation Categories
 
-### Quick Reference
+### Category 1: Operational State (ALWAYS save)
 
-| What | Where |
-|------|-------|
-| Code changes | `git commit` |
-| Project state | `output/shared/MINDFRAME.md` |
-| My notes | `prompts/agents/memory/[ROLE]_MEMORY.md` |
-| Tasks | `output/shared/PROJECT_PRIORITIES.md` |
-| SOP ideas | `output/media-pipeline/quality-agent/workspace/sop-opportunities.md` |
-| Handoffs | `output/[agent]/inbox/` |
-| Completed work | `output/[my-role]/outbox/` |
+| What | Why | Where |
+|------|-----|-------|
+| Tasks completed | Continuity | Session entry |
+| Decisions made | Audit trail | Session entry |
+| Files changed | Reference | Session entry |
+| Current blockers | Handoff | Active Context |
+
+### Category 2: Patterns (Save when count ≥2)
+
+| What | Why | Where |
+|------|-----|-------|
+| Recurring errors | SOP candidate | Known Issues |
+| Common questions | FAQ candidate | Insights |
+| Slow operations | Optimization | Performance Notes |
+| Lock conflicts | Process improvement | Coordination Notes |
+
+### Category 3: Insights (Save when novel)
+
+| What | Why | Where |
+|------|-----|-------|
+| Useful commands | Future reference | Quick Reference |
+| File locations | Navigation | Key Files |
+| Gotchas discovered | Avoid repeating | Insights |
+| Workarounds used | Problem solving | Session Notes |
+
+### Category 4: Metrics (Save every session)
+
+| What | Why | Where |
+|------|-----|-------|
+| Session duration | Velocity tracking | Metrics |
+| Tasks completed | Productivity | Metrics |
+| Tests passed | Health | Metrics |
+| Errors hit | Quality | Metrics |
+
+### Category 5: Relationships (Save when new)
+
+| What | Why | Where |
+|------|-----|-------|
+| Agent handoffs | Coordination | Handoff Notes |
+| File dependencies | Architecture | Key Files |
+| SOP references | Governance | Related SOPs |
+| External tools used | Environment | Tools |
 
 ---
 
-## 6. Examples
+## Checkpoint Confirmation Format
 
-### Example 1: Code Implementation Checkpoint
+After completing checkpoint, output:
+
+```
+## ✅ CHECKPOINT COMPLETE
+
+| Item | Status |
+|------|--------|
+| Tests | ✅ [N] passing |
+| Committed | ✅ [hash] |
+| Pushed | ✅ origin/main |
+| Memory Updated | ✅ [file] |
+| Certified | ✅/⏭️ [area] |
+
+### Session Summary (saved to memory)
+- Duration: [time]
+- Tasks: [count] completed
+- Key Decision: [most important]
+- Next: [handoff or continue]
+```
+
+---
+
+## Memory File Structure Enhancement
+
+### Proposed New Sections
 
 ```markdown
-## 📦 Checkpoint 14:35
+## 🔧 Quick Reference
 
-### Offloaded:
-- ✅ Created ConfiguratorSidebar.tsx (new component)
-- ✅ Added 24 SVG icons to public/icons/sidebar/
-- ✅ Updated IntegrationSelector.tsx (icon imports)
+### Useful Commands
+- [command]: [what it does]
 
-### Committed:
-`a1b2c3d feat(website): add sidebar navigation component with icons`
-
-### Updated:
-- **MINDFRAME**: Website section → "Sidebar component added"
-- **Memory**: Noted icon naming convention used
-
-### In Progress:
-- Wire up navigation state
-- Add keyboard shortcuts
+### Key File Locations
+- [file]: [purpose]
 
 ---
+
+## 📊 Session Metrics
+
+| Session | Duration | Tasks | Decisions | Errors |
+|---------|----------|-------|-----------|--------|
+| 2025-12-24 | 45min | 5 | 2 | 0 |
+| 2025-12-23 | 30min | 3 | 1 | 1 |
+
+---
+
+## ❓ FAQ (from user questions)
+
+### Q: [Common question]
+A: [Answer for future reference]
+
+---
+
+## 🔄 Coordination Log
+
+| Date | With Agent | Topic | Resolution |
+|------|------------|-------|------------|
+| 2025-12-24 | Testing | Lock conflict | Waited 5min |
 ```
 
-### Example 2: Minimal Checkpoint
-
-```markdown
-## 📦 Checkpoint 11:45
-Committed: `e5f6g7h fix(website): correct sidebar icon paths`
-Updated: Fixed 3 broken icon imports
-
----
-```
-
 ---
 
-## Commands for Checkpoints
-
-### Quick Commit
+## Checkpoint Script
 
 ```bash
-cd /Users/joseph.dawson/Documents/dawson-does-framework && git add -A && git commit -m "[type]([scope]): [description]"
-```
+#!/bin/bash
+# scripts/checkpoint.sh
 
-### Update MINDFRAME Certification
+AGENT_CODE=$1
 
-```bash
-cd /Users/joseph.dawson/Documents/dawson-does-framework && ./scripts/certify.sh [ROLE] "[Area]" "[Status]" "[vibe]" "[notes]"
+echo "🔄 Running checkpoint for $AGENT_CODE Agent..."
+
+# 1. Run tests
+echo "📋 Running tests..."
+npm test || { echo "❌ Tests failed - fix before checkpoint"; exit 1; }
+
+# 2. Stage all changes
+git add -A
+
+# 3. Check for changes
+if git diff --cached --quiet; then
+  echo "ℹ️ No changes to commit"
+else
+  # 4. Commit
+  read -p "Commit message: " MSG
+  git commit -m "$MSG"
+  
+  # 5. Push
+  ./scripts/git-push-safe.sh
+fi
+
+# 6. Remind about memory
+echo ""
+echo "📝 REMINDER: Update your memory file!"
+echo "   File: prompts/agents/memory/${AGENT_CODE}_MEMORY.md"
+echo ""
+echo "   Required fields:"
+echo "   - Work Completed"
+echo "   - Key Decisions"
+echo "   - Time Spent"
+echo ""
+
+echo "✅ Checkpoint complete!"
 ```
 
 ---
 
 ## Related Documents
 
-- [AGENT_POLICIES.md](../../prompts/agents/AGENT_POLICIES.md) - Session protocols
-- [MINDFRAME.md](../../output/shared/MINDFRAME.md) - Shared state
+- [MEMORY_FORMAT.md](../../prompts/agents/MEMORY_FORMAT.md) - Memory file structure
+- [MINDFRAME.md](../../output/shared/MINDFRAME.md) - Certification tracking
 
 ---
 
@@ -221,4 +268,13 @@ cd /Users/joseph.dawson/Documents/dawson-does-framework && ./scripts/certify.sh 
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 1.0.0 | 2025-12-24 | DOC Agent | Initial creation |
+| 1.0.0 | 2025-12-24 | Auditor Agent | Initial creation |
+
+---
+
+## Approval Chain
+
+| Role | Agent | Date | Status |
+|------|-------|------|--------|
+| Proposer | Auditor Agent | 2025-12-24 | ✅ Created |
+| Reviewer | Auditor Agent | 2025-12-24 | ✅ Self-approved (meta-SOP) |

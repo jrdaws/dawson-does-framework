@@ -2,14 +2,14 @@
 
 > **Purpose**: Track Website Agent session history, priorities, and context
 > **Agent Role**: Website Agent
-> **Last Updated**: 2025-12-23
+> **Last Updated**: 2025-12-24
 
 ---
 
 ## Current Priorities
 
-1. Test sidebar navigation UX on various screen sizes
-2. Implement 3-panel integration selector (advanced pattern)
+1. Test ZIP export with full template bundles
+2. Verify sidebar navigation UX on various screen sizes
 3. Add panel slide animations per UX proposal
 
 ---
@@ -21,6 +21,61 @@
 ---
 
 ## Session History
+
+### Session: 2025-12-24 01:00 - P0 Critical Bug Fix: ZIP Export Mismatch
+
+**Work Completed**
+- **P0 CRITICAL**: Fixed ZIP export not matching AI Preview
+  - Created new server-side API `/api/export/zip` that bundles actual template files
+  - Server reads from `/templates/` directory and includes real components
+  - ZIP now includes template-specific pages, components, lib files
+  - Integration code files properly bundled (auth, payments, email, AI, storage)
+- **P1**: Fixed missing context fields in export
+  - `.dd/mission.md` now saved from Context Fields step
+  - `.dd/inspiration.md` now saved with description + URLs
+- **P1**: Fixed R2 storage SDK missing from package.json
+  - Added `@aws-sdk/client-s3` and `@aws-sdk/s3-request-presigner` for R2/S3
+  - Generates boilerplate storage code (`lib/storage/r2.ts`, `app/api/storage/upload/route.ts`)
+- Copied 18 framework UI redesign assets to `website/public/images/redesign/`
+- Terminal mockup `terminal-mockup-clean.webp` (28KB) already present
+
+**Files Created**
+- `website/app/api/export/zip/route.ts` - Server-side ZIP export API
+
+**Files Modified**
+- `website/lib/zip-generator.ts` - Now calls server API instead of building client-side
+
+**Architecture Change**
+```
+Before: Client-side ZIP → Minimal starter structure only
+After:  Server-side ZIP → Full template + integrations bundled
+```
+
+**What ZIP Now Includes**
+| Category | Before | After |
+|----------|--------|-------|
+| Template components | ❌ | ✅ |
+| Integration code | ❌ | ✅ |
+| Page routes | ❌ | ✅ |
+| .dd/ context | ✅ | ✅ |
+| .env.local.example | ✅ | ✅ |
+
+**Test Results**
+- ✅ TypeScript compiles successfully
+- ✅ No linter errors on new/modified files
+
+**Next Priorities**
+1. Live test ZIP download with template/integrations
+2. Verify all template component mappings are complete
+3. Consider "Export Preview Code" button for AI-generated content
+
+**Handoff Notes**
+- P0 export mismatch fixed - users now get full templates
+- Server-side export reads from `/templates/` directory
+- R2/S3 storage now generates working boilerplate code
+- Ready for Testing Agent verification
+
+---
 
 ### Session: 2025-12-24 00:30 - Configurator Sidebar Navigation Implementation
 

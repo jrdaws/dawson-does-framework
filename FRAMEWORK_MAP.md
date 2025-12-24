@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 7ef4d09 2025-12-24 test(e2e): comprehensive export flow tests - catches known bugs
 - cbca859 2025-12-24 docs(export): clarify ZIP vs CLI export differences
 - 27048a2 2025-12-24 docs(sops): auditor sign-off on all 10 SOPs
 - a4137bb 2025-12-24 chore: add website agent inbox tasks for export alignment
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 6da3e01 2025-12-23 docs(policies): make Quick Actions section BLOCKING requirement
 - c7b4d7a 2025-12-23 docs(deploy): integrate Vercel monorepo deployment SOP into existing docs
 - 711788a 2025-12-23 docs(policies): make handoff prompt a BLOCKING requirement
-- 9f56e1c 2025-12-23 docs: update MINDFRAME and PLATFORM_MEMORY with deployment session
 
 ## Agent Governance Structure
 

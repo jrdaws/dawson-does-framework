@@ -213,3 +213,65 @@ I am the authority on correct sequencing. When reviewing work:
 - ALL SOPs now have Auditor oversight
 - Full governance coverage achieved
 
+### Session: 2025-12-24 00:15 (Checkpoint Enhancement)
+
+#### Work Completed
+- Created CHECKPOINT_SOP.md (11th SOP)
+- Created scripts/checkpoint.sh with memory enforcement
+- Designed 5 distillation categories for memory
+- Answered user questions about memory vs chat logging
+
+#### Key Decisions
+- **Memory over transcript**: Full chat not saved, only distilled insights
+- **Checkpoint forces memory**: Script blocks commit if memory stale
+- **5 categories**: Operational, Patterns, Insights, Metrics, Relationships
+
+#### Time Spent
+- ~25 minutes on checkpoint system design
+
+#### Files Changed
+- `docs/sops/CHECKPOINT_SOP.md` (new)
+- `scripts/checkpoint.sh` (new)
+- `prompts/agents/memory/AUDITOR_MEMORY.md` (this file)
+
+#### User Questions Answered
+- Q: Does checkpoint have to save to memory?
+- A: Now YES - script enforces it before allowing commit
+
+- Q: Is our chat logged?
+- A: No - only distilled insights saved to memory files
+
+- Q: What other info should be distilled?
+- A: 5 categories: Operational, Patterns, Insights, Metrics, Relationships
+
+#### Patterns Observed
+- User expects checkpoint = full save (reasonable expectation)
+- Memory format could include FAQ section for repeated questions
+
+---
+
+## 🔧 Quick Reference
+
+### Useful Commands
+- `./scripts/checkpoint.sh AUD` - Run checkpoint with memory enforcement
+- `./scripts/certify.sh AUD [AREA] [STATUS] [VIBE] [NOTES]` - Update MINDFRAME
+- `./scripts/agent-lock.sh acquire AUD` - Get workspace lock
+
+### Key File Locations
+- Memory: `prompts/agents/memory/AUDITOR_MEMORY.md`
+- Inbox: `output/controller-agents/auditor/inbox/`
+- Role SOP: `prompts/agents/roles/controllers/AUDITOR.md`
+
+---
+
+## ❓ FAQ (from user questions)
+
+### Q: What's the difference between checkpoint and commit?
+A: Checkpoint = commit + push + memory update + certification. Commit is just git.
+
+### Q: Where are chats logged?
+A: They're not. Only key insights go to memory files. Full chat would bloat repo.
+
+### Q: How do I know what the last agent did?
+A: Check their memory file and MINDFRAME.md certifications.
+
