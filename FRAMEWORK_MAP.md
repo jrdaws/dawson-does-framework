@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 7b36890 2025-12-23 docs(memory): update DOCS_MEMORY.md with Vercel SOP review session
 - 6da3e01 2025-12-23 docs(policies): make Quick Actions section BLOCKING requirement
 - c7b4d7a 2025-12-23 docs(deploy): integrate Vercel monorepo deployment SOP into existing docs
 - 711788a 2025-12-23 docs(policies): make handoff prompt a BLOCKING requirement
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 558885a 2025-12-23 feat(website): implement framework UI redesign with new brand identity
 - 91f8fd2 2025-12-23 chore: ignore test-saas-project directory
 - c826163 2025-12-23 feat(media-pipeline): add E2E media production system with asset integration
-- a236262 2025-12-23 docs(media-pipeline): add SOP enforcement checkpoints and rejection criteria
 
 ## Agent Governance Structure
 

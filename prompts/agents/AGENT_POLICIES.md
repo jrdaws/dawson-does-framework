@@ -596,7 +596,7 @@ Before ending a session, you must:
    3. **[Useful command]**: `cd /Users/joseph.dawson/Documents/dawson-does-framework && [command]`
    4. No further action needed
    
-   **⏱️ Auto-continue**: If no response in 5 minutes, proceed with Option 1
+   **⏱️ Auto-continue**: If no response in 35 minutes, proceed with Option 1
    ```
    
    **Rules:**

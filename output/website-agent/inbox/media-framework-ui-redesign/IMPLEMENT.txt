@@ -1,0 +1,104 @@
+# Website Agent Task: Implement Framework UI Redesign Assets
+
+**Project**: Framework UI Clone - User-Friendly Redesign
+**From**: Quality Agent
+**Date**: 2025-12-23
+**Status**: ✅ 17/18 APPROVED (1 requires manual creation)
+
+---
+
+## Approved Assets
+
+All approved assets are in:
+`output/media-pipeline/shared/assets/framework-ui-redesign/optimized/`
+
+### Ready for Integration
+
+| Category | Assets | Files |
+|----------|--------|-------|
+| Hero | 4 | hero-gradient-bg.webp, hero-gradient-bg-mobile.webp, hero-abstract-graphic.webp, hero-mesh-pattern.svg |
+| Icons | 6 | icon-templates.svg, icon-plugins.svg, icon-providers.svg, icon-trust.svg, icon-cli.svg, icon-extensible.svg |
+| Screenshots | 2 | dashboard-preview.webp, code-editor-visual.webp |
+| Avatars | 3 | avatar-placeholder-1.webp, avatar-placeholder-2.webp, avatar-placeholder-3.webp |
+| Patterns | 2 | section-divider.svg, footer-pattern.svg |
+
+**Total Approved**: 17 assets
+
+---
+
+## ⚠️ BLOCKED ASSET: terminal-mockup-clean.webp
+
+**Status**: Requires MANUAL CREATION
+
+**Why**: AI generation failed after 2 iterations:
+- Iteration 1: Generated industrial device with LED bars
+- Iteration 2: Generated Kanban dashboard with colored cards
+- The AI cannot generate a clean macOS terminal window mockup
+
+**Manual Creation Instructions**:
+
+1. **Option A - Screenshot**:
+   - Open Terminal.app on macOS
+   - Run a demo of the framework CLI (e.g., `framework doctor .`)
+   - Take a screenshot
+   - Crop and optimize
+
+2. **Option B - Design Tool**:
+   - Create in Figma/Sketch
+   - Use macOS window chrome (rounded corners, traffic lights)
+   - Dark background (#1E1E1E or similar)
+   - Green/cyan command text
+   - Include sample CLI output
+
+3. **Option C - Use Real Screenshot**:
+   - Use `website/public/images/terminal-example.png` if it exists
+   - Create new screenshot during implementation
+
+**Target Location**: `website/public/images/redesign/screenshots/terminal-mockup-clean.webp`
+
+---
+
+## Integration Steps
+
+1. **Copy assets to website**:
+   ```bash
+   mkdir -p website/public/images/redesign/{hero,icons,screenshots,avatars,patterns}
+   cp output/media-pipeline/shared/assets/framework-ui-redesign/optimized/hero-*.{webp,svg} website/public/images/redesign/hero/
+   cp output/media-pipeline/shared/assets/framework-ui-redesign/optimized/icon-*.svg website/public/images/redesign/icons/
+   cp output/media-pipeline/shared/assets/framework-ui-redesign/optimized/{dashboard,code-editor}*.webp website/public/images/redesign/screenshots/
+   cp output/media-pipeline/shared/assets/framework-ui-redesign/optimized/avatar-*.webp website/public/images/redesign/avatars/
+   cp output/media-pipeline/shared/assets/framework-ui-redesign/optimized/{section,footer}*.svg website/public/images/redesign/patterns/
+   ```
+
+2. **Update Hero Section**:
+   - Use `hero-gradient-bg.webp` as background
+   - Position `hero-abstract-graphic.webp` on right side (use composite test as reference)
+   - Overlay `hero-mesh-pattern.svg` for subtle texture
+
+3. **Update Feature Cards**:
+   - Use the 6 icons for feature/benefit cards
+   - Apply Indigo (#6366F1) color on hover
+
+4. **Update Screenshots Section**:
+   - Use `dashboard-preview.webp` and `code-editor-visual.webp`
+   - Create the terminal mockup manually
+
+5. **Update Testimonials/Avatars**:
+   - Use the 3 avatar placeholders
+
+6. **Update Patterns**:
+   - Use `section-divider.svg` between major sections
+   - Use `footer-pattern.svg` in footer background
+
+---
+
+## Reference Files
+
+- Composite test: `optimized/hero-combined-test.webp` (shows how hero elements work together)
+- Color Philosophy: `output/media-pipeline/shared/COLOR_PHILOSOPHY.md`
+- Shadcn SOP: `docs/sops/SHADCN_IMPLEMENTATION_SOP.md`
+
+---
+
+*Handoff Complete | Quality Agent → Website Agent | 2025-12-23*
+
