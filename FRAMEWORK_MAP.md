@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 558885a 2025-12-23 feat(website): implement framework UI redesign with new brand identity
 - 91f8fd2 2025-12-23 chore: ignore test-saas-project directory
 - c826163 2025-12-23 feat(media-pipeline): add E2E media production system with asset integration
 - a236262 2025-12-23 docs(media-pipeline): add SOP enforcement checkpoints and rejection criteria
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 5529ea2 2025-12-22 feat(testing): add production smoke test suite
 - 849c3f4 2025-12-22 docs(deploy): add Vercel deployment guide and production optimizations
 - 247c696 2025-12-22 docs(templates): complete P2 template health check
-- 88b4cad 2025-12-22 docs(agents): verify quick start guide task completion
 
 ## Agent Governance Structure
 
