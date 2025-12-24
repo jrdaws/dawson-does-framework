@@ -193,6 +193,39 @@
 
 ---
 
+### Session: 2025-12-23 20:15 (SOP Creation)
+
+**Work Completed**
+- Drafted formal SOP: `docs/sops/AI_MODEL_SELECTION_SOP.md` (280+ lines)
+  - Based on approved proposal from Auditor (85/100 score)
+  - Addresses token truncation pattern (5+ occurrences)
+  - Includes: Model specs, token limits, tier selection, chunking protocol
+  - Added pre-generation size estimation formulas
+  - Added truncation detection & recovery procedures
+  - Added monitoring & alerting guidelines
+- Created `docs/sops/SOP_PROPOSAL_PROCESS.md` in previous session
+- Updated AGENT_POLICIES.md with 5 active SOPs
+- Updated sop-opportunities.md to mark AI token truncation as resolved
+- Moved approved proposal to `output/shared/sop-proposals/done/`
+- Created sign-off task for Auditor Agent
+- Updated MINDFRAME with Documentation certification
+
+**Blockers Encountered**
+- None
+
+**Next Priorities**
+1. Await Auditor final sign-off on AI Model Selection SOP
+2. Continue monitoring sop-opportunities.md for new patterns
+3. Draft SOPs for remaining observations (template versioning, image naming)
+
+**Handoff Notes**
+- AI Model Selection SOP ready for Auditor sign-off
+- Task created: `output/controller-agents/auditor/inbox/TASK-signoff-ai-model-sop.txt`
+- 5 SOPs now active (Bug Triage, Doc Sync, Deployment, SOP Proposal, AI Model)
+- SOP Proposal Process established for future proposals
+
+---
+
 <!-- Template for future sessions:
 
 ### Session: YYYY-MM-DD HH:MM

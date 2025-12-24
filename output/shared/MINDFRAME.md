@@ -62,7 +62,7 @@ UI redesign complete! Homepage and configurator now use modern Indigo/Violet bra
 ### Documentation
 | Certified By | Date | Status | Vibe | Notes |
 |--------------|------|--------|------|-------|
-| Documentation Agent | 2025-12-23 | ✅ Current | 🟢 Fresh | 3 new SOPs, Mindframe system |
+| Documentation Agent | 2025-12-23 | ✅ Current | 🟢 Fresh | 5 SOPs (AI Model Selection, SOP Proposal Process added) |
 
 ### Templates
 | Certified By | Date | Status | Vibe | Notes |
