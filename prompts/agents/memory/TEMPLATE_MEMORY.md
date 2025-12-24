@@ -97,7 +97,7 @@
 
 ### Session: 2025-12-23 03:XX - P2 Template Quality Audit (Task Inbox)
 
-**Task Source**: `output/template-agent/inbox/20251223-0300-P2-task-template-quality-audit.txt`
+**Task Source**: `output/agents/template/inbox/20251223-0300-P2-task-template-quality-audit.txt`
 
 **Work Completed**
 - ✅ Audited all 6 templates for structure (README, template.json, package.json, .env.example, manifest)
@@ -107,7 +107,7 @@
 - ✅ Build tested saas and seo-directory - BOTH SUCCESS
 - ✅ Ran full test suite: 668/668 tests passed
 - ✅ **Fixed seo-directory README** - was incomplete (only 10 lines about visual testing)
-- ✅ Created quality audit report at `output/template-agent/outbox/20251223-quality-audit-report.md`
+- ✅ Created quality audit report at `output/agents/template/outbox/20251223-quality-audit-report.md`
 
 **Key Findings**
 | Check | Status | Notes |
@@ -142,7 +142,7 @@
 
 ### Session: 2025-12-22 21:XX - P2 Template Health Check (Task Inbox)
 
-**Task Source**: `output/template-agent/inbox/20251222-2000-P2-task-template-health-check.txt`
+**Task Source**: `output/agents/template/inbox/20251222-2000-P2-task-template-health-check.txt`
 
 **Work Completed**
 - ✅ Ran full test suite: 668/668 tests passed
@@ -151,7 +151,7 @@
 - ✅ Build tested seo-directory template: ✅ SUCCESS (Next.js 15.5.9)
 - ✅ Validated all 6 template.json files: ALL VALID JSON
 - ✅ Verified integrations directory (saas has 6 integration types)
-- ✅ Created health report at `output/template-agent/workspace/health-report.txt`
+- ✅ Created health report at `output/agents/template/workspace/health-report.txt`
 - ✅ No issues found - all templates healthy
 
 **Test Results**
@@ -245,7 +245,7 @@
 - ✅ Validated all 6 template.json files - ALL VALID JSON
 - ✅ Verified integrations directory structure (saas template)
 - ✅ **FIXED: flagship-saas was not registered in CLI** - Added to TEMPLATES constant
-- ✅ Created health report at `output/template-agent/workspace/health-report.txt`
+- ✅ Created health report at `output/agents/template/workspace/health-report.txt`
 
 **Issue Found & Fixed**
 - **CRITICAL**: `flagship-saas` template existed in filesystem but was NOT registered in `bin/framework.js` TEMPLATES constant

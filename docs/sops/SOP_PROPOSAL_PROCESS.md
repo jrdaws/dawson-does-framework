@@ -199,7 +199,7 @@ Add reference to `prompts/agents/AGENT_POLICIES.md`:
 
 Quality Agent updates:
 ```bash
-cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/media-pipeline/quality-agent/workspace/SOP_REGISTRY.md
+cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/agents/quality/workspace/SOP_REGISTRY.md
 ```
 
 ### Step 4: Update MINDFRAME
@@ -249,7 +249,7 @@ Proposed → Under Review → Approved → Published
 ## Related Documents
 
 - [AGENT_POLICIES.md](../../prompts/agents/AGENT_POLICIES.md) - Main governance
-- [SOP_REGISTRY.md](../../output/media-pipeline/quality-agent/workspace/SOP_REGISTRY.md) - SOP tracking
+- [SOP_REGISTRY.md](../../output/agents/quality/workspace/SOP_REGISTRY.md) - SOP tracking
 - [Bug Triage SOP](./BUG_TRIAGE_SOP.md)
 - [Documentation Sync SOP](./DOCUMENTATION_SYNC_SOP.md)
 - [Deployment SOP](./DEPLOYMENT_SOP.md)

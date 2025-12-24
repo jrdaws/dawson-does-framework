@@ -443,7 +443,7 @@ Documentation is now accurate and unblocks Documentation Agent to:
 
 **Task Status:** Already Complete - No additional changes needed
 
-**Note:** Task file `output/platform-agent/inbox/20251222-2000-P2-task-parallel-stage-execution.txt` can be archived
+**Note:** Task file `output/agents/platform/inbox/20251222-2000-P2-task-parallel-stage-execution.txt` can be archived
 
 ---
 
@@ -627,7 +627,7 @@ All cost optimization tasks were **already complete** from previous sessions:
 
 **Files Created:**
 - `scripts/deploy-vercel.sh`
-- `output/platform-agent/outbox/20251223-vercel-deployment-status.txt`
+- `output/agents/platform/outbox/20251223-vercel-deployment-status.txt`
 
 **Files Modified:**
 - `output/shared/PROJECT_PRIORITIES.md`

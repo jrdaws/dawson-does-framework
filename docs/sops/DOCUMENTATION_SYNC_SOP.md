@@ -187,7 +187,7 @@ When you make changes requiring doc updates but can't update yourself:
 
 ```bash
 # Create notification for Documentation Agent
-cat > output/documentation-agent/inbox/doc-update-needed-$(date +%Y%m%d-%H%M).txt << EOF
+cat > output/agents/documentation/inbox/doc-update-needed-$(date +%Y%m%d-%H%M).txt << EOF
 DOC UPDATE NEEDED
 
 Requested By: [Your Role]
@@ -293,7 +293,7 @@ git diff --name-only HEAD~1 | grep -E "\.(ts|tsx|js|mjs)$"
 
 ```bash
 # Quick notification to DOC agent
-echo "DOC UPDATE: [description]" > output/documentation-agent/inbox/update-$(date +%Y%m%d-%H%M).txt
+echo "DOC UPDATE: [description]" > output/agents/documentation/inbox/update-$(date +%Y%m%d-%H%M).txt
 ```
 
 ### Update Document Header

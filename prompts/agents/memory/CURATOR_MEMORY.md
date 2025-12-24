@@ -114,16 +114,16 @@ Tasks are curated and ready. Stop creating - start executing.
 
 | Agent | Inbox Location |
 |-------|----------------|
-| CLI | `output/cli-agent/inbox/` |
-| Website | `output/website-agent/inbox/` |
-| Template | `output/template-agent/inbox/` |
-| Integration | `output/integration-agent/inbox/` |
-| Documentation | `output/documentation-agent/inbox/` |
-| Testing | `output/testing-agent/inbox/` |
-| Platform | `output/platform-agent/inbox/` |
-| Research (Media) | `output/media-pipeline/research-agent/inbox/` |
-| Media | `output/media-pipeline/media-agent/inbox/` |
-| Quality (Media) | `output/media-pipeline/quality-agent/inbox/` |
+| CLI | `output/agents/cli/inbox/` |
+| Website | `output/agents/website/inbox/` |
+| Template | `output/agents/template/inbox/` |
+| Integration | `output/agents/integration/inbox/` |
+| Documentation | `output/agents/documentation/inbox/` |
+| Testing | `output/agents/testing/inbox/` |
+| Platform | `output/agents/platform/inbox/` |
+| Research (Media) | `output/agents/research/inbox/` |
+| Media | `output/agents/media/inbox/` |
+| Quality (Media) | `output/agents/quality/inbox/` |
 
 ---
 

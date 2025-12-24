@@ -125,7 +125,7 @@ The deploy command ALREADY follows all CLI patterns from CONTRIBUTING.md:
 - `src/commands/deploy.mjs` (523 lines) - full implementation
 
 **Files Created**
-- `output/cli-agent/workspace/deploy-audit.txt` - comprehensive audit report
+- `output/agents/cli/workspace/deploy-audit.txt` - comprehensive audit report
 
 **Blockers Encountered**
 - None
@@ -152,7 +152,7 @@ No code changes were required - the implementation follows all patterns.
 - ✅ Updated all error handling to use showError() helper
 - ✅ Fixed code style (removed semicolons for .mjs convention)
 - ✅ All 668 tests passing
-- ✅ Created audit notes in output/cli-agent/workspace/deploy-audit.txt
+- ✅ Created audit notes in output/agents/cli/workspace/deploy-audit.txt
 
 **Issues Found & Fixed**
 1. **Help flags not working** - Fixed
@@ -200,7 +200,7 @@ No code changes were required - the implementation follows all patterns.
 
 **Handoff Notes**
 - P2 task complete: Deploy command enhanced
-- Audit notes saved in output/cli-agent/workspace/deploy-audit.txt
+- Audit notes saved in output/agents/cli/workspace/deploy-audit.txt
 - All tests passing (668/668)
 - CLI commands are now consistently excellent
 

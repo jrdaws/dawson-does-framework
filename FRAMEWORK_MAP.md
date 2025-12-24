@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 70c1271 2025-12-24 feat(sops): add Folder Deprecation SOP + mark old agent folders as DEPRECATED
 - 8a1fd77 2025-12-24 feat(sops): add Agent Creation SOP with automation script
 - f15b215 2025-12-24 feat(agents): add default settings.json for all 13 agents + P1 task for path updates
 - a85827a 2025-12-24 chore(curator): complete cycle 9 - 5 tasks distributed (8.6 avg score)
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - d63568e 2025-12-24 docs(audit): add 4 more tasks from user feedback
 - 75f9a55 2025-12-24 docs(audit): add P0/P1 tasks from configurator review
 - 1a9a64d 2025-12-24 feat(governance): add cumulative memory sections to checkpoint
-- 2fe8dea 2025-12-24 feat(governance): enforce 5 distillation categories in checkpoint
 
 ## Agent Governance Structure
 

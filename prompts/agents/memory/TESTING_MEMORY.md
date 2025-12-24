@@ -92,7 +92,7 @@
 - ✅ Tested `./scripts/validate-agent-work.sh` Check 8 (Next Agent Prompt)
   - Working correctly, found handoff prompts from DOC agent
 - ✅ All 693 tests passing
-- ✅ Created verification report: `output/testing-agent/outbox/20251223-sop-verification-report.txt`
+- ✅ Created verification report: `output/agents/testing/outbox/20251223-sop-verification-report.txt`
 
 **All Success Criteria Met:**
 - [x] All 3 SOPs have complete, actionable checklists

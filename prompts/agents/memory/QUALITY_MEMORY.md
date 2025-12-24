@@ -226,8 +226,8 @@ Approved assets go to Template Agent (for templates) or Website Agent (for proje
 
 | Asset Target | Receiving Agent | Inbox |
 |--------------|-----------------|-------|
-| TEMPLATE | Template Agent | `output/template-agent/inbox/media-[project]/` |
-| PROJECT | Website Agent | `output/website-agent/inbox/media-[project]/` |
+| TEMPLATE | Template Agent | `output/agents/template/inbox/media-[project]/` |
+| PROJECT | Website Agent | `output/agents/website/inbox/media-[project]/` |
 
 ---
 

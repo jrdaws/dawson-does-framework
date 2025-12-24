@@ -36,7 +36,7 @@ AI code generation frequently truncates output when token limits are insufficien
 
 **5+ occurrences** across multiple testing sessions (2025-12-23)
 
-**Source**: `output/media-pipeline/quality-agent/workspace/sop-opportunities.md`
+**Source**: `output/agents/quality/workspace/sop-opportunities.md`
 
 ---
 
@@ -414,7 +414,7 @@ cd /Users/joseph.dawson/Documents/dawson-does-framework && grep -A5 "MODEL_TIERS
 
 - [Prompt Standards](../standards/PROMPT_STANDARDS.md) - Token-optimized prompt writing
 - [API Contracts](../standards/API_CONTRACTS.md) - Response format standards
-- [SOP Opportunities Log](../../output/media-pipeline/quality-agent/workspace/sop-opportunities.md)
+- [SOP Opportunities Log](../../output/agents/quality/workspace/sop-opportunities.md)
 
 ---
 

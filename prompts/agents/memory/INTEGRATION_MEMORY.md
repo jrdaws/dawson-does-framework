@@ -142,7 +142,7 @@
 ### Session: 2025-12-22 20:00 (Integration Inventory)
 
 **Work Completed**
-- Created comprehensive integration inventory: `output/integration-agent/workspace/INTEGRATION_INVENTORY.md`
+- Created comprehensive integration inventory: `output/agents/integration/workspace/INTEGRATION_INVENTORY.md`
 - Discovered 15 unique integration providers across 7 categories
 - Documented all template implementations in `templates/saas/integrations/`
 - Documented all platform providers in `src/platform/providers/impl/`
@@ -171,7 +171,7 @@
 4. Document CLI workflow for deployments
 
 **Handoff Notes**
-- Full inventory available at `output/integration-agent/workspace/INTEGRATION_INVENTORY.md`
+- Full inventory available at `output/agents/integration/workspace/INTEGRATION_INVENTORY.md`
 - Integration matrix shows coverage by template
 - Recommendations included for short/medium/long-term improvements
 - Ready for Documentation Agent to create integration guides from inventory
@@ -231,8 +231,8 @@
   - `docs/integrations/INTEGRATION_ROADMAP.md` - Future priorities
   - `docs/integrations/ADDING_INTEGRATIONS.md` - How to add new integrations
   - `templates/saas/integrations/_example/` - Template for new integrations
-- Task file moved to: `output/integration-agent/done/`
-- Completion report at: `output/integration-agent/outbox/20251223-integration-expansion-complete.md`
+- Task file moved to: `output/agents/integration/done/`
+- Completion report at: `output/agents/integration/outbox/20251223-integration-expansion-complete.md`
 - Ready for implementation work on P1 integrations
 
 ---

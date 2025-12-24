@@ -878,14 +878,14 @@ When referencing ANY local file, agents MUST include:
 **Format:** Commands on separate lines, NO comments, include `cd`:
 
 ```
-File saved to: /Users/joseph.dawson/Documents/dawson-does-framework/output/testing-agent/outbox/completion-report.txt
+File saved to: /Users/joseph.dawson/Documents/dawson-does-framework/output/agents/testing/outbox/completion-report.txt
 
-cd /Users/joseph.dawson/Documents/dawson-does-framework && open output/testing-agent/outbox/completion-report.txt
+cd /Users/joseph.dawson/Documents/dawson-does-framework && open output/agents/testing/outbox/completion-report.txt
 ```
 
 **Or to open the folder:**
 ```
-cd /Users/joseph.dawson/Documents/dawson-does-framework && open output/testing-agent/outbox/
+cd /Users/joseph.dawson/Documents/dawson-does-framework && open output/agents/testing/outbox/
 ```
 
 **Rules:**

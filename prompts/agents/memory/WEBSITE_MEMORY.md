@@ -159,7 +159,7 @@ After:  Server-side ZIP → Full template + integrations bundled
 - UX follows Linear.app/Vercel Dashboard pattern
 - Mobile uses Sheet component for slide-out drawer
 - Ready for Testing Agent verification
-- Reference: `output/media-pipeline/research-agent/inbox/UX-PROPOSAL-configurator-sidebar-redesign.md`
+- Reference: `output/agents/research/inbox/UX-PROPOSAL-configurator-sidebar-redesign.md`
 
 ---
 

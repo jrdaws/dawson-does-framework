@@ -22,7 +22,7 @@ The Research Agent is the first agent in the Media Generation Pipeline. It analy
 - SOP: `prompts/agents/roles/media-pipeline/RESEARCH_AGENT.md`
 - Prompt Guide: `output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md`
 - Brief Template: `output/media-pipeline/shared/briefs/BRIEF_TEMPLATE.md`
-- Output: `output/media-pipeline/research-agent/`
+- Output: `output/agents/research/`
 
 ---
 
@@ -54,7 +54,7 @@ The Research Agent is the first agent in the Media Generation Pipeline. It analy
 3. Review sidebar implementation when complete
 
 #### Handoff Notes
-Task delivered to: `output/website-agent/inbox/TASK-shadcn-migration-and-sidebar.txt`
+Task delivered to: `output/agents/website/inbox/TASK-shadcn-migration-and-sidebar.txt`
 SOP created: `docs/sops/SHADCN_IMPLEMENTATION_SOP.md`
 
 ---
@@ -85,7 +85,7 @@ SOP created: `docs/sops/SHADCN_IMPLEMENTATION_SOP.md`
 3. Iterate based on user feedback
 
 #### Handoff Notes
-Brief delivered to: `output/media-pipeline/media-agent/inbox/configurator-ux-redesign-brief.md`
+Brief delivered to: `output/agents/media/inbox/configurator-ux-redesign-brief.md`
 Also relevant for: Website Agent (component specs included)
 
 ---
@@ -117,7 +117,7 @@ Also relevant for: Website Agent (component specs included)
 3. Coordinate with Website Agent for phased implementation
 
 #### Handoff Notes
-Brief delivered to: `output/media-pipeline/media-agent/inbox/framework-ui-redesign-brief.md`
+Brief delivered to: `output/agents/media/inbox/framework-ui-redesign-brief.md`
 
 ---
 
@@ -145,7 +145,7 @@ Brief delivered to: `output/media-pipeline/media-agent/inbox/framework-ui-redesi
 3. Expand asset library for other template types
 
 #### Handoff Notes
-Brief delivered to: `output/media-pipeline/media-agent/inbox/e2e-test-project-asset-brief.md`
+Brief delivered to: `output/agents/media/inbox/e2e-test-project-asset-brief.md`
 
 ---
 

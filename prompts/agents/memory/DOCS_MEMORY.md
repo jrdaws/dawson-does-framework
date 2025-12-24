@@ -185,7 +185,7 @@ None - all documentation review and updates completed successfully.
 
 **P2 Task: User Quick Start Guide Creation**
 
-Task file: `output/documentation-agent/inbox/20251222-2000-P2-task-user-guide-creation.txt`
+Task file: `output/agents/documentation/inbox/20251222-2000-P2-task-user-guide-creation.txt`
 
 1. ✅ **Audited Current Documentation**
    - Reviewed README.md (current Quick Start too advanced)
@@ -269,7 +269,7 @@ Re-activated task file to verify completion status.
    - All 668 tests pass
 
 4. ✅ **Moved Task to Done**
-   - `output/documentation-agent/done/20251222-2000-P2-task-user-guide-creation.txt`
+   - `output/agents/documentation/done/20251222-2000-P2-task-user-guide-creation.txt`
 
 ### Success Criteria (All Met)
 
@@ -287,7 +287,7 @@ Re-activated task file to verify completion status.
 
 **P2 Task: API Documentation**
 
-Task file: `output/documentation-agent/inbox/20251223-0300-P2-task-api-documentation.txt`
+Task file: `output/agents/documentation/inbox/20251223-0300-P2-task-api-documentation.txt`
 
 1. ✅ **Created `docs/api/README.md`**
    - Complete API overview with base URLs
@@ -370,7 +370,7 @@ All 693 tests pass.
 
 **P1 Task: Media Pipeline SOP Enforcement Audit**
 
-Task file: `output/documentation-agent/done/TASK-media-pipeline-sop-enforcement.txt`
+Task file: `output/agents/documentation/done/TASK-media-pipeline-sop-enforcement.txt`
 
 1. ✅ **Audited Existing Documentation**
    - Identified gaps in all 4 agent SOPs
@@ -394,14 +394,14 @@ Task file: `output/documentation-agent/done/TASK-media-pipeline-sop-enforcement.
    - QUICK_REFERENCE_CARDS.md (~200 lines): One-page references for each agent
 
 5. ✅ **Created Audit Report**
-   - `output/documentation-agent/outbox/media-pipeline-audit-report.txt`
+   - `output/agents/documentation/outbox/media-pipeline-audit-report.txt`
 
 ### Files Created
 
 - `output/media-pipeline/shared/ENFORCEMENT_CHECKLIST.md`
 - `output/media-pipeline/shared/REJECTION_CRITERIA.md`
 - `output/media-pipeline/shared/QUICK_REFERENCE_CARDS.md`
-- `output/documentation-agent/outbox/media-pipeline-audit-report.txt`
+- `output/agents/documentation/outbox/media-pipeline-audit-report.txt`
 
 ### Files Modified
 

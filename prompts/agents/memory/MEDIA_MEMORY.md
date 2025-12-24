@@ -21,7 +21,7 @@ The Media Agent is the second agent in the Media Generation Pipeline. It receive
 
 ### Key Files
 - SOP: `prompts/agents/roles/media-pipeline/MEDIA_AGENT.md`
-- Output: `output/media-pipeline/media-agent/`
+- Output: `output/agents/media/`
 - Assets: `output/media-pipeline/shared/assets/[project]/`
 
 ---

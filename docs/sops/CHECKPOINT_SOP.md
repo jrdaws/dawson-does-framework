@@ -108,7 +108,7 @@ Instead of committing directly, agents stage files and create a review request:
 ### Ready for commit: ✅ Yes / ⏳ Needs review
 ```
 
-Save to: `output/controller-agents/auditor/inbox/REVIEW-[date]-[agent].txt`
+Save to: `output/agents/auditor/inbox/REVIEW-[date]-[agent].txt`
 
 ---
 
@@ -136,7 +136,7 @@ During every checkpoint, agents MUST review the current session for patterns tha
 **Priority**: [P1-P4 based on impact/frequency]
 ```
 
-**Log to**: `output/media-pipeline/quality-agent/workspace/sop-opportunities.md`
+**Log to**: `output/agents/quality/workspace/sop-opportunities.md`
 
 **Escalation Threshold**: When count reaches 3+, create formal SOP proposal.
 
@@ -245,7 +245,7 @@ Useful commands and file locations discovered during sessions:
 
 ### Key File Locations
 - Memory: `prompts/agents/memory/AUDITOR_MEMORY.md`
-- Inbox: `output/controller-agents/auditor/inbox/`
+- Inbox: `output/agents/auditor/inbox/`
 ```
 
 **When to update**: Add new commands/locations when you discover them.
