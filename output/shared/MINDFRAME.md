@@ -14,7 +14,7 @@ For agents starting work, here's the 10-second status:
 |------|--------|------|
 | **Framework** | Healthy | 🟢 |
 | **Tests** | 693 passing | 🟢 |
-| **Docs** | Current, 3 SOPs + Freshness System | 🟢 |
+| **Docs** | Current, 6 SOPs + Freshness System | 🟢 |
 | **Website** | Production Ready | 🟢 |
 | **Deploy** | Config complete, human deploy pending | 🟡 |
 | **Governance** | v2.3 + Context Freshness | 🟢 |
@@ -104,7 +104,7 @@ UI redesign complete! Homepage and configurator now use modern Indigo/Violet bra
 | Lint Errors | 0 | ✅ Clean | Testing | 2025-12-23 |
 | Open Bugs | 0 P0, 0 P1 | ✅ Clear | Auditor | 2025-12-23 |
 | Doc Freshness | 95% | ↑ Improving | Documentation | 2025-12-23 |
-| SOPs Active | 5 | ↑ Growing | Documentation | 2025-12-23 |
+| SOPs Active | 9 | ↑ Growing | Documentation | 2025-12-23 |
 | Agent Policies | v2.0 | ↑ Updated | Documentation | 2025-12-23 |
 
 ---

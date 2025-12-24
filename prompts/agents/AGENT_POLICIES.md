@@ -1055,6 +1055,10 @@ The following SOPs define mandatory processes that ALL agents must follow:
 | **Deployment** | `docs/sops/DEPLOYMENT_SOP.md` | Pre-deploy checklists, rollback procedures |
 | **SOP Proposal Process** | `docs/sops/SOP_PROPOSAL_PROCESS.md` | How to propose and adopt new SOPs |
 | **AI Model Selection** | `docs/sops/AI_MODEL_SELECTION_SOP.md` | Token limits, model tiers, truncation handling |
+| **Haiku JSON Compliance** | `docs/sops/HAIKU_JSON_COMPLIANCE_SOP.md` | JSON schema issues with Haiku model |
+| **Template Hygiene** | `docs/sops/TEMPLATE_HYGIENE_SOP.md` | node_modules, versioning, structure |
+| **Media Naming** | `docs/sops/MEDIA_NAMING_SOP.md` | Asset naming conventions |
+| **SSR Compatibility** | `docs/sops/SSR_COMPATIBILITY_SOP.md` | Client-only component patterns |
 
 ### SOP Compliance
 
