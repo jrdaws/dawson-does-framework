@@ -540,6 +540,15 @@ If you hit a permission error mid-session, you failed to predict your needs. Not
    - After creating 3+ files
    - Every 15-20 minutes of active work
    
+   **Pre-Check (FIRST!):**
+   - Review recent commits for governance/SOP changes
+   - Re-read if `AGENT_POLICIES.md` or `CHECKPOINT_SOP.md` updated
+   
+   **Auditor Review:**
+   - Stage files with `git add -A` (do NOT commit directly)
+   - Create review request in `output/controller-agents/auditor/inbox/`
+   - Auditor will review and commit when ready
+   
    **Format:**
    ```markdown
    ## 📦 Checkpoint [HH:MM]

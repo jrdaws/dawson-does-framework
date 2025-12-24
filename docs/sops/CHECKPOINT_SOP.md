@@ -32,13 +32,22 @@ When user says: `checkpoint`, `cp`, `save`, `commit`, or `end session`
 │                    CHECKPOINT PROTOCOL                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
+│  0. PRE-CHECK: REVIEW RECENT CHANGES (FIRST!)                   │
+│     git log --oneline -5                                        │
+│     git diff --name-only HEAD~3                                 │
+│     └── Check if governance/SOP files changed                  │
+│     └── Re-read if AGENT_POLICIES.md or CHECKPOINT_SOP.md      │
+│         were updated since session start                        │
+│                                                                  │
 │  1. RUN TESTS                                                    │
 │     npm test                                                     │
 │     └── Must pass before continuing                             │
 │                                                                  │
-│  2. COMMIT & PUSH                                                │
-│     git add -A && git commit && git push                        │
-│     └── Use conventional commit format                          │
+│  2. STAGE FOR AUDITOR REVIEW (do NOT commit directly)           │
+│     git add -A                                                   │
+│     git status                                                   │
+│     └── List all staged files in checkpoint output             │
+│     └── Create review request for Auditor Agent                │
 │                                                                  │
 │  3. UPDATE MEMORY (MANDATORY)                                   │
 │     prompts/agents/memory/[ROLE]_MEMORY.md                      │
@@ -48,11 +57,52 @@ When user says: `checkpoint`, `cp`, `save`, `commit`, or `end session`
 │     ./scripts/certify.sh [CODE] [AREA] [STATUS] [VIBE] [NOTES] │
 │     └── Updates MINDFRAME.md                                    │
 │                                                                  │
-│  5. OUTPUT SUMMARY                                               │
+│  5. OUTPUT SUMMARY + AUDITOR HANDOFF                            │
 │     └── Show checkpoint confirmation to user                   │
+│     └── Create handoff prompt for Auditor to review & commit   │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+### Step 0: Pre-Check Details
+
+Before checkpointing, review files that may affect your process:
+
+```bash
+# Check recent commits for governance changes
+git log --oneline -5 --all -- prompts/agents/AGENT_POLICIES.md docs/sops/*.md CLAUDE.md
+
+# Check if checkpoint SOP itself was updated
+git log -1 --format="%ar" -- docs/sops/CHECKPOINT_SOP.md
+```
+
+**If governance files changed since session start**: Re-read before proceeding.
+
+### Step 2: Auditor Review Handoff
+
+Instead of committing directly, agents stage files and create a review request:
+
+```markdown
+## Auditor Review Request
+
+**Agent**: [ROLE] Agent
+**Date**: [TIMESTAMP]
+**Files Staged**: [count]
+
+### Staged Files:
+- [file1.ts] - [brief description]
+- [file2.md] - [brief description]
+
+### Proposed Commit Message:
+`[type]([scope]): [description]`
+
+### Summary:
+[What was done and why]
+
+### Ready for commit: ✅ Yes / ⏳ Needs review
+```
+
+Save to: `output/controller-agents/auditor/inbox/REVIEW-[date]-[agent].txt`
 
 ---
 
