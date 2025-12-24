@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 41f6c20 2025-12-23 fix(website): fix Button component React types compatibility
 - 85a82d0 2025-12-23 docs(sops): add 4 new SOPs for remaining opportunities
 - 44ff209 2025-12-23 fix(website): enable Vercel monorepo deployment
 - 8d12657 2025-12-23 docs(memory): update Documentation Agent memory with SOP session
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - ca5daf9 2025-12-23 feat(automation): add comprehensive automation playbook and scripts
 - 2b24f8d 2025-12-23 chore(curator): complete cycle 3 - curate Strategist drafts
 - dd95924 2025-12-23 feat(integrations): add UploadThing storage integration
-- 579cbe6 2025-12-22 chore(curator): complete cycle 2 - distribute Phase 2 tasks
 
 ## Agent Governance Structure
 

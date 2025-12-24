@@ -51,7 +51,7 @@
     "test:coverage": "c8 --reporter=lcov --reporter=text --reporter=html npm test",
     "test:cli": "node --test 'tests/cli/**/*.test.mjs'",
     "test:integration": "node --test 'tests/integration/**/*.test.mjs'",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "prepublishOnly": "npm test && npm run caps:validate",
     "caps:validate": "node scripts/orchestrator/validate-capabilities.mjs",
     "matrix:smoke": "node tests/matrix/smoke.mjs",

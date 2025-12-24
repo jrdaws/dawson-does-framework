@@ -1,196 +1,113 @@
-TASK: SOP Guardian Role + Sequence Oversight
-=============================================
+TASK: SOP Guardian + Sequence Oversight Responsibilities
+=========================================================
 
 AGENT: Auditor Agent
 PRIORITY: P1 - HIGH
 DATE: 2025-12-23
-FROM: Documentation Agent
 
-OBJECTIVE:
-----------
-1. Adopt SOP Guardian responsibility (oversight role)
-2. Review memory for SOP opportunities
-3. Implement sequence oversight protocol
-4. Establish certification requirements for agent handoffs
+---
 
-PRE-WORK:
----------
-```bash
-cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/shared/MINDFRAME.md
-cd /Users/joseph.dawson/Documents/dawson-does-framework && ./scripts/check-context-freshness.sh AUD
-```
+## YOUR NEW RESPONSIBILITIES
 
-NEW RESPONSIBILITIES:
----------------------
+You are the **Senior SOP Guardian** - the final approver for all SOP proposals.
 
-### 1. SOP Guardian (Oversight Role)
+### 1. SOP Guardian Duties (Senior)
 
-As Auditor Agent, you have OVERSIGHT responsibility for SOPs:
+**During every audit session, you must:**
 
-| Responsibility | Action |
-|----------------|--------|
-| **Review proposed SOPs** | Quality Agent and Testing Agent propose, you approve |
-| **Audit SOP compliance** | Check if agents are following existing SOPs |
-| **Identify systemic gaps** | Patterns across multiple agents = SOP needed |
-| **Certify SOP quality** | Sign off that an SOP is complete and correct |
-| **Enforce SOP updates** | Flag stale SOPs that need refresh |
+1. **Review SOP Proposals**
+   ```bash
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && ls output/shared/sop-proposals/
+   ```
+   - Evaluate proposals against criteria in `docs/sops/SOP_PROPOSAL_PROCESS.md`
+   - Approve, request revision, or reject
+   - Provide detailed feedback
 
-### 2. Sequence Oversight Protocol (NEW SOP RULE)
+2. **Identify SOP Opportunities**
+   - Look for governance gaps during audits
+   - If you see the same issue 3+ times → DRAFT an SOP
+   - You can directly create SOPs (doesn't need approval from yourself)
 
-**You are the authority on correct sequencing. When reviewing work:**
+3. **Check Your Memory for Past Patterns**
+   ```bash
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && cat prompts/agents/memory/AUDITOR_MEMORY.md
+   ```
+   - Review your previous audit sessions
+   - Identify any patterns that should become SOPs
+   - Either create directly or log for Documentation Agent
 
-```markdown
-## Sequence Audit
+### 2. Sequence Oversight Duties
 
-Task being reviewed: [Task name]
-Agent who completed it: [Agent]
+**You are the sequence enforcer.** During audits, check:
 
-Prerequisite Check:
-- [ ] Was MINDFRAME.md read first?
-- [ ] Were dependencies certified?
-- [ ] Was correct agent assigned?
+1. **Were tasks completed in correct order?**
+   - Review recent agent activity
+   - Check if prerequisites were met before work started
 
-Sequence Violations Found:
-- [List any issues]
+2. **Were certifications obtained?**
+   - Check MINDFRAME.md for certification timestamps
+   - Flag any work done without required certifications
 
-**Sequence Compliance**: ✅ Correct / ⚠️ Violation Found
-```
+3. **Notify User of Violations**
+   If you find sequence issues:
+   ```
+   ⚠️ SEQUENCE VIOLATION DETECTED
+   - Task: [description]
+   - Issue: [what was skipped]
+   - Impact: [potential problems]
+   - Recommendation: [how to fix]
+   ```
 
-**When you find a sequence violation:**
-1. DOCUMENT: Log the violation in your audit report
-2. NOTIFY: Tell the user which agent should have gone first
-3. RECOMMEND: Provide the correct prompt for the correct agent
-4. CERTIFY: Once corrected, certify the sequence is now correct
+### 3. Your Approval Authority
 
-### 3. Certification Requirements Matrix
+| Item | Your Role |
+|------|-----------|
+| SOP Proposals | **Final Approver** |
+| Governance Changes | **Final Approver** |
+| Sequence Violations | **Enforcer/Reporter** |
+| Agent Work Quality | **Auditor** |
 
-Create and maintain this matrix:
+---
 
-| Task Type | Requires Certification From | Before |
-|-----------|---------------------------|--------|
-| Deployment | Testing Agent (tests pass) | Platform Agent deploys |
-| Feature Release | Testing + Documentation | Announcement |
-| SOP Creation | Documentation Agent | All agents use it |
-| Template Update | Template Agent + Testing | Export to users |
-| Media Assets | Quality Agent | Template/Website integration |
-| Code Changes | Testing Agent | Merge to main |
+## IMMEDIATE ACTIONS
 
-### 4. Memory Review for SOP Opportunities
+1. **Check for pending proposals**
+   ```bash
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && ls output/shared/sop-proposals/ 2>/dev/null || echo "No proposals yet"
+   ```
 
-```bash
-cd /Users/joseph.dawson/Documents/dawson-does-framework && cat prompts/agents/memory/AUDITOR_MEMORY.md
-```
+2. **Review your memory for patterns**
+   ```bash
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && cat prompts/agents/memory/AUDITOR_MEMORY.md
+   ```
 
-Review your previous audit sessions and identify:
-- Recurring compliance issues → Need SOP
-- Common agent confusion → Need clearer SOP
-- Frequent sequence violations → Need enforcement SOP
-- Cross-agent coordination problems → Need handoff SOP
+3. **Check recent agent activity**
+   ```bash
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && git log --oneline --since="24 hours ago" | head -20
+   ```
 
-SEQUENCE OVERSIGHT EXAMPLES:
-----------------------------
+4. **Update MINDFRAME with your certification**
+   ```bash
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && ./scripts/certify.sh AUD "SOP Guardian" "Senior Active" "good" "Approval authority enabled"
+   ```
 
-**Example 1 - Catching a Violation:**
-```
-User sends deployment task to Platform Agent.
-Platform Agent checks MINDFRAME.md, sees Tests not recently certified.
+---
 
-Platform Agent: "⚠️ Sequence Issue: Tests need certification first."
+## OUTPUT REQUIREMENTS
 
-Auditor (on review): "Correct catch. Sequence violation prevented.
-Certification matrix followed. ✅"
-```
+Create report at: `output/controller-agents/auditor/outbox/SOP-OVERSIGHT-ACTIVATION.md`
 
-**Example 2 - Recommending Correction:**
-```
-User: "Quality Agent, approve these assets"
-Quality Agent starts review, but notices Research Agent brief is incomplete.
+Include:
+- [ ] Proposals reviewed and decisions
+- [ ] Patterns identified from memory that need SOPs
+- [ ] Sequence violations found (if any)
+- [ ] SOPs directly created (if any)
 
-Quality Agent: "⚠️ Brief incomplete. Should go back to Research Agent."
+---
 
-Auditor (on review): "Correct sequence enforcement. Quality Agent
-properly redirected to Research Agent. Logging as best practice."
-```
+## HANDOFF
 
-**Example 3 - Creating a Redirect Prompt:**
-```
-User sends wrong task to wrong agent.
+When complete, output prompt for next agent based on findings.
 
-Agent: "⚠️ Sequence Issue: This task requires [Other Agent] first.
-
-## Redirect to: [Other Agent]
-
-```
-Confirm you are the [Other Agent].
-[Corrected task description]
-```
-
-I can continue with [what's possible] while waiting, or pause entirely."
-```
-
-AUDIT TASKS:
-------------
-
-### 1. Review Current MINDFRAME Certifications
-
-```bash
-cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/shared/MINDFRAME.md
-```
-
-Check for:
-- Stale certifications (>24 hours for tests, >48 hours for governance)
-- Missing certifications
-- Conflicting vibes (🟢 in one area but 🔴 in dependent area)
-
-### 2. Review SOP Opportunities Log
-
-```bash
-cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/media-pipeline/quality-agent/workspace/sop-opportunities.md
-```
-
-Approve or prioritize pending SOP proposals.
-
-### 3. Check Your Memory for Patterns
-
-```bash
-cd /Users/joseph.dawson/Documents/dawson-does-framework && cat prompts/agents/memory/AUDITOR_MEMORY.md
-```
-
-Look for:
-- Repeated issues across audits
-- Common agent mistakes
-- Process gaps
-
-### 4. Create Certification Requirements SOP
-
-If not exists, create:
-```
-docs/sops/CERTIFICATION_REQUIREMENTS_SOP.md
-```
-
-Document which certifications are required before which actions.
-
-SUCCESS CRITERIA:
------------------
-
-□ SOP Guardian (oversight) responsibility acknowledged
-□ Memory reviewed for audit patterns
-□ Sequence oversight protocol understood
-□ Certification requirements matrix created/verified
-□ At least 1 SOP opportunity identified from audit history
-□ MINDFRAME.md updated with Auditor certification
-
-WHEN COMPLETE:
---------------
-
-1. Move this file to output/controller-agents/auditor/done/
-2. Update MINDFRAME.md with governance certification
-3. Log any SOP opportunities found
-4. Output numbered quick-select options
-
-```bash
-cd /Users/joseph.dawson/Documents/dawson-does-framework && ./scripts/certify.sh AUD "Governance" "Sequence oversight active" "good" "Certification matrix enforced"
-```
-
-(DOC Agent)
+(AUD Agent)
 
