@@ -15,6 +15,10 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
+        // Custom brand variants per SHADCN_IMPLEMENTATION_SOP.md
+        success: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+        warning: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+        info: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
       },
     },
     defaultVariants: {

@@ -1,8 +1,12 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { TEMPLATES, INTEGRATION_INFO, type IntegrationType } from "@/lib/templates";
-import { AlertCircle, Check } from "lucide-react";
+import { AlertCircle, Check, CircleAlert } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Helper type for integration info
 interface IntegrationProviderInfo {
@@ -27,10 +31,12 @@ export function IntegrationSelector({
 
   if (!selectedTemplate) {
     return (
-      <div className="text-center text-terminal-error">
-        <AlertCircle className="h-12 w-12 mx-auto mb-4" />
-        <p>Invalid template selected</p>
-      </div>
+      <Card className="max-w-md mx-auto">
+        <CardContent className="flex flex-col items-center justify-center py-12 text-destructive">
+          <AlertCircle className="h-12 w-12 mb-4" />
+          <p className="text-lg font-medium">Invalid template selected</p>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -40,152 +46,135 @@ export function IntegrationSelector({
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-display font-bold text-terminal-text mb-2">
+        <h2 className="text-2xl font-display font-bold text-foreground mb-2">
           Select Integrations
         </h2>
-        <p className="text-terminal-dim">
+        <p className="text-muted-foreground">
           Choose the services you want to integrate
           {mode === "beginner" && " (recommended options highlighted)"}
         </p>
         {selectedTemplate.requiredIntegrations.length > 0 && (
-          <p className="text-terminal-accent text-sm mt-2">
-            * Required: {selectedTemplate.requiredIntegrations.join(", ")}
+          <p className="text-sm mt-2">
+            <Badge variant="destructive" className="mr-2">Required</Badge>
+            {selectedTemplate.requiredIntegrations.join(", ")}
           </p>
         )}
       </div>
 
       {/* Missing Required Warning */}
       {missingRequired.length > 0 && (
-        <div className="max-w-2xl mx-auto terminal-window border-terminal-error/50">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-terminal-error"></div>
-            <div className="terminal-dot bg-terminal-warning"></div>
-            <div className="terminal-dot bg-terminal-text"></div>
-            <span className="text-xs text-terminal-error ml-2">Missing Required Integrations</span>
-          </div>
-          <div className="terminal-content">
-            <div className="flex items-start gap-2 text-terminal-error text-sm">
-              <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="font-bold mb-1">Please select:</p>
-                <ul className="list-disc list-inside space-y-1 font-mono text-xs">
-                  {missingRequired.map((type) => (
-                    <li key={type}>{type}</li>
-                  ))}
-                </ul>
-              </div>
+        <Card className="max-w-2xl mx-auto border-destructive/50 bg-destructive/10">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <CircleAlert className="h-5 w-5 text-destructive" />
+              <CardTitle className="text-base text-destructive">Missing Required Integrations</CardTitle>
             </div>
-          </div>
-        </div>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-destructive/90 mb-2">Please select:</p>
+            <ul className="list-disc list-inside space-y-1 text-sm text-destructive/80">
+              {missingRequired.map((type) => (
+                <li key={type} className="capitalize">{type}</li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
       )}
 
+      {/* Integration Cards */}
       <div className="space-y-6 max-w-4xl mx-auto">
         {Object.entries(selectedTemplate.supportedIntegrations).map(([type, providers]) => {
-          // Cast to readonly string[] to allow .includes with any string
           const requiredIntegrations = selectedTemplate.requiredIntegrations as readonly string[];
           const isRequired = requiredIntegrations.includes(type);
           const selectedProvider = integrations[type];
 
           return (
-            <div key={type} className="terminal-window">
-              <div className="terminal-header">
-                <div className="terminal-dot bg-terminal-error"></div>
-                <div className="terminal-dot bg-terminal-warning"></div>
-                <div className="terminal-dot bg-terminal-text"></div>
-                <span className="text-xs text-terminal-dim ml-2">
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                  {isRequired && <span className="text-terminal-error ml-2">* Required</span>}
-                </span>
-              </div>
-              <div className="terminal-content">
-                <Label className="text-terminal-accent capitalize font-display text-lg mb-4 block">
-                  {type}
-                  {isRequired && <span className="text-terminal-error ml-2">*</span>}
-                </Label>
-
-                <div className="grid md:grid-cols-2 gap-3">
+            <Card key={type}>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg capitalize">{type}</CardTitle>
+                  {isRequired && <Badge variant="destructive">Required</Badge>}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <RadioGroup
+                  value={selectedProvider || ""}
+                  onValueChange={(value) => onIntegrationChange(type, value)}
+                  className="grid md:grid-cols-2 gap-3"
+                >
                   {providers.map((provider) => {
-                    // Safely get integration info with explicit typing
                     const typeInfo = INTEGRATION_INFO[type as IntegrationType] as Record<string, IntegrationProviderInfo> | undefined;
                     const info = typeInfo?.[provider];
                     if (!info) return null;
 
                     const isSelected = selectedProvider === provider;
-                    // Cast defaultIntegrations to allow string indexing
                     const defaultIntegrations = selectedTemplate.defaultIntegrations as Record<string, string>;
                     const isDefault = defaultIntegrations?.[type] === provider;
                     const showRecommended = mode === "beginner" && isDefault;
 
                     return (
-                      <button
+                      <Label
                         key={provider}
-                        onClick={() => onIntegrationChange(type, isSelected ? "" : provider)}
-                        className={`
-                          p-4 rounded border-2 transition-all text-left relative
-                          hover:scale-105
-                          ${
-                            isSelected
-                              ? "border-terminal-accent bg-terminal-accent/10 shadow-lg shadow-terminal-accent/20"
-                              : "border-terminal-text/30 hover:border-terminal-text/50"
-                          }
-                        `}
+                        htmlFor={`${type}-${provider}`}
+                        className={cn(
+                          "flex items-start gap-4 rounded-lg border p-4 cursor-pointer transition-all",
+                          "hover:bg-accent/10 hover:border-accent/50",
+                          isSelected && "border-primary bg-primary/10 shadow-lg shadow-primary/10"
+                        )}
                       >
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <div className="font-mono text-sm text-terminal-text font-bold">
-                                {info.name}
-                              </div>
-                              {isSelected && (
-                                <Check className="h-4 w-4 text-terminal-accent" />
-                              )}
-                            </div>
-                            <div className="text-xs text-terminal-dim">
-                              {info.description}
-                            </div>
+                        <RadioGroupItem
+                          value={provider}
+                          id={`${type}-${provider}`}
+                          className="mt-1"
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-medium text-foreground">{info.name}</span>
+                            {isSelected && (
+                              <Check className="h-4 w-4 text-primary" />
+                            )}
+                            {showRecommended && (
+                              <Badge variant="success">Recommended</Badge>
+                            )}
                           </div>
-                          {showRecommended && (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-terminal-accent/20 border border-terminal-accent/50 rounded text-xs text-terminal-accent font-mono whitespace-nowrap">
-                              Recommended
-                            </span>
-                          )}
+                          <p className="text-sm text-muted-foreground">
+                            {info.description}
+                          </p>
                         </div>
-                      </button>
+                      </Label>
                     );
                   })}
-                </div>
-              </div>
-            </div>
+                </RadioGroup>
+              </CardContent>
+            </Card>
           );
         })}
       </div>
 
       {/* Selected Integrations Summary */}
       {Object.keys(integrations).length > 0 && (
-        <div className="max-w-2xl mx-auto terminal-window border-terminal-accent/30">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-terminal-error"></div>
-            <div className="terminal-dot bg-terminal-warning"></div>
-            <div className="terminal-dot bg-terminal-text"></div>
-            <span className="text-xs text-terminal-accent ml-2">Selected Integrations</span>
-          </div>
-          <div className="terminal-content">
+        <Card className="max-w-2xl mx-auto border-primary/30 bg-primary/5">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Check className="h-5 w-5 text-primary" />
+              <CardTitle className="text-base">Selected Integrations</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
             <div className="flex flex-wrap gap-2">
               {Object.entries(integrations)
-                .filter(([_, provider]) => provider)
+                .filter(([, provider]) => provider)
                 .map(([type, provider]) => (
-                  <div
-                    key={type}
-                    className="inline-flex items-center gap-2 px-3 py-1 rounded bg-terminal-accent/10 border border-terminal-accent/30 text-xs font-mono"
-                  >
-                    <span className="text-terminal-dim">{type}:</span>
-                    <span className="text-terminal-accent font-bold">{provider}</span>
-                  </div>
+                  <Badge key={type} variant="info" className="gap-2">
+                    <span className="text-muted-foreground">{type}:</span>
+                    <span className="font-bold">{provider}</span>
+                  </Badge>
                 ))}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

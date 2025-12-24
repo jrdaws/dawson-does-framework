@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 9f56e1c 2025-12-23 docs: update MINDFRAME and PLATFORM_MEMORY with deployment session
 - eaf359b 2025-12-23 docs(agents): update MINDFRAME + AGENT_CONTEXT with shadcn SOP and UX work
 - 74c555b 2025-12-23 docs: add SOP proposal for Vercel monorepo deployment best practices
 - 8cc4df8 2025-12-23 fix(website): add stubs for workspace packages to enable Vercel build
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 5e996d3 2025-12-23 feat(curator): complete cycle 8 curation - 5 drafts approved, execution focus
 - 1091a9f 2025-12-23 feat(strategist): complete cycle 7 strategy - execution focus
 - 5b579d3 2025-12-23 chore(curator): complete cycle 6 - cleanup and consolidation
-- 1ad8d63 2025-12-23 feat(integration): complete UploadThing storage integration task
 
 ## Agent Governance Structure
 

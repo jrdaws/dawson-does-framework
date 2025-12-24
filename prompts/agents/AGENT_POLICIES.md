@@ -1,8 +1,8 @@
 # Agent Policies
 
-> **Version**: 2.4
+> **Version**: 2.5
 > **Effective Date**: 2025-12-22
-> **Latest Update**: Added SOP Proposal Process for all agents
+> **Latest Update**: Made Handoff Prompt a BLOCKING requirement with strict format
 > **Purpose**: Define operational policies and protocols for AI agents working on dawson-does-framework
 
 ---
@@ -580,25 +580,34 @@ Before ending a session, you must:
    **⏱️ Auto-continue**: If no response, proceed with Option 1
    ```
 
-### Step 4e: Handoff Prompt Format (MANDATORY)
+### Step 4e: Handoff Prompt Format (BLOCKING REQUIREMENT)
    
-   **When providing a prompt for the next agent, use this EXACT format:**
+   ⛔ **SESSION CANNOT END WITHOUT A VALID HANDOFF PROMPT**
    
-   The header "## Next Agent: [Role] Agent" goes ABOVE the fenced block.
-   The fenced block contains only the prompt text starting with "Confirm you are..."
+   Failure to provide a handoff prompt is a governance violation and will be flagged by `validate-agent-work.sh`.
    
-   **Format:**
+   **EXACT FORMAT (no variations allowed):**
+   
    ```
    ## Next Agent: [Role] Agent
-   ```
-   (then a fenced code block below with the prompt)
    
-   **Rules:**
-   - Header "## Next Agent: [Role] Agent" is OUTSIDE/ABOVE the fenced block
-   - Fenced block starts with "Confirm you are the [Role] Agent."
-   - NO "Copy this to activate:" text
-   - Include `cd` command if referencing files
-   - Keep task description to 1-2 sentences
+   ```
+   Confirm you are the [Role] Agent.
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && cat [task-file-path]
+   ```
+   ```
+   
+   **Format Rules:**
+   
+   | Element | Location | Required |
+   |---------|----------|----------|
+   | `## Next Agent: [Role] Agent` | Header ABOVE fenced block | ✅ Yes |
+   | `Confirm you are the [Role] Agent.` | INSIDE fenced block, first line | ✅ Yes |
+   | `cd ... && cat [file]` | INSIDE fenced block, second line | ✅ Yes |
+   
+   **Both lines go INSIDE the fenced code block.** The user copies the entire block.
+   
+   ---
    
    **Example - Testing Agent:**
    
@@ -606,19 +615,39 @@ Before ending a session, you must:
    
    ```
    Confirm you are the Testing Agent.
-   Read output/shared/MINDFRAME.md for current system state, then verify the SOPs in docs/sops/ are actionable.
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/testing-agent/inbox/TASK-verify-sops.txt
    ```
    
-   **Example - Website Agent (with file reference):**
+   ---
    
-   ## Next Agent: Website Agent
+   **Example - Quality Agent:**
+   
+   ## Next Agent: Quality Agent
    
    ```
-   Confirm you are the Website Agent.
-   cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/website-agent/inbox/TASK-ui-update.txt
+   Confirm you are the Quality Agent.
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/media-pipeline/quality-agent/inbox/TASK-review-assets.txt
    ```
    
-   This ensures new agents confirm their role identity before starting work.
+   ---
+   
+   **If no task file exists, create one first:**
+   
+   1. Write task to appropriate inbox folder
+   2. Provide the handoff prompt pointing to that file
+   
+   **If no further work is needed:**
+   
+   State explicitly: "No handoff required - task complete." But this should be RARE.
+   
+   ---
+   
+   **Validation Check:**
+   
+   The script `scripts/validate-agent-work.sh` Check 8 verifies:
+   - Recent outbox files contain `## Next Agent:` header
+   - Warning issued if missing
+   - **This will become a blocking error in future versions**
 
    ### Step 4e: Update Project Priorities
    
@@ -951,6 +980,12 @@ test(integration): add E2E tests for configurator flow
 ---
 
 ## Version History
+
+### Version 2.5 (2025-12-23)
+- Made **Handoff Prompt a BLOCKING requirement** - sessions cannot end without one
+- Fixed format: Both "Confirm you are..." AND "cd && cat" go INSIDE fenced block
+- Added validation check reference (Check 8 in validate-agent-work.sh)
+- Will become a blocking error in future versions
 
 ### Version 2.4 (2025-12-23)
 - Added **SOP Proposal Process** - any agent can propose SOPs
