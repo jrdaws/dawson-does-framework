@@ -488,6 +488,58 @@ All 693 tests pass ✅
 
 ---
 
+## Session: 2025-12-24 (Agent Folder Standardization Verification)
+
+### Work Completed
+
+**Task: Standardize All Agent Folder Structures** (Verification)
+
+Task file: `output/agents/documentation/done/TASK-standardize-agent-folders.txt`
+
+1. ✅ **Verified New Folder Structure**
+   - All 13 agents now under `output/agents/`
+   - Each agent has: inbox/, outbox/, done/, workspace/, config/, logs/
+   - Flat structure for easy navigation
+
+2. ✅ **Confirmed SOP Exists**
+   - `docs/sops/AGENT_FOLDER_STRUCTURE_SOP.md` (v2.0.0)
+   - Comprehensive documentation with lifecycle diagram
+   - Verification script included
+   - Auditor-approved (98/100)
+
+3. ✅ **Old Folders Deprecated**
+   - Legacy folders (`output/documentation-agent/`, etc.) have DEPRECATED.md markers
+   - New locations documented in SOP
+
+4. ✅ **Updated Memory File Path References**
+   - User corrected paths in DOCS_MEMORY.md to new structure
+   - `output/documentation-agent/` → `output/agents/documentation/`
+   - `output/media-pipeline/shared/` → `output/shared/media/`
+
+### Current Agent Folder Locations
+
+| Agent | New Path |
+|-------|----------|
+| Documentation | `output/agents/documentation/` |
+| Testing | `output/agents/testing/` |
+| CLI | `output/agents/cli/` |
+| Website | `output/agents/website/` |
+| Platform | `output/agents/platform/` |
+| Template | `output/agents/template/` |
+| Integration | `output/agents/integration/` |
+| Media | `output/agents/media/` |
+| Quality | `output/agents/quality/` |
+| Research | `output/agents/research/` |
+| Auditor | `output/agents/auditor/` |
+| Strategist | `output/agents/strategist/` |
+| Curator | `output/agents/curator/` |
+
+### Files Moved
+
+- `TASK-standardize-agent-folders.txt` → `output/agents/documentation/done/`
+
+---
+
 ## Task Queue
 
 ### High Priority

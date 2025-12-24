@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- feea63c 2025-12-24 chore(agents): standardize folder structure across all agents
 - 19657d8 2025-12-24 chore(memory): checkpoint - Auditor Agent folder restructuring session
 - 1850802 2025-12-24 chore(auditor): sign off on final path cleanup
 - b853307 2025-12-24 docs: complete migration to flat agent folder structure
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 4e4ec71 2025-12-24 docs: add accomplishments summary and priority agent prompts
 - 4bbcda8 2025-12-24 fix(templates): remove duplicate component definitions
 - 7c90102 2025-12-24 feat(cli): add --list-integrations flag and dynamic START_PROMPT.md
-- b3b07cf 2025-12-24 feat(cli): add --list-integrations flag and dynamic START_PROMPT.md
 
 ## Agent Governance Structure
 
