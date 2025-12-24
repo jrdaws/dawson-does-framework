@@ -1,6 +1,6 @@
 # Agent Folder Structure SOP
 
-> **Version**: 1.0.0 | **Last Updated**: 2025-12-24
+> **Version**: 2.0.0 | **Last Updated**: 2025-12-24
 > 
 > **Purpose**: Standardize how all agents organize their files and manage prompts
 > **Audience**: All agents
@@ -20,33 +20,47 @@
 
 ## 1. Standard Folder Structure
 
-**Every agent MUST have this exact folder structure:**
+**All agents live under `output/agents/` with this exact folder structure:**
 
 ```
-output/[agent-name]/
+output/agents/[agent-name]/
 ├── inbox/           # Pending prompts waiting to be executed
 ├── outbox/          # Completed work outputs, handoff prompts for next agent
 ├── done/            # Prompts that have been executed and completed
-└── workspace/       # Temporary working files, drafts, scratch space
+├── workspace/       # Temporary working files, drafts, scratch space
+├── config/          # Persistent settings (see AGENT_PERSISTENT_SETTINGS_SOP.md)
+└── logs/            # Session logs for debugging/audit
 ```
 
-### Agent Folder Locations
+### Agent Folder Locations (Flat Structure)
+
+**All 13 agents are now in ONE location for easy navigation:**
 
 | Agent | Folder Path |
 |-------|-------------|
-| CLI Agent | `output/cli-agent/` |
-| Website Agent | `output/website-agent/` |
-| Documentation Agent | `output/documentation-agent/` |
-| Testing Agent | `output/testing-agent/` |
-| Platform Agent | `output/platform-agent/` |
-| Template Agent | `output/template-agent/` |
-| Integration Agent | `output/integration-agent/` |
-| Auditor Agent | `output/controller-agents/auditor/` |
-| Strategist Agent | `output/controller-agents/strategist/` |
-| Curator Agent | `output/controller-agents/curator/` |
-| Research Agent | `output/media-pipeline/research-agent/` |
-| Media Agent | `output/media-pipeline/media-agent/` |
-| Quality Agent | `output/media-pipeline/quality-agent/` |
+| Auditor Agent | `output/agents/auditor/` |
+| CLI Agent | `output/agents/cli/` |
+| Curator Agent | `output/agents/curator/` |
+| Documentation Agent | `output/agents/documentation/` |
+| Integration Agent | `output/agents/integration/` |
+| Media Agent | `output/agents/media/` |
+| Platform Agent | `output/agents/platform/` |
+| Quality Agent | `output/agents/quality/` |
+| Research Agent | `output/agents/research/` |
+| Strategist Agent | `output/agents/strategist/` |
+| Template Agent | `output/agents/template/` |
+| Testing Agent | `output/agents/testing/` |
+| Website Agent | `output/agents/website/` |
+
+### Quick Navigation
+
+```bash
+# List all agents
+ls output/agents/
+
+# View a specific agent's folders
+ls output/agents/cli/
+```
 
 ---
 
@@ -88,6 +102,24 @@ output/[agent-name]/
 - Can be cleaned up periodically
 - Not for permanent storage
 
+### config/
+
+**Purpose**: Persistent agent settings.
+
+- `settings.json` - Primary configuration file
+- Preferences, thresholds, feature flags
+- Survives across sessions
+- See `docs/sops/AGENT_PERSISTENT_SETTINGS_SOP.md` for details
+
+### logs/
+
+**Purpose**: Session logs for debugging and audit.
+
+- Detailed transcripts of agent sessions
+- Named: `YYYY-MM-DD-session-N.md`
+- Keep for 30 days, then archive
+- Useful for debugging and tracking decisions
+
 ---
 
 ## 3. Prompt Lifecycle
@@ -99,7 +131,7 @@ output/[agent-name]/
 │                                                                      │
 │  1. CREATION                                                        │
 │     Agent A creates prompt → Saves to Agent B's inbox/             │
-│     File: output/agent-b/inbox/TASK-[description].txt              │
+│     File: output/agents/[agent]/inbox/TASK-[description].txt       │
 │                                                                      │
 │  2. ACTIVATION                                                      │
 │     Agent B reads prompt from inbox/                                │
@@ -181,10 +213,10 @@ When an agent needs to create a prompt for another agent:
 ## Next Agent: [Role] Agent
 ```
 Confirm you are the [Role] Agent.
-cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/[agent]/inbox/[filename].txt
+cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/agents/[agent]/inbox/[filename].txt
 ```
 
-**Prompt saved to**: `output/[agent]/inbox/[filename].txt`
+**Prompt saved to**: `output/agents/[agent]/inbox/[filename].txt`
 ```
 
 ### Rule 2: Prompt Completion
@@ -193,7 +225,7 @@ When an agent completes a prompt:
 
 1. **MOVE** the prompt file from `inbox/` to `done/`
    ```bash
-   mv output/[agent]/inbox/[filename].txt output/[agent]/done/
+   mv output/agents/[agent]/inbox/[filename].txt output/agents/[agent]/done/
    ```
 2. **Create output** in `outbox/` if deliverables exist
 3. **Create handoff prompt** for next agent (if applicable)
@@ -215,7 +247,7 @@ During checkpoint, agents MUST list:
 ### Pending Prompts (Not Yet Run):
 | Agent | File | Priority |
 |-------|------|----------|
-| [AGENT] | `output/[agent]/inbox/[file].txt` | P[0-3] |
+| [AGENT] | `output/agents/[agent]/inbox/[file].txt` | P[0-3] |
 ```
 
 ### Rule 5: Folder Cleanup
@@ -224,6 +256,8 @@ During checkpoint, agents MUST list:
 - `outbox/`: Keep for 30 days, then archive
 - `done/`: Never delete (audit trail)
 - `workspace/`: Clean up after task completion
+- `config/`: Never delete (persistent settings)
+- `logs/`: Keep for 30 days, archive older logs
 
 ---
 
@@ -234,14 +268,16 @@ Run this to check all agents have correct structure:
 ```bash
 cd /Users/joseph.dawson/Documents/dawson-does-framework
 
-for agent in cli-agent website-agent documentation-agent testing-agent platform-agent template-agent integration-agent; do
-  echo "=== $agent ==="
-  for folder in inbox outbox done workspace; do
-    if [ -d "output/$agent/$folder" ]; then
+echo "=== AGENT FOLDER STRUCTURE VERIFICATION ==="
+for agent in auditor cli curator documentation integration media platform quality research strategist template testing website; do
+  echo ""
+  echo "--- $agent ---"
+  for folder in inbox outbox done workspace config logs; do
+    if [ -d "output/agents/$agent/$folder" ]; then
       echo "  ✅ $folder"
     else
       echo "  ❌ $folder (missing)"
-      mkdir -p "output/$agent/$folder"
+      mkdir -p "output/agents/$agent/$folder"
     fi
   done
 done
@@ -270,4 +306,5 @@ done
 |---------|------|--------|---------|
 | 1.0.0 | 2025-12-24 | DOC Agent | Initial creation |
 | 1.0.1 | 2025-12-24 | Auditor Agent | Added approval chain, verified compliance |
+| 2.0.0 | 2025-12-24 | Auditor Agent | **MAJOR**: Flat structure under `output/agents/`, added `config/` and `logs/` folders |
 
