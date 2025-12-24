@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- d76ba14 2025-12-24 docs(sops): add SEO Generation SOP with multi-agent pipeline
 - 60578d4 2025-12-24 ci: add PR preview deployment comments
 - c774ae2 2025-12-24 ci: add Vercel deployment status checks to CI workflow
 - 2301b52 2025-12-24 chore(website): improve Supabase lazy initialization pattern
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 44ff209 2025-12-23 fix(website): enable Vercel monorepo deployment
 - 8d12657 2025-12-23 docs(memory): update Documentation Agent memory with SOP session
 - f466e2e 2025-12-23 docs(sops): add AI Model Selection SOP and SOP Proposal Process
-- 2b426da 2025-12-23 feat(platform): add Vercel deployment script and status report
 
 ## Agent Governance Structure
 
