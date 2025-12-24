@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -13,6 +14,18 @@ interface IntegrationProviderInfo {
   name: string;
   description: string;
 }
+
+// Map integration types to category icons
+const CATEGORY_ICONS: Record<string, string> = {
+  auth: "/images/configurator/categories/auth.svg",
+  payments: "/images/configurator/categories/payments.svg",
+  email: "/images/configurator/categories/email.svg",
+  db: "/images/configurator/categories/database.svg",
+  ai: "/images/configurator/categories/ai.svg",
+  analytics: "/images/configurator/categories/analytics.svg",
+  storage: "/images/configurator/categories/storage.svg",
+  other: "/images/configurator/categories/other.svg",
+};
 
 interface IntegrationSelectorProps {
   template: string;
@@ -94,7 +107,18 @@ export function IntegrationSelector({
             <Card key={type}>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg capitalize">{type}</CardTitle>
+                  <div className="flex items-center gap-3">
+                    {CATEGORY_ICONS[type] && (
+                      <Image
+                        src={CATEGORY_ICONS[type]}
+                        alt={`${type} category`}
+                        width={32}
+                        height={32}
+                        className="opacity-80"
+                      />
+                    )}
+                    <CardTitle className="text-lg capitalize">{type}</CardTitle>
+                  </div>
                   {isRequired && <Badge variant="destructive">Required</Badge>}
                 </div>
               </CardHeader>

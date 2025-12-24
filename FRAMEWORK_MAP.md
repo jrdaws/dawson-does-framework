@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- b8e6333 2025-12-23 docs(governance): use full role names in ALL CAPS for agent identity
 - 883fc22 2025-12-23 docs(policies): change auto-continue timer to 35 minutes
 - 7b36890 2025-12-23 docs(memory): update DOCS_MEMORY.md with Vercel SOP review session
 - 6da3e01 2025-12-23 docs(policies): make Quick Actions section BLOCKING requirement
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - c617fcc 2025-12-23 test(sops): verify priority SOPs are complete and actionable
 - d7e5a19 2025-12-23 docs(website): move UI redesign task to done and add completion notice
 - 558885a 2025-12-23 feat(website): implement framework UI redesign with new brand identity
-- 91f8fd2 2025-12-23 chore: ignore test-saas-project directory
 
 ## Agent Governance Structure
 
