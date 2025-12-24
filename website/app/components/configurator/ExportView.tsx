@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Copy, Check, Terminal, Download, Wand2, AlertCircle, ExternalLink, Loader2 } from "lucide-react";
 import { buildCommand, buildCommandSingleLine, getRequiredEnvVars } from "@/lib/command-builder";
 import { TEMPLATES } from "@/lib/templates";
@@ -33,7 +35,6 @@ export function ExportView({
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [projectToken, setProjectToken] = useState<string | null>(null);
-  const [wizardStep, setWizardStep] = useState(0);
   const [showPostDownloadModal, setShowPostDownloadModal] = useState(false);
 
   const command = buildCommand({ template, projectName, outputDir, integrations });
@@ -103,9 +104,10 @@ export function ExportView({
 
       const data = await response.json();
       setProjectToken(data.token);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
       console.error("Save failed:", error);
-      alert(`Failed to save to platform: ${error.message}`);
+      alert(`Failed to save to platform: ${message}`);
     } finally {
       setIsSaving(false);
     }
@@ -116,109 +118,100 @@ export function ExportView({
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-display font-bold text-terminal-text mb-2">
+        <h2 className="text-2xl font-display font-bold text-foreground mb-2">
           Export Your Project
         </h2>
-        <p className="text-terminal-dim">
+        <p className="text-muted-foreground">
           Choose how you want to export your configured project
         </p>
       </div>
 
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Configuration Summary */}
-        <div className="terminal-window border-terminal-accent/30">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-terminal-error"></div>
-            <div className="terminal-dot bg-terminal-warning"></div>
-            <div className="terminal-dot bg-terminal-text"></div>
-            <span className="text-xs text-terminal-accent ml-2">Configuration Summary</span>
-          </div>
-          <div className="terminal-content space-y-4">
+        <Card className="border-primary/30">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2 text-primary">
+              <Check className="h-4 w-4" />
+              Configuration Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-terminal-dim mb-1">Template</p>
-                <p className="text-terminal-text font-mono">{selectedTemplate?.name}</p>
+                <p className="text-xs text-muted-foreground mb-1">Template</p>
+                <p className="text-foreground font-mono">{selectedTemplate?.name}</p>
               </div>
               <div>
-                <p className="text-xs text-terminal-dim mb-1">Project Name</p>
-                <p className="text-terminal-text font-mono">{projectName}</p>
+                <p className="text-xs text-muted-foreground mb-1">Project Name</p>
+                <p className="text-foreground font-mono">{projectName}</p>
               </div>
               <div>
-                <p className="text-xs text-terminal-dim mb-1">Output Directory</p>
-                <p className="text-terminal-text font-mono">{outputDir}</p>
+                <p className="text-xs text-muted-foreground mb-1">Output Directory</p>
+                <p className="text-foreground font-mono">{outputDir}</p>
               </div>
               <div>
-                <p className="text-xs text-terminal-dim mb-1">Integrations</p>
-                <p className="text-terminal-accent font-mono">{integrationCount} selected</p>
+                <p className="text-xs text-muted-foreground mb-1">Integrations</p>
+                <p className="text-primary font-mono">{integrationCount} selected</p>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Export Options */}
         <div className="grid md:grid-cols-4 gap-4">
           {/* Option A: CLI Command - FULL TEMPLATE */}
-          <button
-            onClick={() => setSelectedOption(selectedOption === "cli" ? null : "cli")}
-            className={`terminal-window cursor-pointer transition-all hover:scale-105 ${
-              selectedOption === "cli" ? "border-terminal-accent shadow-lg shadow-terminal-accent/20" : ""
+          <Card 
+            className={`cursor-pointer transition-all hover:scale-105 ${
+              selectedOption === "cli" ? "border-primary shadow-lg shadow-primary/20" : ""
             }`}
+            onClick={() => setSelectedOption(selectedOption === "cli" ? null : "cli")}
           >
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-accent ml-2">
-                <Terminal className="inline h-3 w-3 mr-1" />
-                Recommended
-              </span>
-            </div>
-            <div className="terminal-content text-center py-6">
-              <Terminal className="h-12 w-12 mx-auto mb-3 text-terminal-accent" />
-              <h3 className="font-display font-bold text-terminal-text mb-2">
+            <CardHeader className="pb-2">
+              <Badge variant="success" className="w-fit">Recommended</Badge>
+            </CardHeader>
+            <CardContent className="text-center py-4">
+              <Terminal className="h-12 w-12 mx-auto mb-3 text-primary" />
+              <h3 className="font-display font-bold text-foreground mb-2">
                 Full Template
               </h3>
-              <p className="text-xs text-terminal-dim">
+              <p className="text-xs text-muted-foreground">
                 All components, pages & integrations
               </p>
-              <p className="text-xs text-terminal-accent mt-2 font-mono">
+              <p className="text-xs text-primary mt-2 font-mono">
                 ✓ Production-ready
               </p>
-            </div>
-          </button>
+            </CardContent>
+          </Card>
 
           {/* Option B: Download ZIP - STARTER ONLY */}
-          <button
-            onClick={() => setSelectedOption(selectedOption === "zip" ? null : "zip")}
-            className={`terminal-window cursor-pointer transition-all hover:scale-105 ${
-              selectedOption === "zip" ? "border-terminal-warning shadow-lg shadow-terminal-warning/20" : ""
+          <Card 
+            className={`cursor-pointer transition-all hover:scale-105 ${
+              selectedOption === "zip" ? "border-amber-500 shadow-lg shadow-amber-500/20" : ""
             }`}
+            onClick={() => setSelectedOption(selectedOption === "zip" ? null : "zip")}
           >
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-warning ml-2">
-                <Download className="inline h-3 w-3 mr-1" />
-                Starter Only
-              </span>
-            </div>
-            <div className="terminal-content text-center py-6">
-              <Download className="h-12 w-12 mx-auto mb-3 text-terminal-warning" />
-              <h3 className="font-display font-bold text-terminal-text mb-2">
+            <CardHeader className="pb-2">
+              <Badge variant="warning" className="w-fit">Starter Only</Badge>
+            </CardHeader>
+            <CardContent className="text-center py-4">
+              <Download className="h-12 w-12 mx-auto mb-3 text-amber-500" />
+              <h3 className="font-display font-bold text-foreground mb-2">
                 Starter Structure
               </h3>
-              <p className="text-xs text-terminal-dim">
+              <p className="text-xs text-muted-foreground">
                 Basic setup + dependencies listed
               </p>
-              <p className="text-xs text-terminal-warning mt-2 font-mono">
+              <p className="text-xs text-amber-500 mt-2 font-mono">
                 ⚠ Build from scratch
               </p>
-            </div>
-          </button>
+            </CardContent>
+          </Card>
 
           {/* Option C: Pull from Platform */}
-          <button
+          <Card 
+            className={`cursor-pointer transition-all hover:scale-105 ${
+              selectedOption === "pull" ? "border-primary shadow-lg shadow-primary/20" : ""
+            }`}
             onClick={() => {
               if (selectedOption === "pull") {
                 setSelectedOption(null);
@@ -229,86 +222,68 @@ export function ExportView({
                 }
               }
             }}
-            className={`terminal-window cursor-pointer transition-all hover:scale-105 ${
-              selectedOption === "pull" ? "border-terminal-accent shadow-lg shadow-terminal-accent/20" : ""
-            }`}
           >
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-dim ml-2">
-                <ExternalLink className="inline h-3 w-3 mr-1" />
-                Option C
-              </span>
-            </div>
-            <div className="terminal-content text-center py-6">
-              <ExternalLink className="h-12 w-12 mx-auto mb-3 text-terminal-accent" />
-              <h3 className="font-display font-bold text-terminal-text mb-2">
+            <CardHeader className="pb-2">
+              <Badge className="w-fit">Option C</Badge>
+            </CardHeader>
+            <CardContent className="text-center py-4">
+              <ExternalLink className="h-12 w-12 mx-auto mb-3 text-primary" />
+              <h3 className="font-display font-bold text-foreground mb-2">
                 Pull from Platform
               </h3>
-              <p className="text-xs text-terminal-dim">
+              <p className="text-xs text-muted-foreground">
                 Save and pull later with a token
               </p>
-              <p className="text-xs text-terminal-accent mt-2 font-mono">
+              <p className="text-xs text-primary mt-2 font-mono">
                 {projectToken ? "Saved!" : "Cloud sync"}
               </p>
-            </div>
-          </button>
+            </CardContent>
+          </Card>
 
           {/* Option D: Install Wizard */}
-          <button
-            onClick={() => setSelectedOption(selectedOption === "wizard" ? null : "wizard")}
-            className={`terminal-window cursor-pointer transition-all hover:scale-105 ${
-              selectedOption === "wizard" ? "border-terminal-accent shadow-lg shadow-terminal-accent/20" : ""
+          <Card 
+            className={`cursor-pointer transition-all hover:scale-105 ${
+              selectedOption === "wizard" ? "border-primary shadow-lg shadow-primary/20" : ""
             }`}
+            onClick={() => setSelectedOption(selectedOption === "wizard" ? null : "wizard")}
           >
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-dim ml-2">
-                <Wand2 className="inline h-3 w-3 mr-1" />
-                Option D
-              </span>
-            </div>
-            <div className="terminal-content text-center py-6">
-              <Wand2 className="h-12 w-12 mx-auto mb-3 text-terminal-accent" />
-              <h3 className="font-display font-bold text-terminal-text mb-2">
+            <CardHeader className="pb-2">
+              <Badge variant="secondary" className="w-fit">Coming Soon</Badge>
+            </CardHeader>
+            <CardContent className="text-center py-4">
+              <Wand2 className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+              <h3 className="font-display font-bold text-foreground mb-2">
                 Install Wizard
               </h3>
-              <p className="text-xs text-terminal-dim">
+              <p className="text-xs text-muted-foreground">
                 Guided setup with system detection
               </p>
-              <p className="text-xs text-terminal-accent mt-2 font-mono">
+              <p className="text-xs text-muted-foreground mt-2 font-mono">
                 Coming soon
               </p>
-            </div>
-          </button>
+            </CardContent>
+          </Card>
         </div>
 
         {/* CLI Command Details */}
         {selectedOption === "cli" && (
-          <div className="terminal-window border-terminal-accent">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-accent ml-2">
-                <Terminal className="inline h-3 w-3 mr-1" />
+          <Card className="border-primary">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2 text-primary">
+                <Terminal className="h-4 w-4" />
                 CLI Command
-              </span>
-            </div>
-            <div className="terminal-content space-y-4">
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div className="relative">
-                <pre className="text-xs text-terminal-text bg-terminal-bg/50 p-4 rounded border border-terminal-text/20 overflow-x-auto font-mono">
+                <pre className="text-xs text-foreground bg-muted p-4 rounded border border-border overflow-x-auto font-mono">
                   <code>{command}</code>
                 </pre>
               </div>
 
               <Button
                 onClick={handleCopy}
-                className="w-full bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg font-mono"
+                className="w-full font-mono"
               >
                 {copied ? (
                   <>
@@ -323,57 +298,54 @@ export function ExportView({
                 )}
               </Button>
 
-              <div className="border-t border-terminal-accent/20 pt-4">
-                <p className="text-sm text-terminal-dim mb-2">Next steps:</p>
-                <ol className="space-y-2 text-sm text-terminal-dim">
+              <div className="border-t border-border pt-4">
+                <p className="text-sm text-muted-foreground mb-2">Next steps:</p>
+                <ol className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">1.</span>
+                    <span className="text-primary font-mono font-bold flex-shrink-0">1.</span>
                     <span>Open your terminal</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">2.</span>
+                    <span className="text-primary font-mono font-bold flex-shrink-0">2.</span>
                     <span>Paste and run the command</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">3.</span>
+                    <span className="text-primary font-mono font-bold flex-shrink-0">3.</span>
                     <span>Navigate to the project directory</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">4.</span>
-                    <span>Run <code className="text-terminal-accent">npm install</code></span>
+                    <span className="text-primary font-mono font-bold flex-shrink-0">4.</span>
+                    <span>Run <code className="text-primary">npm install</code></span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">5.</span>
+                    <span className="text-primary font-mono font-bold flex-shrink-0">5.</span>
                     <span>Add environment variables to .env.local</span>
                   </li>
                 </ol>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* ZIP Download Details - STARTER STRUCTURE WARNING */}
         {selectedOption === "zip" && (
-          <div className="terminal-window border-terminal-warning">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-warning ml-2">
-                <Download className="inline h-3 w-3 mr-1" />
+          <Card className="border-amber-500">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2 text-amber-500">
+                <Download className="h-4 w-4" />
                 Starter Structure (Not Full Template)
-              </span>
-            </div>
-            <div className="terminal-content space-y-4">
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
               {/* Clear comparison table */}
-              <div className="bg-terminal-bg/50 rounded border border-terminal-warning/30 p-4">
-                <p className="text-sm text-terminal-warning font-bold mb-3">
+              <div className="bg-amber-500/10 rounded border border-amber-500/30 p-4">
+                <p className="text-sm text-amber-500 font-bold mb-3">
                   ⚠️ This is a STARTER STRUCTURE, not the full template
                 </p>
                 <div className="grid grid-cols-2 gap-4 text-xs">
                   <div>
-                    <p className="text-terminal-accent font-bold mb-2">✓ Included:</p>
-                    <ul className="space-y-1 text-terminal-dim">
+                    <p className="text-primary font-bold mb-2">✓ Included:</p>
+                    <ul className="space-y-1 text-muted-foreground">
                       <li>• Next.js 15 + React 19 setup</li>
                       <li>• Dependencies listed (not implemented)</li>
                       <li>• .env.local.example template</li>
@@ -382,8 +354,8 @@ export function ExportView({
                     </ul>
                   </div>
                   <div>
-                    <p className="text-terminal-error font-bold mb-2">✗ NOT Included:</p>
-                    <ul className="space-y-1 text-terminal-dim">
+                    <p className="text-destructive font-bold mb-2">✗ NOT Included:</p>
+                    <ul className="space-y-1 text-muted-foreground">
                       <li>• Pre-built template components</li>
                       <li>• Page routes and layouts</li>
                       <li>• Integration boilerplate</li>
@@ -394,11 +366,11 @@ export function ExportView({
                 </div>
               </div>
 
-              <div className="bg-terminal-accent/10 border border-terminal-accent/30 rounded p-4">
-                <p className="text-xs text-terminal-text mb-2">
+              <div className="bg-primary/10 border border-primary/30 rounded p-4">
+                <p className="text-xs text-foreground mb-2">
                   <strong>💡 Want the full template?</strong> Use the CLI command instead:
                 </p>
-                <pre className="text-xs text-terminal-accent bg-terminal-bg/50 p-2 rounded font-mono overflow-x-auto">
+                <pre className="text-xs text-primary bg-muted p-2 rounded font-mono overflow-x-auto">
                   npx @jrdaws/framework export {template} ./{projectName}
                 </pre>
               </div>
@@ -406,7 +378,8 @@ export function ExportView({
               <Button
                 onClick={handleDownloadZip}
                 disabled={isDownloading}
-                className="w-full bg-terminal-warning hover:bg-terminal-warning/80 text-terminal-bg font-mono"
+                variant="secondary"
+                className="w-full font-mono bg-amber-500 hover:bg-amber-600 text-white"
               >
                 {isDownloading ? (
                   <>
@@ -421,59 +394,56 @@ export function ExportView({
                 )}
               </Button>
 
-              <div className="border-t border-terminal-warning/20 pt-4">
-                <p className="text-sm text-terminal-dim mb-2">After downloading:</p>
-                <ol className="space-y-2 text-sm text-terminal-dim">
+              <div className="border-t border-border pt-4">
+                <p className="text-sm text-muted-foreground mb-2">After downloading:</p>
+                <ol className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex gap-3">
-                    <span className="text-terminal-warning font-mono font-bold flex-shrink-0">1.</span>
+                    <span className="text-amber-500 font-mono font-bold flex-shrink-0">1.</span>
                     <span>Extract the ZIP file</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-warning font-mono font-bold flex-shrink-0">2.</span>
-                    <span>Run <code className="text-terminal-accent">npm install</code></span>
+                    <span className="text-amber-500 font-mono font-bold flex-shrink-0">2.</span>
+                    <span>Run <code className="text-primary">npm install</code></span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-warning font-mono font-bold flex-shrink-0">3.</span>
+                    <span className="text-amber-500 font-mono font-bold flex-shrink-0">3.</span>
                     <span>Copy .env.local.example to .env.local</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-warning font-mono font-bold flex-shrink-0">4.</span>
+                    <span className="text-amber-500 font-mono font-bold flex-shrink-0">4.</span>
                     <span><strong>Build your own components</strong> using the scaffold</span>
                   </li>
                 </ol>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Pull from Platform Details */}
         {selectedOption === "pull" && (
-          <div className="terminal-window border-terminal-accent">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-accent ml-2">
-                <ExternalLink className="inline h-3 w-3 mr-1" />
+          <Card className="border-primary">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2 text-primary">
+                <ExternalLink className="h-4 w-4" />
                 Pull from Platform
-              </span>
-            </div>
-            <div className="terminal-content space-y-4">
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
               {isSaving && (
                 <div className="flex items-center justify-center py-8">
-                  <Loader2 className="h-8 w-8 animate-spin text-terminal-accent" />
-                  <span className="ml-3 text-terminal-text">Saving to platform...</span>
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <span className="ml-3 text-foreground">Saving to platform...</span>
                 </div>
               )}
 
               {projectToken && !isSaving && (
                 <>
                   <div>
-                    <p className="text-sm text-terminal-text mb-4">
+                    <p className="text-sm text-foreground mb-4">
                       ✅ Project saved to platform! Use this command to pull it later:
                     </p>
                     <div className="relative">
-                      <pre className="text-xs text-terminal-text bg-terminal-bg/50 p-4 rounded border border-terminal-text/20 overflow-x-auto font-mono">
+                      <pre className="text-xs text-foreground bg-muted p-4 rounded border border-border overflow-x-auto font-mono">
                         <code>npx @jrdaws/framework pull {projectToken}</code>
                       </pre>
                     </div>
@@ -485,7 +455,7 @@ export function ExportView({
                       setCopied(true);
                       setTimeout(() => setCopied(false), 2000);
                     }}
-                    className="w-full bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg font-mono"
+                    className="w-full font-mono"
                   >
                     {copied ? (
                       <>
@@ -500,30 +470,30 @@ export function ExportView({
                     )}
                   </Button>
 
-                  <div className="border-t border-terminal-accent/20 pt-4">
-                    <p className="text-sm text-terminal-dim mb-2">How it works:</p>
-                    <ol className="space-y-2 text-sm text-terminal-dim">
+                  <div className="border-t border-border pt-4">
+                    <p className="text-sm text-muted-foreground mb-2">How it works:</p>
+                    <ol className="space-y-2 text-sm text-muted-foreground">
                       <li className="flex gap-3">
-                        <span className="text-terminal-accent font-mono font-bold flex-shrink-0">1.</span>
-                        <span>Your configuration is saved to the platform with token: <code className="text-terminal-accent">{projectToken}</code></span>
+                        <span className="text-primary font-mono font-bold flex-shrink-0">1.</span>
+                        <span>Your configuration is saved to the platform with token: <code className="text-primary">{projectToken}</code></span>
                       </li>
                       <li className="flex gap-3">
-                        <span className="text-terminal-accent font-mono font-bold flex-shrink-0">2.</span>
+                        <span className="text-primary font-mono font-bold flex-shrink-0">2.</span>
                         <span>Run the pull command from anywhere to download the configured project</span>
                       </li>
                       <li className="flex gap-3">
-                        <span className="text-terminal-accent font-mono font-bold flex-shrink-0">3.</span>
+                        <span className="text-primary font-mono font-bold flex-shrink-0">3.</span>
                         <span>All integrations, env variables, and context will be included</span>
                       </li>
                       <li className="flex gap-3">
-                        <span className="text-terminal-accent font-mono font-bold flex-shrink-0">4.</span>
+                        <span className="text-primary font-mono font-bold flex-shrink-0">4.</span>
                         <span>Project expires after 30 days for security</span>
                       </li>
                     </ol>
                   </div>
 
-                  <div className="bg-terminal-accent/10 border border-terminal-accent/30 rounded p-4">
-                    <p className="text-xs text-terminal-text">
+                  <div className="bg-primary/10 border border-primary/30 rounded p-4">
+                    <p className="text-xs text-foreground">
                       💡 <strong>Tip:</strong> Share this token with your team to collaborate, or use it on a different machine to continue working on the project.
                     </p>
                   </div>
@@ -532,37 +502,34 @@ export function ExportView({
 
               {!projectToken && !isSaving && (
                 <div className="text-center py-4">
-                  <p className="text-terminal-dim mb-4">Something went wrong. Please try again.</p>
+                  <p className="text-muted-foreground mb-4">Something went wrong. Please try again.</p>
                   <Button
                     onClick={handleSaveToPlatform}
-                    className="bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg font-mono"
+                    className="font-mono"
                   >
                     Retry Save
                   </Button>
                 </div>
               )}
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Install Wizard Details */}
         {selectedOption === "wizard" && (
-          <div className="terminal-window border-terminal-warning">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-warning ml-2">
-                <Wand2 className="inline h-3 w-3 mr-1" />
+          <Card className="border-amber-500">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2 text-amber-500">
+                <Wand2 className="h-4 w-4" />
                 One-Click Install Wizard (Coming Soon)
-              </span>
-            </div>
-            <div className="terminal-content space-y-4 text-center py-8">
-              <Wand2 className="h-16 w-16 mx-auto text-terminal-warning opacity-50" />
-              <p className="text-terminal-text">
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-center py-8">
+              <Wand2 className="h-16 w-16 mx-auto text-amber-500 opacity-50" />
+              <p className="text-foreground">
                 Install Wizard will be available in Phase 5
               </p>
-              <div className="text-xs text-terminal-dim text-left max-w-md mx-auto space-y-2">
+              <div className="text-xs text-muted-foreground text-left max-w-md mx-auto space-y-2">
                 <p className="font-bold">Planned features:</p>
                 <ul className="list-disc list-inside space-y-1">
                   <li>Detect if Node.js, npm, and Cursor are installed</li>
@@ -573,31 +540,28 @@ export function ExportView({
                   <li>Show next steps for configuration</li>
                 </ul>
               </div>
-              <p className="text-xs text-terminal-dim mt-4">
+              <p className="text-xs text-muted-foreground mt-4">
                 For now, please use Option A (CLI Command) or Option B (Download ZIP)
               </p>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Environment Variables Warning */}
         {requiredEnvVars.length > 0 && selectedOption && (
-          <div className="terminal-window border-terminal-warning/50">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-warning ml-2">
-                <AlertCircle className="inline h-3 w-3 mr-1" />
+          <Card className="border-amber-500/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2 text-amber-500">
+                <AlertCircle className="h-4 w-4" />
                 Required Environment Variables
-              </span>
-            </div>
-            <div className="terminal-content space-y-3">
-              <p className="text-sm text-terminal-dim">
-                Don't forget to add these environment variables to your .env.local file:
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Don&apos;t forget to add these environment variables to your .env.local file:
               </p>
-              <div className="bg-terminal-bg/50 p-4 rounded border border-terminal-warning/20">
-                <pre className="text-xs font-mono text-terminal-text">
+              <div className="bg-muted p-4 rounded border border-amber-500/20">
+                <pre className="text-xs font-mono text-foreground">
                   {requiredEnvVars.map((varName) => (
                     <div key={varName} className="mb-1">
                       {varName}={envKeys?.[varName] || "your_value_here"}
@@ -605,57 +569,54 @@ export function ExportView({
                   ))}
                 </pre>
               </div>
-              <p className="text-xs text-terminal-dim">
-                Refer to the Environment Variables step or each integration's documentation for obtaining these values.
+              <p className="text-xs text-muted-foreground">
+                Refer to the Environment Variables step or each integration&apos;s documentation for obtaining these values.
               </p>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
       </div>
 
       {/* Post-Download Modal */}
       {showPostDownloadModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="terminal-window border-terminal-accent max-w-lg w-full">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-accent ml-2">
-                <Check className="inline h-3 w-3 mr-1" />
+          <Card className="border-primary max-w-lg w-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2 text-primary">
+                <Check className="h-4 w-4" />
                 Download Complete
-              </span>
-            </div>
-            <div className="terminal-content space-y-4">
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div className="text-center py-2">
-                <Check className="h-12 w-12 mx-auto mb-3 text-terminal-accent" />
-                <h3 className="text-lg font-display font-bold text-terminal-text mb-2">
+                <Check className="h-12 w-12 mx-auto mb-3 text-primary" />
+                <h3 className="text-lg font-display font-bold text-foreground mb-2">
                   Starter Structure Downloaded!
                 </h3>
               </div>
 
-              <div className="bg-terminal-warning/10 border border-terminal-warning/30 rounded p-4">
-                <p className="text-sm text-terminal-text mb-3">
-                  <strong>Remember:</strong> You downloaded the <span className="text-terminal-warning">starter structure</span>, 
+              <div className="bg-amber-500/10 border border-amber-500/30 rounded p-4">
+                <p className="text-sm text-foreground mb-3">
+                  <strong>Remember:</strong> You downloaded the <span className="text-amber-500">starter structure</span>, 
                   not the full {selectedTemplate?.name} template.
                 </p>
-                <p className="text-xs text-terminal-dim">
+                <p className="text-xs text-muted-foreground">
                   The starter includes dependencies and configuration, but you&apos;ll need to build the components yourself.
                 </p>
               </div>
 
-              <div className="bg-terminal-accent/10 border border-terminal-accent/30 rounded p-4">
-                <p className="text-sm text-terminal-text mb-3">
+              <div className="bg-primary/10 border border-primary/30 rounded p-4">
+                <p className="text-sm text-foreground mb-3">
                   <strong>Want the full template with all components?</strong>
                 </p>
                 <div className="relative">
-                  <pre className="text-xs text-terminal-accent bg-terminal-bg/50 p-3 rounded font-mono overflow-x-auto">
+                  <pre className="text-xs text-primary bg-muted p-3 rounded font-mono overflow-x-auto">
                     npx @jrdaws/framework export {template} ./{projectName}
                   </pre>
                 </div>
                 <Button
                   onClick={handleCopyFullTemplateCommand}
-                  className="w-full mt-3 bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg font-mono"
+                  className="w-full mt-3 font-mono"
                 >
                   {copied ? (
                     <>
@@ -675,7 +636,7 @@ export function ExportView({
                 <Button
                   onClick={() => setShowPostDownloadModal(false)}
                   variant="outline"
-                  className="flex-1 border-terminal-dim text-terminal-dim hover:bg-terminal-dim/10"
+                  className="flex-1"
                 >
                   Continue with Starter
                 </Button>
@@ -685,13 +646,13 @@ export function ExportView({
                     setSelectedOption("cli");
                     setShowPostDownloadModal(false);
                   }}
-                  className="flex-1 bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg font-mono"
+                  className="flex-1 font-mono"
                 >
                   Get Full Template
                 </Button>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>

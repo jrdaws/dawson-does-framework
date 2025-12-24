@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils";
 
 interface Feature {
@@ -15,7 +16,7 @@ interface FeatureCardsProps {
   title?: string;
 }
 
-const ICONS: Record<string, JSX.Element> = {
+const ICONS: Record<string, React.ReactNode> = {
   zap: (
     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />

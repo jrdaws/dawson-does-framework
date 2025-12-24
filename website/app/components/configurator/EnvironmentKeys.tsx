@@ -4,7 +4,9 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, ExternalLink, AlertCircle, CheckCircle2, Copy, Check } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Eye, EyeOff, ExternalLink, AlertCircle, CheckCircle2, Copy, Check, Key, BookOpen, Terminal } from "lucide-react";
 import { getRequiredEnvVars } from "@/lib/command-builder";
 
 interface EnvironmentKeysProps {
@@ -163,31 +165,28 @@ export function EnvironmentKeys({
     return (
       <div className="space-y-6">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-display font-bold text-terminal-text mb-2">
+          <h2 className="text-2xl font-display font-bold text-foreground mb-2">
             Environment Variables
           </h2>
-          <p className="text-terminal-dim">
+          <p className="text-muted-foreground">
             No environment variables required for your selected integrations
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto terminal-window border-terminal-accent/30">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-terminal-error"></div>
-            <div className="terminal-dot bg-terminal-warning"></div>
-            <div className="terminal-dot bg-terminal-text"></div>
-            <span className="text-xs text-terminal-accent ml-2">
-              <CheckCircle2 className="inline h-3 w-3 mr-1" />
+        <Card className="max-w-2xl mx-auto border-primary/30">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2 text-primary">
+              <CheckCircle2 className="h-4 w-4" />
               All Set!
-            </span>
-          </div>
-          <div className="terminal-content text-center py-8">
-            <CheckCircle2 className="h-16 w-16 text-terminal-accent mx-auto mb-4" />
-            <p className="text-terminal-text">
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center py-8">
+            <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-4" />
+            <p className="text-foreground">
               You can proceed to the next step. Environment variables can be added later if needed.
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -195,20 +194,20 @@ export function EnvironmentKeys({
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-display font-bold text-terminal-text mb-2">
+        <h2 className="text-2xl font-display font-bold text-foreground mb-2">
           Configure Environment Variables
         </h2>
-        <p className="text-terminal-dim mb-4">
+        <p className="text-muted-foreground mb-4">
           Add API keys for your selected integrations
         </p>
         <div className="inline-flex items-center gap-2 text-sm">
-          <span className="text-terminal-dim">Progress:</span>
-          <span className="font-mono text-terminal-accent font-bold">
+          <span className="text-muted-foreground">Progress:</span>
+          <span className="font-mono text-primary font-bold">
             {completedCount}/{requiredEnvVars.length}
           </span>
-          {allCompleted && <CheckCircle2 className="h-4 w-4 text-terminal-accent" />}
+          {allCompleted && <CheckCircle2 className="h-4 w-4 text-primary" />}
         </div>
-        <p className="text-xs text-terminal-accent mt-2">
+        <p className="text-xs text-primary mt-2">
           Optional: You can skip this and add keys later in your .env.local file
         </p>
       </div>
@@ -221,22 +220,18 @@ export function EnvironmentKeys({
           const isFilled = value.trim().length > 0;
 
           return (
-            <div key={envVar} className="terminal-window">
-              <div className="terminal-header">
-                <div className="terminal-dot bg-terminal-error"></div>
-                <div className="terminal-dot bg-terminal-warning"></div>
-                <div className="terminal-dot bg-terminal-text"></div>
-                <span className="text-xs ml-2 flex items-center gap-2">
-                  <span className={isFilled ? "text-terminal-accent" : "text-terminal-dim"}>
-                    {doc?.label || envVar}
-                  </span>
-                  {isFilled && <CheckCircle2 className="h-3 w-3 text-terminal-accent" />}
-                </span>
-              </div>
-              <div className="terminal-content space-y-3">
+            <Card key={envVar}>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <Key className={`h-4 w-4 ${isFilled ? "text-primary" : "text-muted-foreground"}`} />
+                  {doc?.label || envVar}
+                  {isFilled && <Badge variant="success" className="ml-auto">Filled</Badge>}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
                 {/* Instructions */}
                 {doc && (
-                  <div className="text-xs text-terminal-dim space-y-1">
+                  <div className="text-xs text-muted-foreground space-y-1">
                     <p className="flex items-start gap-2">
                       <AlertCircle className="h-3 w-3 mt-0.5 flex-shrink-0" />
                       <span>{doc.instructions}</span>
@@ -245,7 +240,7 @@ export function EnvironmentKeys({
                       href={doc.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-terminal-accent hover:underline"
+                      className="inline-flex items-center gap-1 text-primary hover:underline"
                     >
                       <ExternalLink className="h-3 w-3" />
                       Open Dashboard
@@ -253,59 +248,9 @@ export function EnvironmentKeys({
                   </div>
                 )}
 
-                {/* Format Example */}
-                <div className="bg-terminal-accent/10 border border-terminal-accent/30 rounded p-3 space-y-2">
-                  <p className="text-xs text-terminal-accent font-bold">
-                    ✅ Paste ONLY the value (without the variable name):
-                  </p>
-                  <div className="font-mono text-[10px] text-terminal-text space-y-1">
-                    {envVar.includes('SUPABASE_URL') && (
-                      <div>
-                        <span className="text-terminal-dim">Example: </span>
-                        <span className="text-terminal-accent">https://abcdefghi.supabase.co</span>
-                      </div>
-                    )}
-                    {envVar.includes('ANON_KEY') && (
-                      <div>
-                        <span className="text-terminal-dim">Example: </span>
-                        <span className="text-terminal-accent">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</span>
-                      </div>
-                    )}
-                    {(envVar.includes('STRIPE') && envVar.includes('SECRET')) && (
-                      <div>
-                        <span className="text-terminal-dim">Example: </span>
-                        <span className="text-terminal-accent">sk_test_51Abc...</span>
-                      </div>
-                    )}
-                    {(envVar.includes('STRIPE') && envVar.includes('PUBLISHABLE')) && (
-                      <div>
-                        <span className="text-terminal-dim">Example: </span>
-                        <span className="text-terminal-accent">pk_test_51Abc...</span>
-                      </div>
-                    )}
-                    {envVar.includes('CLERK') && (
-                      <div>
-                        <span className="text-terminal-dim">Example: </span>
-                        <span className="text-terminal-accent">pk_test_...</span>
-                      </div>
-                    )}
-                    {!envVar.includes('SUPABASE') && !envVar.includes('STRIPE') && !envVar.includes('CLERK') && (
-                      <div>
-                        <span className="text-terminal-dim">Paste the key/value from your dashboard</span>
-                      </div>
-                    )}
-                  </div>
-                  <p className="text-[10px] text-terminal-error">
-                    ❌ Do NOT paste: <code className="bg-terminal-bg px-1">{envVar}=your_value</code>
-                  </p>
-                  <p className="text-[10px] text-terminal-accent">
-                    ✅ Paste ONLY: <code className="bg-terminal-bg px-1">your_value</code>
-                  </p>
-                </div>
-
                 {/* Input Field */}
                 <div className="space-y-2">
-                  <Label htmlFor={envVar} className="text-terminal-text font-mono text-xs">
+                  <Label htmlFor={envVar} className="text-foreground font-mono text-xs">
                     {envVar}
                   </Label>
                   <div className="relative">
@@ -315,12 +260,12 @@ export function EnvironmentKeys({
                       value={value}
                       onChange={(e) => onEnvKeyChange(envVar, e.target.value)}
                       placeholder="Paste ONLY the value (not the variable name)"
-                      className="bg-terminal-bg border-terminal-text/30 text-terminal-text font-mono text-xs pr-10"
+                      className="font-mono text-xs pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => toggleVisibility(envVar)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-terminal-dim hover:text-terminal-text"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                     >
                       {isVisible ? (
                         <EyeOff className="h-4 w-4" />
@@ -330,8 +275,8 @@ export function EnvironmentKeys({
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           );
         })}
 
@@ -339,57 +284,53 @@ export function EnvironmentKeys({
         {requiredEnvVars.length > 0 && (
           <>
             {/* Step-by-step instructions for beginners */}
-            <div className="terminal-window border-terminal-warning/30">
-              <div className="terminal-header">
-                <div className="terminal-dot bg-terminal-error"></div>
-                <div className="terminal-dot bg-terminal-warning"></div>
-                <div className="terminal-dot bg-terminal-text"></div>
-                <span className="text-xs text-terminal-warning ml-2">
-                  📖 How to Install Environment Variables
-                </span>
-              </div>
-              <div className="terminal-content space-y-4">
-                <div className="space-y-3 text-xs text-terminal-dim">
-                  <p className="text-terminal-text font-bold">After exporting your project, you need to create a <code className="text-terminal-accent">.env.local</code> file:</p>
+            <Card className="border-amber-500/30">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center gap-2 text-amber-500">
+                  <BookOpen className="h-4 w-4" />
+                  How to Install Environment Variables
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3 text-xs text-muted-foreground">
+                  <p className="text-foreground font-bold">After exporting your project, you need to create a <code className="text-primary">.env.local</code> file:</p>
                   
                   <div className="space-y-2 ml-4">
-                    <p><span className="text-terminal-accent font-bold">Step 1:</span> Open a terminal and navigate to your exported project folder</p>
-                    <p><span className="text-terminal-accent font-bold">Step 2:</span> Create the <code className="text-terminal-accent">.env.local</code> file in the <span className="underline">root of your project</span> (same folder as <code>package.json</code>)</p>
-                    <p><span className="text-terminal-accent font-bold">Step 3:</span> Paste the environment variables inside the file</p>
-                    <p><span className="text-terminal-accent font-bold">Step 4:</span> Replace placeholder values with your actual API keys</p>
-                    <p><span className="text-terminal-accent font-bold">Step 5:</span> Run <code className="text-terminal-accent">npm run dev</code> to start your app</p>
+                    <p><span className="text-primary font-bold">Step 1:</span> Open a terminal and navigate to your exported project folder</p>
+                    <p><span className="text-primary font-bold">Step 2:</span> Create the <code className="text-primary">.env.local</code> file in the <span className="underline">root of your project</span> (same folder as <code>package.json</code>)</p>
+                    <p><span className="text-primary font-bold">Step 3:</span> Paste the environment variables inside the file</p>
+                    <p><span className="text-primary font-bold">Step 4:</span> Replace placeholder values with your actual API keys</p>
+                    <p><span className="text-primary font-bold">Step 5:</span> Run <code className="text-primary">npm run dev</code> to start your app</p>
                   </div>
 
-                  <div className="bg-terminal-error/10 border border-terminal-error/30 rounded p-3 mt-4">
-                    <p className="text-terminal-error flex items-start gap-2">
+                  <div className="bg-destructive/10 border border-destructive/30 rounded p-3 mt-4">
+                    <p className="text-destructive flex items-start gap-2">
                       <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                      <span><strong>Important:</strong> The <code>.env.local</code> file should NEVER be committed to git. It's already in the <code>.gitignore</code> file.</span>
+                      <span><strong>Important:</strong> The <code>.env.local</code> file should NEVER be committed to git. It&apos;s already in the <code>.gitignore</code> file.</span>
                     </p>
                   </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Terminal command to create .env.local automatically */}
-            <div className="terminal-window border-terminal-accent/50">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-accent ml-2">
-                  ⚡ Quick Install Command (Copy & Run in Terminal)
-              </span>
-            </div>
-            <div className="terminal-content space-y-4">
-              <p className="text-xs text-terminal-dim">
-                  Run this command in your project folder to automatically create your <code className="text-terminal-accent">.env.local</code> file:
+            <Card className="border-primary/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center gap-2 text-primary">
+                  <Terminal className="h-4 w-4" />
+                  Quick Install Command (Copy & Run in Terminal)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-xs text-muted-foreground">
+                  Run this command in your project folder to automatically create your <code className="text-primary">.env.local</code> file:
                 </p>
                 <div className="relative">
-                  <pre className="text-xs bg-black p-4 rounded border border-terminal-accent/30 overflow-x-auto font-mono text-terminal-text">
-                    <span className="text-terminal-dim"># Navigate to your project (replace with your project path)</span>{"\n"}
-                    <span className="text-terminal-accent">cd</span> ./your-project-name{"\n\n"}
-                    <span className="text-terminal-dim"># Create .env.local with your API keys</span>{"\n"}
-                    <span className="text-terminal-accent">cat</span> {">"} .env.local {"<<"} 'EOF'{"\n"}
+                  <pre className="text-xs bg-black p-4 rounded border border-primary/30 overflow-x-auto font-mono text-foreground">
+                    <span className="text-muted-foreground"># Navigate to your project (replace with your project path)</span>{"\n"}
+                    <span className="text-primary">cd</span> ./your-project-name{"\n\n"}
+                    <span className="text-muted-foreground"># Create .env.local with your API keys</span>{"\n"}
+                    <span className="text-primary">cat</span> {">"} .env.local {"<<"} &apos;EOF&apos;{"\n"}
                     {requiredEnvVars.map((varName) => (
                       <span key={varName}>{varName}={envKeys[varName] || "YOUR_VALUE_HERE"}{"\n"}</span>
                     ))}
@@ -403,7 +344,8 @@ export function EnvironmentKeys({
                       setTimeout(() => setCopiedKey(null), 2000);
                     }}
                     size="sm"
-                    className="absolute top-2 right-2 bg-terminal-accent/20 hover:bg-terminal-accent/40 text-terminal-accent text-xs"
+                    variant="outline"
+                    className="absolute top-2 right-2"
                   >
                     {copiedKey === "__command__" ? (
                       <><Check className="mr-1 h-3 w-3" /> Copied!</>
@@ -412,86 +354,82 @@ export function EnvironmentKeys({
                     )}
                   </Button>
                 </div>
-                <p className="text-xs text-terminal-dim">
+                <p className="text-xs text-muted-foreground">
                   <strong>Windows users:</strong> Use PowerShell and run:{" "}
-                  <code className="text-terminal-accent">notepad .env.local</code> then paste the content below.
+                  <code className="text-primary">notepad .env.local</code> then paste the content below.
                 </p>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Copy env content for manual paste */}
-            <div className="terminal-window border-terminal-text/20">
-              <div className="terminal-header">
-                <div className="terminal-dot bg-terminal-error"></div>
-                <div className="terminal-dot bg-terminal-warning"></div>
-                <div className="terminal-dot bg-terminal-text"></div>
-                <span className="text-xs text-terminal-dim ml-2">
-                  📋 .env.local File Content (Copy & Paste Manually)
-                </span>
-              </div>
-              <div className="terminal-content space-y-4">
-                <p className="text-xs text-terminal-dim">
-                  If you prefer, copy this content and paste it into a new file called <code className="text-terminal-accent">.env.local</code> in your project root:
-              </p>
-              <pre className="text-xs bg-terminal-bg/50 p-4 rounded border border-terminal-text/20 overflow-x-auto font-mono text-terminal-text">
-                {requiredEnvVars.map((varName) => (
-                  <div key={varName}>
-                    {varName}={envKeys[varName] || "your_value_here"}
-                  </div>
-                ))}
-              </pre>
-              <Button
-                onClick={handleCopyEnvFile}
-                className="w-full bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg"
-              >
-                {copiedKey === "__all__" ? (
-                  <>
-                    <Check className="mr-2 h-4 w-4" />
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center gap-2 text-muted-foreground">
+                  <Copy className="h-4 w-4" />
+                  .env.local File Content (Copy & Paste Manually)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-xs text-muted-foreground">
+                  If you prefer, copy this content and paste it into a new file called <code className="text-primary">.env.local</code> in your project root:
+                </p>
+                <pre className="text-xs bg-muted p-4 rounded border border-border overflow-x-auto font-mono text-foreground">
+                  {requiredEnvVars.map((varName) => (
+                    <div key={varName}>
+                      {varName}={envKeys[varName] || "your_value_here"}
+                    </div>
+                  ))}
+                </pre>
+                <Button
+                  onClick={handleCopyEnvFile}
+                  className="w-full"
+                >
+                  {copiedKey === "__all__" ? (
+                    <>
+                      <Check className="mr-2 h-4 w-4" />
                       Copied to Clipboard!
-                  </>
-                ) : (
-                  <>
-                    <Copy className="mr-2 h-4 w-4" />
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="mr-2 h-4 w-4" />
                       Copy .env.local Content
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
 
             {/* Resources */}
-            <div className="terminal-window border-terminal-text/10">
-              <div className="terminal-header">
-                <div className="terminal-dot bg-terminal-error"></div>
-                <div className="terminal-dot bg-terminal-warning"></div>
-                <div className="terminal-dot bg-terminal-text"></div>
-                <span className="text-xs text-terminal-dim ml-2">
-                  📚 Additional Resources
-                </span>
-              </div>
-              <div className="terminal-content">
-                <ul className="text-xs text-terminal-dim space-y-2">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center gap-2 text-muted-foreground">
+                  <BookOpen className="h-4 w-4" />
+                  Additional Resources
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="text-xs text-muted-foreground space-y-2">
                   <li className="flex items-center gap-2">
-                    <ExternalLink className="h-3 w-3 text-terminal-accent" />
-                    <a href="https://nextjs.org/docs/app/building-your-application/configuring/environment-variables" target="_blank" rel="noopener noreferrer" className="text-terminal-accent hover:underline">
+                    <ExternalLink className="h-3 w-3 text-primary" />
+                    <a href="https://nextjs.org/docs/app/building-your-application/configuring/environment-variables" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                       Next.js Environment Variables Guide
                     </a>
                   </li>
                   <li className="flex items-center gap-2">
-                    <ExternalLink className="h-3 w-3 text-terminal-accent" />
-                    <a href="https://github.com/jrdaws/dawson-does-framework#environment-setup" target="_blank" rel="noopener noreferrer" className="text-terminal-accent hover:underline">
+                    <ExternalLink className="h-3 w-3 text-primary" />
+                    <a href="https://github.com/jrdaws/dawson-does-framework#environment-setup" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                       Framework Documentation
                     </a>
                   </li>
                   <li className="flex items-center gap-2">
-                    <ExternalLink className="h-3 w-3 text-terminal-accent" />
-                    <a href="https://vercel.com/docs/environment-variables" target="_blank" rel="noopener noreferrer" className="text-terminal-accent hover:underline">
+                    <ExternalLink className="h-3 w-3 text-primary" />
+                    <a href="https://vercel.com/docs/environment-variables" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                       Vercel Deployment Environment Variables
                     </a>
                   </li>
                 </ul>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </>
         )}
       </div>

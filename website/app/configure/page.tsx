@@ -18,6 +18,7 @@ const ProjectDetails = dynamic(() => import("@/app/components/configurator/Proje
 const IntegrationSelector = dynamic(() => import("@/app/components/configurator/IntegrationSelector").then(mod => ({ default: mod.IntegrationSelector })), { ssr: false });
 const EnvironmentKeys = dynamic(() => import("@/app/components/configurator/EnvironmentKeys").then(mod => ({ default: mod.EnvironmentKeys })), { ssr: false });
 const AIPreview = dynamic(() => import("@/app/components/configurator/AIPreview").then(mod => ({ default: mod.AIPreview })), { ssr: false });
+const ComponentAwarePreview = dynamic(() => import("@/app/components/configurator/ComponentAwarePreview").then(mod => ({ default: mod.ComponentAwarePreview })), { ssr: false });
 const ProjectGenerator = dynamic(() => import("@/app/components/configurator/ProjectGenerator").then(mod => ({ default: mod.ProjectGenerator })), { ssr: false });
 const ContextFields = dynamic(() => import("@/app/components/configurator/ContextFields").then(mod => ({ default: mod.ContextFields })), { ssr: false });
 const ExportView = dynamic(() => import("@/app/components/configurator/ExportView").then(mod => ({ default: mod.ExportView })), { ssr: false });
@@ -42,7 +43,7 @@ const getPhaseForStep = (step: number): string => {
 };
 
 export default function ConfigurePage() {
-  const [aiTab, setAiTab] = useState<"preview" | "generate">("preview");
+  const [aiTab, setAiTab] = useState<"component" | "preview" | "generate">("component");
 
   const {
     currentStep,
@@ -229,6 +230,16 @@ export default function ConfigurePage() {
                 {/* Tab Selector */}
                 <div className="flex gap-2 border-b border-border">
                   <button
+                    onClick={() => setAiTab("component")}
+                    className={`px-4 py-2 font-medium text-sm transition-colors ${
+                      aiTab === "component"
+                        ? "text-primary border-b-2 border-primary"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Component Preview ✨
+                  </button>
+                  <button
                     onClick={() => setAiTab("preview")}
                     className={`px-4 py-2 font-medium text-sm transition-colors ${
                       aiTab === "preview"
@@ -236,7 +247,7 @@ export default function ConfigurePage() {
                         : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    Visual Preview
+                    AI HTML Preview
                   </button>
                   <button
                     onClick={() => setAiTab("generate")}
@@ -272,14 +283,23 @@ export default function ConfigurePage() {
                 )}
 
                 {/* Tab Content */}
-                {aiTab === "preview" ? (
+                {aiTab === "component" && (
+                  <ComponentAwarePreview
+                    template={template}
+                    integrations={integrations}
+                    inspirations={inspirations}
+                    description={description}
+                  />
+                )}
+                {aiTab === "preview" && (
                   <AIPreview
                     template={template}
                     integrations={integrations}
                     inspirations={inspirations}
                     description={description}
                   />
-                ) : (
+                )}
+                {aiTab === "generate" && (
                   <ProjectGenerator
                     template={template}
                     integrations={integrations}

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Loader2,
   Sparkles,
@@ -143,8 +145,9 @@ export function AIPreview({
       if (result.remainingDemoGenerations !== undefined) {
         setRemainingDemoGenerations(result.remainingDemoGenerations);
       }
-    } catch (err: any) {
-      setError(err.message || "Failed to generate preview");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to generate preview";
+      setError(message);
     } finally {
       setGenerating(false);
     }
@@ -175,32 +178,29 @@ export function AIPreview({
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-display font-bold text-terminal-text mb-2">
+        <h2 className="text-2xl font-display font-bold text-foreground mb-2">
           AI-Generated Preview
         </h2>
-        <p className="text-terminal-dim">
+        <p className="text-muted-foreground">
           Generate a visual prototype based on your template and inspiration
         </p>
-        <p className="text-xs text-terminal-accent mt-2">
+        <Badge variant="info" className="mt-2">
           Optional: Skip to export your configured template without AI customization
-        </p>
+        </Badge>
       </div>
 
       <div className="max-w-7xl mx-auto space-y-6">
         {/* API Key Management */}
         {(showApiKeyInput || userApiKey) && (
-          <div className="terminal-window border-terminal-accent/30">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-accent ml-2">
-                <Key className="inline h-3 w-3 mr-1" />
+          <Card className="border-primary/30">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2 text-primary">
+                <Key className="h-4 w-4" />
                 Anthropic API Key Settings
-              </span>
-            </div>
-            <div className="terminal-content space-y-3">
-              <div className="flex items-start gap-2 text-xs text-terminal-dim">
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-start gap-2 text-xs text-muted-foreground">
                 <Info className="h-4 w-4 flex-shrink-0 mt-0.5" />
                 <p>
                   Using your own API key removes generation limits. Your key is stored locally
@@ -209,7 +209,7 @@ export function AIPreview({
                     href="https://console.anthropic.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-terminal-accent hover:underline"
+                    className="text-primary hover:underline"
                   >
                     console.anthropic.com
                   </a>
@@ -217,7 +217,7 @@ export function AIPreview({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="apiKey" className="text-terminal-text text-sm">
+                <Label htmlFor="apiKey" className="text-foreground text-sm">
                   Anthropic API Key
                 </Label>
                 <div className="flex gap-2">
@@ -228,12 +228,12 @@ export function AIPreview({
                       value={userApiKey}
                       onChange={(e) => setUserApiKey(e.target.value)}
                       placeholder="sk-ant-..."
-                      className="font-mono text-xs bg-terminal-bg border-terminal-text/30 text-terminal-text focus:border-terminal-accent pr-10"
+                      className="font-mono text-xs pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowApiKey(!showApiKey)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-terminal-dim hover:text-terminal-text"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                     >
                       {showApiKey ? (
                         <EyeOff className="h-4 w-4" />
@@ -250,46 +250,42 @@ export function AIPreview({
                         setUserApiKey("");
                         setShowApiKeyInput(false);
                       }}
-                      className="border-terminal-text/30 text-terminal-text hover:border-terminal-accent"
                     >
                       Clear
                     </Button>
                   )}
                 </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Generation Controls */}
-        <div className="terminal-window">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-terminal-error"></div>
-            <div className="terminal-dot bg-terminal-warning"></div>
-            <div className="terminal-dot bg-terminal-text"></div>
-            <span className="text-xs text-terminal-dim ml-2">
-              <Sparkles className="inline h-3 w-3 mr-1" />
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-primary" />
               AI Generation Controls
-            </span>
-            {!userApiKey && remainingDemoGenerations !== null && (
-              <span className="ml-auto text-xs text-terminal-accent">
-                {remainingDemoGenerations} demo generations remaining
-              </span>
-            )}
-          </div>
-          <div className="terminal-content space-y-4">
+              {!userApiKey && remainingDemoGenerations !== null && (
+                <Badge variant="info" className="ml-auto">
+                  {remainingDemoGenerations} demo generations remaining
+                </Badge>
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             {/* Error State */}
             {error && (
-              <div className="bg-terminal-error/10 border border-terminal-error/30 rounded p-4 flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-terminal-error flex-shrink-0 mt-0.5" />
+              <div className="bg-destructive/10 border border-destructive/30 rounded p-4 flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="text-terminal-error text-sm font-bold mb-1">Generation Failed</p>
-                  <p className="text-terminal-dim text-xs">{error}</p>
+                  <p className="text-destructive text-sm font-bold mb-1">Generation Failed</p>
+                  <p className="text-muted-foreground text-xs">{error}</p>
                   {error.includes("limit") && !userApiKey && (
                     <Button
                       onClick={() => setShowApiKeyInput(true)}
                       size="sm"
-                      className="mt-3 bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg"
+                      className="mt-3"
                     >
                       <Key className="mr-2 h-3 w-3" />
                       Add API Key for Unlimited Access
@@ -302,8 +298,8 @@ export function AIPreview({
             {/* Initial State - No Preview */}
             {!localPreviewHtml && !isGenerating && (
               <div className="text-center py-8">
-                <Sparkles className="h-16 w-16 text-terminal-accent mx-auto mb-4 opacity-50" />
-                <p className="text-terminal-text mb-4">
+                <Sparkles className="h-16 w-16 text-primary mx-auto mb-4 opacity-50" />
+                <p className="text-foreground mb-4">
                   {hasInputs
                     ? "Ready to generate your prototype with AI"
                     : "Add inspiration or description to get AI-powered customization"}
@@ -311,20 +307,19 @@ export function AIPreview({
                 <Button
                   onClick={handleGenerate}
                   disabled={!template}
-                  className="bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg disabled:opacity-50"
                 >
                   <Sparkles className="mr-2 h-4 w-4" />
                   Generate Preview
                 </Button>
                 {!hasInputs && (
-                  <p className="text-xs text-terminal-dim mt-4">
+                  <p className="text-xs text-muted-foreground mt-4">
                     Go back to add inspiration or skip this step to use the base template
                   </p>
                 )}
                 {!userApiKey && (
                   <button
                     onClick={() => setShowApiKeyInput(!showApiKeyInput)}
-                    className="text-xs text-terminal-accent hover:underline mt-4 block mx-auto"
+                    className="text-xs text-primary hover:underline mt-4 block mx-auto"
                   >
                     {showApiKeyInput ? "Hide" : "Add"} API key for unlimited generations
                   </button>
@@ -335,19 +330,19 @@ export function AIPreview({
             {/* Generating State */}
             {isGenerating && (
               <div className="text-center py-12">
-                <Loader2 className="h-12 w-12 text-terminal-accent mx-auto mb-4 animate-spin" />
-                <p className="text-terminal-text mb-2">Generating your prototype...</p>
-                <p className="text-xs text-terminal-dim">
+                <Loader2 className="h-12 w-12 text-primary mx-auto mb-4 animate-spin" />
+                <p className="text-foreground mb-2">Generating your prototype...</p>
+                <p className="text-xs text-muted-foreground">
                   AI is analyzing your inputs and creating a custom design
                 </p>
                 <div className="mt-6 space-y-2">
-                  <div className="h-2 bg-terminal-bg/50 rounded-full overflow-hidden max-w-md mx-auto">
+                  <div className="h-2 bg-muted rounded-full overflow-hidden max-w-md mx-auto">
                     <div
-                      className="h-full bg-terminal-accent animate-pulse transition-all duration-500"
+                      className="h-full bg-primary animate-pulse transition-all duration-500"
                       style={{ width: "75%" }}
                     />
                   </div>
-                  <p className="text-xs text-terminal-dim">
+                  <p className="text-xs text-muted-foreground">
                     This may take 10-30 seconds...
                   </p>
                 </div>
@@ -362,8 +357,8 @@ export function AIPreview({
                     onClick={() => setViewport("desktop")}
                     className={`p-2 rounded transition-colors ${
                       viewport === "desktop"
-                        ? "bg-terminal-accent text-terminal-bg"
-                        : "text-terminal-text hover:bg-terminal-text/10"
+                        ? "bg-primary text-primary-foreground"
+                        : "text-foreground hover:bg-muted"
                     }`}
                     title="Desktop View"
                   >
@@ -373,8 +368,8 @@ export function AIPreview({
                     onClick={() => setViewport("tablet")}
                     className={`p-2 rounded transition-colors ${
                       viewport === "tablet"
-                        ? "bg-terminal-accent text-terminal-bg"
-                        : "text-terminal-text hover:bg-terminal-text/10"
+                        ? "bg-primary text-primary-foreground"
+                        : "text-foreground hover:bg-muted"
                     }`}
                     title="Tablet View"
                   >
@@ -384,14 +379,14 @@ export function AIPreview({
                     onClick={() => setViewport("mobile")}
                     className={`p-2 rounded transition-colors ${
                       viewport === "mobile"
-                        ? "bg-terminal-accent text-terminal-bg"
-                        : "text-terminal-text hover:bg-terminal-text/10"
+                        ? "bg-primary text-primary-foreground"
+                        : "text-foreground hover:bg-muted"
                     }`}
                     title="Mobile View"
                   >
                     <Smartphone className="h-4 w-4" />
                   </button>
-                  <span className="text-xs text-terminal-dim ml-2">
+                  <span className="text-xs text-muted-foreground ml-2">
                     {viewport.charAt(0).toUpperCase() + viewport.slice(1)}
                   </span>
                 </div>
@@ -401,11 +396,6 @@ export function AIPreview({
                     onClick={() => setEditMode(!editMode)}
                     variant={editMode ? "default" : "outline"}
                     size="sm"
-                    className={
-                      editMode
-                        ? "bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg"
-                        : "border-terminal-text/30 text-terminal-text hover:border-terminal-accent"
-                    }
                   >
                     {editMode ? (
                       <>
@@ -424,11 +414,7 @@ export function AIPreview({
                       onClick={handleSave}
                       variant={saved ? "default" : "outline"}
                       size="sm"
-                      className={
-                        saved
-                          ? "bg-green-600 hover:bg-green-700 text-white"
-                          : "border-terminal-text/30 text-terminal-text hover:border-terminal-accent"
-                      }
+                      className={saved ? "bg-emerald-600 hover:bg-emerald-700" : ""}
                     >
                       {saved ? (
                         <>
@@ -447,7 +433,6 @@ export function AIPreview({
                     onClick={handleOpenNewTab}
                     variant="outline"
                     size="sm"
-                    className="border-terminal-text/30 text-terminal-text hover:border-terminal-accent"
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Open in New Tab
@@ -456,7 +441,6 @@ export function AIPreview({
                     onClick={handleRegenerate}
                     variant="outline"
                     size="sm"
-                    className="border-terminal-text/30 text-terminal-text hover:border-terminal-accent"
                   >
                     <RotateCcw className="mr-2 h-4 w-4" />
                     Regenerate
@@ -464,35 +448,30 @@ export function AIPreview({
                 </div>
               </div>
             )}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Preview Frame */}
         {localPreviewHtml && !isGenerating && (
           <>
             {editMode ? (
               // Edit Mode - Full Visual Editor
-              <div className="terminal-window">
-                <div className="terminal-header">
-                  <div className="terminal-dot bg-terminal-error"></div>
-                  <div className="terminal-dot bg-terminal-warning"></div>
-                  <div className="terminal-dot bg-terminal-text"></div>
-                  <span className="text-xs text-terminal-dim ml-2 flex items-center gap-2">
-                    <Edit3 className="h-3 w-3 text-terminal-accent" />
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <Edit3 className="h-4 w-4 text-primary" />
                     Visual Editor - Click elements to edit
                     {localPreviewHtml !== previewHtml && !saved && (
-                      <span className="text-amber-500 text-[10px] bg-amber-500/10 px-1.5 py-0.5 rounded">
-                        unsaved changes
+                      <Badge variant="warning" className="ml-2">unsaved changes</Badge>
+                    )}
+                    {components.length > 0 && (
+                      <span className="ml-auto text-[10px] text-muted-foreground">
+                        Components: {components.join(" · ")}
                       </span>
                     )}
-                  </span>
-                  {components.length > 0 && (
-                    <span className="ml-auto text-[10px] text-terminal-dim">
-                      Components: {components.join(" · ")}
-                    </span>
-                  )}
-                </div>
-                <div className="terminal-content p-0" style={{ height: "700px" }}>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0" style={{ height: "700px" }}>
                   <CollaborativeVisualEditor
                     html={localPreviewHtml}
                     onHtmlChange={setLocalPreviewHtml}
@@ -503,31 +482,24 @@ export function AIPreview({
                     enableCollaboration={true}
                     viewport={viewport}
                   />
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ) : (
               // View Mode - Standard iframe with viewport controls
-              <div className="terminal-window">
-                <div className="terminal-header">
-                  <div className="terminal-dot bg-terminal-error"></div>
-                  <div className="terminal-dot bg-terminal-warning"></div>
-                  <div className="terminal-dot bg-terminal-text"></div>
-                  <span className="text-xs text-terminal-dim ml-2 flex items-center gap-2">
-                    <span className="text-terminal-accent">●</span>
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <span className="text-primary">●</span>
                     Preview - {viewport.charAt(0).toUpperCase() + viewport.slice(1)} View
-                    {isCached && (
-                      <span className="text-terminal-accent text-[10px] bg-terminal-accent/10 px-1.5 py-0.5 rounded">
-                        cached
+                    {isCached && <Badge variant="info" className="ml-2">cached</Badge>}
+                    {components.length > 0 && (
+                      <span className="ml-auto text-[10px] text-muted-foreground">
+                        Components: {components.join(" · ")}
                       </span>
                     )}
-                  </span>
-                  {components.length > 0 && (
-                    <span className="ml-auto text-[10px] text-terminal-dim">
-                      Components: {components.join(" · ")}
-                    </span>
-                  )}
-                </div>
-                <div className="terminal-content bg-white p-4">
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="bg-white p-4">
                   <div className="flex justify-center">
                     <div
                       style={{ width: viewportWidths[viewport], maxWidth: "100%" }}
@@ -542,29 +514,26 @@ export function AIPreview({
                       />
                     </div>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             )}
           </>
         )}
 
         {/* Info Box */}
-        <div className="terminal-window border-terminal-accent/30">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-terminal-error"></div>
-            <div className="terminal-dot bg-terminal-warning"></div>
-            <div className="terminal-dot bg-terminal-text"></div>
-            <span className="text-xs text-terminal-accent ml-2">
-              <Info className="inline h-3 w-3 mr-1" />
+        <Card className="border-primary/30">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2 text-primary">
+              <Info className="h-4 w-4" />
               About AI Preview
-            </span>
-            {generatedAt && (
-              <span className="ml-auto text-[10px] text-terminal-dim">
-                Generated: {new Date(generatedAt).toLocaleTimeString()}
-              </span>
-            )}
-          </div>
-          <div className="terminal-content space-y-3 text-sm text-terminal-dim">
+              {generatedAt && (
+                <span className="ml-auto text-[10px] text-muted-foreground font-normal">
+                  Generated: {new Date(generatedAt).toLocaleTimeString()}
+                </span>
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p>
               This preview is AI-generated to demonstrate what your project could look like based
               on your selections. The actual exported project will include:
@@ -580,11 +549,11 @@ export function AIPreview({
               <li>Production-ready code with TypeScript and Tailwind CSS</li>
               <li>Complete documentation and setup instructions</li>
             </ul>
-            <p className="text-xs text-terminal-accent mt-3">
+            <p className="text-xs text-primary mt-3">
               💡 This preview is for inspiration only. The exported project is fully customizable.
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

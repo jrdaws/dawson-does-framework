@@ -1,4 +1,3 @@
-Read prompts/agents/roles/controllers/AUDITOR.md and execute a full audit cycle. Review the last 6 hours of changes, run tests, check agent activity, and produce an audit report.
 /**
  * Health Check Endpoint
  * 

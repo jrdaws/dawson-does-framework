@@ -4,6 +4,8 @@ import { useState, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Upload, Link as LinkIcon, Figma, X, Image as ImageIcon, FileText } from "lucide-react";
 import { Inspiration } from "@/lib/configurator-state";
 
@@ -98,57 +100,51 @@ export function InspirationUpload({
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-display font-bold text-terminal-text mb-2">
+        <h2 className="text-2xl font-display font-bold text-foreground mb-2">
           Add Inspiration
         </h2>
-        <p className="text-terminal-dim">
+        <p className="text-muted-foreground">
           Upload images, paste URLs, or describe what you want to build
         </p>
-        <p className="text-xs text-terminal-accent mt-2">
+        <Badge variant="info" className="mt-2">
           Optional: Skip this step if you want to start from a blank template
-        </p>
+        </Badge>
       </div>
 
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Text Description */}
-        <div className="terminal-window">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-terminal-error"></div>
-            <div className="terminal-dot bg-terminal-warning"></div>
-            <div className="terminal-dot bg-terminal-text"></div>
-            <span className="text-xs text-terminal-dim ml-2">
-              <FileText className="inline h-3 w-3 mr-1" />
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <FileText className="h-4 w-4 text-primary" />
               Describe Your Vision
-            </span>
-          </div>
-          <div className="terminal-content space-y-3">
-            <Label className="text-terminal-text">
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Label className="text-foreground">
               What features and functionality do you want?
             </Label>
             <textarea
               value={description}
               onChange={(e) => onDescriptionChange(e.target.value)}
               placeholder="Example: A modern SaaS dashboard with user authentication, subscription billing, and real-time analytics. Clean design with dark mode support..."
-              className="w-full min-h-[120px] p-4 rounded border-2 border-terminal-text/30 bg-terminal-bg text-terminal-text font-mono text-sm focus:border-terminal-accent focus:outline-none resize-y"
+              className="w-full min-h-[120px] p-4 rounded-lg border border-input bg-background text-foreground font-mono text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-y"
             />
-            <p className="text-xs text-terminal-dim">
+            <p className="text-xs text-muted-foreground">
               Describe features, design style, user flows, or anything the AI should know
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Image Upload (Drag & Drop) */}
-        <div className="terminal-window">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-terminal-error"></div>
-            <div className="terminal-dot bg-terminal-warning"></div>
-            <div className="terminal-dot bg-terminal-text"></div>
-            <span className="text-xs text-terminal-dim ml-2">
-              <ImageIcon className="inline h-3 w-3 mr-1" />
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <ImageIcon className="h-4 w-4 text-primary" />
               Upload Images
-            </span>
-          </div>
-          <div className="terminal-content">
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <div
               onDrop={handleDrop}
               onDragOver={handleDragOver}
@@ -157,8 +153,8 @@ export function InspirationUpload({
                 relative border-2 border-dashed rounded-lg p-8 text-center transition-all
                 ${
                   isDragging
-                    ? "border-terminal-accent bg-terminal-accent/10"
-                    : "border-terminal-text/30 hover:border-terminal-text/50"
+                    ? "border-primary bg-primary/10"
+                    : "border-border hover:border-muted-foreground"
                 }
               `}
             >
@@ -169,68 +165,62 @@ export function InspirationUpload({
                 onChange={(e) => handleFileUpload(e.target.files)}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
-              <Upload className="h-12 w-12 mx-auto mb-4 text-terminal-text/50" />
-              <p className="text-terminal-text mb-2">
+              <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+              <p className="text-foreground mb-2">
                 Drag & drop images here, or click to browse
               </p>
-              <p className="text-xs text-terminal-dim">
+              <p className="text-xs text-muted-foreground">
                 PNG, JPG, GIF up to 10MB each
               </p>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* URL / Figma Link */}
-        <div className="terminal-window">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-terminal-error"></div>
-            <div className="terminal-dot bg-terminal-warning"></div>
-            <div className="terminal-dot bg-terminal-text"></div>
-            <span className="text-xs text-terminal-dim ml-2">
-              <LinkIcon className="inline h-3 w-3 mr-1" />
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <LinkIcon className="h-4 w-4 text-primary" />
               Paste URLs or Figma Links
-            </span>
-          </div>
-          <div className="terminal-content space-y-3">
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
             <div className="flex gap-2">
               <Input
                 value={urlInput}
                 onChange={(e) => setUrlInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleUrlAdd()}
                 placeholder="https://dribbble.com/shots/... or https://figma.com/..."
-                className="flex-1 bg-terminal-bg border-terminal-text/30 text-terminal-text font-mono text-sm"
+                className="flex-1 font-mono text-sm"
               />
               <Button
                 onClick={handleUrlAdd}
                 disabled={!urlInput.trim()}
-                className="bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg"
               >
                 Add
               </Button>
             </div>
-            <p className="text-xs text-terminal-dim">
+            <p className="text-xs text-muted-foreground">
               Paste design inspiration from Dribbble, Behance, websites, or Figma files
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Inspirations Grid */}
         {inspirations.length > 0 && (
-          <div className="terminal-window border-terminal-accent/30">
-            <div className="terminal-header">
-              <div className="terminal-dot bg-terminal-error"></div>
-              <div className="terminal-dot bg-terminal-warning"></div>
-              <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-accent ml-2">
-                {inspirations.length} Inspiration{inspirations.length !== 1 ? "s" : ""} Added
-              </span>
-            </div>
-            <div className="terminal-content">
+          <Card className="border-primary/30">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2 text-primary">
+                <Badge variant="info">{inspirations.length}</Badge>
+                Inspiration{inspirations.length !== 1 ? "s" : ""} Added
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {inspirations.map((inspiration) => (
                   <div
                     key={inspiration.id}
-                    className="relative group rounded-lg border-2 border-terminal-text/30 overflow-hidden hover:border-terminal-accent transition-all"
+                    className="relative group rounded-lg border border-border overflow-hidden hover:border-primary transition-all"
                   >
                     {/* Preview */}
                     {inspiration.type === "image" && inspiration.preview && (
@@ -241,19 +231,19 @@ export function InspirationUpload({
                       />
                     )}
                     {inspiration.type === "url" && (
-                      <div className="w-full h-32 bg-terminal-bg/50 flex items-center justify-center p-4">
-                        <LinkIcon className="h-8 w-8 text-terminal-text/50 mb-2" />
+                      <div className="w-full h-32 bg-muted flex items-center justify-center p-4">
+                        <LinkIcon className="h-8 w-8 text-muted-foreground" />
                       </div>
                     )}
                     {inspiration.type === "figma" && (
-                      <div className="w-full h-32 bg-terminal-bg/50 flex items-center justify-center p-4">
-                        <Figma className="h-8 w-8 text-terminal-text/50 mb-2" />
+                      <div className="w-full h-32 bg-muted flex items-center justify-center p-4">
+                        <Figma className="h-8 w-8 text-muted-foreground" />
                       </div>
                     )}
 
                     {/* Label */}
-                    <div className="p-2 bg-terminal-bg/80 backdrop-blur">
-                      <p className="text-xs text-terminal-text truncate font-mono">
+                    <div className="p-2 bg-card/80 backdrop-blur">
+                      <p className="text-xs text-foreground truncate font-mono">
                         {inspiration.type === "image"
                           ? inspiration.value
                           : getHostname(inspiration.value)}
@@ -263,15 +253,15 @@ export function InspirationUpload({
                     {/* Remove Button */}
                     <button
                       onClick={() => onRemoveInspiration(inspiration.id)}
-                      className="absolute top-2 right-2 p-1 rounded bg-terminal-error hover:bg-terminal-error/80 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-2 right-2 p-1 rounded bg-destructive hover:bg-destructive/80 text-white opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <X className="h-4 w-4" />
                     </button>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>
