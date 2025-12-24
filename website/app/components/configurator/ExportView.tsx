@@ -34,6 +34,7 @@ export function ExportView({
   const [isSaving, setIsSaving] = useState(false);
   const [projectToken, setProjectToken] = useState<string | null>(null);
   const [wizardStep, setWizardStep] = useState(0);
+  const [showPostDownloadModal, setShowPostDownloadModal] = useState(false);
 
   const command = buildCommand({ template, projectName, outputDir, integrations });
   const singleLineCommand = buildCommandSingleLine({ template, projectName, outputDir, integrations });
@@ -58,12 +59,21 @@ export function ExportView({
           successCriteria,
           envKeys,
       });
+      // Show post-download modal after successful download
+      setShowPostDownloadModal(true);
     } catch (error) {
       console.error("Download failed:", error);
       alert("Failed to generate ZIP. Please try the CLI command instead.");
     } finally {
       setIsDownloading(false);
     }
+  };
+  
+  const handleCopyFullTemplateCommand = () => {
+    const fullCommand = `npx @jrdaws/framework export ${template} ./${projectName}`;
+    navigator.clipboard.writeText(fullCommand);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleSaveToPlatform = async () => {
@@ -147,7 +157,7 @@ export function ExportView({
 
         {/* Export Options */}
         <div className="grid md:grid-cols-4 gap-4">
-          {/* Option A: CLI Command */}
+          {/* Option A: CLI Command - FULL TEMPLATE */}
           <button
             onClick={() => setSelectedOption(selectedOption === "cli" ? null : "cli")}
             className={`terminal-window cursor-pointer transition-all hover:scale-105 ${
@@ -158,51 +168,51 @@ export function ExportView({
               <div className="terminal-dot bg-terminal-error"></div>
               <div className="terminal-dot bg-terminal-warning"></div>
               <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-dim ml-2">
+              <span className="text-xs text-terminal-accent ml-2">
                 <Terminal className="inline h-3 w-3 mr-1" />
-                Option A
+                Recommended
               </span>
             </div>
             <div className="terminal-content text-center py-6">
               <Terminal className="h-12 w-12 mx-auto mb-3 text-terminal-accent" />
               <h3 className="font-display font-bold text-terminal-text mb-2">
-                CLI Command
+                Full Template
               </h3>
               <p className="text-xs text-terminal-dim">
-                Copy command and run in your terminal
+                All components, pages & integrations
               </p>
               <p className="text-xs text-terminal-accent mt-2 font-mono">
-                Fastest method
+                ✓ Production-ready
               </p>
             </div>
           </button>
 
-          {/* Option B: Download ZIP */}
+          {/* Option B: Download ZIP - STARTER ONLY */}
           <button
             onClick={() => setSelectedOption(selectedOption === "zip" ? null : "zip")}
             className={`terminal-window cursor-pointer transition-all hover:scale-105 ${
-              selectedOption === "zip" ? "border-terminal-accent shadow-lg shadow-terminal-accent/20" : ""
+              selectedOption === "zip" ? "border-terminal-warning shadow-lg shadow-terminal-warning/20" : ""
             }`}
           >
             <div className="terminal-header">
               <div className="terminal-dot bg-terminal-error"></div>
               <div className="terminal-dot bg-terminal-warning"></div>
               <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-dim ml-2">
+              <span className="text-xs text-terminal-warning ml-2">
                 <Download className="inline h-3 w-3 mr-1" />
-                Option B
+                Starter Only
               </span>
             </div>
             <div className="terminal-content text-center py-6">
-              <Download className="h-12 w-12 mx-auto mb-3 text-terminal-accent" />
+              <Download className="h-12 w-12 mx-auto mb-3 text-terminal-warning" />
               <h3 className="font-display font-bold text-terminal-text mb-2">
-                Download ZIP
+                Starter Structure
               </h3>
               <p className="text-xs text-terminal-dim">
-                Get complete project as ZIP file
+                Basic setup + dependencies listed
               </p>
-              <p className="text-xs text-terminal-accent mt-2 font-mono">
-                Includes .dd/ files
+              <p className="text-xs text-terminal-warning mt-2 font-mono">
+                ⚠ Build from scratch
               </p>
             </div>
           </button>
@@ -342,40 +352,61 @@ export function ExportView({
           </div>
         )}
 
-        {/* ZIP Download Details */}
+        {/* ZIP Download Details - STARTER STRUCTURE WARNING */}
         {selectedOption === "zip" && (
-          <div className="terminal-window border-terminal-accent">
+          <div className="terminal-window border-terminal-warning">
             <div className="terminal-header">
               <div className="terminal-dot bg-terminal-error"></div>
               <div className="terminal-dot bg-terminal-warning"></div>
               <div className="terminal-dot bg-terminal-text"></div>
-              <span className="text-xs text-terminal-accent ml-2">
+              <span className="text-xs text-terminal-warning ml-2">
                 <Download className="inline h-3 w-3 mr-1" />
-                Download ZIP
+                Starter Structure (Not Full Template)
               </span>
             </div>
             <div className="terminal-content space-y-4">
-              <div>
-                <p className="text-sm text-terminal-text mb-4">
-                  Your ZIP file will include:
+              {/* Clear comparison table */}
+              <div className="bg-terminal-bg/50 rounded border border-terminal-warning/30 p-4">
+                <p className="text-sm text-terminal-warning font-bold mb-3">
+                  ⚠️ This is a STARTER STRUCTURE, not the full template
                 </p>
-                <ul className="space-y-1 text-xs text-terminal-dim list-disc list-inside">
-                  <li>Next.js project starter structure</li>
-                  <li>package.json with {integrationCount > 0 ? `${integrationCount} integration` : "core"} dependencies</li>
-                  <li>.dd/ directory with vision, mission, goals (if provided)</li>
-                  <li>.env.local.example with all required variables</li>
-                  <li>README with setup instructions</li>
-                  <li>Tailwind CSS + TypeScript pre-configured</li>
-                </ul>
-                <p className="text-xs text-terminal-warning mt-3">
-                  💡 For full templates with pre-built components, use the CLI command (Option A)
+                <div className="grid grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <p className="text-terminal-accent font-bold mb-2">✓ Included:</p>
+                    <ul className="space-y-1 text-terminal-dim">
+                      <li>• Next.js 15 + React 19 setup</li>
+                      <li>• Dependencies listed (not implemented)</li>
+                      <li>• .env.local.example template</li>
+                      <li>• .dd/ context files</li>
+                      <li>• Basic project scaffold</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-terminal-error font-bold mb-2">✗ NOT Included:</p>
+                    <ul className="space-y-1 text-terminal-dim">
+                      <li>• Pre-built template components</li>
+                      <li>• Page routes and layouts</li>
+                      <li>• Integration boilerplate</li>
+                      <li>• Authentication flows</li>
+                      <li>• Production-ready code</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-terminal-accent/10 border border-terminal-accent/30 rounded p-4">
+                <p className="text-xs text-terminal-text mb-2">
+                  <strong>💡 Want the full template?</strong> Use the CLI command instead:
                 </p>
+                <pre className="text-xs text-terminal-accent bg-terminal-bg/50 p-2 rounded font-mono overflow-x-auto">
+                  npx @jrdaws/framework export {template} ./{projectName}
+                </pre>
               </div>
 
               <Button
                 onClick={handleDownloadZip}
                 disabled={isDownloading}
-                className="w-full bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg font-mono"
+                className="w-full bg-terminal-warning hover:bg-terminal-warning/80 text-terminal-bg font-mono"
               >
                 {isDownloading ? (
                   <>
@@ -385,33 +416,29 @@ export function ExportView({
                 ) : (
                   <>
                     <Download className="mr-2 h-4 w-4" />
-                    Download Project ZIP
+                    Download Starter ZIP
                   </>
                 )}
               </Button>
 
-              <div className="border-t border-terminal-accent/20 pt-4">
+              <div className="border-t border-terminal-warning/20 pt-4">
                 <p className="text-sm text-terminal-dim mb-2">After downloading:</p>
                 <ol className="space-y-2 text-sm text-terminal-dim">
                   <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">1.</span>
+                    <span className="text-terminal-warning font-mono font-bold flex-shrink-0">1.</span>
                     <span>Extract the ZIP file</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">2.</span>
-                    <span>Open in your code editor</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">3.</span>
+                    <span className="text-terminal-warning font-mono font-bold flex-shrink-0">2.</span>
                     <span>Run <code className="text-terminal-accent">npm install</code></span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">4.</span>
-                    <span>Copy .env.local.example to .env.local and add your keys</span>
+                    <span className="text-terminal-warning font-mono font-bold flex-shrink-0">3.</span>
+                    <span>Copy .env.local.example to .env.local</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-terminal-accent font-mono font-bold flex-shrink-0">5.</span>
-                    <span>Run <code className="text-terminal-accent">npm run dev</code></span>
+                    <span className="text-terminal-warning font-mono font-bold flex-shrink-0">4.</span>
+                    <span><strong>Build your own components</strong> using the scaffold</span>
                   </li>
                 </ol>
               </div>
@@ -585,6 +612,88 @@ export function ExportView({
           </div>
         )}
       </div>
+
+      {/* Post-Download Modal */}
+      {showPostDownloadModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="terminal-window border-terminal-accent max-w-lg w-full">
+            <div className="terminal-header">
+              <div className="terminal-dot bg-terminal-error"></div>
+              <div className="terminal-dot bg-terminal-warning"></div>
+              <div className="terminal-dot bg-terminal-text"></div>
+              <span className="text-xs text-terminal-accent ml-2">
+                <Check className="inline h-3 w-3 mr-1" />
+                Download Complete
+              </span>
+            </div>
+            <div className="terminal-content space-y-4">
+              <div className="text-center py-2">
+                <Check className="h-12 w-12 mx-auto mb-3 text-terminal-accent" />
+                <h3 className="text-lg font-display font-bold text-terminal-text mb-2">
+                  Starter Structure Downloaded!
+                </h3>
+              </div>
+
+              <div className="bg-terminal-warning/10 border border-terminal-warning/30 rounded p-4">
+                <p className="text-sm text-terminal-text mb-3">
+                  <strong>Remember:</strong> You downloaded the <span className="text-terminal-warning">starter structure</span>, 
+                  not the full {selectedTemplate?.name} template.
+                </p>
+                <p className="text-xs text-terminal-dim">
+                  The starter includes dependencies and configuration, but you&apos;ll need to build the components yourself.
+                </p>
+              </div>
+
+              <div className="bg-terminal-accent/10 border border-terminal-accent/30 rounded p-4">
+                <p className="text-sm text-terminal-text mb-3">
+                  <strong>Want the full template with all components?</strong>
+                </p>
+                <div className="relative">
+                  <pre className="text-xs text-terminal-accent bg-terminal-bg/50 p-3 rounded font-mono overflow-x-auto">
+                    npx @jrdaws/framework export {template} ./{projectName}
+                  </pre>
+                </div>
+                <Button
+                  onClick={handleCopyFullTemplateCommand}
+                  className="w-full mt-3 bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg font-mono"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="mr-2 h-4 w-4" />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="mr-2 h-4 w-4" />
+                      Copy Full Template Command
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => setShowPostDownloadModal(false)}
+                  variant="outline"
+                  className="flex-1 border-terminal-dim text-terminal-dim hover:bg-terminal-dim/10"
+                >
+                  Continue with Starter
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleCopyFullTemplateCommand();
+                    setSelectedOption("cli");
+                    setShowPostDownloadModal(false);
+                  }}
+                  className="flex-1 bg-terminal-accent hover:bg-terminal-accent/80 text-terminal-bg font-mono"
+                >
+                  Get Full Template
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
