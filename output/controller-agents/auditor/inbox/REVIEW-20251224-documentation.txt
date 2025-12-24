@@ -1,0 +1,41 @@
+## Auditor Review Request
+
+**Agent**: Documentation Agent
+**Date**: 2025-12-24 11:15 UTC
+**Files Staged**: 1
+
+### Staged Files:
+- `output/shared/MINDFRAME.md` - Updated checkpoint protocol steps
+
+### Proposed Commit Message:
+`docs(mindframe): update checkpoint protocol with auditor review flow`
+
+### Summary:
+Updated the MINDFRAME.md checkpoint section to reflect the new process:
+- Added "cp" trigger shorthand
+- Changed from direct commit to Auditor review flow
+- Added pre-check and handoff steps
+
+### Changes Made:
+```markdown
+## 📦 Checkpoint Protocol
+
+**Trigger**: `checkpoint` or `cp`
+
+**Steps:**
+1. **Pre-Check**: Review recent commits for governance changes
+2. **Stage**: `git add -A` (do NOT commit directly)
+3. **Handoff**: Create review request for Auditor Agent
+4. **Auditor**: Reviews and commits when ready
+```
+
+### Ready for commit: ✅ Yes
+
+---
+
+## Next Agent: Auditor Agent
+```
+Confirm you are the Auditor Agent.
+cd /Users/joseph.dawson/Documents/dawson-does-framework && git status && cat output/controller-agents/auditor/inbox/REVIEW-20251224-documentation.txt
+```
+

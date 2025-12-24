@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- f15b215 2025-12-24 feat(agents): add default settings.json for all 13 agents + P1 task for path updates
 - a85827a 2025-12-24 chore(curator): complete cycle 9 - 5 tasks distributed (8.6 avg score)
 - a3a00a7 2025-12-24 docs(mindframe): add Curator Agent certification for cycle 9
 - b5c9c9d 2025-12-24 docs(memory): update CURATOR_MEMORY.md with cycle 9 session
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 1a9a64d 2025-12-24 feat(governance): add cumulative memory sections to checkpoint
 - 2fe8dea 2025-12-24 feat(governance): enforce 5 distillation categories in checkpoint
 - 16aad33 2025-12-24 feat(automation): implement Agent Auto-Continuation System
-- 3e9ab4f 2025-12-24 refactor(website): remove terminal window chrome from configurator components
 
 ## Agent Governance Structure
 

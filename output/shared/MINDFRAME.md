@@ -84,7 +84,13 @@ cd /Users/joseph.dawson/Documents/dawson-does-framework && cat docs/automation/A
 
 ## 📦 Checkpoint Protocol
 
-**Offload progress every 15-20 minutes. Include pending prompts.**
+**Trigger**: `checkpoint` or `cp`
+
+**Steps:**
+1. **Pre-Check**: Review recent commits for governance changes
+2. **Stage**: `git add -A` (do NOT commit directly)
+3. **Handoff**: Create review request for Auditor Agent
+4. **Auditor**: Reviews and commits when ready
 
 **Full SOP**: `docs/sops/CHECKPOINT_SOP.md`
 
