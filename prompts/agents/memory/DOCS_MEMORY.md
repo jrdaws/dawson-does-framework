@@ -364,6 +364,77 @@ All 693 tests pass.
 
 ---
 
+## Session: 2025-12-23 (Media Pipeline SOP Enforcement)
+
+### Work Completed
+
+**P1 Task: Media Pipeline SOP Enforcement Audit**
+
+Task file: `output/documentation-agent/done/TASK-media-pipeline-sop-enforcement.txt`
+
+1. ✅ **Audited Existing Documentation**
+   - Identified gaps in all 4 agent SOPs
+   - Found missing enforcement checkpoints
+   - Documented inconsistencies across files
+
+2. ✅ **Updated Agent SOPs (4 files)**
+   - RESEARCH_AGENT.md: Added mandatory prompt formula, asset target, enforcement checklist
+   - MEDIA_AGENT.md: Added cost optimization, prompt verification, AI artifact self-check
+   - QUALITY_AGENT.md: Added iteration tracking, pass/fail criteria, automatic rejection rules
+   - All now explicitly require reading PHOTOREALISTIC_PROMPT_GUIDE.md
+
+3. ✅ **Updated AGENT_POLICIES.md**
+   - Added "Media Pipeline Standards (MANDATORY)" section (~80 lines)
+   - Documented photorealistic requirements, cost optimization, quality enforcement
+   - Added agent-specific enforcement table
+
+4. ✅ **Created Enforcement Documents (3 files)**
+   - ENFORCEMENT_CHECKLIST.md (~170 lines): Pre-handoff checklists for each agent
+   - REJECTION_CRITERIA.md (~250 lines): 8 automatic rejection criteria with examples
+   - QUICK_REFERENCE_CARDS.md (~200 lines): One-page references for each agent
+
+5. ✅ **Created Audit Report**
+   - `output/documentation-agent/outbox/media-pipeline-audit-report.txt`
+
+### Files Created
+
+- `output/media-pipeline/shared/ENFORCEMENT_CHECKLIST.md`
+- `output/media-pipeline/shared/REJECTION_CRITERIA.md`
+- `output/media-pipeline/shared/QUICK_REFERENCE_CARDS.md`
+- `output/documentation-agent/outbox/media-pipeline-audit-report.txt`
+
+### Files Modified
+
+- `prompts/agents/roles/media-pipeline/RESEARCH_AGENT.md`
+- `prompts/agents/roles/media-pipeline/MEDIA_AGENT.md`
+- `prompts/agents/roles/media-pipeline/QUALITY_AGENT.md`
+- `prompts/agents/AGENT_POLICIES.md`
+
+### Success Criteria Met
+
+- [x] All 4 agent SOPs require reading PHOTOREALISTIC_PROMPT_GUIDE.md
+- [x] Every prompt template includes camera + lens + lighting + negative prompts
+- [x] Quality Agent has mandatory photorealism checklist with pass/fail criteria
+- [x] Cost optimization strategy documented (SD for drafts)
+- [x] Handoff protocols include pre-flight checklists
+- [x] AGENT_POLICIES.md includes Media Pipeline Standards section
+- [x] Quick reference cards created for each pipeline agent
+- [x] Rejection criteria documented with specific examples
+- [x] Metrics tracking requirements specified
+- [x] All documents are consistent and cross-referenced
+
+### Tests
+
+All 693 tests pass ✅
+
+### Handoff Notes
+
+Testing Agent should verify:
+- All enforcement mechanisms are properly integrated
+- Create a test checklist to validate pipeline works end-to-end
+
+---
+
 ## Task Queue
 
 ### High Priority
