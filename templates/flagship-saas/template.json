@@ -29,8 +29,23 @@
     "auth": ["supabase", "clerk"],
     "payments": ["stripe"],
     "ai": ["anthropic", "openai"],
-    "database": ["supabase", "postgres"]
+    "db": ["supabase"],
+    "analytics": ["posthog", "plausible"],
+    "email": ["resend"],
+    "storage": ["uploadthing"]
   },
-  "defaultIntegrations": [],
-  "requiredIntegrations": []
+  "defaultIntegrations": ["auth/supabase", "db/supabase", "payments/stripe"],
+  "requiredIntegrations": [],
+  "bundledIntegrations": [
+    "auth/supabase",
+    "auth/clerk",
+    "db/supabase",
+    "payments/stripe",
+    "analytics/posthog",
+    "analytics/plausible",
+    "email/resend",
+    "storage/uploadthing",
+    "ai/anthropic",
+    "ai/openai"
+  ]
 }
