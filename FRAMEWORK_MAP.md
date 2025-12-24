@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- b853307 2025-12-24 docs: complete migration to flat agent folder structure
 - ad9de30 2025-12-24 chore(auditor): sign off on governance and media path updates
 - 1d95f5c 2025-12-24 feat: add color tokens and agent-settings schema + P1 cleanup task
 - 269abd2 2025-12-24 feat: add output/shared/schemas/ and output/shared/design/ folders with READMEs
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - b3b07cf 2025-12-24 feat(cli): add --list-integrations flag and dynamic START_PROMPT.md
 - 940afe0 2025-12-24 test(website): verify Component-Aware Preview and 3 bug fixes
 - 68c9f0e 2025-12-24 docs: add Auto-Continuation quick reference to core governance files
-- e310b8e 2025-12-24 feat(templates): add SaaS landing page components
 
 ## Agent Governance Structure
 
