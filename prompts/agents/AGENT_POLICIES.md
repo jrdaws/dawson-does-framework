@@ -911,6 +911,42 @@ Read output/[agent]/inbox/[task-file].txt and execute the task.
 - Agents can read complete context
 - Users just copy one line to activate
 
+### Prompt Lifecycle (ONE LOCATION RULE)
+
+⚠️ **A prompt should exist in exactly ONE location at any time.**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ 1. CREATION                                              │
+│    Agent A creates → output/agent-b/inbox/TASK-x.txt     │
+├─────────────────────────────────────────────────────────┤
+│ 2. EXECUTION                                             │
+│    Agent B reads from inbox/, executes task             │
+├─────────────────────────────────────────────────────────┤
+│ 3. COMPLETION                                            │
+│    Agent B MOVES file: inbox/ → done/                   │
+│    mv output/agent-b/inbox/TASK-x.txt output/agent-b/done/ │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Rules:**
+- **Never duplicate** prompts across folders
+- **Always MOVE** completed prompts to `done/`
+- **Done folder** is the permanent record of completed work
+- **See full SOP**: `docs/sops/AGENT_FOLDER_STRUCTURE_SOP.md`
+
+### Standard Agent Folder Structure
+
+Every agent MUST have exactly:
+
+```
+output/[agent-name]/
+├── inbox/      # Pending prompts
+├── outbox/     # Completed outputs, handoff prompts
+├── done/       # Completed prompts (moved from inbox)
+└── workspace/  # Temporary/working files
+```
+
 ---
 
 ## Handoff Protocol

@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 924368c 2025-12-24 chore(cli): add testing agent task for export build verification
 - 4e4ec71 2025-12-24 docs: add accomplishments summary and priority agent prompts
 - 4bbcda8 2025-12-24 fix(templates): remove duplicate component definitions
 - 7c90102 2025-12-24 feat(cli): add --list-integrations flag and dynamic START_PROMPT.md
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 88350b7 2025-12-24 docs(governance): enhance Permission Probing Protocol (v2.9)
 - 7cb5739 2025-12-24 docs(sops): add Session Checkpoint SOP for progress offloading
 - fce67c3 2025-12-24 feat(templates): integrate E2E test project media assets
-- c7f791a 2025-12-24 chore: add SEO_GENERATION_SOP.md to protected files
 
 ## Agent Governance Structure
 
