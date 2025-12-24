@@ -4,7 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
-- b3b07cf 2025-12-24 feat(cli): add --list-integrations flag and dynamic START_PROMPT.md
+- 7c90102 2025-12-24 feat(cli): add --list-integrations flag and dynamic START_PROMPT.md
 - 940afe0 2025-12-24 test(website): verify Component-Aware Preview and 3 bug fixes
 - 68c9f0e 2025-12-24 docs: add Auto-Continuation quick reference to core governance files
 - e310b8e 2025-12-24 feat(templates): add SaaS landing page components
