@@ -2,7 +2,7 @@
 
 > **Purpose**: Central source of truth for what needs to be done next
 > **Updated By**: ALL agents (on session end)
-> **Last Updated**: 2025-12-23
+> **Last Updated**: 2025-12-24
 
 ---
 
@@ -65,6 +65,7 @@ Current recommended order based on dependencies:
 
 | Task | Agent | Date | Notes |
 |------|-------|------|-------|
+| SaaS template content fix | TPL | 2025-12-24 | Added dashboard, pricing, settings pages; templates/README.md |
 | Vercel alt domain working | PLT | 2025-12-24 | `-bv8x` subdomain live, primary needs dashboard fix |
 | CI Vercel status checks | PLT | 2025-12-24 | Added vercel-status + pr-preview-comment jobs |
 | Monorepo build fixes | PLT | 2025-12-24 | Stubs, husky, lazy init - all pushed |
