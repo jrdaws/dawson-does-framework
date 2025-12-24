@@ -168,6 +168,22 @@ mv output/media-pipeline/research-agent/inbox/[task-file] \
 
 ---
 
+## 📤 MANDATORY: Output Next Agent Prompt
+
+**Before ending your session, you MUST output the Media Agent activation prompt:**
+
+```
+## Next Agent: Media Agent
+
+Copy this to activate:
+
+Read output/media-pipeline/media-agent/inbox/[project-name]-asset-brief.md and generate all assets following the specifications. Use Stable Diffusion for drafts and ensure photorealistic quality.
+```
+
+This ensures seamless handoff to the next agent in the pipeline.
+
+---
+
 ## Output Requirements
 
 1. **Asset Brief**: `output/media-pipeline/shared/briefs/[project]-asset-brief.md`

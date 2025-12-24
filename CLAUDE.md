@@ -1,6 +1,6 @@
 # CLAUDE.md - Automatic Context for Claude Code CLI
 
-> **Governance Version: 2.2** | Last Updated: 2025-12-22
+> **Governance Version: 2.3** | Last Updated: 2025-12-23
 > 
 > **This file is automatically read by Claude Code CLI when starting a session in this project.**
 
@@ -24,7 +24,7 @@ This is non-negotiable. Every new conversation starts with bootstrap.
 
 ```
 ## ✓ Governance Acknowledgment
-- Governance Version: 2.2
+- Governance Version: 2.3
 - I have read CLAUDE.md and AGENT_CONTEXT.md
 - I understand: export-first philosophy, zero lock-in
 - I understand: Fenced Output Integrity (one block, no splits)
@@ -73,9 +73,36 @@ State in your response:
 - The coding standards for your task area
 - What you should NOT do (including protected files)
 
-### Step 3: Identify Role & Proceed
+### Step 3: Identify Role & Check Priorities
 
-Based on the user's request, identify your agent role, then proceed with their task.
+Based on the user's request, identify your agent role, then:
+
+```bash
+cat output/shared/PROJECT_PRIORITIES.md
+```
+
+Review:
+- Any P0/P1 urgent tasks for your role?
+- Where does your task fit in development sequence?
+- What agents might be waiting on you?
+
+Then proceed with the user's task (or flag if a higher priority exists).
+
+### Step 4: Request Permissions Upfront (If Needed)
+
+Check the Role Permissions Matrix in `AGENT_POLICIES.md` for your role's needs.
+
+**If your role needs elevated permissions**, request them immediately with a test command:
+
+```bash
+# For network + git_write (Website, Testing, Integration agents):
+git status && curl -s https://httpbin.org/get > /dev/null 2>&1 && echo "✅ Permissions ready"
+
+# For full access (Platform Agent, deployment):
+git status && echo "✅ Full access ready"
+```
+
+**Why**: User approves ONCE at start, no interruptions during work.
 
 **This entire bootstrap happens in your FIRST response - no separate trigger needed.**
 
@@ -194,9 +221,43 @@ git commit -m "<type>(<scope>): <description>"
 
 # 5. Release your lock
 ./scripts/agent-lock.sh release
+
+# 6. Output next agent prompt (MANDATORY)
+# See below
 ```
 
 **Never leave uncommitted work** - the next agent won't see it!
+
+### 📤 Output Next Agent Prompt (MANDATORY)
+
+**ALL agents must output a prompt for the next agent before ending their session:**
+
+```
+## Next Agent: [ROLE] Agent
+
+Copy this to activate:
+
+[One-line activation prompt telling next agent what to do]
+```
+
+If no further work needed, state: "No handoff required - task complete."
+
+### ⏱️ Auto-Continuation Rule (GLOBAL)
+
+**If user sends minimal input, continue from inbox automatically.**
+
+| User Input | Action |
+|------------|--------|
+| `continue`, `go`, `1`, Enter | Execute recommended option |
+| `inbox` | Read latest file from your inbox folder |
+| No response | Proceed with default action |
+
+```bash
+# Find and execute latest inbox task
+ls -t output/[your-role]-agent/inbox/*.txt | head -1
+```
+
+**Work never stalls - agents continue automatically.**
 
 ## 🏷️ Tab Naming & Agent Identity (MANDATORY)
 
@@ -210,6 +271,9 @@ git commit -m "<type>(<scope>): <description>"
 | Platform Agent | `PLT` |
 | Template Agent | `TPL` |
 | Integration Agent | `INT` |
+| Research Agent | `RES` |
+| Media Agent | `MED` |
+| Quality Agent | `QUA` |
 
 ### First Response Must Include
 In your FIRST response, suggest a tab name:

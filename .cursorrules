@@ -52,8 +52,8 @@ cat AGENT_CONTEXT.md
 ### Step 2: Pass Verification
 Answer the 5 verification questions from AGENT_CONTEXT.md in your first response.
 
-### Step 3: Identify Role & Proceed
-Based on the user's request, identify your agent role, then proceed with their task.
+### Step 3: Identify Role & Check Priorities
+Based on the user's request, identify your agent role, then check `output/shared/PROJECT_PRIORITIES.md` for any P0/P1 tasks for your role. Proceed with user's task (or flag if higher priority exists).
 
 **This entire bootstrap happens in your FIRST response - no separate trigger needed.**
 
@@ -124,8 +124,19 @@ git checkout HEAD -- <file-path>
 2. Commit: `git add -A && git commit -m "<type>(<scope>): <desc>"`
 3. Push: `git push origin main`
 4. Update memory file if applicable
+5. **Output next agent prompt** (MANDATORY)
 
 **Never leave uncommitted work!**
+
+### 📤 Output Next Agent Prompt (MANDATORY)
+```
+## Next Agent: [ROLE] Agent
+
+Copy this to activate:
+
+[One-line activation prompt for next agent]
+```
+If no further work: "No handoff required - task complete."
 
 ## 🏷️ Tab Naming & Agent Identity (MANDATORY)
 
@@ -139,6 +150,9 @@ git checkout HEAD -- <file-path>
 | Platform Agent | `PLT` |
 | Template Agent | `TPL` |
 | Integration Agent | `INT` |
+| Research Agent | `RES` |
+| Media Agent | `MED` |
+| Quality Agent | `QUA` |
 
 ### First Response Must Include
 In your FIRST response, include:

@@ -23,7 +23,7 @@ test.describe('Homepage', () => {
     expect(sectionCount).toBeGreaterThanOrEqual(2);
 
     // Check for main CTA buttons
-    await expect(page.locator('a[href="/configure"]')).toBeVisible();
+    await expect(page.locator('a[href="/configure"]').first()).toBeVisible();
     await expect(page.locator('a[href*="github.com"]').first()).toBeVisible();
   });
 

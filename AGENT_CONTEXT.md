@@ -251,6 +251,9 @@ ls -la ~/.cursor/projects/*/terminals/
 | Platform Agent | `PLT` |
 | Template Agent | `TPL` |
 | Integration Agent | `INT` |
+| Research Agent | `RES` |
+| Media Agent | `MED` |
+| Quality Agent | `QUA` |
 
 ### First Response Tab Suggestion
 In your FIRST response, suggest a short tab name:

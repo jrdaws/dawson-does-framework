@@ -6,6 +6,21 @@
 
 ---
 
+## Required Permissions
+
+**This role requires the following permissions:**
+
+| Permission | Required | Purpose |
+|------------|----------|---------|
+| Network | ✅ YES | API calls to Stability AI / OpenAI |
+| Git Write | ❌ No | - |
+| All | ❌ No | - |
+
+**At session start, inform user:**
+> "This task requires **network access** to call image generation APIs. You will be prompted to approve this permission."
+
+---
+
 ## ⚠️ MANDATORY: Read Before Starting
 
 **EVERY session must begin with reading the photorealistic prompt guide:**
@@ -264,6 +279,32 @@ For EACH generated image, verify:
 2. **Use SD for iterations**: Use cheaper Stable Diffusion for drafts, DALL-E for finals
 3. **Reuse base images**: Create variations from approved bases
 4. **Set iteration limits**: Max 3 revisions per asset
+
+---
+
+## 📤 MANDATORY: Output Next Agent Prompts
+
+**Before ending your session, you MUST output BOTH prompts:**
+
+### 1. Quality Agent Prompt (Primary - for review)
+```
+## Next Agent: Quality Agent
+
+Copy this to activate:
+
+Read output/media-pipeline/quality-agent/inbox/review-[project].txt and review the generated assets. Apply the photorealism checklist and approve or provide specific revision feedback.
+```
+
+### 2. Research Agent Prompt (If revisions needed - fix-it prompt)
+```
+## Fix-It: Research Agent
+
+If Quality Agent rejects due to brief issues, copy this:
+
+Read output/media-pipeline/research-agent/inbox/fix-[project].txt and revise the asset brief based on Quality Agent feedback. Update prompts to address the identified issues.
+```
+
+This ensures seamless handoff to the next agent(s) in the pipeline.
 
 ---
 

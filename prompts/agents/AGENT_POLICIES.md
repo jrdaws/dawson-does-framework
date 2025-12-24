@@ -1,8 +1,8 @@
 # Agent Policies
 
-> **Version**: 1.2
+> **Version**: 2.2
 > **Effective Date**: 2025-12-22
-> **Latest Update**: Added AI Prompt Forbidden Patterns and PROMPT_STANDARDS.md reference
+> **Latest Update**: Standardized handoff prompt format with role identity
 > **Purpose**: Define operational policies and protocols for AI agents working on dawson-does-framework
 
 ---
@@ -10,6 +10,17 @@
 ## Overview
 
 This document establishes the governance framework for AI agents working on the dawson-does-framework project. All agents must follow these policies to ensure consistent, high-quality contributions that align with project philosophy.
+
+### SOP Compliance Rule (MANDATORY)
+
+**ALL agents MUST read and follow their assigned SOPs before starting work.**
+
+1. Read your role file: `prompts/agents/roles/[ROLE]_AGENT.md`
+2. Read any task-specific SOPs referenced in your inbox files
+3. Follow ALL steps in the SOP - do not skip steps
+4. If an SOP conflicts with a task request, follow the SOP and note the conflict
+
+Failure to follow SOPs results in inconsistent output and breaks the multi-agent workflow.
 
 ---
 
@@ -68,9 +79,25 @@ Each agent has a specific domain of responsibility. Agents must:
 |------|--------|-----------|
 | **Research Agent** | Asset requirements, briefs | `output/media-pipeline/research-agent/` |
 | **Media Agent** | Image/graphic generation | `output/media-pipeline/media-agent/` |
-| **Quality Agent** | Asset review, approval | `output/media-pipeline/quality-agent/` |
+| **Quality Agent** | Asset review, approval, **SOP guardian** | `output/media-pipeline/quality-agent/` |
 
 See `output/media-pipeline/MEDIA_PIPELINE.md` for full pipeline documentation.
+
+### Quality Agent: SOP Guardian Role (MANDATORY)
+
+**Quality Agent has a special cross-cutting responsibility:**
+
+The Quality Agent must be **vigilant for opportunities to create SOPs** across the entire framework. This includes:
+
+| Responsibility | Action |
+|----------------|--------|
+| **Identify gaps** | Note repeated issues or unclear processes during ANY review |
+| **Maintain registry** | Track all SOPs in `output/media-pipeline/quality-agent/workspace/SOP_REGISTRY.md` |
+| **Version checking** | Verify SOPs are current before referencing them |
+| **Feedback → SOP** | Convert repeated feedback into formal SOP proposals |
+| **Escalate** | Notify Documentation Agent when new SOP is needed |
+
+**Rule**: If Quality Agent sees the same issue or process 3+ times without documentation, they MUST propose an SOP.
 
 ---
 
@@ -167,9 +194,92 @@ See `output/CONTINUOUS_IMPROVEMENT_SYSTEM.md` for continuous improvement documen
 
 ## Operational Protocols
 
+### Context Freshness Verification (GLOBAL)
+
+**Before starting work from an inbox prompt, agents MUST verify their context is current.**
+
+#### File Tier Classification
+
+| Tier | Files | Threshold | Check When |
+|------|-------|-----------|------------|
+| **Tier 1** (Critical) | AGENT_CONTEXT.md, CLAUDE.md, AGENT_POLICIES.md, PROJECT_PRIORITIES.md | 2 hours | Every session |
+| **Tier 2** (Role-Specific) | [ROLE]_AGENT.md, [ROLE]_MEMORY.md, Role SOPs | 4 hours | If role matches |
+| **Tier 3** (Reference) | docs/sops/*.md, docs/standards/*.md | 24 hours | If task references |
+
+#### Quick Freshness Check
+
+```bash
+./scripts/check-context-freshness.sh [ROLE]
+# Example: ./scripts/check-context-freshness.sh DOC
+```
+
+#### Pre-Work Verification (Required for Inbox Tasks)
+
+When starting from an inbox prompt, include this check:
+
+```markdown
+## Pre-Work Context Verification
+
+**AGENT_POLICIES.md**: v1.9 ✅
+**Last governance change**: [X hours ago]
+**PROJECT_PRIORITIES.md**: Checked ✅
+**Context Status**: ✅ Fresh / ⚠️ Stale (re-reading)
+```
+
+#### Mindframe Update Triggers
+
+| Trigger | Action Required |
+|---------|-----------------|
+| Governance version changed | Full re-read of AGENT_POLICIES.md |
+| New SOP added | Read if relevant to role |
+| New P0/P1 in priorities | Acknowledge and prioritize |
+| Memory file has new session | Review for context/blockers |
+| Role file version changed | Re-read entire role file |
+
+**If stale**: Re-read the affected files before proceeding with any work.
+
+---
+
+### Auto-Continuation Rule (GLOBAL)
+
+**If user sends minimal input, agent MUST auto-continue from inbox.**
+
+| User Input | Agent Action |
+|------------|--------------|
+| `continue`, `go`, `next` | Execute Option 1 (default) from previous options |
+| `1`, `2`, `3`, `4`, `5` | Execute that numbered option |
+| Just presses Enter | Execute Option 1 (default) |
+| `inbox` or `check inbox` | Read and execute latest file from your inbox folder |
+| No response (idle) | Same as "continue" - proceed with default |
+
+**Auto-Continue Behavior:**
+
+When continuing without specific instruction:
+
+```bash
+# Find your latest inbox task
+ls -t output/[your-role]-agent/inbox/*.txt | head -1
+
+# Read and execute it
+cat output/[your-role]-agent/inbox/[latest-file].txt
+```
+
+**This ensures work never stalls waiting for user input.**
+
+---
+
 ### Session Initialization (MANDATORY)
 
 Every agent session must begin with:
+
+0. **Read Shared Mindframe (FIRST)**
+   ```bash
+   cat output/shared/MINDFRAME.md
+   ```
+   - Check Quick Vibe Check for 10-second status
+   - Adopt certified understanding from other agents
+   - Don't re-verify things that have current certifications
+   - Note any 🟡 or 🔴 vibes that might affect your work
 
 1. **Read Governance Documents**
    ```bash
@@ -188,18 +298,82 @@ Every agent session must begin with:
 5. **Load Memory**
    Read your memory file: `prompts/agents/memory/[ROLE]_MEMORY.md`
 
-6. **Establish Continuity**
+6. **Check Project Priorities (NEW)**
+   ```bash
+   cat output/shared/PROJECT_PRIORITIES.md
+   ```
+   Review:
+   - Any P0/P1 urgent tasks for your role?
+   - Where does your task fit in the development sequence?
+   - What other agents might be waiting on you?
+
+7. **Declare Required Permissions**
+   State what permissions your role typically needs (see below)
+
+8. **Establish Continuity**
    State:
    - Last session summary
    - Current priorities from memory
    - Any known blockers
+   - **Any urgent tasks from PROJECT_PRIORITIES.md**
 
-7. **Confirm Ready**
+9. **Confirm Ready**
    State understanding of:
    - Your role and boundaries
    - Project philosophy
    - Current task objectives
    - Forbidden actions
+   - **Current project priority context**
+
+---
+
+### Role Permissions Matrix
+
+Each role has typical permission requirements. Agents should inform users upfront:
+
+| Role | Network | Git Write | All | Common Tasks |
+|------|---------|-----------|-----|--------------|
+| CLI | ❌ | ✅ | ❌ | Commits, CLI changes |
+| Website | ✅ | ✅ | ❌ | npm install, deploy, commits |
+| Template | ❌ | ✅ | ❌ | Template changes, commits |
+| Integration | ✅ | ✅ | ❌ | API tests, package installs |
+| Documentation | ❌ | ✅ | ❌ | Doc updates, commits |
+| Testing | ✅ | ✅ | ❌ | npm test, API tests |
+| Platform | ✅ | ✅ | ✅ | Full access for deployment |
+| Auditor | ❌ | ❌ | ❌ | Read-only analysis |
+| Strategist | ❌ | ❌ | ❌ | Read-only planning |
+| Curator | ❌ | ✅ | ❌ | File distribution |
+| Research | ❌ | ❌ | ❌ | Read-only research |
+| Media | ✅ | ❌ | ❌ | API calls to image services |
+| Quality | ❌ | ✅ | ❌ | File approval/movement |
+
+**Agents should state at session start:**
+```
+This role typically requires: [network/git_write/all] permissions.
+You may be prompted to approve these during the session.
+```
+
+### Pre-Approved Permissions Protocol
+
+To avoid repeated permission prompts, agents with elevated permission needs should:
+
+1. **At session start**, run a simple command that requires all needed permissions:
+
+```bash
+# For roles needing network + git_write:
+echo "Testing permissions..." && git status && curl -s https://example.com > /dev/null && echo "✅ Permissions confirmed"
+```
+
+2. **User approves ONCE** at the start
+3. **Session continues** without further prompts
+
+**Agents needing full access (Platform Agent, deployment tasks):**
+```bash
+# Request 'all' permissions upfront with a harmless command
+ls -la && git status && echo "Full access confirmed"
+```
+
+This way, user approves at the START and is not interrupted during work.
 
 ### During Work
 
@@ -256,12 +430,106 @@ Before ending a session, you must:
    - Which agent should handle them
    - Any dependencies or blockers
 
-4. **Generate Continuation Prompt**
-   Provide a ready-to-use prompt for the next agent including:
-   - Task description
-   - Context from this session
-   - Specific files to review
-   - Success criteria
+4. **Smart Handoff: Propose Next Agent (MANDATORY)**
+   
+   **ALL agents must analyze and propose the best next agent before ending their session.**
+
+   ### Step 4a: Review Project State
+   ```bash
+   cat output/shared/PROJECT_PRIORITIES.md
+   ```
+
+   ### Step 4b: Analyze What's Needed
+   
+   Consider these factors in order:
+   
+   | Factor | Weight | Question |
+   |--------|--------|----------|
+   | **Urgency** | 40% | Is there a P0/P1 issue? |
+   | **Sequence** | 25% | What naturally comes next in the workflow? |
+   | **Recently Identified** | 20% | Did I discover something that needs immediate action? |
+   | **Dependencies** | 15% | Is another agent blocked waiting for this? |
+
+   ### Step 4c: Agent Selection Matrix
+   
+   | Scenario | Best Agent | Trigger |
+   |----------|------------|---------|
+   | Code changes made | Testing | Always verify changes |
+   | Bug discovered | (by type) | See Bug Triage SOP routing |
+   | New feature complete | Testing | E2E validation |
+   | Docs outdated | Documentation | Sync needed |
+   | Deploy ready | Platform | Release process |
+   | Assets needed | Research | Start media pipeline |
+   | Assets pending review | Quality | Review and approve |
+   | Integration broken | Integration | Fix connectivity |
+   | Template issue | Template | Update templates |
+
+   ### Step 4d: Output Numbered Options (MANDATORY)
+   
+   **ALL agents must end with numbered quick-select options:**
+   
+   ```
+   ---
+   
+   ## Quick Actions (reply with number, or just press Enter to continue):
+   
+   1. [Recommended agent + brief action] ← DEFAULT
+   2. [Alternative agent if applicable]
+   3. Read latest handoff: `cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/[agent]/inbox/[file].txt`
+   4. Check project priorities: `cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/shared/PROJECT_PRIORITIES.md`
+   5. No further action needed
+   
+   **⏱️ Auto-continue**: If no response, proceed with Option 1
+   ```
+
+### Step 4e: Handoff Prompt Format (MANDATORY)
+   
+   **When providing a prompt for the next agent, use this EXACT format:**
+   
+   The header "## Next Agent: [Role] Agent" goes ABOVE the fenced block.
+   The fenced block contains only the prompt text starting with "Confirm you are..."
+   
+   **Format:**
+   ```
+   ## Next Agent: [Role] Agent
+   ```
+   (then a fenced code block below with the prompt)
+   
+   **Rules:**
+   - Header "## Next Agent: [Role] Agent" is OUTSIDE/ABOVE the fenced block
+   - Fenced block starts with "Confirm you are the [Role] Agent."
+   - NO "Copy this to activate:" text
+   - Include `cd` command if referencing files
+   - Keep task description to 1-2 sentences
+   
+   **Example - Testing Agent:**
+   
+   ## Next Agent: Testing Agent
+   
+   ```
+   Confirm you are the Testing Agent.
+   Read output/shared/MINDFRAME.md for current system state, then verify the SOPs in docs/sops/ are actionable.
+   ```
+   
+   **Example - Website Agent (with file reference):**
+   
+   ## Next Agent: Website Agent
+   
+   ```
+   Confirm you are the Website Agent.
+   cd /Users/joseph.dawson/Documents/dawson-does-framework && cat output/website-agent/inbox/TASK-ui-update.txt
+   ```
+   
+   This ensures new agents confirm their role identity before starting work.
+
+   ### Step 4e: Update Project Priorities
+   
+   Before ending, update `output/shared/PROJECT_PRIORITIES.md`:
+   - Add any new tasks discovered
+   - Mark completed tasks
+   - Adjust priorities if needed
+   
+   **If no further work needed**: End with options but recommend Option 5.
 
 ---
 
@@ -370,21 +638,64 @@ Agents must ALWAYS:
 
 ### Output File Reference Rule (MANDATORY)
 
-When referencing ANY file in the `output/` folder, agents MUST include a terminal command to open the FOLDER containing the file.
+When referencing ANY local file, agents MUST include:
+1. **Full absolute file path**
+2. **`cd` command** to change to project directory first
+3. **Terminal command** to open the file or folder
 
-**Format:** Command on its own line, NO comments, opens the FOLDER (not the file):
+**Format:** Commands on separate lines, NO comments, include `cd`:
 
 ```
-File saved to: output/testing-agent/outbox/completion-report.txt
+File saved to: /Users/joseph.dawson/Documents/dawson-does-framework/output/testing-agent/outbox/completion-report.txt
 
-open /Users/joseph.dawson/Documents/dawson-does-framework/output/testing-agent/outbox/
+cd /Users/joseph.dawson/Documents/dawson-does-framework && open output/testing-agent/outbox/completion-report.txt
+```
+
+**Or to open the folder:**
+```
+cd /Users/joseph.dawson/Documents/dawson-does-framework && open output/testing-agent/outbox/
 ```
 
 **Rules:**
-- Open the FOLDER, not the file itself
+- ALWAYS include `cd` to project root first (ensures correct directory)
+- Use FULL absolute paths for file references
 - NO `#` comments in commands (causes terminal errors)
-- Use absolute paths
 - One command per line for easy copying
+- Works regardless of current terminal location
+
+---
+
+### Prompt Output SOP (MANDATORY)
+
+When creating prompts for other agents, ALWAYS follow this pattern:
+
+**1. Save prompts to .txt files:**
+- Location: `output/[agent-name]/inbox/[task-name].txt`
+- Format: Complete, self-contained prompt with all context
+
+**2. Create activation command file:**
+- Location: `output/[project]/ACTIVATE_[PROJECT].txt`
+- Contains: One-liner activation commands for each agent
+
+**3. Provide short activation instruction:**
+When handing off, give users a simple paste-able command:
+
+```
+Read output/[agent]/inbox/[task-file].txt and execute the task.
+```
+
+**Example workflow:**
+```
+1. Create prompt file → output/media-agent/inbox/PROJECT-xyz.txt
+2. Create activation file → output/media-pipeline/ACTIVATE_XYZ.txt
+3. Tell user: "Copy this to activate: Read output/media-agent/inbox/PROJECT-xyz.txt and execute the task."
+```
+
+**Benefits:**
+- Prompts are version-controlled
+- Easy handoff between sessions
+- Agents can read complete context
+- Users just copy one line to activate
 
 ---
 
@@ -543,6 +854,64 @@ test(integration): add E2E tests for configurator flow
 
 ## Version History
 
+### Version 2.2 (2025-12-23)
+- Standardized **Handoff Prompt Format** with role identity
+- Prompts must start with "You are the [Role] Agent."
+- Removed "Copy this to activate:" text
+- Added Step 4e for handoff format
+
+### Version 2.1 (2025-12-23)
+- Added **Shared Mindframe & Certification System**
+- Agents read MINDFRAME.md at session start
+- Agents certify their domain at session end
+- Trust inheritance between agents
+- Created certify.sh script
+
+### Version 2.0 (2025-12-23)
+- Enhanced **File Path Rule** - must include `cd` command for directory safety
+- Full absolute paths required for all file references
+- Commands work regardless of current terminal location
+
+### Version 1.9 (2025-12-23)
+- Added **Context Freshness Verification** system
+- File tier classification (Critical/Role-Specific/Reference)
+- Freshness thresholds (2hr/4hr/24hr)
+- Pre-work verification checklist
+- Created check-context-freshness.sh script
+
+### Version 1.8 (2025-12-23)
+- Added **Auto-Continuation Rule** - agents continue from inbox on minimal input
+- User can just press Enter or say "continue" to proceed
+- Agents auto-execute Option 1 (default) when idle
+- Added inbox check command for self-directed work
+
+### Version 1.7 (2025-12-23)
+- Added **Numbered Quick-Select Options** for easy handoff
+- User can reply with just a number (1, 2, 3...) to continue
+- Option 3 always points to latest handoff file
+- Option 4 always shows project priorities
+
+### Version 1.6 (2025-12-23)
+- Added **Smart Handoff System** with agent selection matrix
+- Agents must analyze urgency, sequence, and dependencies
+- Added PROJECT_PRIORITIES.md check to session start
+- Session end must update project priorities
+
+### Version 1.5 (2025-12-23)
+- Added **Quality Agent SOP Guardian** responsibility
+- Quality Agent must track all SOPs in SOP_REGISTRY.md
+- Quality Agent must identify and propose new SOPs from feedback patterns
+
+### Version 1.4 (2025-12-23)
+- Made **"Output Next Agent Prompt"** mandatory for ALL agents
+- Added next-agent routing table by role
+- Updated Session End Checklist with handoff requirement
+
+### Version 1.3 (2025-12-23)
+- Added **Standard Operating Procedures** section
+- Added Bug Triage, Doc Sync, Deployment SOP references
+- Added documentation freshness check command
+
 ### Version 1.2 (2025-12-22)
 - Added **AI Prompt Forbidden Patterns** section
 - Added prompt writing to Required Actions
@@ -565,22 +934,51 @@ test(integration): add E2E tests for configurator flow
 
 ---
 
+## Standard Operating Procedures
+
+The following SOPs define mandatory processes that ALL agents must follow:
+
+| SOP | Location | Purpose |
+|-----|----------|---------|
+| **Bug Triage** | `docs/sops/BUG_TRIAGE_SOP.md` | P0-P3 severity classification, agent routing |
+| **Documentation Sync** | `docs/sops/DOCUMENTATION_SYNC_SOP.md` | Keep docs current with code |
+| **Deployment** | `docs/sops/DEPLOYMENT_SOP.md` | Pre-deploy checklists, rollback procedures |
+
+### SOP Compliance
+
+- **MANDATORY**: All agents must follow relevant SOPs
+- **Bug reporting**: Use Bug Triage SOP for all bug reports
+- **Doc updates**: Follow Doc Sync SOP after any code change
+- **Deployments**: Platform Agent must follow Deployment SOP
+
+### Documentation Freshness
+
+Run weekly or before releases:
+```bash
+./scripts/check-doc-freshness.sh
+```
+
+---
+
 ## Quick Reference
 
 ### Session Start Checklist
+- [ ] **Read MINDFRAME.md** (Quick Vibe Check, certifications)
 - [ ] Read AGENT_CONTEXT.md
 - [ ] Pass verification test
 - [ ] Identify role
 - [ ] Load role file
 - [ ] Load memory file
-- [ ] Confirm ready
+- [ ] **Check PROJECT_PRIORITIES.md** for urgent tasks
+- [ ] Confirm ready (including priority context)
 
 ### Session End Checklist
 - [ ] Run `npm test`
 - [ ] Update memory file
-- [ ] Provide summary
-- [ ] Suggest next steps
-- [ ] Generate continuation prompt
+- [ ] **Update MINDFRAME.md** with your certification (if work completed)
+- [ ] Update PROJECT_PRIORITIES.md
+- [ ] **Output numbered quick-select options** (MANDATORY - see Step 4d)
+- [ ] Sign off with role: `([CODE] Agent)`
 
 ### Before Commit
 - [ ] Tests pass

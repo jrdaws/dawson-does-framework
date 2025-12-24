@@ -12,8 +12,8 @@
 #   - Called by: .github/workflows/governance-check.yml
 #   - Called by: scripts/hooks/pre-commit (in CI mode)
 #
-# Version: 2.0
-# Last Updated: 2025-12-22
+# Version: 2.1
+# Last Updated: 2025-12-23
 
 set -e
 
@@ -222,6 +222,78 @@ if [ -f ".current-session" ]; then
     fi
 else
     echo "   ℹ️  No active session (skipping handoff format check)"
+fi
+echo ""
+
+# ============================================================================
+# Check 8: Next Agent Prompt Output (MANDATORY)
+# ============================================================================
+echo "📋 Check 8: Next Agent Prompt"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+if [ -f ".current-session" ]; then
+    SESSION=$(cat .current-session)
+    ROLE=$(echo "$SESSION" | cut -d'-' -f1)
+    ROLE_LOWER=$(echo "$ROLE" | tr '[:upper:]' '[:lower:]')
+    
+    # Check outbox for recent files containing "Next Agent" prompt
+    OUTBOX_DIR="output/${ROLE_LOWER}-agent/outbox"
+    
+    if [ -d "$OUTBOX_DIR" ]; then
+        # Find files modified in last 2 hours
+        RECENT_FILES=$(find "$OUTBOX_DIR" -name "*.txt" -o -name "*.md" -mmin -120 2>/dev/null || true)
+        
+        FOUND_HANDOFF=false
+        for file in $RECENT_FILES; do
+            if grep -q "Next Agent:" "$file" 2>/dev/null; then
+                FOUND_HANDOFF=true
+                NEXT_AGENT=$(grep -A1 "Next Agent:" "$file" | head -1)
+                echo "   ✅ Found handoff in: $(basename $file)"
+                echo "      $NEXT_AGENT"
+                break
+            fi
+        done
+        
+        if [ "$FOUND_HANDOFF" = false ]; then
+            # Also check completion reports
+            COMPLETION_FILES=$(find "$OUTBOX_DIR" -name "*completion*" -mmin -120 2>/dev/null || true)
+            for file in $COMPLETION_FILES; do
+                if grep -q "Next Agent:" "$file" 2>/dev/null; then
+                    FOUND_HANDOFF=true
+                    break
+                fi
+            done
+        fi
+        
+        if [ "$FOUND_HANDOFF" = false ]; then
+            echo "   ⚠️  No 'Next Agent:' prompt found in recent outbox files"
+            echo "      All agents must output next agent prompt before ending."
+            echo "      Add to completion report or output file:"
+            echo ""
+            echo "      ## Next Agent: [ROLE] Agent"
+            echo "      Copy this to activate:"
+            echo "      [activation prompt]"
+            echo ""
+            WARNINGS=$((WARNINGS + 1))
+        fi
+    else
+        echo "   ℹ️  Outbox not found: $OUTBOX_DIR"
+    fi
+else
+    # Check if any recent outbox files have handoff (simple grep approach)
+    RECENT_HANDOFFS=$(grep -rl "Next Agent:" output/*/outbox/ 2>/dev/null | head -3 || true)
+    
+    if [ -n "$RECENT_HANDOFFS" ]; then
+        echo "   ✅ Recent handoff prompts found:"
+        for file in $RECENT_HANDOFFS; do
+            NEXT_LINE=$(grep -A1 "Next Agent:" "$file" | head -1)
+            echo "      - $(basename $file): $NEXT_LINE"
+        done
+    else
+        echo "   ℹ️  No active session (checking outbox files)"
+        echo "   ⚠️  No 'Next Agent:' prompts found in any outbox"
+        WARNINGS=$((WARNINGS + 1))
+    fi
 fi
 echo ""
 

@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 9f7bbed 2025-12-23 feat(website): implement phase grouping in StepIndicator component
 - c617fcc 2025-12-23 test(sops): verify priority SOPs are complete and actionable
 - d7e5a19 2025-12-23 docs(website): move UI redesign task to done and add completion notice
 - 558885a 2025-12-23 feat(website): implement framework UI redesign with new brand identity
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 78c9f27 2025-12-22 feat(integrations): complete integration expansion planning
 - a72d538 2025-12-22 docs(api): create comprehensive API documentation
 - f237029 2025-12-22 docs(agents): update website memory with production deployment session
-- 5529ea2 2025-12-22 feat(testing): add production smoke test suite
 
 ## Agent Governance Structure
 

@@ -429,5 +429,28 @@ npm run type-check       # TypeScript check
 
 ---
 
+## 📤 MANDATORY: Output Next Agent Prompt
+
+**Before ending your session, Website Agent MUST output the Testing Agent prompt:**
+
+```
+## Next Agent: Testing Agent
+
+Copy this to activate:
+
+Read prompts/agents/roles/TESTING_AGENT.md and verify the recent website changes. Run E2E tests, check for visual regressions, and validate new components work correctly.
+```
+
+### If Media Assets Were Integrated
+```
+## Testing Agent - Asset Integration Verification
+
+Copy this to activate:
+
+Read prompts/agents/roles/TESTING_AGENT.md and verify the integrated media assets display correctly across all breakpoints and browsers.
+```
+
+---
+
 *For general policies, see `AGENT_POLICIES.md`*
 *For your session history, see `prompts/agents/memory/WEBSITE_MEMORY.md`*

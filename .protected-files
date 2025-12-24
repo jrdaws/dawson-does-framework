@@ -22,6 +22,7 @@ CLAUDE.md
 FRAMEWORK_MAP.md
 README.md
 docs/COMPLETE_SETUP_GUIDE.md
+docs/FILE_UPDATE_POLICY.md
 
 # ============================================================================
 # DOCUMENTATION STANDARDS
@@ -33,6 +34,11 @@ docs/standards/CODING_STANDARDS.md
 docs/standards/API_CONTRACTS.md
 docs/standards/TESTING_STANDARDS.md
 docs/standards/FILE_STRUCTURE.md
+
+# Standard Operating Procedures (SOPs)
+docs/sops/BUG_TRIAGE_SOP.md
+docs/sops/DOCUMENTATION_SYNC_SOP.md
+docs/sops/DEPLOYMENT_SOP.md
 
 # ============================================================================
 # AGENT SYSTEM
@@ -64,6 +70,26 @@ prompts/agents/memory/DOCUMENTATION_MEMORY.md
 prompts/agents/memory/TESTING_MEMORY.md
 prompts/agents/memory/PLATFORM_MEMORY.md
 prompts/agents/memory/DOCS_MEMORY.md
+
+# Controller agent memory
+prompts/agents/memory/AUDITOR_MEMORY.md
+prompts/agents/memory/STRATEGIST_MEMORY.md
+prompts/agents/memory/CURATOR_MEMORY.md
+
+# Media pipeline agent memory
+prompts/agents/memory/RESEARCH_MEMORY.md
+prompts/agents/memory/MEDIA_MEMORY.md
+prompts/agents/memory/QUALITY_MEMORY.md
+
+# Media pipeline roles
+prompts/agents/roles/media-pipeline/RESEARCH_AGENT.md
+prompts/agents/roles/media-pipeline/MEDIA_AGENT.md
+prompts/agents/roles/media-pipeline/QUALITY_AGENT.md
+
+# Controller roles
+prompts/agents/roles/controllers/AUDITOR.md
+prompts/agents/roles/controllers/STRATEGIST.md
+prompts/agents/roles/controllers/CURATOR.md
 
 # ============================================================================
 # CONFIGURATION FILES

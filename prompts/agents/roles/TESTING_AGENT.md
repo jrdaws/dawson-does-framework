@@ -554,5 +554,56 @@ open coverage/index.html
 
 ---
 
+## 📤 MANDATORY: Output Appropriate Next Agent Prompt
+
+**Testing Agent outputs prompts based on test results:**
+
+### If ALL TESTS PASS → Platform Agent (for deployment)
+```
+## Next Agent: Platform Agent
+
+Copy this to activate:
+
+Read prompts/agents/roles/PLATFORM_AGENT.md and prepare for deployment. All tests passing, ready for production release.
+```
+
+### If UI TESTS FAIL → Website Agent (for fixes)
+```
+## Fix Needed: Website Agent
+
+Copy this to activate:
+
+Read output/testing-agent/outbox/test-failures-[date].txt and fix the failing UI tests. See specific failures and screenshots in the report.
+```
+
+### If CLI TESTS FAIL → CLI Agent (for fixes)
+```
+## Fix Needed: CLI Agent
+
+Copy this to activate:
+
+Read output/testing-agent/outbox/test-failures-[date].txt and fix the failing CLI tests. See error details in the report.
+```
+
+### If INTEGRATION TESTS FAIL → Integration Agent (for fixes)
+```
+## Fix Needed: Integration Agent
+
+Copy this to activate:
+
+Read output/testing-agent/outbox/test-failures-[date].txt and fix the failing integration tests. Provider connections may need attention.
+```
+
+### If MEDIA ASSETS FAIL → Quality Agent (for re-review)
+```
+## Re-Review Needed: Quality Agent
+
+Copy this to activate:
+
+Read output/testing-agent/outbox/asset-test-failures-[date].txt and re-evaluate the media assets that failed visual testing.
+```
+
+---
+
 *For general policies, see `AGENT_POLICIES.md`*
 *For your session history, see `prompts/agents/memory/TESTING_MEMORY.md`*

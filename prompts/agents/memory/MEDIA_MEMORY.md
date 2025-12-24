@@ -28,29 +28,68 @@ The Media Agent is the second agent in the Media Generation Pipeline. It receive
 
 ## Session History
 
-### Session: 2025-12-23 (Initial Setup)
+### Session: 2025-12-23 (Production Run - Major)
 
 #### Work Completed
-- SOP created
-- Generation workflow established
-- Cost optimization strategy defined
+1. **E2E Test Project** (5 assets)
+   - Generated hero-workspace, hero-workspace-mobile, empty-state-data
+   - Created SVG icons (icon-analytics, icon-analytics-2x)
+   - Completed 2 iterations based on Quality Agent feedback
+   
+2. **Framework UI Redesign** (18 assets)
+   - Hero backgrounds (gradient-bg, gradient-bg-mobile)
+   - Hero abstract graphic + mesh pattern
+   - 6 feature icons (templates, plugins, providers, trust, cli, extensible)
+   - 3 demo screenshots (terminal, dashboard, code-editor)
+   - 3 avatar placeholders
+   - 2 pattern SVGs (section-divider, footer-pattern)
+   - Iteration 2: Fixed terminal-mockup with UI mockup style
+   
+3. **Configurator UX Redesign** (12 assets)
+   - 3 phase icons (setup, configure, launch)
+   - 4 step status icons (completed, current, pending, locked)
+   - 2 stepper connectors (horizontal, vertical)
+   - 3 celebration assets (confetti, success animation, export graphic)
 
-#### Key Learnings
-- Use Stable Diffusion for drafts (10-20x cheaper than DALL-E)
-- Use DALL-E only for final hero images
-- Always document generation prompts in manifest
-- Max 3 iterations per asset
+#### Key Learnings - CRITICAL
+
+**SDXL Dimension Requirements:**
+- MUST use allowed dimensions: 1024x1024, 1152x896, 1216x832, 1344x768, 1536x640, 640x1536, 768x1344, 832x1216, 896x1152
+- Generate at allowed size, then resize to target with ImageMagick
+
+**ImageMagick 7 on macOS:**
+- Use `/opt/homebrew/bin/magick` (not `convert`)
+- `convert` is deprecated in IMv7
+
+**UI Screenshots Prompt Strategy:**
+- **DON'T** use photographic prompts for UI mockups
+- **DO** use `digital-art` style preset with "flat design mockup" language
+- Add negative prompts: "photograph, physical device, hardware, LED lights"
+
+**SVG Icons - Reliable 100%:**
+- Hand-coded SVGs have 100% approval rate
+- Use consistent 2px stroke, rounded caps, viewBox 0 0 24 24
+- Follow Lucide/Heroicons style for consistency
+
+**Color Philosophy Compliance:**
+- Emerald #10B981 = SUCCESS ONLY (completed steps)
+- Indigo #6366F1 = Primary/current
+- Violet #8B5CF6 = Gradients/hover only
+- Gray #71717A = Disabled/pending
 
 #### Blockers Encountered
-- None
+- SDXL dimension errors (solved with dimension mapping)
+- Terminal mockup generated hardware instead of UI (solved with style preset change)
 
 #### Next Priorities
-1. Generate first asset set
-2. Establish optimal SD settings for photorealism
-3. Build prompt refinement library
+1. Await Quality Agent reviews for all 3 projects
+2. Complete any remaining iterations
+3. Handoff approved assets to Website Agent
 
 #### Handoff Notes
-Generated assets go to Quality Agent inbox.
+- E2E Test: Iteration 2 complete, awaiting review
+- Framework UI: Iteration 2 complete (terminal fixed), awaiting review
+- Configurator UX: Iteration 1 complete, awaiting review
 
 ---
 
@@ -58,10 +97,21 @@ Generated assets go to Quality Agent inbox.
 
 | Metric | Value | Trend |
 |--------|-------|-------|
-| Assets generated | 0 | - |
-| Iterations used | 0 | - |
-| Total cost | $0.00 | - |
-| First-pass approval rate | TBD | - |
+| Assets generated | 35 | ↑ |
+| AI-generated images | 18 | ↑ |
+| Hand-coded SVGs | 17 | ↑ |
+| Iterations used | 5 | - |
+| Total cost | ~$0.38 | - |
+| SVG approval rate | 100% | ✓ |
+| Photo approval rate | ~70% | ↑ |
+
+### Cost Breakdown
+| Project | Images | Cost |
+|---------|--------|------|
+| E2E Test | 6 | $0.12 |
+| Framework UI | 10 | $0.20 |
+| Configurator UX | 1 | $0.02 |
+| **Total** | **17** | **$0.34** |
 
 ---
 
@@ -81,15 +131,32 @@ Generated assets go to Quality Agent inbox.
 
 ---
 
-## Generation Settings (Stable Diffusion XL)
+## Generation Settings (Stable Diffusion XL via Stability AI)
 
 | Setting | Recommended Value |
 |---------|-------------------|
-| Model | RealVisXL, Juggernaut XL |
-| Sampler | DPM++ 2M Karras |
-| Steps | 30-50 |
-| CFG Scale | 5-7 (lower = more natural) |
-| Size | 1024x1024, then upscale |
+| Model | stable-diffusion-xl-1024-v1-0 |
+| Steps | 40-50 |
+| CFG Scale | 7-8 |
+| Style Preset | `photographic` (photos), `digital-art` (UI/illustrations) |
+
+### CRITICAL: SDXL Allowed Dimensions
+```javascript
+const SDXL_DIMS = {
+  '16:9': { width: 1344, height: 768 },   // Landscape hero
+  '9:16': { width: 768, height: 1344 },   // Mobile/portrait
+  '4:3': { width: 1152, height: 896 },    // Screenshots
+  '3:4': { width: 896, height: 1152 },    // Tall
+  '3:2': { width: 1216, height: 832 },    // Wide screenshots
+  '1:1': { width: 1024, height: 1024 }    // Square/avatars
+}
+```
+
+### ImageMagick 7 (macOS)
+```bash
+# Use magick, not convert
+/opt/homebrew/bin/magick input.png -resize 1920x1080! -quality 85 output.webp
+```
 
 ---
 
@@ -131,4 +198,35 @@ Read prompts/agents/roles/media-pipeline/MEDIA_AGENT.md and generate assets from
 - Generated assets go to: `output/media-pipeline/shared/assets/[project]/`
 - Create review request in Quality Agent inbox for handoff
 - Max 3 iterations per asset before escalation
+
+### Prompt Strategy by Asset Type
+
+| Asset Type | Style Preset | Key Prompt Elements |
+|------------|--------------|---------------------|
+| Photorealistic | `photographic` | Camera model, lens, lighting, negative prompts |
+| UI Mockups | `digital-art` | "flat design mockup", "pure UI interface", NO hardware |
+| Illustrations | `digital-art` | Color palette, style reference (Linear, Notion) |
+| Avatars | `photographic` | 1:1 ratio, natural lighting, genuine expression |
+
+### Common Negative Prompts
+
+**Photography:**
+```
+cartoon, illustration, CGI, 3d render, oversaturated, plastic skin, 
+stock photo, fake, artificial, HDR overdone, uncanny valley
+```
+
+**UI Mockups:**
+```
+photograph, physical device, monitor, laptop, LED lights, 
+industrial equipment, hardware, real world objects
+```
+
+### Active Projects
+
+| Project | Status | Location |
+|---------|--------|----------|
+| e2e-test-project | Iteration 2 complete | shared/assets/e2e-test-project/ |
+| framework-ui-redesign | Iteration 2 complete | shared/assets/framework-ui-redesign/ |
+| configurator-ux-redesign | Iteration 1 complete | shared/assets/configurator-ux-redesign/ |
 

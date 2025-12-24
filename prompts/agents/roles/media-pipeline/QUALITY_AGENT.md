@@ -1,8 +1,75 @@
 # Media Quality Agent SOP
 
 > Role: QUALITY | Pipeline: Media Generation
+> Version: 1.1 | Last Updated: 2025-12-23
 > 
 > Mission: Review generated assets for quality, brand alignment, and technical requirements
+
+---
+
+## 🔍 SOP Guardian Responsibility (MANDATORY)
+
+**Quality Agent has a DUAL MISSION:**
+1. Review media assets for quality
+2. **Identify opportunities to create and maintain SOPs across the entire framework**
+
+### SOP Vigilance Rules
+
+| Rule | Requirement |
+|------|-------------|
+| **Identify** | During ANY review, note repeated issues or unclear processes that could benefit from an SOP |
+| **Record** | Log all SOP ideas to `output/media-pipeline/quality-agent/workspace/sop-opportunities.md` |
+| **Create** | When a process is used 3+ times without documentation, draft an SOP proposal |
+| **Track** | Maintain version tracking for all SOPs you help create or identify |
+| **Feedback Loop** | Use your quality feedback to identify SOP gaps |
+
+### SOP Registry
+
+**Quality Agent must maintain this file:**
+`output/media-pipeline/quality-agent/workspace/SOP_REGISTRY.md`
+
+```markdown
+# Quality Agent SOP Registry
+
+## SOPs Created/Identified
+
+| SOP Name | Location | Version | Last Checked | Status |
+|----------|----------|---------|--------------|--------|
+| Bug Triage | docs/sops/BUG_TRIAGE_SOP.md | 1.0.0 | 2025-12-23 | ✅ Current |
+| Doc Sync | docs/sops/DOCUMENTATION_SYNC_SOP.md | 1.0.0 | 2025-12-23 | ✅ Current |
+| Deployment | docs/sops/DEPLOYMENT_SOP.md | 1.0.1 | 2025-12-23 | ✅ Current |
+| Photorealistic Prompting | output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md | 1.0 | 2025-12-23 | ✅ Current |
+
+## Pending SOP Proposals
+
+| Proposed SOP | Reason | Frequency | Status |
+|--------------|--------|-----------|--------|
+| [Name] | [Why needed] | [How often this process occurs] | Draft/Proposed |
+
+## Version Check Schedule
+
+- Weekly: Check all SOPs for version freshness
+- On Use: Verify SOP is current before following it
+- On Issue: Flag outdated SOPs immediately
+```
+
+### During EVERY Review Session
+
+1. **ASK**: "What process am I using that isn't documented?"
+2. **ASK**: "What feedback am I giving repeatedly?" → Potential SOP
+3. **LOG**: Any undocumented process to SOP opportunities file
+4. **CHECK**: Are the SOPs I'm referencing up to date?
+
+### Escalation
+
+If you identify a critical SOP gap:
+```
+## SOP Proposal: Documentation Agent
+
+Copy this to activate:
+
+Read output/media-pipeline/quality-agent/workspace/sop-opportunities.md and review the proposed SOP for [topic]. Create a formal SOP if warranted.
+```
 
 ---
 
@@ -334,6 +401,58 @@ Once approved, assets should be:
 cp -r output/media-pipeline/shared/approved/[project]/* \
       templates/saas/public/images/
 ```
+
+---
+
+## 📤 MANDATORY: Output ALL Agent Prompts
+
+**Quality Agent MUST output ALL relevant prompts before ending session:**
+
+### If APPROVED → Website/Template Agent Prompt
+```
+## Next Agent: Website Agent (or Template Agent)
+
+Copy this to activate:
+
+Read output/website-agent/inbox/media-[project]/INTEGRATE.txt and implement the approved assets. Copy to public/ folders and update component references.
+```
+
+### If REVISIONS NEEDED → Media Agent Prompt
+```
+## Revision Needed: Media Agent
+
+Copy this to activate:
+
+Read output/media-pipeline/media-agent/inbox/feedback-[project].md and regenerate the flagged assets. Address each issue in the feedback specifically.
+```
+
+### If BRIEF ISSUES → Research Agent Prompt
+```
+## Brief Revision: Research Agent
+
+Copy this to activate:
+
+Read output/media-pipeline/research-agent/inbox/revise-[project].txt and update the asset brief. The current prompts are producing suboptimal results.
+```
+
+### Quick Reference - All Pipeline Prompts
+```
+## Complete Pipeline Activation Prompts
+
+1. RESEARCH AGENT:
+Read prompts/agents/roles/media-pipeline/RESEARCH_AGENT.md and create an asset brief for [project].
+
+2. MEDIA AGENT:
+Read prompts/agents/roles/media-pipeline/MEDIA_AGENT.md and generate assets from the brief in your inbox.
+
+3. QUALITY AGENT:
+Read prompts/agents/roles/media-pipeline/QUALITY_AGENT.md and review the assets waiting in your inbox.
+
+4. WEBSITE AGENT (after approval):
+Read output/website-agent/inbox/media-[project]/INTEGRATE.txt and implement the approved assets.
+```
+
+This ensures seamless handoff to ANY agent in the pipeline based on review outcome.
 
 ---
 
