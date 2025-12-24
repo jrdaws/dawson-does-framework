@@ -32,15 +32,12 @@ interface HealthStatus {
 }
 
 async function checkSupabase(): Promise<ServiceStatus> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!url || !key) {
+  if (!isSupabaseConfigured()) {
     return { status: "down", message: "Missing Supabase configuration" };
   }
 
   try {
-    const supabase = createClient(url, key);
+    const supabase = getSupabase();
     // Simple health check - try to query metadata
     const { error } = await supabase.from("projects").select("id").limit(1);
     
@@ -49,8 +46,9 @@ async function checkSupabase(): Promise<ServiceStatus> {
     }
     
     return { status: "up" };
-  } catch (error: any) {
-    return { status: "down", message: error.message };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return { status: "down", message };
   }
 }
 
@@ -84,8 +82,9 @@ async function checkCostTracking(): Promise<ServiceStatus> {
     }
     
     return { status: "up" };
-  } catch (error: any) {
-    return { status: "down", message: error.message };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return { status: "down", message };
   }
 }
 
@@ -144,13 +143,14 @@ export async function GET(request: NextRequest) {
       { ...health, responseTimeMs: responseTime },
       { status: overallStatus === "unhealthy" ? 503 : 200 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[Health Check] Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     
     return NextResponse.json(
       {
         status: "unhealthy",
-        error: error.message,
+        error: message,
         timestamp: new Date().toISOString(),
       },
       { status: 503 }

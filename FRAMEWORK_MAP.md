@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 786bbee 2025-12-23 docs(governance): update handoff format - fenced block immediately after header
 - 38c004c 2025-12-23 feat(website): implement configurator sidebar navigation
 - 573afea 2025-12-23 docs(governance): make permission request BLOCKING + add Reply Rules to MINDFRAME
 - d48758e 2025-12-23 feat(website): complete shadcn P0 component migration
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 980c076 2025-12-23 chore(agents): mark context freshness task complete, update MINDFRAME
 - 1677a3b 2025-12-23 feat(website): implement PhaseIndicator with 3-phase grouped UX
 - 268ad8f 2025-12-23 docs(governance): update MINDFRAME and AGENT_CONTEXT for v2.3
-- c8d4859 2025-12-23 docs(agents): update Quality Agent memory, add media pipeline role codes
 
 ## Agent Governance Structure
 
