@@ -62,6 +62,13 @@ const nextConfig = {
 
   // Webpack configuration
   webpack: (config, { isServer }) => {
+    // Alias @dawson-framework packages to stubs for standalone build
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@dawson-framework/collaboration': path.resolve(__dirname, 'lib/collaboration-stub.ts'),
+      '@dawson-framework/ai-agent': path.resolve(__dirname, 'lib/ai-agent-stub.ts'),
+    };
+
     // Optimize bundle
     if (!isServer) {
       config.resolve.fallback = {

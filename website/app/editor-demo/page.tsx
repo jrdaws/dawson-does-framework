@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { VisualEditor } from "@/app/components/editor";
+import { VisualEditor } from "@/app/components/editor/VisualEditor";
 import { Button } from "@/components/ui/button";
 import { Code, Eye } from "lucide-react";
 
