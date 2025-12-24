@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase, Project } from "@/lib/supabase";
+import { getSupabase, Project } from "@/lib/supabase";
 import { checkRateLimit } from "@/lib/rate-limiter";
 import { apiError, apiSuccess, ErrorCodes } from "@/lib/api-errors";
 
@@ -52,6 +52,7 @@ export async function GET(
     }
 
     // Fetch project from database
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from("projects")
       .select("*")

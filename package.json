@@ -3,6 +3,10 @@
   "version": "0.3.1",
   "description": "Dawson Does Framework - templates + Cursor rules + prompts",
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "website"
+  ],
   "bin": {
     "framework": "bin/framework.js"
   },
@@ -54,7 +58,8 @@
     "caps:explain": "node scripts/orchestrator/caps-explain.mjs",
     "caps:diff": "node scripts/orchestrator/caps-diff.mjs",
     "framework:map:check": "npm run framework:map >/dev/null && git diff --exit-code -- FRAMEWORK_MAP.md || (git checkout -- FRAMEWORK_MAP.md && echo \"ERROR: FRAMEWORK_MAP.md is out of date. Run: npm run framework:map\" && exit 1)",
-    "changelog:generate": "node scripts/generate-changelog.mjs"
+    "changelog:generate": "node scripts/generate-changelog.mjs",
+    "vercel-build": "cd packages/ai-agent && npm run build && cd ../collaboration && npm run build && cd ../../website && npm run build"
   },
   "devDependencies": {
     "c8": "^10.1.2",

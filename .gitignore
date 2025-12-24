@@ -32,3 +32,5 @@ playwright-report/
 test-results/
 *.lcov
 test-saas-project/
+.vercel
+.env*.local

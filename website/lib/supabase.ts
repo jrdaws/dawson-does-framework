@@ -1,15 +1,27 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    "Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
-  );
+// Lazy initialization to allow build without env vars
+let _supabase: SupabaseClient | null = null;
+
+export function getSupabase(): SupabaseClient {
+  if (!_supabase) {
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error(
+        "Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
+      );
+    }
+    _supabase = createClient(supabaseUrl, supabaseAnonKey);
+  }
+  return _supabase;
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Legacy export for backwards compatibility - will throw at runtime if env vars missing
+export const supabase = supabaseUrl && supabaseAnonKey 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : (null as unknown as SupabaseClient);
 
 // Type definitions for projects table
 export interface Project {

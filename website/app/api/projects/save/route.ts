@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase, generateToken, CreateProjectInput } from "@/lib/supabase";
+import { getSupabase, generateToken, CreateProjectInput } from "@/lib/supabase";
 import { checkRateLimit } from "@/lib/rate-limiter";
 import { apiError, apiSuccess, ErrorCodes } from "@/lib/api-errors";
 
@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
     const maxAttempts = 5;
 
     // Ensure token is unique (retry if collision)
+    const supabase = getSupabase();
     while (attempts < maxAttempts) {
       const { data: existing } = await supabase
         .from("projects")

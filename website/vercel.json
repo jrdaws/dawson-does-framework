@@ -4,7 +4,7 @@
   "trailingSlash": false,
   "framework": "nextjs",
   "buildCommand": "npm run build",
-  "installCommand": "npm install",
+  "installCommand": "cd .. && npm install && cd website && npm install",
   "regions": ["iad1"],
   "headers": [
     {
