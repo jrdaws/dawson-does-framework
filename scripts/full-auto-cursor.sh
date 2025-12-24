@@ -17,6 +17,10 @@ set -e
 
 PROJECT_DIR="/Users/joseph.dawson/Documents/dawson-does-framework"
 LOG_FILE="$PROJECT_DIR/logs/full-auto.log"
+REPORTS_DIR="$PROJECT_DIR/output/shared/reports"
+
+# Source notification helper for clickable notifications
+source "$PROJECT_DIR/scripts/automation/notify.sh" 2>/dev/null || true
 
 # Timing configuration (adjust based on typical response times)
 AUDITOR_WAIT=300      # 5 minutes
@@ -132,6 +136,13 @@ log "═════════════════════════
 log "FULL AUTO CYCLE COMPLETE"
 log "═══════════════════════════════════════════════════════════"
 
-# Send completion notification
-osascript -e 'display notification "All agents complete" with title "Full Auto Cycle" sound name "Glass"'
+# Find latest report for clickable notification
+LATEST_REPORT=$(ls -t "$REPORTS_DIR"/*.txt 2>/dev/null | head -1)
+
+# Send clickable notification
+if type notify &>/dev/null && [ -n "$LATEST_REPORT" ]; then
+    notify "Full Auto Cycle" "All agents complete - Click to view" "$LATEST_REPORT"
+else
+    osascript -e 'display notification "All agents complete" with title "Full Auto Cycle" sound name "Glass"'
+fi
 

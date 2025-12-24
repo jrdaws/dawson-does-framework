@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- a236262 2025-12-23 docs(media-pipeline): add SOP enforcement checkpoints and rejection criteria
 - 5e996d3 2025-12-23 feat(curator): complete cycle 8 curation - 5 drafts approved, execution focus
 - 1091a9f 2025-12-23 feat(strategist): complete cycle 7 strategy - execution focus
 - 5b579d3 2025-12-23 chore(curator): complete cycle 6 - cleanup and consolidation
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 88b4cad 2025-12-22 docs(agents): verify quick start guide task completion
 - c48b2d7 2025-12-22 docs(platform): update memory with cost optimization session
 - 85832b3 2025-12-22 feat(ai-agent): reduce code generation token limit for cost optimization
-- 80d8d73 2025-12-22 docs(cli): complete P2 deploy command verification audit
 
 ## Agent Governance Structure
 

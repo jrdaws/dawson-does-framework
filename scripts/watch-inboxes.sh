@@ -3,8 +3,12 @@
 # Usage: ./scripts/watch-inboxes.sh
 # Stop: Ctrl+C
 
-OUTPUT_DIR="output"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+OUTPUT_DIR="$PROJECT_DIR/output"
 WATCH_PATTERN="*/inbox/*.txt"
+
+# Source notification helper for clickable notifications
+source "$PROJECT_DIR/scripts/automation/notify.sh" 2>/dev/null || true
 
 echo "👀 Watching agent inboxes for new tasks..."
 echo "   Press Ctrl+C to stop"
@@ -38,8 +42,12 @@ fswatch -0 --event Created "$OUTPUT_DIR" 2>/dev/null | while IFS= read -r -d '' 
         echo "Read and execute the task in $file"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-        # Send macOS notification
-        osascript -e "display notification \"New task for $AGENT_UPPER Agent\" with title \"Dawson-Does Framework\" sound name \"Glass\""
+        # Send clickable notification (opens task file when clicked)
+        if type notify &>/dev/null; then
+            notify "Dawson-Does Framework" "New task for $AGENT_UPPER Agent - Click to view" "$file"
+        else
+            osascript -e "display notification \"New task for $AGENT_UPPER Agent\" with title \"Dawson-Does Framework\" sound name \"Glass\""
+        fi
     fi
 done
 

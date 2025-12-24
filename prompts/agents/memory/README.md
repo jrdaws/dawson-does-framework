@@ -1,157 +1,162 @@
 # Agent Memory Files
 
-> **Persistent memory for AI agents. Each role has a dedicated memory file that persists context across sessions.**
+> **Purpose**: Persistent memory for AI agents across sessions
+> **Last Updated**: 2025-12-23
 
 ---
 
-## 🧠 What This Is
+## Overview
 
-Each AI agent role has a **memory file** that:
-1. Tracks what previous agents did
-2. Stores decisions and reasoning
-3. Maintains a task queue
-4. Provides insights for the next agent
-5. Ensures **zero information loss** between sessions
-
-## 📁 Memory Files
-
-| Role | Memory File | Purpose |
-|------|-------------|---------|
-| CLI | `CLI_MEMORY.md` | CLI commands, bin/framework.js |
-| Website | `WEBSITE_MEMORY.md` | Next.js configurator UI |
-| Template | `TEMPLATE_MEMORY.md` | Starter templates |
-| Integration | `INTEGRATION_MEMORY.md` | Auth, payments, etc. |
-| Documentation | `DOCS_MEMORY.md` | Docs and guides |
-| Testing | `TESTING_MEMORY.md` | Tests and coverage |
-| Platform | `PLATFORM_MEMORY.md` | Cloud features, APIs |
+Each agent has a dedicated memory file that persists across sessions. Agents MUST:
+1. Read their memory file at session start
+2. Update their memory file at session end
 
 ---
 
-## 🔄 How It Works
+## Agent Registry
 
-### New Session Starts
-```
-1. Agent reads AGENT_CONTEXT.md
-2. Agent identifies their role
-3. Agent reads their memory file
-4. Agent establishes continuity with previous session
-5. Agent does work
-6. Agent updates memory file ← CRITICAL
-7. Agent provides handoff prompt
-```
+### Executor Agents (7)
 
-### Memory Update (End of Session)
+| Agent | Code | Memory File | Role File | Domain |
+|-------|------|-------------|-----------|--------|
+| CLI | `CLI` | `CLI_MEMORY.md` | `roles/CLI_AGENT.md` | Command-line interface |
+| Website | `WEB` | `WEBSITE_MEMORY.md` | `roles/WEBSITE_AGENT.md` | Next.js web app |
+| Template | `TPL` | `TEMPLATE_MEMORY.md` | `roles/TEMPLATE_AGENT.md` | Starter templates |
+| Integration | `INT` | `INTEGRATION_MEMORY.md` | `roles/INTEGRATION_AGENT.md` | Third-party integrations |
+| Documentation | `DOC` | `DOCS_MEMORY.md` | `roles/DOCUMENTATION_AGENT.md` | Docs and guides |
+| Testing | `TST` | `TESTING_MEMORY.md` | `roles/TESTING_AGENT.md` | Tests and CI/CD |
+| Platform | `PLT` | `PLATFORM_MEMORY.md` | `roles/PLATFORM_AGENT.md` | APIs and deployment |
 
-Every agent MUST update their memory file with:
+### Controller Agents (3)
 
-1. **Session Entry**
-   ```markdown
-   | 2024-12-22 | 45min | Session-X | What was done |
-   ```
+| Agent | Code | Memory File | Role File | Domain |
+|-------|------|-------------|-----------|--------|
+| Auditor | `AUD` | `AUDITOR_MEMORY.md` | `roles/controllers/AUDITOR.md` | Framework audits |
+| Strategist | `STR` | `STRATEGIST_MEMORY.md` | `roles/controllers/STRATEGIST.md` | Task planning |
+| Curator | `CUR` | `CURATOR_MEMORY.md` | `roles/controllers/CURATOR.md` | Prompt refinement |
 
-2. **Decisions Made**
-   ```markdown
-   | Used approach X | Because Y reason | 2024-12-22 |
-   ```
+### Media Pipeline Agents (3)
 
-3. **Task Updates**
-   - ✅ Mark completed tasks
-   - Add new tasks discovered
-   - Reprioritize if needed
-
-4. **Issues Found**
-   ```markdown
-   | Bug description | Severity | Notes |
-   ```
-
-5. **Insights for Next Agent**
-   - Gotchas to avoid
-   - Tips that helped
-   - Context needed
+| Agent | Code | Memory File | Role File | Domain |
+|-------|------|-------------|-----------|--------|
+| Research | `RES` | `RESEARCH_MEMORY.md` | `roles/media-pipeline/RESEARCH_AGENT.md` | Asset briefs |
+| Media | `MED` | `MEDIA_MEMORY.md` | `roles/media-pipeline/MEDIA_AGENT.md` | Image generation |
+| Quality | `QUA` | `QUALITY_MEMORY.md` | `roles/media-pipeline/QUALITY_AGENT.md` | Asset review |
 
 ---
 
-## 💡 Why This Matters
+## Total Agents: 13
 
-### Without Memory Files
 ```
-Agent A: Does work, exits
-Agent B: Starts fresh, asks same questions
-Agent C: Repeats work, inconsistent decisions
-→ Information loss, wasted effort, drift
-```
-
-### With Memory Files
-```
-Agent A: Does work, updates memory, exits
-Agent B: Reads memory, continues seamlessly
-Agent C: Reads memory, builds on progress
-→ Zero information loss, consistent decisions
+Executor Agents (7)     Controller Agents (3)     Media Pipeline (3)
+├── CLI                 ├── Auditor               ├── Research
+├── Website             ├── Strategist            ├── Media
+├── Template            └── Curator               └── Quality
+├── Integration
+├── Documentation
+├── Testing
+└── Platform
 ```
 
 ---
 
-## 📝 Memory File Structure
+## Memory File Structure
+
+All memory files should follow this structure:
 
 ```markdown
-# [ROLE] Agent Memory
+# [Agent Name] Memory
 
-## 🧠 Persistent Context
-[Critical facts that never change]
+> **Role**: [Type] - [Description]
+> **Code**: [3-letter code]
+> **Domain**: [Area of responsibility]
 
-## 📅 Session History
-[Chronological log of all sessions]
+---
 
-## 💡 Key Decisions
-[Important choices and why]
+## Role Summary
+[Brief description of responsibilities]
 
-## 🔍 Active Context
-[Current state, in-progress, blocked]
+### Key Responsibilities
+- [Responsibility 1]
+- [Responsibility 2]
 
-## 📋 Task Queue
-[High/medium/low priority tasks]
+### Key Files
+- SOP: [path]
+- Output: [path]
 
-## 🐛 Known Issues
-[Bugs and problems]
+---
 
-## 💭 Insights for Next Agent
-[Tips, gotchas, learnings]
+## Session History
 
-## 🔗 Related Files
-[Key files for this role]
+### Session: YYYY-MM-DD HH:MM
+
+#### Work Completed
+- [Item 1]
+- [Item 2]
+
+#### Blockers Encountered
+- [Blocker, if any]
+
+#### Next Priorities
+1. [Priority 1]
+2. [Priority 2]
+
+#### Handoff Notes
+[Context for next agent]
+
+---
+
+## Metrics Tracking
+[Agent-specific metrics]
+
+---
+
+## Common Patterns
+[Frequently used patterns/templates]
+
+---
+
+## Notes
+[Important reminders]
 ```
 
 ---
 
-## ⚠️ Rules
+## Session Update Requirements
 
-1. **ALWAYS update** before ending a session
-2. **NEVER delete** session history entries
-3. **ADD** to insights, don't replace
-4. **BE SPECIFIC** - vague entries don't help
-5. **DATE EVERYTHING** - timestamps matter
+At the END of every session, agents MUST update their memory with:
+
+1. **Session timestamp**
+2. **Work completed** (bullet list)
+3. **Blockers encountered** (or "None")
+4. **Next priorities** (numbered list)
+5. **Handoff notes** (context for next agent)
 
 ---
 
-## 🚀 Quick Start for Agents
+## Cross-Agent Communication
 
+Agents communicate via:
+1. **Inbox folders**: `output/[agent]/inbox/` - receive tasks
+2. **Outbox folders**: `output/[agent]/outbox/` - completed work
+3. **Shared folders**: `output/shared/` - reports and metrics
+4. **Memory files**: Context and history
+
+---
+
+## Quick Reference
+
+### Read Memory
 ```bash
-# 1. Read context
-cat AGENT_CONTEXT.md
-
-# 2. Identify your role (example: CLI Agent)
-
-# 3. Read your memory
-cat prompts/agents/roles/CLI_AGENT.md
-cat prompts/agents/memory/CLI_MEMORY.md
-
-# 4. Do work...
-
-# 5. Before ending, update memory file
-# Edit: prompts/agents/memory/CLI_MEMORY.md
+cat prompts/agents/memory/[CODE]_MEMORY.md
 ```
 
----
+### Find Agent Inbox
+```bash
+ls output/[agent-name]/inbox/
+```
 
-*Memory system created: 2024-12-22*
-
+### All Role Short Codes
+```
+CLI | WEB | TPL | INT | DOC | TST | PLT | AUD | STR | CUR | RES | MED | QUA
+```

@@ -16,6 +16,9 @@ LOG_DIR="$PROJECT_DIR/logs"
 REPORTS_DIR="$PROJECT_DIR/output/shared/reports"
 CYCLE_ID=$(date +'%Y%m%d-%H%M')
 
+# Source notification helper for clickable notifications
+source "$PROJECT_DIR/scripts/automation/notify.sh" 2>/dev/null || true
+
 # Ensure log directory exists
 mkdir -p "$LOG_DIR"
 
@@ -103,8 +106,27 @@ log "═════════════════════════
 TASK_COUNT=$(find "$PROJECT_DIR/output" -path "*/inbox/*.txt" -newer "$REPORTS_DIR/audit-$CYCLE_ID.txt" 2>/dev/null | wc -l | tr -d ' ')
 log "Tasks distributed to agent inboxes: $TASK_COUNT"
 
-# Send macOS notification
-osascript -e "display notification \"Cycle $CYCLE_ID complete. $TASK_COUNT tasks distributed.\" with title \"Improvement Cycle\" sound name \"Glass\"" 2>/dev/null || true
+# Find latest report for clickable notification
+CYCLE_SUMMARY="$REPORTS_DIR/cycle-summary-$CYCLE_ID.txt"
+STRATEGY_REPORT="$REPORTS_DIR/strategy-$CYCLE_ID.txt"
+AUDIT_REPORT="$REPORTS_DIR/audit-$CYCLE_ID.txt"
+
+# Choose best report to link to
+LATEST_REPORT=""
+if [ -f "$CYCLE_SUMMARY" ]; then
+    LATEST_REPORT="$CYCLE_SUMMARY"
+elif [ -f "$STRATEGY_REPORT" ]; then
+    LATEST_REPORT="$STRATEGY_REPORT"
+elif [ -f "$AUDIT_REPORT" ]; then
+    LATEST_REPORT="$AUDIT_REPORT"
+fi
+
+# Send clickable notification
+if type notify &>/dev/null && [ -n "$LATEST_REPORT" ]; then
+    notify "Improvement Cycle" "Cycle $CYCLE_ID complete. $TASK_COUNT tasks - Click to view" "$LATEST_REPORT"
+else
+    osascript -e "display notification \"Cycle $CYCLE_ID complete. $TASK_COUNT tasks distributed.\" with title \"Improvement Cycle\" sound name \"Glass\"" 2>/dev/null || true
+fi
 
 log "Logs saved to: $LOG_DIR/*-$CYCLE_ID.log"
 log "Next cycle scheduled in 6 hours."

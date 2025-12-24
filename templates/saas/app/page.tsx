@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export default function Page() {
   return (
     <div className="min-h-screen">
@@ -34,6 +36,27 @@ export default function Page() {
               Learn More
             </button>
           </div>
+          {/* Hero Image */}
+          <div className="mt-10 sm:mt-12 md:mt-16 relative w-full max-w-4xl mx-auto">
+            {/* Desktop Image */}
+            <Image
+              src="/images/hero-workspace.webp"
+              alt="Modern analytics dashboard on a MacBook Pro in a minimal workspace"
+              width={1920}
+              height={1080}
+              className="hidden sm:block rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700"
+              priority
+            />
+            {/* Mobile Image */}
+            <Image
+              src="/images/hero-workspace-mobile.webp"
+              alt="Analytics dashboard interface"
+              width={750}
+              height={1000}
+              className="block sm:hidden rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 mx-auto"
+              priority
+            />
+          </div>
         </div>
       </section>
 
@@ -48,17 +71,30 @@ export default function Page() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { title: "Authentication", description: "Ready for Supabase, Clerk, or Auth0" },
-              { title: "Payments", description: "Stripe integration ready to configure" },
-              { title: "Database", description: "PostgreSQL with Prisma or Drizzle ORM" },
-              { title: "API Routes", description: "Next.js API routes with TypeScript" },
-              { title: "Email", description: "Transactional email with Resend" },
-              { title: "Analytics", description: "Track usage with your preferred analytics" }
+              { title: "Authentication", description: "Ready for Supabase, Clerk, or Auth0", icon: "🔐" },
+              { title: "Payments", description: "Stripe integration ready to configure", icon: "💳" },
+              { title: "Database", description: "PostgreSQL with Prisma or Drizzle ORM", icon: "🗄️" },
+              { title: "API Routes", description: "Next.js API routes with TypeScript", icon: "⚡" },
+              { title: "Email", description: "Transactional email with Resend", icon: "✉️" },
+              { title: "Analytics", description: "Track usage with your preferred analytics", icon: "analytics" }
             ].map((feature, i) => (
               <div key={i} className="p-5 sm:p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-                <h3 className="text-lg sm:text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                  {feature.title}
-                </h3>
+                <div className="flex items-center gap-3 mb-3">
+                  {feature.icon === "analytics" ? (
+                    <Image
+                      src="/images/icon-analytics.svg"
+                      alt="Analytics"
+                      width={32}
+                      height={32}
+                      className="w-8 h-8"
+                    />
+                  ) : (
+                    <span className="text-2xl">{feature.icon}</span>
+                  )}
+                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+                    {feature.title}
+                  </h3>
+                </div>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 m-0 leading-relaxed">
                   {feature.description}
                 </p>

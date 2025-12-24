@@ -20,6 +20,9 @@ LOG_DIR="$PROJECT_DIR/logs"
 REPORTS_DIR="$PROJECT_DIR/output/shared/reports"
 CYCLE_ID=$(date +'%Y%m%d-%H%M')
 
+# Source notification helper for clickable notifications
+source "$PROJECT_DIR/scripts/automation/notify.sh" 2>/dev/null || true
+
 # Cost-saving: Use Haiku for routine tasks, Sonnet only for Curator
 MODEL_CHEAP="claude-3-haiku-20240307"
 MODEL_QUALITY="claude-3-5-sonnet-20241022"
@@ -224,6 +227,19 @@ log "Tasks created: $TASKS_CREATED"
 log "Est. cost: ~\$0.12"
 log "═══════════════════════════════════════════════════════════"
 
-# Optional: Send notification (will show when you wake up)
-osascript -e "display notification \"$TASKS_CREATED tasks ready for review\" with title \"Overnight Cycle Complete\" sound name \"Glass\"" 2>/dev/null || true
+# Find latest report for clickable notification
+CYCLE_SUMMARY="$REPORTS_DIR/cycle-summary-$CYCLE_ID.txt"
+LATEST_REPORT=""
+if [ -f "$CYCLE_SUMMARY" ]; then
+    LATEST_REPORT="$CYCLE_SUMMARY"
+else
+    LATEST_REPORT=$(ls -t "$REPORTS_DIR"/*.txt 2>/dev/null | head -1)
+fi
+
+# Send clickable notification (click to open report)
+if type notify &>/dev/null && [ -n "$LATEST_REPORT" ]; then
+    notify "Overnight Cycle Complete" "$TASKS_CREATED tasks ready - Click to view" "$LATEST_REPORT"
+else
+    osascript -e "display notification \"$TASKS_CREATED tasks ready for review\" with title \"Overnight Cycle Complete\" sound name \"Glass\"" 2>/dev/null || true
+fi
 

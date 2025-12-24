@@ -1,0 +1,119 @@
+{
+  "project": "e2e-test-project",
+  "assetTarget": "TEMPLATE",
+  "templatePath": "templates/saas/public/images/",
+  "generatedAt": "2025-12-23T10:30:00Z",
+  "generator": "stable-diffusion-xl-1024-v1-0",
+  "brandColors": {
+    "primary": "#6366F1",
+    "accent": "#10B981",
+    "background": "#FFFFFF"
+  },
+  "assets": [
+    {
+      "id": "hero-workspace",
+      "file": "optimized/hero-workspace.webp",
+      "rawFile": "raw/hero-workspace.png",
+      "dimensions": "1920x1080",
+      "format": "webp",
+      "size": "103.2KB",
+      "rawSize": "1594.6KB",
+      "compression": "94%",
+      "priority": "P1",
+      "category": "hero",
+      "prompt": "Professional MacBook Pro displaying modern analytics dashboard interface on a minimal Scandinavian desk setup, sleek workspace with subtle indigo accent lighting from desk lamp, morning natural light from large window on left side, shot on Canon EOS R5 with 35mm f/1.4 lens, shallow depth of field with soft bokeh on background, clean minimal interior design with neutral tones and greenery, tech startup aesthetic, commercial interior photography, subtle Lightroom color grade with lifted shadows, professional workspace environment, high-end advertising quality, 8K resolution",
+      "settings": {
+        "model": "stable-diffusion-xl-1024-v1-0",
+        "steps": 40,
+        "cfg_scale": 7,
+        "style_preset": "photographic",
+        "generated_dimensions": "1344x768"
+      },
+      "status": "pending-review"
+    },
+    {
+      "id": "hero-workspace-mobile",
+      "file": "optimized/hero-workspace-mobile.webp",
+      "rawFile": "raw/hero-workspace-mobile.png",
+      "dimensions": "750x1000",
+      "format": "webp",
+      "size": "35.4KB",
+      "rawSize": "1421.1KB",
+      "compression": "98%",
+      "priority": "P1",
+      "category": "hero",
+      "prompt": "Cropped close-up view of MacBook Pro screen displaying modern analytics dashboard, minimal desk surface visible, morning natural window light creating soft highlights on screen bezels, shot on Canon EOS R5 with 50mm f/1.4 lens, tight composition for mobile display, professional product photography, clean and minimal aesthetic, subtle indigo ambient lighting, editorial tech photography, vertical composition emphasis",
+      "settings": {
+        "model": "stable-diffusion-xl-1024-v1-0",
+        "steps": 40,
+        "cfg_scale": 7,
+        "style_preset": "photographic",
+        "generated_dimensions": "768x1344"
+      },
+      "status": "pending-review"
+    },
+    {
+      "id": "empty-state-data",
+      "file": "optimized/empty-state-data.webp",
+      "rawFile": "raw/empty-state-data.png",
+      "dimensions": "400x300",
+      "format": "webp",
+      "size": "20.8KB",
+      "rawSize": "1251.6KB",
+      "compression": "98%",
+      "priority": "P1",
+      "category": "empty-states",
+      "prompt": "Minimal abstract illustration of empty data visualization concept, soft indigo and emerald color palette on clean white background, geometric shapes suggesting empty chart or graph placeholder, subtle shadows and depth, modern flat design with slight 3D elements, premium SaaS aesthetic, friendly and approachable mood, clean vector-style illustration, professional software UI empty state design, Linear app inspired aesthetic, minimal and sophisticated",
+      "settings": {
+        "model": "stable-diffusion-xl-1024-v1-0",
+        "steps": 40,
+        "cfg_scale": 7,
+        "style_preset": "digital-art",
+        "generated_dimensions": "1152x896"
+      },
+      "status": "pending-review"
+    },
+    {
+      "id": "icon-analytics",
+      "file": "optimized/icon-analytics.svg",
+      "dimensions": "64x64",
+      "format": "svg",
+      "size": "<1KB",
+      "priority": "P1",
+      "category": "icons",
+      "generationType": "hand-coded",
+      "style": "outline, 2px stroke, #6366F1",
+      "status": "pending-review"
+    },
+    {
+      "id": "icon-analytics-2x",
+      "file": "optimized/icon-analytics-2x.svg",
+      "dimensions": "128x128",
+      "format": "svg",
+      "size": "<1KB",
+      "priority": "P2",
+      "category": "icons",
+      "generationType": "hand-coded",
+      "style": "outline, 2px stroke, #6366F1",
+      "status": "pending-review"
+    }
+  ],
+  "summary": {
+    "totalAssets": 5,
+    "webpImages": 3,
+    "svgIcons": 2,
+    "totalSizeOptimized": "~160KB",
+    "totalSizeRaw": "~4.3MB",
+    "estimatedAPICost": "$0.06"
+  },
+  "qualityChecklist": {
+    "promptVerification": true,
+    "cameraModelIncluded": true,
+    "lensSpecIncluded": true,
+    "lightingDescribed": true,
+    "negativePromptsIncluded": true,
+    "allP1AssetsGenerated": true,
+    "filesOptimized": true
+  }
+}
+

@@ -14,6 +14,10 @@ set -e
 PROJECT_DIR="/Users/joseph.dawson/Documents/dawson-does-framework"
 LOG_FILE="$PROJECT_DIR/logs/smart-auto.log"
 CYCLE_ID=$(date +'%Y%m%d-%H%M')
+REPORTS_DIR="$PROJECT_DIR/output/shared/reports"
+
+# Source notification helper for clickable notifications
+source "$PROJECT_DIR/scripts/automation/notify.sh" 2>/dev/null || true
 
 # Timing for Cursor automation
 AUDITOR_WAIT=300      # 5 minutes
@@ -203,8 +207,27 @@ log "Method: $METHOD"
 log "Cost: $COST"
 log "═══════════════════════════════════════════════════════════"
 
-# Send notification
-osascript -e "display notification \"Cycle complete via $METHOD ($COST)\" with title \"Smart Auto Cycle\" sound name \"Glass\"" 2>/dev/null || true
+# Find the latest report created this cycle
+LATEST_REPORT=""
+for report_type in "cycle-summary" "strategy" "audit"; do
+    CANDIDATE="$REPORTS_DIR/${report_type}-${CYCLE_ID}.txt"
+    if [ -f "$CANDIDATE" ]; then
+        LATEST_REPORT="$CANDIDATE"
+        break
+    fi
+done
+
+# Fallback: find most recent report
+if [ -z "$LATEST_REPORT" ]; then
+    LATEST_REPORT=$(ls -t "$REPORTS_DIR"/*.txt 2>/dev/null | head -1)
+fi
+
+# Send clickable notification (opens report file when clicked)
+if type notify &>/dev/null && [ -n "$LATEST_REPORT" ]; then
+    notify "Smart Auto Cycle" "Cycle complete via $METHOD ($COST) - Click to view" "$LATEST_REPORT"
+else
+    osascript -e "display notification \"Cycle complete via $METHOD ($COST)\" with title \"Smart Auto Cycle\" sound name \"Glass\"" 2>/dev/null || true
+fi
 
 # Check for pending tasks
 PENDING=$(find "$PROJECT_DIR/output" -path "*/inbox/*.txt" -type f 2>/dev/null | wc -l | tr -d ' ')
