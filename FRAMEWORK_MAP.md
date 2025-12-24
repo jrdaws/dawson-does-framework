@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 8a1fd77 2025-12-24 feat(sops): add Agent Creation SOP with automation script
 - f15b215 2025-12-24 feat(agents): add default settings.json for all 13 agents + P1 task for path updates
 - a85827a 2025-12-24 chore(curator): complete cycle 9 - 5 tasks distributed (8.6 avg score)
 - a3a00a7 2025-12-24 docs(mindframe): add Curator Agent certification for cycle 9
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 75f9a55 2025-12-24 docs(audit): add P0/P1 tasks from configurator review
 - 1a9a64d 2025-12-24 feat(governance): add cumulative memory sections to checkpoint
 - 2fe8dea 2025-12-24 feat(governance): enforce 5 distillation categories in checkpoint
-- 16aad33 2025-12-24 feat(automation): implement Agent Auto-Continuation System
 
 ## Agent Governance Structure
 

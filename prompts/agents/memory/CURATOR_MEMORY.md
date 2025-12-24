@@ -20,7 +20,7 @@ The Curator Agent is the third and final agent in the continuous improvement cyc
 
 ### Key Files
 - SOP: `prompts/agents/roles/controllers/CURATOR.md`
-- Output: `output/controller-agents/curator/`
+- Output: `output/agents/curator/`
 - Cycle Summary: `output/shared/reports/cycle-summary-*.txt`
 
 ---
@@ -34,7 +34,7 @@ The Curator Agent is the third and final agent in the continuous improvement cyc
 - Reviewed 5 draft prompts from Strategist outbox
 - Scored all prompts against quality criteria (Vision, Clarity, Completeness, Actionability, Scope)
 - All 5 prompts approved (average score: 9.0/10)
-- Archived processed drafts to `output/controller-agents/strategist/outbox/archived/`
+- Archived processed drafts to `output/agents/strategist/outbox/archived/`
 - Updated `output/ACTIVATE_AGENTS.txt` with Phase 1/2/3 launch commands
 - Updated velocity log with Cycle 9 metrics
 - Created `output/shared/reports/cycle-summary-20251224-1130.txt`

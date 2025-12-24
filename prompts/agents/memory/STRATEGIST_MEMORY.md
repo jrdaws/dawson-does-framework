@@ -20,7 +20,7 @@ The Strategist Agent is the second agent in the continuous improvement cycle. It
 
 ### Key Files
 - SOP: `prompts/agents/roles/controllers/STRATEGIST.md`
-- Output: `output/controller-agents/strategist/`
+- Output: `output/agents/strategist/`
 - Reports: `output/shared/reports/strategy-*.txt`
 
 ---

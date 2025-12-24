@@ -57,8 +57,14 @@ When user says: `checkpoint`, `cp`, `save`, `commit`, or `end session`
 │     ./scripts/certify.sh [CODE] [AREA] [STATUS] [VIBE] [NOTES] │
 │     └── Updates MINDFRAME.md                                    │
 │                                                                  │
-│  5. OUTPUT SUMMARY + AUDITOR HANDOFF                            │
+│  5. SOP OPPORTUNITY SCAN                                        │
+│     └── Review chat for repeating patterns/issues              │
+│     └── Identify procedures that could become SOPs             │
+│     └── Log opportunities to sop-opportunities.md              │
+│                                                                  │
+│  6. OUTPUT SUMMARY + AUDITOR HANDOFF                            │
 │     └── Show checkpoint confirmation to user                   │
+│     └── Include any SOP suggestions for review                 │
 │     └── Create handoff prompt for Auditor to review & commit   │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
@@ -103,6 +109,47 @@ Instead of committing directly, agents stage files and create a review request:
 ```
 
 Save to: `output/controller-agents/auditor/inbox/REVIEW-[date]-[agent].txt`
+
+---
+
+### Step 5: SOP Opportunity Scan
+
+During every checkpoint, agents MUST review the current session for patterns that could become SOPs:
+
+**Questions to Ask:**
+
+1. Did I encounter a problem that required a workaround?
+2. Did I have to look something up that should be documented?
+3. Did I repeat a process that could be standardized?
+4. Did the user request something that other users might want?
+5. Was there confusion that a clear procedure could prevent?
+
+**If YES to any, create an SOP Opportunity:**
+
+```markdown
+### SOP Opportunity Identified
+
+**Pattern**: [What happened]
+**Count**: [How many times - 1 if first occurrence]
+**Potential SOP**: [Suggested name]
+**Description**: [What the SOP would cover]
+**Priority**: [P1-P4 based on impact/frequency]
+```
+
+**Log to**: `output/media-pipeline/quality-agent/workspace/sop-opportunities.md`
+
+**Escalation Threshold**: When count reaches 3+, create formal SOP proposal.
+
+**Include in Checkpoint Output:**
+
+```markdown
+### SOP Opportunities This Session:
+| Pattern | Count | Suggested SOP | Priority |
+|---------|-------|---------------|----------|
+| [pattern] | [n] | [name] | P[1-4] |
+```
+
+If no opportunities identified, state: "No SOP opportunities identified this session."
 
 ---
 

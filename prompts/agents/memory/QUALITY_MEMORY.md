@@ -22,7 +22,7 @@ The Quality Agent is the third and final agent in the Media Generation Pipeline.
 ### Key Files
 - SOP: `prompts/agents/roles/media-pipeline/QUALITY_AGENT.md`
 - Prompt Guide: `output/media-pipeline/shared/PHOTOREALISTIC_PROMPT_GUIDE.md`
-- Output: `output/media-pipeline/quality-agent/`
+- Output: `output/agents/quality/`
 - Approved: `output/media-pipeline/shared/approved/[project]/`
 
 ---

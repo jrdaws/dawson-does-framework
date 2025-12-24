@@ -20,7 +20,7 @@ The Auditor Agent is the first agent in the continuous improvement cycle. It rev
 
 ### Key Files
 - SOP: `prompts/agents/roles/controllers/AUDITOR.md`
-- Output: `output/controller-agents/auditor/`
+- Output: `output/agents/auditor/`
 - Reports: `output/shared/reports/audit-*.txt`
 
 ---
@@ -259,7 +259,7 @@ I am the authority on correct sequencing. When reviewing work:
 
 ### Key File Locations
 - Memory: `prompts/agents/memory/AUDITOR_MEMORY.md`
-- Inbox: `output/controller-agents/auditor/inbox/`
+- Inbox: `output/agents/auditor/inbox/`
 - Role SOP: `prompts/agents/roles/controllers/AUDITOR.md`
 
 ---

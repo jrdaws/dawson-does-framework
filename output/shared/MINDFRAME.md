@@ -89,8 +89,14 @@ cd /Users/joseph.dawson/Documents/dawson-does-framework && cat docs/automation/A
 **Steps:**
 1. **Pre-Check**: Review recent commits for governance changes
 2. **Stage**: `git add -A` (do NOT commit directly)
-3. **Handoff**: Create review request for Auditor Agent
-4. **Auditor**: Reviews and commits when ready
+3. **SOP Scan**: Identify patterns that could become SOPs
+4. **Handoff**: Create review request for Auditor Agent
+5. **Auditor**: Reviews and commits when ready
+
+**SOP Scan Questions:**
+- Did I encounter a workaround?
+- Did I repeat a process?
+- Was there confusion a procedure could prevent?
 
 **Full SOP**: `docs/sops/CHECKPOINT_SOP.md`
 

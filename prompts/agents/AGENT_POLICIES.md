@@ -77,9 +77,9 @@ Each agent has a specific domain of responsibility. Agents must:
 
 | Role | Domain | Key Files |
 |------|--------|-----------|
-| **Research Agent** | Asset requirements, briefs | `output/media-pipeline/research-agent/` |
-| **Media Agent** | Image/graphic generation | `output/media-pipeline/media-agent/` |
-| **Quality Agent** | Asset review, approval, **SOP guardian** | `output/media-pipeline/quality-agent/` |
+| **Research Agent** | Asset requirements, briefs | `output/agents/research/` |
+| **Media Agent** | Image/graphic generation | `output/agents/media/` |
+| **Quality Agent** | Asset review, approval, **SOP guardian** | `output/agents/quality/` |
 
 See `output/media-pipeline/MEDIA_PIPELINE.md` for full pipeline documentation.
 
@@ -95,7 +95,7 @@ See `output/media-pipeline/MEDIA_PIPELINE.md` for full pipeline documentation.
 
 **All three agents must:**
 - Review their memory for SOP opportunities
-- Log patterns to `output/media-pipeline/quality-agent/workspace/sop-opportunities.md`
+- Log patterns to `output/agents/quality/workspace/sop-opportunities.md`
 - Update existing SOPs when inaccuracies found
 - Notify Documentation Agent for major SOP creation
 
@@ -282,9 +282,9 @@ distorted features, extra limbs, malformed hands, text, watermark, signature
 
 | Role | Domain | Key Files |
 |------|--------|-----------|
-| **Auditor Agent** | Framework review, health check | `output/controller-agents/auditor/` |
-| **Strategist Agent** | Task planning, prioritization | `output/controller-agents/strategist/` |
-| **Curator Agent** | Prompt refinement, distribution | `output/controller-agents/curator/` |
+| **Auditor Agent** | Framework review, health check | `output/agents/auditor/` |
+| **Strategist Agent** | Task planning, prioritization | `output/agents/strategist/` |
+| **Curator Agent** | Prompt refinement, distribution | `output/agents/curator/` |
 
 See `output/CONTINUOUS_IMPROVEMENT_SYSTEM.md` for continuous improvement documentation.
 
@@ -486,10 +486,10 @@ git status && \
 If your task creates files in specific locations, probe that location:
 
 ```bash
-# Example: Need to create files in output/website-agent/inbox/
-mkdir -p output/website-agent/inbox && \
-  touch output/website-agent/inbox/.probe && \
-  rm output/website-agent/inbox/.probe && \
+# Example: Need to create files in output/agents/website/inbox/
+mkdir -p output/agents/website/inbox && \
+  touch output/agents/website/inbox/.probe && \
+  rm output/agents/website/inbox/.probe && \
   echo "✅ Inbox write permission confirmed"
 ```
 
@@ -546,8 +546,14 @@ If you hit a permission error mid-session, you failed to predict your needs. Not
    
    **Auditor Review:**
    - Stage files with `git add -A` (do NOT commit directly)
-   - Create review request in `output/controller-agents/auditor/inbox/`
+   - Create review request in `output/agents/auditor/inbox/`
    - Auditor will review and commit when ready
+   
+   **SOP Opportunity Scan:**
+   - Review session for repeating patterns/workarounds
+   - Log opportunities to `sop-opportunities.md`
+   - Include in checkpoint output
+   - Escalate to formal SOP proposal when count ≥ 3
    
    **Format:**
    ```markdown
@@ -730,7 +736,7 @@ Before ending a session, you must:
    
    Next Agent: Website Agent
    ```
-   Implement the 24 approved sidebar icons from output/media-pipeline/shared/approved/configurator-sidebar/ into the configurator. Reference output/website-agent/inbox/media-configurator-sidebar/IMPLEMENT.txt for integration details.
+   Implement the 24 approved sidebar icons from output/media-pipeline/shared/approved/configurator-sidebar/ into the configurator. Reference output/agents/website/inbox/media-configurator-sidebar/IMPLEMENT.txt for integration details.
    ```
    
    ---
@@ -739,7 +745,7 @@ Before ending a session, you must:
    
    Next Agent: Quality Agent
    ```
-   Review the 5 newly generated hero images in output/media-pipeline/media-agent/outbox/. Apply photorealism checklist from PHOTOREALISTIC_PROMPT_GUIDE.md. Approve or provide feedback.
+   Review the 5 newly generated hero images in output/agents/media/outbox/. Apply photorealism checklist from PHOTOREALISTIC_PROMPT_GUIDE.md. Approve or provide feedback.
    ```
    
    ---

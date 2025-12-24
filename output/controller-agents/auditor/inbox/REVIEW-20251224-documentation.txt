@@ -1,33 +1,31 @@
 ## Auditor Review Request
 
 **Agent**: Documentation Agent
-**Date**: 2025-12-24 11:15 UTC
-**Files Staged**: 1
+**Date**: 2025-12-24 11:20 UTC
+**Files Staged**: 3
 
 ### Staged Files:
-- `output/shared/MINDFRAME.md` - Updated checkpoint protocol steps
+- `docs/sops/CHECKPOINT_SOP.md` - Added SOP Opportunity Scan step
+- `prompts/agents/AGENT_POLICIES.md` - Added SOP scan to checkpoint section
+- `output/shared/MINDFRAME.md` - Updated checkpoint steps with SOP scan
 
 ### Proposed Commit Message:
-`docs(mindframe): update checkpoint protocol with auditor review flow`
+`docs(checkpoint): add SOP opportunity scan to checkpoint protocol`
 
 ### Summary:
-Updated the MINDFRAME.md checkpoint section to reflect the new process:
-- Added "cp" trigger shorthand
-- Changed from direct commit to Auditor review flow
-- Added pre-check and handoff steps
+Enhanced the checkpoint protocol to include automatic SOP opportunity identification:
+- Added Step 5: SOP Opportunity Scan
+- Agents must review session for patterns that could become SOPs
+- Log opportunities to sop-opportunities.md
+- Escalate to formal SOP proposal when count ≥ 3
+- Include SOP opportunities table in checkpoint output
 
-### Changes Made:
-```markdown
-## 📦 Checkpoint Protocol
-
-**Trigger**: `checkpoint` or `cp`
-
-**Steps:**
-1. **Pre-Check**: Review recent commits for governance changes
-2. **Stage**: `git add -A` (do NOT commit directly)
-3. **Handoff**: Create review request for Auditor Agent
-4. **Auditor**: Reviews and commits when ready
-```
+### New Checkpoint Steps:
+1. Pre-Check: Review governance changes
+2. Stage: `git add -A` (no direct commit)
+3. SOP Scan: Identify patterns for SOPs
+4. Handoff: Create Auditor review request
+5. Auditor: Review and commit
 
 ### Ready for commit: ✅ Yes
 
@@ -36,6 +34,6 @@ Updated the MINDFRAME.md checkpoint section to reflect the new process:
 ## Next Agent: Auditor Agent
 ```
 Confirm you are the Auditor Agent.
-cd /Users/joseph.dawson/Documents/dawson-does-framework && git status && cat output/controller-agents/auditor/inbox/REVIEW-20251224-documentation.txt
+cd /Users/joseph.dawson/Documents/dawson-does-framework && git status && git diff --stat HEAD
 ```
 

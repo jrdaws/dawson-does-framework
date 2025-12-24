@@ -220,7 +220,7 @@
 
 **Handoff Notes**
 - AI Model Selection SOP ready for Auditor sign-off
-- Task created: `output/controller-agents/auditor/inbox/TASK-signoff-ai-model-sop.txt`
+- Task created: `output/agents/auditor/inbox/TASK-signoff-ai-model-sop.txt`
 - 5 SOPs now active (Bug Triage, Doc Sync, Deployment, SOP Proposal, AI Model)
 - SOP Proposal Process established for future proposals
 
