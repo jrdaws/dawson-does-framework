@@ -1,8 +1,8 @@
 # Agent Policies
 
-> **Version**: 2.7
+> **Version**: 2.8
 > **Effective Date**: 2025-12-22
-> **Latest Update**: Made Permission Request BLOCKING + Added Reply Rules to MINDFRAME
+> **Latest Update**: Added mandatory Checkpoint Protocol for progress offloading
 > **Purpose**: Define operational policies and protocols for AI agents working on dawson-does-framework
 
 ---
@@ -494,7 +494,34 @@ If you hit a permission error mid-session, you failed to predict your needs. Not
    - Fix any failing tests before moving on
    - Add tests for new functionality
 
-4. **Document Changes**
+4. **Checkpoint Protocol (MANDATORY)**
+   
+   ⛔ **AGENTS MUST CHECKPOINT EVERY 15-20 MINUTES OR AFTER SIGNIFICANT WORK**
+   
+   **Triggers:**
+   - After completing a significant task
+   - After creating 3+ files
+   - Every 15-20 minutes of active work
+   
+   **Format:**
+   ```markdown
+   ## 📦 Checkpoint [HH:MM]
+   
+   ### Offloaded:
+   - ✅ [file/change]
+   
+   ### Committed:
+   `[hash] [message]`
+   
+   ### In Progress:
+   - [remaining work]
+   
+   ---
+   ```
+   
+   **Full SOP**: See `docs/sops/CHECKPOINT_SOP.md`
+
+5. **Document Changes**
    - Update relevant docs when behavior changes
    - Add comments for non-obvious code
    - Update FRAMEWORK_MAP.md if structure changes
@@ -1007,6 +1034,12 @@ test(integration): add E2E tests for configurator flow
 
 ## Version History
 
+### Version 2.8 (2025-12-24)
+- Added **Checkpoint Protocol** - mandatory progress offloading every 15-20 min
+- Created `docs/sops/CHECKPOINT_SOP.md` with full protocol
+- Added checkpoint to MINDFRAME.md Reply Rules section
+- Ensures work is saved incrementally, not just at session end
+
 ### Version 2.7 (2025-12-23)
 - Made **Permission Request BLOCKING** - must request upfront in first response
 - Added **Reply Rules section to MINDFRAME.md** for quick reference
@@ -1132,6 +1165,7 @@ The following SOPs define mandatory processes that ALL agents must follow:
 | **Media Naming** | `docs/sops/MEDIA_NAMING_SOP.md` | Asset naming conventions |
 | **SSR Compatibility** | `docs/sops/SSR_COMPATIBILITY_SOP.md` | Client-only component patterns |
 | **SEO Generation** | `docs/sops/SEO_GENERATION_SOP.md` | Multi-agent SEO pipeline |
+| **Session Checkpoint** | `docs/sops/CHECKPOINT_SOP.md` | Periodic progress offloading |
 
 ### SOP Compliance
 
