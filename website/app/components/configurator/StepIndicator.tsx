@@ -20,24 +20,24 @@ const PHASES: PhaseDef[] = [
   {
     name: "Configure",
     steps: [
-      { number: 1, label: "Template" },
-      { number: 2, label: "Inspiration" },
-      { number: 3, label: "Project" },
-      { number: 4, label: "Integrations" },
+  { number: 1, label: "Template" },
+  { number: 2, label: "Inspiration" },
+  { number: 3, label: "Project" },
+  { number: 4, label: "Integrations" },
     ],
   },
   {
     name: "Customize",
     steps: [
-      { number: 5, label: "Environment" },
-      { number: 6, label: "Preview" },
+  { number: 5, label: "Environment" },
+  { number: 6, label: "Preview" },
     ],
   },
   {
     name: "Finalize",
     steps: [
-      { number: 7, label: "Context" },
-      { number: 8, label: "Export" },
+  { number: 7, label: "Context" },
+  { number: 8, label: "Export" },
     ],
   },
 ];
@@ -264,7 +264,7 @@ export function StepIndicator({
             </span>
             <span className="text-brand-primary font-medium">
               {ALL_STEPS[currentStep - 1].label}
-            </span>
+        </span>
           </div>
           <div className="text-xs text-zinc-500 mt-2">
             Step {currentStep} of {ALL_STEPS.length}

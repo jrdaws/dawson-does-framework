@@ -122,12 +122,12 @@ export default function Home() {
                 From idea to production
                 <br />
                 <span className="gradient-text">in minutes, not days</span>
-              </h1>
+          </h1>
 
               <p className="text-xl text-zinc-400 mb-10 max-w-xl mx-auto lg:mx-0">
-                A CLI scaffolding system with plugins, templates, and provider integrations.
+            A CLI scaffolding system with plugins, templates, and provider integrations.
                 Ship faster. Stay secure. Scale confidently.
-              </p>
+          </p>
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
@@ -188,8 +188,8 @@ export default function Home() {
                     <span className="text-zinc-200">{terminalText}</span>
                     {showCursor && (
                       <span className="inline-block w-2 h-5 bg-brand-primary animate-blink" />
-                    )}
-                  </div>
+              )}
+            </div>
                   {terminalText === command && (
                     <div className="animate-fade-in space-y-2">
                       <div className="text-zinc-500">Creating project from saas template...</div>
@@ -208,12 +208,12 @@ export default function Home() {
                       <div className="text-zinc-300 mt-4">
                         <span className="text-brand-success">✓</span> Project ready at{' '}
                         <span className="text-brand-primary">./my-app</span>
-                      </div>
+          </div>
                       <div className="text-zinc-500 mt-2">Run: cd my-app && npm install && npm run dev</div>
-                    </div>
+          </div>
                   )}
-                </div>
-              </div>
+            </div>
+            </div>
             </div>
           </div>
         </div>
@@ -228,10 +228,10 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Built for <span className="gradient-text">Speed, Trust & Scale</span>
-            </h2>
+          </h2>
             <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
-              Everything you need to ship production-ready applications, from templates to providers
-            </p>
+            Everything you need to ship production-ready applications, from templates to providers
+          </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -251,7 +251,7 @@ export default function Home() {
                 <h3 className="text-xl font-semibold mb-2 text-white">{feature.title}</h3>
                 <p className="text-zinc-400 mb-4">{feature.description}</p>
                 <code className="text-sm text-brand-primary font-mono">{feature.code}</code>
-              </div>
+            </div>
             ))}
           </div>
         </div>
@@ -283,39 +283,39 @@ export default function Home() {
           </div>
 
           {level === 'beginner' ? (
-            <div className="terminal-window">
-              <div className="terminal-header">
+              <div className="terminal-window">
+                <div className="terminal-header">
                 <div className="terminal-dot bg-red-500" />
                 <div className="terminal-dot bg-yellow-500" />
                 <div className="terminal-dot bg-green-500" />
                 <span className="ml-3 text-xs text-zinc-500 font-mono">Quick Start</span>
-              </div>
-              <div className="terminal-content">
+                </div>
+                <div className="terminal-content">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
-                    <div>
+                      <div>
                       <div className="text-zinc-200">npm install -g @jrdaws/framework</div>
                       <div className="text-zinc-500 text-xs mt-1">Install globally</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
-                    <div>
+                      <div>
                       <div className="text-zinc-200">framework export saas ./my-app</div>
                       <div className="text-zinc-500 text-xs mt-1">Export SaaS template with auth & billing</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
-                    <div>
+                      <div>
                       <div className="text-zinc-200">cd my-app && npm install</div>
                       <div className="text-zinc-500 text-xs mt-1">Install dependencies</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
-                    <div>
+                      <div>
                       <div className="text-zinc-200">npm run dev</div>
                       <div className="text-zinc-500 text-xs mt-1">Start development server</div>
                     </div>
@@ -331,22 +331,22 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="terminal-window">
-              <div className="terminal-header">
+              <div className="terminal-window">
+                <div className="terminal-header">
                 <div className="terminal-dot bg-red-500" />
                 <div className="terminal-dot bg-yellow-500" />
                 <div className="terminal-dot bg-green-500" />
                 <span className="ml-3 text-xs text-zinc-500 font-mono">Advanced Workflow</span>
-              </div>
-              <div className="terminal-content">
+                </div>
+                <div className="terminal-content">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
-                    <div>
+                      <div>
                       <div className="text-zinc-200">framework templates search saas</div>
                       <div className="text-zinc-500 text-xs mt-1">Search available templates</div>
                     </div>
-                  </div>
+                      </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
                     <div>
@@ -356,25 +356,25 @@ export default function Home() {
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
-                    <div>
+                      <div>
                       <div className="text-zinc-200">cd my-app && framework health</div>
                       <div className="text-zinc-500 text-xs mt-1">Run health checks</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
-                    <div>
+                      <div>
                       <div className="text-zinc-200">framework drift</div>
                       <div className="text-zinc-500 text-xs mt-1">Check for configuration drift</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
-                    <div>
+                      <div>
                       <div className="text-zinc-200">framework plugin add ./my-plugin.mjs</div>
                       <div className="text-zinc-500 text-xs mt-1">Add custom plugin</div>
                     </div>
-                  </div>
+                      </div>
                   <div className="border-l-2 border-brand-secondary pl-4 mt-6">
                     <div className="text-zinc-200">
                       <span className="text-brand-secondary">✓</span> Advanced features configured
@@ -396,10 +396,10 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               The <span className="gradient-text">Before & After</span>
-            </h2>
+          </h2>
             <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
-              Stop copy-pasting boilerplate. Start with battle-tested foundations.
-            </p>
+            Stop copy-pasting boilerplate. Start with battle-tested foundations.
+          </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -411,7 +411,7 @@ export default function Home() {
               </div>
               <div className="code-block h-80 overflow-auto">
                 <pre className="text-sm leading-relaxed text-zinc-500">
-                  {`// Hours of setup...
+{`// Hours of setup...
 mkdir my-app && cd my-app
 npm init -y
 npm install next react react-dom
@@ -440,7 +440,7 @@ mkdir src app components lib
               </div>
               <div className="code-block h-80 overflow-auto">
                 <pre className="text-sm leading-relaxed text-zinc-200">
-                  {`// 1 command, minutes of work
+{`// 1 command, minutes of work
 framework export saas ./my-app
 
 `}
@@ -496,8 +496,8 @@ cd my-app && npm run dev
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Built by Developers, <span className="gradient-text">for Developers</span>
-            </h2>
-          </div>
+          </h2>
+            </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((testimonial) => (
@@ -511,7 +511,7 @@ cd my-app && npm run dev
                     height={48}
                     className="avatar"
                   />
-                  <div>
+                <div>
                     <div className="font-semibold text-white">{testimonial.name}</div>
                     <div className="text-sm text-zinc-500">{testimonial.role}</div>
                   </div>
@@ -551,8 +551,8 @@ cd my-app && npm run dev
             </a>
             <a
               href="https://www.npmjs.com/package/@jrdaws/framework"
-              target="_blank"
-              rel="noopener noreferrer"
+               target="_blank"
+               rel="noopener noreferrer"
               className="btn-secondary text-lg"
             >
               View on npm
