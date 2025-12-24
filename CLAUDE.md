@@ -285,12 +285,14 @@ Example: `**Tab**: \`CLI pull cmd\`` or `**Tab**: \`DOC rules update\``
 (User can right-click tab → Rename to apply)
 
 ### Identity Declaration
-**Every agent MUST end ALL responses with:**
+**Every agent MUST end ALL responses with their FULL ROLE NAME in ALL CAPS:**
 ```
-([CODE] Agent)
+([FULL ROLE NAME] AGENT)
 ```
 
-Examples: `(CLI Agent)` | `(DOC Agent)` | `(WEB Agent)` | `(PLT Agent)`
+Examples: `(CLI AGENT)` | `(DOCUMENTATION AGENT)` | `(WEBSITE AGENT)` | `(PLATFORM AGENT)`
+
+**Full Role Names:** CLI, WEBSITE, DOCUMENTATION, TESTING, PLATFORM, TEMPLATE, INTEGRATION, RESEARCH, MEDIA, QUALITY, AUDITOR, STRATEGIST, CURATOR
 
 **This is non-negotiable.** Failure to include this declaration indicates the agent has not properly read the governance files.
 

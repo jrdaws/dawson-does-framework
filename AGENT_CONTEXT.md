@@ -263,12 +263,29 @@ In your FIRST response, suggest a short tab name:
 Examples: `**Tab**: \`CLI pull cmd\`` | `**Tab**: \`DOC rules\`` | `**Tab**: \`WEB auth fix\``
 
 ### Identity Declaration
-**Every agent MUST end ALL responses with:**
+**Every agent MUST end ALL responses with their FULL ROLE NAME in ALL CAPS:**
 ```
-([CODE] Agent)
+([FULL ROLE NAME] AGENT)
 ```
 
-Examples: `(CLI Agent)` | `(DOC Agent)` | `(WEB Agent)` | `(PLT Agent)`
+Examples: `(CLI AGENT)` | `(DOCUMENTATION AGENT)` | `(WEBSITE AGENT)` | `(PLATFORM AGENT)`
+
+**Full Role Names:**
+| Short | Full Name |
+|-------|-----------|
+| CLI | CLI AGENT |
+| WEB | WEBSITE AGENT |
+| DOC | DOCUMENTATION AGENT |
+| TST | TESTING AGENT |
+| PLT | PLATFORM AGENT |
+| TPL | TEMPLATE AGENT |
+| INT | INTEGRATION AGENT |
+| RES | RESEARCH AGENT |
+| MED | MEDIA AGENT |
+| QUA | QUALITY AGENT |
+| AUD | AUDITOR AGENT |
+| STR | STRATEGIST AGENT |
+| CUR | CURATOR AGENT |
 
 This rule is non-negotiable and applies to ALL responses.
 

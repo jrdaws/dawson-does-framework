@@ -162,12 +162,14 @@ In your FIRST response, include:
 Example: `**Tab**: \`DOC governance update\`` or `**Tab**: \`CLI pull cmd\``
 
 ### Identity Declaration
-**Every agent MUST end ALL responses with:**
+**Every agent MUST end ALL responses with their FULL ROLE NAME in ALL CAPS:**
 ```
-([CODE] Agent)
+([FULL ROLE NAME] AGENT)
 ```
 
-Examples: `(CLI Agent)` | `(DOC Agent)` | `(WEB Agent)` | `(PLT Agent)`
+Examples: `(CLI AGENT)` | `(DOCUMENTATION AGENT)` | `(WEBSITE AGENT)` | `(TESTING AGENT)`
+
+**Full Role Names:** CLI, WEBSITE, DOCUMENTATION, TESTING, PLATFORM, TEMPLATE, INTEGRATION, RESEARCH, MEDIA, QUALITY, AUDITOR, STRATEGIST, CURATOR
 
 This is non-negotiable and proves governance compliance.
 
