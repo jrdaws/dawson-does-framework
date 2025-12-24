@@ -1,8 +1,8 @@
 # Agent Policies
 
-> **Version**: 2.8
+> **Version**: 2.9
 > **Effective Date**: 2025-12-22
-> **Latest Update**: Added mandatory Checkpoint Protocol for progress offloading
+> **Latest Update**: Enhanced Permission Probing Protocol - probe specific paths upfront
 > **Purpose**: Define operational policies and protocols for AI agents working on dawson-does-framework
 
 ---
@@ -449,32 +449,66 @@ Each role has typical permission requirements. Agents should inform users upfron
 
 ⛔ **AGENTS MUST REQUEST ALL NEEDED PERMISSIONS IN THEIR FIRST RESPONSE**
 
-This is not optional. Agents must PREDICT what permissions they'll need for their entire session and request them upfront.
+This is not optional. Agents must PREDICT what permissions they'll need and PROBE for them upfront.
 
-**Step 1: Identify Required Permissions**
+**Philosophy**: Fire all permission triggers at the START with probe operations, not during work.
 
-Based on your role and task, determine what you need:
-- `network`: API calls, package installs, deployments
-- `git_write`: Commits, branch operations
-- `all`: Full filesystem access, deployment, external tools
+#### Step 1: Analyze Task Scope
 
-**Step 2: Request in First Response**
+Before starting work, identify ALL operations that require permissions:
 
-Run a test command that requires ALL your needed permissions:
+| Operation Type | Permission Needed | Probe Command |
+|----------------|-------------------|---------------|
+| Git commits | `git_write` | `git status` |
+| Network/API calls | `network` | `curl -s https://httpbin.org/get > /dev/null` |
+| Create files outside workspace | `all` | `touch /tmp/probe.txt && rm /tmp/probe.txt` |
+| Run npm install | `network` | Request network permission |
+| Access .env files | `all` | `cat .env.local 2>/dev/null` |
+| File creation in specific paths | sandbox | Create dummy file in target location |
+
+#### Step 2: Fire Permission Probes
+
+Run ALL needed permission triggers in ONE command block:
 
 ```bash
-# Standard (network + git_write):
+# Standard probe (network + git_write):
 git status && curl -s https://httpbin.org/get > /dev/null 2>&1 && echo "✅ Permissions ready"
 
-# Full access (Platform Agent, deployment):
-git status && curl -s https://httpbin.org/get > /dev/null 2>&1 && ls -la && echo "✅ Full permissions ready"
+# Extended probe (Platform/Integration agents):
+git status && \
+  curl -s https://httpbin.org/get > /dev/null 2>&1 && \
+  touch /tmp/permission-probe.txt && rm /tmp/permission-probe.txt && \
+  echo "✅ Full permissions ready"
 ```
 
-**Step 3: User Approves Once**
+#### Step 3: Probe Specific Paths (if needed)
+
+If your task creates files in specific locations, probe that location:
+
+```bash
+# Example: Need to create files in output/website-agent/inbox/
+mkdir -p output/website-agent/inbox && \
+  touch output/website-agent/inbox/.probe && \
+  rm output/website-agent/inbox/.probe && \
+  echo "✅ Inbox write permission confirmed"
+```
+
+#### Permission Prediction Matrix
+
+| Task Type | Likely Permissions | Probe Strategy |
+|-----------|-------------------|----------------|
+| Code generation | `git_write` | `git add --dry-run .` |
+| API testing | `network` | `curl -s https://example.com` |
+| Deployment | `network`, `git_write`, `all` | Full probe |
+| File export | `all` | Touch target directory |
+| npm operations | `network` | Request network |
+| Template creation | `all` | Create temp file in target |
+
+#### Step 4: User Approves Once
 
 After approval, the session continues WITHOUT further permission prompts.
 
-**Failure to Request Upfront = Governance Violation**
+**Failure to Probe Upfront = Governance Violation**
 
 If you hit a permission error mid-session, you failed to predict your needs. Note this in your session end and improve next time.
 
@@ -1033,6 +1067,12 @@ test(integration): add E2E tests for configurator flow
 ---
 
 ## Version History
+
+### Version 2.9 (2025-12-24)
+- Enhanced **Permission Probing Protocol** - agents probe specific paths upfront
+- Fire ALL permission triggers at session start with dummy operations
+- Added permission prediction matrix for common task types
+- Probe target directories before creating files there
 
 ### Version 2.8 (2025-12-24)
 - Added **Checkpoint Protocol** - mandatory progress offloading every 15-20 min

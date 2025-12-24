@@ -10,12 +10,18 @@
 
 **ALL agents MUST follow these rules on EVERY response. No exceptions.**
 
-### 1. Permission Request (FIRST RESPONSE ONLY)
+### 1. Permission Probing (FIRST RESPONSE ONLY)
+**Predict ALL permissions needed, then PROBE for them upfront.**
+
 ```bash
-# Request ALL permissions upfront before ANY work
+# Standard probe (network + git_write):
 git status && curl -s https://httpbin.org/get > /dev/null 2>&1 && echo "✅ Permissions ready"
+
+# If creating files in specific locations, probe those too:
+mkdir -p output/[target]/inbox && touch output/[target]/inbox/.probe && rm output/[target]/inbox/.probe
 ```
-**Predict what you'll need:** network, git_write, all. Request them ONCE at session start.
+
+**Rule**: Fire ALL permission triggers at START with dummy operations, not during work.
 
 ### 2. Quick Actions Section (EVERY RESPONSE)
 ```
