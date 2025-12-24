@@ -170,6 +170,54 @@ Before finishing your entry, ask yourself:
 
 ---
 
+## Cumulative Sections (Persistent)
+
+In addition to session entries, every memory file should have these **persistent sections** that grow over time:
+
+### 🔧 Quick Reference
+
+```markdown
+## 🔧 Quick Reference
+
+### Useful Commands
+- `[command]`: [what it does]
+- `[command]`: [what it does]
+
+### Key File Locations
+- [file]: [purpose]
+- [file]: [purpose]
+```
+
+**Update when**: You discover a useful command or file location.
+
+### ❓ FAQ
+
+```markdown
+## ❓ FAQ
+
+### Q: [Question users ask]
+A: [Answer for future reference]
+
+### Q: [Another common question]
+A: [Answer]
+```
+
+**Update when**: You answer a question that might be asked again.
+
+### 📊 Session Metrics Table
+
+```markdown
+## 📊 Session Metrics
+
+| Session | Duration | Tasks | Errors | Outcome |
+|---------|----------|-------|--------|---------|
+| 2025-12-24 | 45min | 5 | 0 | Complete |
+```
+
+**Update when**: Every session (add a new row).
+
+---
+
 ## Conflict Prevention Rules
 
 1. **Never delete existing entries** - Only add new ones

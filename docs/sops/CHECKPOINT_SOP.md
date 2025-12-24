@@ -129,6 +129,73 @@ Before completing checkpoint, mentally run through:
 
 ---
 
+## Cumulative Memory Sections
+
+In addition to session entries, memory files should have these **persistent sections** that accumulate over time:
+
+### 🔧 Quick Reference Section
+
+Useful commands and file locations discovered during sessions:
+
+```markdown
+## 🔧 Quick Reference
+
+### Useful Commands
+- `./scripts/checkpoint.sh AUD` - Run checkpoint with memory enforcement
+- `./scripts/certify.sh AUD [AREA]` - Update MINDFRAME certification
+
+### Key File Locations
+- Memory: `prompts/agents/memory/AUDITOR_MEMORY.md`
+- Inbox: `output/controller-agents/auditor/inbox/`
+```
+
+**When to update**: Add new commands/locations when you discover them.
+
+### ❓ FAQ Section
+
+Answers to questions users ask repeatedly:
+
+```markdown
+## ❓ FAQ
+
+### Q: Where are chats logged?
+A: They're not. Only key insights go to memory files.
+
+### Q: How do I know what the last agent did?
+A: Check their memory file and MINDFRAME.md certifications.
+```
+
+**When to update**: Add when you answer a question that might be asked again.
+
+### 📊 Session Metrics Table
+
+Running tally of session performance:
+
+```markdown
+## 📊 Session Metrics
+
+| Session | Duration | Tasks | Errors | Outcome |
+|---------|----------|-------|--------|---------|
+| 2025-12-24 | 45min | 5 | 0 | Complete |
+| 2025-12-23 | 30min | 3 | 1 | Partial |
+```
+
+**When to update**: Add a row for each session.
+
+### Checkpoint Script Prompts
+
+The `./scripts/checkpoint.sh` script prompts for cumulative updates:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📚 CUMULATIVE SECTIONS (builds up over sessions)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   🔧 Useful command discovered? (or ENTER to skip): 
+   ❓ User question worth saving for FAQ? (or ENTER to skip): 
+```
+
+---
+
 ## Distillation Categories
 
 ### Category 1: Operational State (ALWAYS save)

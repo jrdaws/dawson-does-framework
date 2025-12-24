@@ -83,6 +83,21 @@ echo "🤝 CATEGORY 5: RELATIONSHIPS (Optional - handoffs/deps)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 read -p "   Agent handoff or dependency found? (or ENTER to skip): " RELATIONSHIP
 
+# Cumulative sections (accumulate over time)
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "📚 CUMULATIVE SECTIONS (builds up over sessions)"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# Quick Reference
+read -p "   🔧 Useful command discovered? (or ENTER to skip): " USEFUL_CMD
+
+# FAQ
+read -p "   ❓ User question worth saving for FAQ? (or ENTER to skip): " FAQ_Q
+if [ -n "$FAQ_Q" ]; then
+  read -p "      Answer: " FAQ_A
+fi
+
 # Generate memory entry
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -125,6 +140,34 @@ fi
 echo ""
 echo "$MEMORY_ENTRY"
 echo ""
+
+# Handle cumulative sections separately
+CUMULATIVE_UPDATES=""
+
+if [ -n "$USEFUL_CMD" ]; then
+  CUMULATIVE_UPDATES="$CUMULATIVE_UPDATES
+
+### 🔧 Quick Reference Update
+Add to Quick Reference section:
+- \`$USEFUL_CMD\`"
+fi
+
+if [ -n "$FAQ_Q" ]; then
+  CUMULATIVE_UPDATES="$CUMULATIVE_UPDATES
+
+### ❓ FAQ Update
+Add to FAQ section:
+- Q: $FAQ_Q
+- A: $FAQ_A"
+fi
+
+if [ -n "$CUMULATIVE_UPDATES" ]; then
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "📚 CUMULATIVE SECTION UPDATES (add manually to memory file)"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "$CUMULATIVE_UPDATES"
+  echo ""
+fi
 
 # Confirm and append to memory
 read -p "Append this to $MEMORY_FILE? (Y/n): " CONFIRM

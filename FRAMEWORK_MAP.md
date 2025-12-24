@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 2fe8dea 2025-12-24 feat(governance): enforce 5 distillation categories in checkpoint
 - 16aad33 2025-12-24 feat(automation): implement Agent Auto-Continuation System
 - 3e9ab4f 2025-12-24 refactor(website): remove terminal window chrome from configurator components
 - bc92c82 2025-12-24 feat(governance): add CHECKPOINT_SOP with mandatory memory updates
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - c151a93 2025-12-23 feat(website): add P0 configurator sidebar icons and integrate category icons
 - b8e6333 2025-12-23 docs(governance): use full role names in ALL CAPS for agent identity
 - 883fc22 2025-12-23 docs(policies): change auto-continue timer to 35 minutes
-- 7b36890 2025-12-23 docs(memory): update DOCS_MEMORY.md with Vercel SOP review session
 
 ## Agent Governance Structure
 
