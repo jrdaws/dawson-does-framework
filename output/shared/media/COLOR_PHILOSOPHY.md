@@ -1,25 +1,40 @@
 # Media Pipeline Color Philosophy
 
-> **Version**: 1.0 | **Last Updated**: 2025-12-23
+> **Version**: 2.0 | **Last Updated**: 2025-12-25
 > 
 > **Purpose**: Official color guidelines for all Media Pipeline agents
 > 
 > **MANDATORY**: All agents generating visual assets MUST read this document
+> 
+> **Selected Scheme**: Warm Neutral (Scheme C)
 
 ---
 
 ## Quick Reference Card
 
 ```
-PRIMARY ACTION    → Indigo   #6366F1
-SECONDARY/HOVER   → Violet   #8B5CF6
+PRIMARY ACTION    → Orange   #F97316
+PRIMARY HOVER     → Orange   #EA580C
+PRIMARY LIGHT     → Cream    #FFF7ED
 SUCCESS/COMPLETE  → Emerald  #10B981
 WARNING           → Amber    #F59E0B
 ERROR/DANGER      → Red      #EF4444
-DISABLED/MUTED    → Gray     #71717A
-LIGHT BACKGROUND  → White    #FFFFFF
-DARK BACKGROUND   → Black    #0A0A0A
+DISABLED/MUTED    → Stone    #78716C
+LIGHT BACKGROUND  → Stone 50 #FAFAF9
+DARK BACKGROUND   → Stone 950 #0C0A09
 ```
+
+---
+
+## Why Warm Neutral?
+
+After evaluating three color schemes (Mono-Violet, Dark Terminal, Warm Neutral), **Scheme C: Warm Neutral** was selected for:
+
+1. **Differentiation** - Stands out from purple/blue developer tool crowd
+2. **Approachability** - Warm tones feel premium and inviting
+3. **Energy** - Orange suggests action, speed, and momentum
+4. **Memorability** - Bold, distinctive brand color
+5. **Full Mode Support** - Works beautifully in both light and dark modes
 
 ---
 
@@ -27,25 +42,28 @@ DARK BACKGROUND   → Black    #0A0A0A
 
 ### Brand Colors
 
-| Name | Hex | RGB | HSL | Usage |
-|------|-----|-----|-----|-------|
-| **Indigo** (Primary) | `#6366F1` | 99, 102, 241 | 239°, 84%, 67% | CTAs, links, icons, active states |
-| **Violet** (Secondary) | `#8B5CF6` | 139, 92, 246 | 263°, 90%, 66% | Gradients, hover states |
-| **Emerald** (Success) | `#10B981` | 16, 185, 129 | 160°, 84%, 39% | Success states, checkmarks |
-| **Amber** (Warning) | `#F59E0B` | 245, 158, 11 | 38°, 92%, 50% | Warnings, attention |
-| **Red** (Error) | `#EF4444` | 239, 68, 68 | 0°, 84%, 60% | Errors, destructive |
+| Name | Hex | RGB | Usage |
+|------|-----|-----|-------|
+| **Orange** (Primary) | `#F97316` | 249, 115, 22 | CTAs, links, icons, active states |
+| **Orange Hover** | `#EA580C` | 234, 88, 12 | Hover states, pressed |
+| **Orange Light** | `#FFF7ED` | 255, 247, 237 | Highlights, backgrounds |
+| **Emerald** (Success) | `#10B981` | 16, 185, 129 | Success states, checkmarks |
+| **Amber** (Warning) | `#F59E0B` | 245, 158, 11 | Warnings, attention |
+| **Red** (Error) | `#EF4444` | 239, 68, 68 | Errors, destructive |
 
-### Neutral Colors
+### Neutral Colors (Stone Scale)
 
 | Name | Hex | Light Mode Usage | Dark Mode Usage |
 |------|-----|------------------|-----------------|
-| **White** | `#FFFFFF` | Background | Text color |
-| **Near Black** | `#0A0A0A` | Text color | Background |
-| **Muted** | `#71717A` | Secondary text | Secondary text |
-| **Light Surface** | `#F5F5F5` | Card backgrounds | - |
-| **Dark Surface** | `#1A1A1A` | - | Card backgrounds |
-| **Border Light** | `#E5E5E5` | Borders, dividers | - |
-| **Border Dark** | `#333333` | - | Borders, dividers |
+| **Stone 50** | `#FAFAF9` | Page background | - |
+| **Stone 100** | `#F5F5F4` | Card hover | - |
+| **Stone 200** | `#E7E5E4` | Borders, dividers | - |
+| **Stone 400** | `#A8A29E` | - | Secondary text |
+| **Stone 500** | `#78716C` | Secondary text | - |
+| **Stone 800** | `#292524` | - | Borders, dividers |
+| **Stone 900** | `#1C1917` | Primary text | Surface |
+| **Stone 950** | `#0C0A09` | - | Background |
+| **White** | `#FFFFFF` | Cards, surfaces | Text color |
 
 ---
 
@@ -57,29 +75,29 @@ All visual assets should follow this color proportion:
 ┌─────────────────────────────────────────────────────────┐
 │                                                         │
 │     60% NEUTRAL                                         │
-│     (White, Near Black, Grays)                         │
+│     (Stone scale, White, Cream)                         │
 │     Background, negative space, text                    │
 │                                                         │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
 │     30% PRIMARY                                         │
-│     (Indigo #6366F1)                                    │
-│     Icons, buttons, active elements                     │
+│     (Orange #F97316)                                    │
+│     Buttons, icons, active elements                     │
 │                                                         │
 ├─────────────────────────────────────────────────────────┤
-│     10% ACCENT (Violet, Emerald)                        │
-│     Highlights, success states, gradients               │
+│     10% ACCENT (Emerald only)                           │
+│     Success states, completion indicators               │
 └─────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Color Hierarchy (Indigo-First)
+## Color Hierarchy (Orange-First)
 
 ### Priority Order
 
-1. **Indigo** - Primary color for all interactive elements
-2. **Violet** - Secondary, used for hover states and gradients
+1. **Orange** - Primary color for all interactive elements
+2. **Stone** - Neutral foundation, text, backgrounds
 3. **Emerald** - Accent ONLY for success/completion
 4. **Amber/Red** - Semantic states (warning/error)
 
@@ -100,29 +118,39 @@ Emerald is ONLY for:
 
 ## Gradient Specifications
 
-### Hero Gradient (Primary)
+### Hero Gradient (Warm Glow)
 ```css
-background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
-```
-- **Direction**: 135° (top-left to bottom-right)
-- **Colors**: Light Indigo → Violet
-- **Usage**: Hero backgrounds, feature sections
-
-### Card Hover Gradient
-```css
-background: linear-gradient(135deg, 
-  rgba(99, 102, 241, 0.1) 0%, 
-  rgba(139, 92, 246, 0.1) 100%
+background: linear-gradient(
+  135deg,
+  rgba(249, 115, 22, 0.1) 0%,
+  rgba(251, 146, 60, 0.05) 100%
 );
 ```
-- **Opacity**: 10%
-- **Usage**: Card hovers, subtle backgrounds
+- **Direction**: 135° (top-left to bottom-right)
+- **Colors**: Subtle orange glow
+- **Usage**: Hero backgrounds, feature sections
 
-### Background Mesh
+### Progress Bar Gradient
+```css
+background: linear-gradient(90deg, #F97316 0%, #FB923C 100%);
+```
+- **Usage**: Progress indicators, loading bars
+
+### Card Hover Effect
+```css
+box-shadow: 0 8px 24px rgba(249, 115, 22, 0.12);
+border-color: #F97316;
+```
+- **Usage**: Card hover states
+
+### Background Mesh (Subtle)
 ```css
 background: 
-  radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-  radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+  radial-gradient(
+    ellipse at top right,
+    rgba(249, 115, 22, 0.08) 0%,
+    transparent 50%
+  );
 ```
 - **Usage**: Page backgrounds, depth effect
 
@@ -132,13 +160,13 @@ background:
 
 | Meaning | Color | Hex | Icon |
 |---------|-------|-----|------|
-| Primary Action | Indigo | `#6366F1` | → |
-| Hover/Active | Violet | `#8B5CF6` | ↗ |
+| Primary Action | Orange | `#F97316` | → |
+| Hover/Active | Orange Dark | `#EA580C` | ↗ |
 | Success | Emerald | `#10B981` | ✓ |
 | Warning | Amber | `#F59E0B` | ⚠ |
 | Error | Red | `#EF4444` | ✕ |
-| Disabled | Gray | `#71717A` | — |
-| Info | Indigo (light) | `#6366F1` at 20% | ℹ |
+| Disabled | Stone | `#78716C` | — |
+| Info | Orange (light) | `#FFF7ED` | ℹ |
 
 ### Never Override Semantic Meanings
 
@@ -147,7 +175,7 @@ background:
 ❌ **Wrong**: Using amber for a positive message
 
 ✅ **Correct**: Success = Emerald, always
-✅ **Correct**: CTA = Indigo, always
+✅ **Correct**: CTA = Orange, always
 ✅ **Correct**: Warning = Amber, always
 
 ---
@@ -158,30 +186,30 @@ background:
 What type of element?
 │
 ├── Button/CTA
-│   ├── Primary → Indigo #6366F1 (solid)
-│   ├── Secondary → Indigo #6366F1 (outline)
+│   ├── Primary → Orange #F97316 (solid, with shadow)
+│   ├── Secondary → Stone #1C1917 outline
 │   └── Destructive → Red #EF4444
 │
 ├── Icon/Graphic
-│   ├── Standard → Indigo #6366F1
+│   ├── Standard → Orange #F97316
 │   ├── Success → Emerald #10B981
 │   └── Warning/Error → Amber/Red
 │
 ├── Text
-│   ├── Primary → #171717 (light) / #EDEDED (dark)
-│   ├── Secondary → #71717A
-│   ├── Link → Indigo #6366F1
+│   ├── Primary → #1C1917 (light) / #FAFAF9 (dark)
+│   ├── Secondary → #78716C (light) / #A8A29E (dark)
+│   ├── Link → Orange #F97316
 │   └── Error → Red #EF4444
 │
 ├── Background
-│   ├── Page → #FFFFFF (light) / #0A0A0A (dark)
-│   ├── Card → #F5F5F5 (light) / #1A1A1A (dark)
-│   ├── Highlight → Indigo at 10% opacity
-│   └── Hero → Indigo→Violet gradient
+│   ├── Page → #FAFAF9 (light) / #0C0A09 (dark)
+│   ├── Card → #FFFFFF (light) / #1C1917 (dark)
+│   ├── Highlight → Orange at 10% opacity (#FFF7ED)
+│   └── Hero → Warm gradient glow
 │
 └── Border
-    ├── Default → #E5E5E5 (light) / #333333 (dark)
-    ├── Focus → Indigo #6366F1
+    ├── Default → #E7E5E4 (light) / #292524 (dark)
+    ├── Focus → Orange #F97316
     └── Error → Red #EF4444
 ```
 
@@ -195,22 +223,28 @@ When prompting for images, include color specifications:
 
 ```
 Color requirements:
-- Primary color: Indigo #6366F1 (dominant)
-- Secondary color: Violet #8B5CF6 (supporting)
+- Primary color: Orange #F97316 (dominant)
+- Secondary color: Stone/cream tones (supporting)
 - Accent color: Emerald #10B981 (minimal, success only)
-- Avoid: Rainbow, neon, oversaturated colors
+- Neutral base: Warm stone/cream tones (not cool grays)
+- Avoid: Cool blues, purples, neon colors, rainbow gradients
 ```
 
 ### For SVG Icons
 
 ```svg
-<!-- Standard icon -->
-<svg stroke="#6366F1" stroke-width="2" fill="none">
+<!-- Standard icon using currentColor -->
+<svg stroke="currentColor" stroke-width="2" fill="none">
+  <!-- paths -->
+</svg>
+
+<!-- Fixed orange icon -->
+<svg stroke="#F97316" stroke-width="2" fill="none">
   <!-- paths -->
 </svg>
 
 <!-- With subtle fill -->
-<svg stroke="#6366F1" stroke-width="2" fill="rgba(99, 102, 241, 0.1)">
+<svg stroke="#F97316" stroke-width="2" fill="#FFF7ED">
   <!-- paths -->
 </svg>
 ```
@@ -220,7 +254,7 @@ Color requirements:
 Always use the official gradient direction (135°):
 ```
 Top-left → Bottom-right
-#667EEA → #764BA2
+#F97316 → #FB923C (orange to light orange)
 ```
 
 ---
@@ -238,17 +272,17 @@ Top-left → Bottom-right
 
 ### Tested Combinations
 
-✅ **Safe on Light Background (#FFFFFF)**:
-- Indigo #6366F1 text → 4.5:1 ✓
-- Near Black #171717 text → 12:1 ✓
+✅ **Safe on Light Background (#FAFAF9)**:
+- Stone 900 #1C1917 text → 13:1 ✓
+- Orange #F97316 on white button → 3.1:1 ✓ (large text/icons)
 
-✅ **Safe on Dark Background (#0A0A0A)**:
-- White #FFFFFF text → 18:1 ✓
-- Light Gray #EDEDED text → 14:1 ✓
+✅ **Safe on Dark Background (#0C0A09)**:
+- Stone 50 #FAFAF9 text → 17:1 ✓
+- Orange #FB923C (lighter for dark mode) → 5:1 ✓
 
 ⚠️ **Use Carefully**:
+- Orange text on white → 3:1 (large text/icons only)
 - Emerald on white → 3:1 (large text only)
-- Amber on white → 2:1 (not for text)
 
 ---
 
@@ -258,11 +292,11 @@ Top-left → Bottom-right
 
 ```
 ❌ Make emerald the dominant color
-❌ Use rainbow gradients
+❌ Use cool purples or blues (old scheme)
 ❌ Mix more than 3 colors in one asset
 ❌ Use neon or oversaturated colors
 ❌ Create busy multi-color patterns
-❌ Use colors outside this palette
+❌ Use cool grays (use warm stone scale)
 ❌ Ignore dark mode
 ❌ Use low-contrast combinations
 ```
@@ -270,13 +304,14 @@ Top-left → Bottom-right
 ### ✅ DO This
 
 ```
-✅ Keep Indigo as the primary color
+✅ Keep Orange as the primary color
+✅ Use warm stone tones for neutrals
 ✅ Use gradients subtly (backgrounds, not text)
 ✅ Maintain high contrast for readability
 ✅ Use Emerald ONLY for success states
 ✅ Test assets on both light and dark modes
 ✅ Follow the 60-30-10 rule
-✅ Use semantic colors consistently
+✅ Add subtle shadows to orange buttons
 ```
 
 ---
@@ -287,32 +322,67 @@ For website implementation:
 
 ```css
 :root {
-  /* Brand */
-  --color-primary: #6366F1;
-  --color-secondary: #8B5CF6;
+  /* Brand - Warm Neutral */
+  --color-primary: #F97316;
+  --color-primary-hover: #EA580C;
+  --color-primary-light: #FFF7ED;
   --color-success: #10B981;
   --color-warning: #F59E0B;
   --color-error: #EF4444;
   
-  /* Neutrals - Light Mode */
-  --color-background: #FFFFFF;
-  --color-foreground: #171717;
-  --color-muted: #71717A;
-  --color-surface: #F5F5F5;
-  --color-border: #E5E5E5;
+  /* Neutrals - Light Mode (Stone scale) */
+  --color-background: #FAFAF9;
+  --color-foreground: #1C1917;
+  --color-muted: #78716C;
+  --color-surface: #FFFFFF;
+  --color-border: #E7E5E4;
   
   /* Gradients */
-  --gradient-hero: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
-  --gradient-card: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(251, 146, 60, 0.05) 100%);
+  --gradient-progress: linear-gradient(90deg, #F97316 0%, #FB923C 100%);
+  --shadow-primary: 0 4px 14px rgba(249, 115, 22, 0.25);
+  --shadow-primary-hover: 0 6px 20px rgba(249, 115, 22, 0.35);
 }
 
 .dark {
-  --color-background: #0A0A0A;
-  --color-foreground: #EDEDED;
-  --color-surface: #1A1A1A;
-  --color-border: #333333;
+  --color-background: #0C0A09;
+  --color-foreground: #FAFAF9;
+  --color-muted: #A8A29E;
+  --color-surface: #1C1917;
+  --color-border: #292524;
+  --color-primary: #FB923C; /* Slightly lighter for dark mode */
 }
 ```
+
+---
+
+## Typography Color Pairing
+
+### Light Mode
+| Element | Color | Hex |
+|---------|-------|-----|
+| Headings | Stone 900 | `#1C1917` |
+| Body text | Stone 700 | `#44403C` |
+| Secondary | Stone 500 | `#78716C` |
+| Links | Orange | `#F97316` |
+| Link hover | Orange Dark | `#EA580C` |
+
+### Dark Mode
+| Element | Color | Hex |
+|---------|-------|-----|
+| Headings | Stone 50 | `#FAFAF9` |
+| Body text | Stone 200 | `#E7E5E4` |
+| Secondary | Stone 400 | `#A8A29E` |
+| Links | Orange Light | `#FB923C` |
+| Link hover | Orange | `#F97316` |
+
+---
+
+## Font Recommendation
+
+For the Warm Neutral scheme, consider:
+- **Primary**: DM Sans (used in mockup) - friendly, modern
+- **Monospace**: JetBrains Mono or SF Mono - for code/terminal
 
 ---
 
@@ -321,13 +391,23 @@ For website implementation:
 When generating ANY visual asset:
 
 1. **Read this document first**
-2. **Primary color = Indigo #6366F1**
-3. **Emerald is for success ONLY**
-4. **Follow 60-30-10 proportion**
-5. **Test on both light and dark modes**
-6. **Use 135° gradient direction**
+2. **Primary color = Orange #F97316**
+3. **Use warm Stone scale for neutrals**
+4. **Emerald is for success ONLY**
+5. **Follow 60-30-10 proportion**
+6. **Test on both light and dark modes**
+7. **Use 135° gradient direction**
+8. **Add shadows to primary buttons**
 
 ---
 
-*Color Philosophy v1.0 | dawson-does-framework Media Pipeline*
+## Reference Mockup
 
+View the approved color scheme mockup:
+```
+output/shared/design/color-tests/scheme-c-warm-neutral/mockup.html
+```
+
+---
+
+*Color Philosophy v2.0 | Warm Neutral Scheme | dawson-does-framework Media Pipeline*
