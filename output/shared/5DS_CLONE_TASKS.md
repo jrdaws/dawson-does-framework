@@ -40,10 +40,10 @@
 
 | Task | Agent | Status | Inbox File |
 |------|-------|--------|------------|
-| 4.1 AI Provider Picker | Website | 📋 Ready (1.3 done) | - |
-| 4.2 API Key Inputs | Website | ⏳ Waiting on 4.1 | - |
-| 4.3 Image Gen Providers | Website | ⏳ Waiting on 4.1 | - |
-| 4.4 Provider Comparison | Website | ⏳ Waiting on 4.1 | - |
+| 4.1 AI Provider Picker | Website | ✅ Complete | - |
+| 4.2 API Key Inputs | Website | ✅ Complete (in 4.1) | - |
+| 4.3 Image Gen Providers | Website | 📋 Ready | - |
+| 4.4 Provider Comparison | Website | ✅ Complete (in 4.1) | - |
 
 ## Phase 5: Final Review (Week 5)
 
