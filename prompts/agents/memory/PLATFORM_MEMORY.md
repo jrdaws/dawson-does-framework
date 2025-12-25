@@ -760,7 +760,9 @@ When deploying a Next.js app from a monorepo subdirectory on Vercel:
 **Test Results:**
 - ✅ Package builds successfully
 - ✅ Mock tests pass
-- ✅ 655/668 project tests pass (13 sandbox EPERM issues, unrelated)
+- ✅ 710/710 project tests pass (added 42 new tests for chunking)
+- ✅ New test file: `tests/ai-agent/code-generator-chunking.test.mjs`
+  - 18 tests covering: estimateFileCount, batch creation, grouping, context passing, merging
 
 **Performance Impact:**
 - Simple projects (≤5 files): No change (single API call)

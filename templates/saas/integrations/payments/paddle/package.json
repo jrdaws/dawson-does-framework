@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@paddle/paddle-node-sdk": "^1.4.0"
+  }
+}
+

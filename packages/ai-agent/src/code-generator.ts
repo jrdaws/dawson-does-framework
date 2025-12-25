@@ -17,15 +17,16 @@ export interface CodeOptions {
 }
 
 /** Batch size for chunked generation */
-const BATCH_SIZE = 5;
+export const BATCH_SIZE = 5;
 
 /** Token limit per batch */
-const BATCH_TOKEN_LIMIT = 4096;
+export const BATCH_TOKEN_LIMIT = 4096;
 
 /**
  * Estimate file count from architecture
+ * @internal Exported for testing
  */
-function estimateFileCount(architecture: ProjectArchitecture): number {
+export function estimateFileCount(architecture: ProjectArchitecture): number {
   const pages = architecture.pages.length;
   const newComponents = architecture.components.filter(c => c.template === 'create-new').length;
   const apiRoutes = architecture.routes.filter(r => r.type === 'api').length;
@@ -35,8 +36,9 @@ function estimateFileCount(architecture: ProjectArchitecture): number {
 /**
  * Group files into batches for generation
  * Groups related files together (e.g., page + its components)
+ * @internal Exported for testing
  */
-function createBatches(architecture: ProjectArchitecture): Array<{
+export function createBatches(architecture: ProjectArchitecture): Array<{
   description: string;
   pages: typeof architecture.pages;
   components: typeof architecture.components;
