@@ -200,7 +200,7 @@ export default function Home() {
             <div className="text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 mb-6">
                 <span className="w-2 h-2 rounded-full bg-brand-success animate-pulse" />
-                <span className="text-sm font-medium text-brand-primary">v0.3.0 · 192 tests passing</span>
+                <span className="text-sm font-medium text-brand-primary">v0.3.1 · 732 tests passing · Feature Assembler</span>
               </div>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
@@ -431,7 +431,7 @@ export default function Home() {
           ) : (
               <div className="terminal-window">
                 <div className="terminal-header-modern">
-                  <span className="terminal-title">Advanced Workflow</span>
+                  <span className="terminal-title">Advanced: Clone with Features</span>
                   <div className="flex gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-zinc-600" />
                     <div className="w-2 h-2 rounded-full bg-zinc-600" />
@@ -443,22 +443,22 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
                       <div>
-                      <div className="text-zinc-200">framework templates search saas</div>
-                      <div className="text-zinc-500 text-xs mt-1">Search available templates</div>
+                      <div className="text-zinc-200">framework features</div>
+                      <div className="text-zinc-500 text-xs mt-1">List available features (20+ options)</div>
                     </div>
                       </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
                     <div>
-                      <div className="text-zinc-200">framework export saas ./my-app --name "MyApp"</div>
-                      <div className="text-zinc-500 text-xs mt-1">Export with custom name</div>
+                      <div className="text-zinc-200">framework clone swift-eagle-1234 --features auth,billing,analytics</div>
+                      <div className="text-zinc-500 text-xs mt-1">Clone with additional features</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
                       <div>
-                      <div className="text-zinc-200">cd my-app && framework health</div>
-                      <div className="text-zinc-500 text-xs mt-1">Run health checks</div>
+                      <div className="text-zinc-200">cd swift-eagle-1234 && framework doctor</div>
+                      <div className="text-zinc-500 text-xs mt-1">Run project health checks</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -471,16 +471,16 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
                       <div>
-                      <div className="text-zinc-200">framework plugin add ./my-plugin.mjs</div>
-                      <div className="text-zinc-500 text-xs mt-1">Add custom plugin</div>
+                      <div className="text-zinc-200">framework clone swift-eagle-1234 --open</div>
+                      <div className="text-zinc-500 text-xs mt-1">Clone and open in Cursor automatically</div>
                     </div>
                       </div>
                   <div className="border-l-2 border-brand-secondary pl-4 mt-6">
                     <div className="text-zinc-200">
-                      <span className="text-brand-secondary">✓</span> Advanced features configured
+                      <span className="text-brand-secondary">✓</span> Feature-based project generation
                     </div>
                     <div className="text-zinc-500 text-xs mt-1">
-                      Plugins, health monitoring, and drift detection active
+                      Modular features assembled with dependency resolution
                     </div>
                   </div>
                 </div>
@@ -710,12 +710,12 @@ cd my-app && npm run dev
             {/* Trust Metrics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mb-16">
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">192</div>
+                <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">732</div>
                 <div className="text-sm text-zinc-500">Tests Passing</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">100%</div>
-                <div className="text-sm text-zinc-500">Open Source</div>
+                <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">20+</div>
+                <div className="text-sm text-zinc-500">Features</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">MIT</div>
@@ -806,12 +806,11 @@ cd my-app && npm run dev
           <div className="terminal-window max-w-2xl mx-auto mb-10">
             <div className="terminal-content text-left py-4">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-brand-primary">$</span>
-                <span className="text-zinc-200">npm install -g @jrdaws/framework</span>
+                <span className="text-zinc-500"># Configure at /configure, then:</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-brand-primary">$</span>
-                <span className="text-zinc-200">framework export saas ./my-app</span>
+                <span className="text-zinc-200">npx @jrdaws/framework clone your-project-token</span>
               </div>
             </div>
           </div>
@@ -955,8 +954,8 @@ cd my-app && npm run dev
               © 2024 @jrdaws/framework. Built with ❤️ by developers, for developers.
             </p>
             <div className="flex items-center gap-4 text-sm text-zinc-500">
-              <span className="font-mono text-brand-primary">v0.3.0</span>
-              <span className="text-brand-success">192 tests passing</span>
+              <span className="font-mono text-brand-primary">v0.3.1</span>
+              <span className="text-brand-success">732 tests passing</span>
               <span>MIT License</span>
             </div>
           </div>

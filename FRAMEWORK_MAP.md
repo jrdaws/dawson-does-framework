@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 83d87c3 2025-12-24 feat(supabase): implement Supabase OAuth integration for 5DS clone
 - 76ebbdf 2025-12-24 docs(memory): update CLI_MEMORY with feature-assembler enhancements
 - 64adc9b 2025-12-24 feat(cli): enhance clone command with feature-assembler integration
 - edc6d1f 2025-12-24 feat(database): add OAuth and connected services schema for 5DS clone
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 0cb6670 2025-12-24 feat(website): add marketing landing page at /platform (Task 6.1)
 - e081c72 2025-12-24 feat(website): add FileTreeView component (Task 5.2)
 - 8156acc 2025-12-24 docs(memory): update CLI_MEMORY with clone command session
-- 5e916a0 2025-12-24 feat(cli): add clone command for configurator projects
 
 ## Agent Governance Structure
 
