@@ -18,7 +18,9 @@
 
 | Priority | Task | Best Agent | Reason | Added By |
 |----------|------|------------|--------|----------|
-| P1 | - | - | - | - |
+| P1 | Implement Accordion Sidebar (Phase 1) | Website | UI alignment with reference design | RES |
+| P1 | Create Section Content Components | Website | Required for accordion sidebar | RES |
+| P1 | Update Project Cards (terminal style) | Website | UI alignment with reference design | RES |
 
 ---
 
@@ -65,6 +67,7 @@ Current recommended order based on dependencies:
 
 | Task | Agent | Date | Notes |
 |------|-------|------|-------|
+| **UI Design Specification** | RES | 2025-12-24 | Analyzed reference screenshots, created 5DS_UI_SPECIFICATION.md |
 | **Feature-to-Code Mapping System** | TPL | 2025-12-24 | 20 templates, feature-assembler.mjs, enables 5.4 |
 | **Vercel Production Deploy** | PLT | 2025-12-24 | website-iota-ten-11.vercel.app - needs env vars |
 | SaaS template content fix | TPL | 2025-12-24 | Added dashboard, pricing, settings pages; templates/README.md |
