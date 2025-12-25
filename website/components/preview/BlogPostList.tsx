@@ -18,11 +18,15 @@ interface BlogPostListProps {
 }
 
 export function BlogPostList({
-  posts,
+  posts = [],
   columns = 3,
   showExcerpt = true,
   title,
 }: BlogPostListProps) {
+  if (!posts || posts.length === 0) {
+    return null;
+  }
+
   return (
     <section className="w-full px-6 py-16 bg-[#0A0A0A]">
       <div className="max-w-7xl mx-auto">

@@ -18,11 +18,15 @@ interface PricingTableProps {
 }
 
 export function PricingTable({
-  plans,
+  plans = [],
   showToggle = true,
   highlightPlan,
   title = "Simple, Transparent Pricing",
 }: PricingTableProps) {
+  if (!plans || plans.length === 0) {
+    return null;
+  }
+
   return (
     <section className="w-full px-6 py-16 bg-[#0A0A0A]">
       <div className="max-w-6xl mx-auto">
@@ -75,7 +79,7 @@ export function PricingTable({
                 </div>
 
                 <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, j) => (
+                  {(plan.features || []).map((feature, j) => (
                     <li key={j} className="flex items-center gap-3 text-gray-300">
                       <svg className="w-5 h-5 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

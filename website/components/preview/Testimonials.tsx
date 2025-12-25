@@ -18,10 +18,14 @@ interface TestimonialsProps {
 }
 
 export function Testimonials({
-  testimonials,
+  testimonials = [],
   layout = "grid",
   title = "What Our Customers Say",
 }: TestimonialsProps) {
+  if (!testimonials || testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <section className="w-full px-6 py-16 bg-[#0A0A0A]">
       <div className="max-w-6xl mx-auto">

@@ -22,10 +22,10 @@ export function Footer({
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
                 <span className="text-white font-bold text-sm">
-                  {projectName.charAt(0).toUpperCase()}
+                  {projectName?.charAt(0)?.toUpperCase() || "P"}
                 </span>
               </div>
-              <span className="text-white font-semibold">{projectName}</span>
+              <span className="text-white font-semibold">{projectName || "Project"}</span>
             </div>
             {description && (
               <p className="text-gray-500 text-sm">{description}</p>
@@ -74,7 +74,7 @@ export function Footer({
         {/* Copyright */}
         <div className="mt-12 pt-8 border-t border-white/5">
           <p className="text-gray-600 text-sm text-center">
-            © {new Date().getFullYear()} {projectName}. All rights reserved.
+            © {new Date().getFullYear()} {projectName || "Project"}. All rights reserved.
           </p>
         </div>
       </div>

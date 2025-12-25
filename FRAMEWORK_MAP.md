@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 088f5b7 2025-12-24 fix(api): move user-projects routes to avoid dynamic route conflict
 - 7516e96 2025-12-24 feat(website): add value comparison and enhanced social proof sections
 - 1b03124 2025-12-24 docs: update 5DS task status - all Website Agent tasks complete
 - 1841221 2025-12-24 feat(website): add social proof elements to platform page
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 20ea1ce 2025-12-24 feat(website): add ProjectOverviewBox component (Task 2.3)
 - 9002bde 2025-12-24 docs(priorities): mark feature-to-code mapping as complete
 - be86b51 2025-12-24 feat(website): add Core Features UI and NPX Command Display components
-- 760a520 2025-12-24 feat(templates): add feature-to-code mapping system
 
 ## Agent Governance Structure
 

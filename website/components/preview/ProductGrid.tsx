@@ -18,12 +18,16 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({
-  products,
+  products = [],
   columns = 4,
   showPrices = true,
   showAddToCart = true,
   title,
 }: ProductGridProps) {
+  if (!products || products.length === 0) {
+    return null;
+  }
+
   return (
     <section className="w-full px-6 py-16 bg-[#0A0A0A]">
       <div className="max-w-7xl mx-auto">

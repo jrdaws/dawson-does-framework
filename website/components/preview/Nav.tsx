@@ -39,15 +39,15 @@ export function Nav({
       <div className="flex items-center gap-2">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0052FF] to-indigo-500 flex items-center justify-center">
           <span className="text-white font-bold text-sm">
-            {projectName.charAt(0).toUpperCase()}
+            {projectName?.charAt(0)?.toUpperCase() || "P"}
           </span>
         </div>
-        <span className="text-white font-semibold text-lg">{projectName}</span>
+        <span className="text-white font-semibold text-lg">{projectName || "Project"}</span>
       </div>
 
       {/* Links */}
       <div className="hidden md:flex items-center gap-8">
-        {links.map((link, i) => (
+        {(links || []).map((link, i) => (
           <span
             key={i}
             className="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm"

@@ -15,11 +15,15 @@ interface FAQProps {
 }
 
 export function FAQ({
-  items,
+  items = [],
   title = "Frequently Asked Questions",
   layout = "accordion",
 }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  if (!items || items.length === 0) {
+    return null;
+  }
 
   return (
     <section className="w-full px-6 py-16 bg-[#0A0A0A]">

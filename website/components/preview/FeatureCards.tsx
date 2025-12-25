@@ -58,11 +58,16 @@ function getIcon(iconName?: string) {
 }
 
 export function FeatureCards({
-  features,
+  features = [],
   columns = 3,
   variant = "cards",
   title,
 }: FeatureCardsProps) {
+  // Return null if no features
+  if (!features || features.length === 0) {
+    return null;
+  }
+
   return (
     <section className="w-full px-6 py-16 bg-[#0A0A0A]">
       <div className="max-w-7xl mx-auto">
