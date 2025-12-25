@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- fa88398 2025-12-25 docs(efficiency): add archive retention policy - no auto-delete, manual review for 90+ days
 - c163450 2025-12-25 docs(efficiency): create token optimization task - P0 cost reduction
 - 5ae4f3a 2025-12-25 docs(design): add color scheme research and 3 test mockup specifications
 - 3031d63 2025-12-25 docs(curator): update curator memory with cycle 16 session
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 23acf47 2025-12-24 feat(website): wire AccordionSidebar sections in configure page
 - 66fa15a 2025-12-24 feat(website): implement accordion sidebar with inline sections
 - 72e9d9f 2025-12-24 chore(media): move ui-media-polish task to done
-- 997af26 2025-12-24 feat(media): add custom accordion section and file tree icons
 
 ## Agent Governance Structure
 
