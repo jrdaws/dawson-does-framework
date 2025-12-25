@@ -33,7 +33,11 @@ git status && curl -s https://httpbin.org/get > /dev/null 2>&1 && echo "✅ Perm
 
 ### 3. Handoff Prompt (END OF EVERY RESPONSE - MANDATORY)
 
-⛔ **Every response MUST end with a handoff prompt. No exceptions.**
+**Generation Rule:**
+- Generate inline when beneficial for continuation
+- If not inline, offer "Generate Next Agent Prompt" as last Quick Actions option
+- Only omit entirely when no obvious next steps exist
+
 Fenced block starts IMMEDIATELY after the header line:
 ```
 Next Agent: [Role] Agent
