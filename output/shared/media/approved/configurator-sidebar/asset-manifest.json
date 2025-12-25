@@ -10,7 +10,7 @@
       "description": "Navigation bar icons",
       "viewBox": "24x24",
       "style": "2px stroke, rounded linecaps, Lucide-compatible",
-      "colorMode": "currentColor (use #6366F1 active, #71717A inactive)",
+      "colorMode": "currentColor (use #F97316 active, #78716C inactive)",
       "assets": [
         {"id": "home", "file": "nav/home.svg", "size": 652, "concept": "Dashboard/overview grid"},
         {"id": "template", "file": "nav/template.svg", "size": 467, "concept": "Stacked layers"},
@@ -29,13 +29,13 @@
         {"id": "complete", "file": "badges/complete.svg", "size": 261, "color": "#10B981", "concept": "Checkmark"},
         {"id": "warning", "file": "badges/warning.svg", "size": 280, "color": "#F59E0B", "concept": "Exclamation"},
         {"id": "error", "file": "badges/error.svg", "size": 315, "color": "#EF4444", "concept": "X mark"},
-        {"id": "count", "file": "badges/count.svg", "size": 306, "color": "#6366F1", "concept": "Number pill"}
+        {"id": "count", "file": "badges/count.svg", "size": 306, "color": "#F97316", "concept": "Number pill"}
       ]
     },
     "categories": {
       "description": "Integration category icons",
       "viewBox": "32x32",
-      "style": "2px stroke, #6366F1, Lucide-compatible",
+      "style": "2px stroke, #F97316, Lucide-compatible",
       "assets": [
         {"id": "auth", "file": "categories/auth.svg", "size": 388, "concept": "Shield with checkmark"},
         {"id": "payments", "file": "categories/payments.svg", "size": 455, "concept": "Credit card"},
@@ -52,7 +52,7 @@
       "viewBox": "24x24",
       "style": "Various fills per state",
       "assets": [
-        {"id": "active", "file": "steps/active.svg", "size": 289, "color": "#6366F1", "concept": "Pulsing dot"},
+        {"id": "active", "file": "steps/active.svg", "size": 289, "color": "#F97316", "concept": "Pulsing dot"},
         {"id": "complete", "file": "steps/complete.svg", "size": 263, "color": "#10B981", "concept": "Circle + check"},
         {"id": "pending", "file": "steps/pending.svg", "size": 193, "color": "#71717A@30%", "concept": "Empty circle"},
         {"id": "locked", "file": "steps/locked.svg", "size": 459, "color": "#71717A@50%", "concept": "Padlock circle"},
@@ -71,8 +71,8 @@
     "matchesLucideAesthetic": "pending review"
   },
   "colorPalette": {
-    "primary": "#6366F1",
-    "inactive": "#71717A",
+    "primary": "#F97316",
+    "inactive": "#78716C",
     "success": "#10B981",
     "warning": "#F59E0B",
     "error": "#EF4444"

@@ -6,7 +6,7 @@
   "generator": "stable-diffusion-xl-1024-v1-0",
   "iteration": 1,
   "brandColors": {
-    "primary": "#6366F1",
+    "primary": "#F97316",
     "secondary": "#8B5CF6",
     "success": "#10B981",
     "background": "#FFFFFF / #0A0A0A",

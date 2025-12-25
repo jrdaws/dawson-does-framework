@@ -7,7 +7,7 @@
   "iteration": 2,
   "generator": "stable-diffusion-xl-1024-v1-0",
   "brandColors": {
-    "primary": "#6366F1",
+    "primary": "#F97316",
     "accent": "#10B981",
     "background": "#FFFFFF"
   },
@@ -71,7 +71,7 @@
       "category": "empty-states",
       "iteration": 2,
       "changes": "Completely new concept - empty clipboard/document illustration",
-      "prompt": "Minimal flat design illustration of an empty clipboard or document with a subtle dotted outline placeholder in the center, soft indigo #6366F1 as primary color with emerald #10B981 accent, clean white background, simple geometric shapes, friendly empty state UI illustration for modern SaaS application, soft drop shadow beneath clipboard, one small decorative element like a tiny magnifying glass or plus icon suggesting add data, Linear app and Notion inspired minimalist aesthetic, professional software empty state design, vector art style with clean edges, premium and sophisticated mood, no text or words",
+      "prompt": "Minimal flat design illustration of an empty clipboard or document with a subtle dotted outline placeholder in the center, soft indigo #F97316 as primary color with emerald #10B981 accent, clean white background, simple geometric shapes, friendly empty state UI illustration for modern SaaS application, soft drop shadow beneath clipboard, one small decorative element like a tiny magnifying glass or plus icon suggesting add data, Linear app and Notion inspired minimalist aesthetic, professional software empty state design, vector art style with clean edges, premium and sophisticated mood, no text or words",
       "settings": {
         "model": "stable-diffusion-xl-1024-v1-0",
         "steps": 50,
@@ -90,7 +90,7 @@
       "priority": "P1",
       "category": "icons",
       "generationType": "hand-coded",
-      "style": "outline, 2px stroke, #6366F1",
+      "style": "outline, 2px stroke, #F97316",
       "status": "approved"
     },
     {
@@ -102,7 +102,7 @@
       "priority": "P2",
       "category": "icons",
       "generationType": "hand-coded",
-      "style": "outline, 2px stroke, #6366F1",
+      "style": "outline, 2px stroke, #F97316",
       "status": "approved"
     }
   ],
