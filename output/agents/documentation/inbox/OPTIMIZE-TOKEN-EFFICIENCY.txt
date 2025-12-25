@@ -102,6 +102,135 @@ chmod +x scripts/rotate-memory.sh
 ./scripts/rotate-memory.sh 5
 ```
 
+### Archive Retention Policy
+
+Rotated memory content is saved to `output/agents/[agent]/logs/`. Manage these archives with this retention schedule:
+
+| Archive Age | Action | Automation |
+|-------------|--------|------------|
+| 0-7 days | Keep full `.md` files | None needed |
+| 7-30 days | Compress to `.md.gz` | Weekly cron |
+| 30-90 days | Move to `output/shared/archive/memory/` | Monthly |
+| 90+ days | **Manual review required** | Flag for human review |
+
+**Important**: Memory archives are NEVER auto-deleted. Files older than 90 days are flagged for manual review but preserved until explicitly removed by a human.
+
+**Create `scripts/manage-memory-archives.sh`:**
+
+```bash
+#!/bin/bash
+# Memory Archive Management - Compress old archives, flag for review
+# Usage: ./scripts/manage-memory-archives.sh
+
+ARCHIVE_BASE="output/agents"
+SHARED_ARCHIVE="output/shared/archive/memory"
+REVIEW_FILE="output/shared/archive/memory/NEEDS_REVIEW.txt"
+
+echo "📦 Managing memory archives..."
+
+# Create shared archive if needed
+mkdir -p "$SHARED_ARCHIVE"
+
+# Process each agent's logs
+for agent_dir in "$ARCHIVE_BASE"/*/logs; do
+  [ -d "$agent_dir" ] || continue
+  agent_name=$(basename "$(dirname "$agent_dir")")
+  
+  for archive in "$agent_dir"/memory-archive-*.md; do
+    [ -f "$archive" ] || continue
+    
+    filename=$(basename "$archive")
+    # Extract date from filename (memory-archive-YYYYMMDD-HHMM.md)
+    archive_date=$(echo "$filename" | grep -oE '[0-9]{8}')
+    
+    if [ -z "$archive_date" ]; then
+      continue
+    fi
+    
+    # Calculate age in days
+    archive_epoch=$(date -j -f "%Y%m%d" "$archive_date" "+%s" 2>/dev/null || date -d "$archive_date" "+%s" 2>/dev/null)
+    now_epoch=$(date "+%s")
+    age_days=$(( (now_epoch - archive_epoch) / 86400 ))
+    
+    if [ "$age_days" -gt 90 ]; then
+      # Flag for manual review (DO NOT DELETE)
+      echo "  ⚠️  $agent_name/$filename ($age_days days) - flagged for review"
+      echo "[$agent_name] $filename - $age_days days old - $(date)" >> "$REVIEW_FILE"
+      # Move to shared archive for centralized review
+      mkdir -p "$SHARED_ARCHIVE/$agent_name"
+      mv "$archive" "$SHARED_ARCHIVE/$agent_name/"
+      
+    elif [ "$age_days" -gt 30 ]; then
+      # Move to shared archive (keep uncompressed for easy access)
+      echo "  📁 $agent_name/$filename ($age_days days) - moving to shared archive"
+      mkdir -p "$SHARED_ARCHIVE/$agent_name"
+      mv "$archive" "$SHARED_ARCHIVE/$agent_name/"
+      
+    elif [ "$age_days" -gt 7 ]; then
+      # Compress in place
+      if [ ! -f "${archive}.gz" ]; then
+        echo "  🗜️  $agent_name/$filename ($age_days days) - compressing"
+        gzip -k "$archive" && rm "$archive"
+      fi
+    else
+      echo "  ✓ $agent_name/$filename ($age_days days) - keeping"
+    fi
+  done
+done
+
+# Report files needing review
+if [ -f "$REVIEW_FILE" ]; then
+  review_count=$(wc -l < "$REVIEW_FILE" | tr -d ' ')
+  echo ""
+  echo "📋 $review_count archives need manual review"
+  echo "   See: $REVIEW_FILE"
+  echo "   Location: $SHARED_ARCHIVE/"
+fi
+
+echo "✅ Archive management complete"
+```
+
+**Make executable:**
+```bash
+chmod +x scripts/manage-memory-archives.sh
+```
+
+**Run monthly or as needed:**
+```bash
+./scripts/manage-memory-archives.sh
+```
+
+### Archive Structure After Rotation
+
+```
+output/
+├── agents/
+│   └── [agent]/
+│       └── logs/
+│           ├── memory-archive-20251225-1200.md      # < 7 days (full)
+│           └── memory-archive-20251220-0900.md.gz   # 7-30 days (compressed)
+└── shared/
+    └── archive/
+        └── memory/
+            ├── NEEDS_REVIEW.txt                      # Files > 90 days
+            ├── auditor/
+            │   └── memory-archive-20251001-1500.md  # > 30 days (moved)
+            └── cli/
+                └── memory-archive-20250915-0800.md  # > 90 days (flagged)
+```
+
+### How to Review Old Archives
+
+When `NEEDS_REVIEW.txt` has entries:
+
+1. Check the file: `cat output/shared/archive/memory/NEEDS_REVIEW.txt`
+2. Review flagged archives for any critical patterns/insights
+3. Extract important learnings to `docs/lessons-learned/` if valuable
+4. Delete archives only after confirming no critical info: `rm [file]`
+5. Clear reviewed entries from NEEDS_REVIEW.txt
+
+**Memory archives are preserved indefinitely until manual deletion.**
+
 ---
 
 ## Task 2: Slim Bootstrap (Default) + [full] Override
@@ -301,10 +430,12 @@ After implementation, verify:
 ## Deliverables
 
 1. [ ] `scripts/rotate-memory.sh` - Memory rotation script
-2. [ ] Updated `.cursorrules` - Slim-first bootstrap
-3. [ ] Trimmed `AGENT_CONTEXT.md` - Essential content only
-4. [ ] Archived `CLAUDE.md` - Moved to docs/archive/
-5. [ ] `docs/governance/FULL_CONTEXT.md` - Verbose content for [full] mode
+2. [ ] `scripts/manage-memory-archives.sh` - Archive retention management
+3. [ ] `output/shared/archive/memory/` - Centralized archive location
+4. [ ] Updated `.cursorrules` - Slim-first bootstrap
+5. [ ] Trimmed `AGENT_CONTEXT.md` - Essential content only
+6. [ ] Archived `CLAUDE.md` - Moved to docs/archive/
+7. [ ] `docs/governance/FULL_CONTEXT.md` - Verbose content for [full] mode
 
 ---
 
