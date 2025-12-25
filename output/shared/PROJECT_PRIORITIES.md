@@ -26,7 +26,7 @@
 
 | Priority | Task | Best Agent | Reason | Added By |
 |----------|------|------------|--------|----------|
-| P2 | **Fix primary Vercel domain** | User | Dashboard config: Root Dir=website | PLT |
+| P2 | Configure env vars in Vercel Dashboard | User | ANTHROPIC_API_KEY, SUPABASE, REDIS | PLT |
 | P2 | Test UploadThing integration | Integration | Feature complete | AUD |
 | P2 | Add UI tests for configurator | Testing | Coverage gap | WEB |
 
@@ -65,6 +65,7 @@ Current recommended order based on dependencies:
 
 | Task | Agent | Date | Notes |
 |------|-------|------|-------|
+| **Vercel Production Deploy** | PLT | 2025-12-24 | website-iota-ten-11.vercel.app - needs env vars |
 | SaaS template content fix | TPL | 2025-12-24 | Added dashboard, pricing, settings pages; templates/README.md |
 | Vercel alt domain working | PLT | 2025-12-24 | `-bv8x` subdomain live, primary needs dashboard fix |
 | CI Vercel status checks | PLT | 2025-12-24 | Added vercel-status + pr-preview-comment jobs |

@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 5cd1744 2025-12-24 fix(website): resolve Vercel build issues with tsconfig paths and stubs
 - 86f8098 2025-12-24 fix(website): update stubs to match actual package APIs for Vercel build
 - 55c2a35 2025-12-24 chore(docs): mark coding-standards task complete (already exists)
 - 54975f4 2025-12-24 chore(auditor): move review task to done
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 39ed2f6 2025-12-24 docs(audit): complete cycle 9 - 34 commits, 694 tests, high velocity day
 - 39e2753 2025-12-24 chore(audit): pre-audit commit - framework.js + memory update
 - 8858ab9 2025-12-24 chore(memory): checkpoint - Auditor approved checkpoint snapshots
-- a964eaf 2025-12-24 chore(auditor): approve checkpoint snapshots feature
 
 ## Agent Governance Structure
 
