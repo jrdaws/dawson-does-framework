@@ -20,7 +20,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@dawson-framework/ai-agent": ["./lib/ai-agent-stub.ts"],
+      "@dawson-framework/collaboration": ["./lib/collaboration-stub.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

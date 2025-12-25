@@ -2,8 +2,6 @@ const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Set explicit root for monorepo
-  outputFileTracingRoot: path.join(__dirname, '../'),
 
   // Image optimization
   images: {

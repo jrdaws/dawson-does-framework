@@ -34,11 +34,23 @@ interface CollaborationOptions {
   onError?: (error: Error) => void;
 }
 
+export interface AwarenessState {
+  user?: {
+    id: string;
+    name: string;
+    color: string;
+  };
+  selectedElement?: {
+    elementId: string;
+  };
+  cursor?: CursorPosition;
+}
+
 interface CollaborationSession {
   provider: {
     awareness: {
       setLocalStateField: (field: string, value: unknown) => void;
-      getStates: () => Map<number, Record<string, unknown>>;
+      getStates: () => Map<number, AwarenessState>;
     };
   };
 }
