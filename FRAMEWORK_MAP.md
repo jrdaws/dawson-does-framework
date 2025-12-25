@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 4f1f675 2025-12-25 feat(governance): implement token efficiency optimization (P0)
 - ee075e7 2025-12-25 chore(media): complete P1 color scheme research task
 - 6c359eb 2025-12-25 feat(design): add 3 color scheme mockup websites for comparison
 - fa88398 2025-12-25 docs(efficiency): add archive retention policy - no auto-delete, manual review for 90+ days
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - b01c96d 2025-12-24 feat(website): update MobileSidebar to match accordion navigation pattern
 - 8cbeb3a 2025-12-24 feat(website): add persistent state for tool status, domain, and AI provider
 - 655bb72 2025-12-24 docs: update 5DS clone tasks with Phase 7 integration tasks
-- 23acf47 2025-12-24 feat(website): wire AccordionSidebar sections in configure page
 
 ## Agent Governance Structure
 
