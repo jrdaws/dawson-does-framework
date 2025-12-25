@@ -9,20 +9,34 @@ module.exports = {
   theme: {
   	extend: {
   		colors: {
+  			// Warm Neutral Color Scheme - Orange/Stone palette
   			brand: {
-  				primary: '#6366F1',
-  				secondary: '#8B5CF6',
-  				success: '#10B981',
-  				light: '#FFFFFF',
-  				dark: '#0A0A0A',
-  				muted: '#71717A',
-  				'muted-light': '#A1A1AA'
+  				primary: '#F97316',      // orange-500
+  				secondary: '#EA580C',    // orange-600
+  				success: '#10B981',      // emerald-500 (unchanged)
+  				light: '#FAFAF9',        // stone-50
+  				dark: '#1C1917',         // stone-900
+  				muted: '#78716C',        // stone-500
+  				'muted-light': '#A8A29E' // stone-400
+  			},
+  			// Orange palette for primary actions
+  			orange: {
+  				50: '#FFF7ED',
+  				100: '#FFEDD5',
+  				200: '#FED7AA',
+  				300: '#FDBA74',
+  				400: '#FB923C',
+  				500: '#F97316',
+  				600: '#EA580C',
+  				700: '#C2410C',
+  				800: '#9A3412',
+  				900: '#7C2D12',
   			},
   			terminal: {
-  				bg: '#0a0a0a',
-  				text: '#6366F1',
-  				dim: '#71717A',
-  				accent: '#8B5CF6',
+  				bg: '#1C1917',           // stone-900
+  				text: '#F97316',         // orange-500
+  				dim: '#78716C',          // stone-500
+  				accent: '#FB923C',       // orange-400
   				error: '#EF4444',
   				warning: '#F59E0B'
   			},

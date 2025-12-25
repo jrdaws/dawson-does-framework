@@ -1,5 +1,7 @@
 # Dawson-Does Framework - Cursor Rules
 # Governance Version: 3.0 | Optimized for Token Efficiency
+# Quick Reference: See GOVERNANCE_CARD.md for 50-line summary
+# Hash: 23781cf23f6a | If unchanged, skip re-reading governance files
 
 ---
 
@@ -95,13 +97,25 @@ Explanations go OUTSIDE the fence, before it.
 
 ---
 
-## Session End Checklist
+## SOP Loading (Lazy - Rec 5)
 
-Before ending:
-1. Run `npm test`
-2. Commit: `git add -A && git commit -m "<type>(<scope>): <desc>"`
-3. Push: `git push origin main`
-4. If significant work: Update memory file (keep brief!)
+| Task Type | Read SOP? |
+|-----------|-----------|
+| Simple (< 3 steps) | ❌ No - use internalized knowledge |
+| Complex (3+ steps) | ✅ Yes - read role SOP |
+| `[full]` mode | ✅ Yes |
+| Task says "follow SOP" | ✅ Yes |
+| Unsure how to proceed | ✅ Yes - always safe to read |
+
+---
+
+## Session End (Tiered - Rec 6)
+
+| Session Type | Required Steps |
+|--------------|----------------|
+| **Simple** (<30 min) | 1. Commit + push 2. Sign off |
+| **Standard** (30+ min) | 1. Commit 2. Brief memory (5 lines) 3. Handoff if needed |
+| **Major** (multi-hour) | Full protocol: memory, MINDFRAME, priorities, handoff |
 
 ---
 

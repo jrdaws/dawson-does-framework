@@ -118,7 +118,7 @@ export function NPXCommandDisplay({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Terminal className="h-5 w-5 text-[#0052FF]" />
+            <Terminal className="h-5 w-5 text-[#F97316]" />
             Your NPX Command
           </CardTitle>
           <div className="flex items-center gap-2">
@@ -128,7 +128,7 @@ export function NPXCommandDisplay({
               </Badge>
             )}
             {featureCount > 0 && (
-              <Badge className="bg-[#0052FF] text-white text-xs">
+              <Badge className="bg-[#F97316] text-white text-xs">
                 {featureCount} feature{featureCount !== 1 ? "s" : ""}
               </Badge>
             )}
@@ -194,7 +194,7 @@ export function NPXCommandDisplay({
           <h4 className="font-medium text-slate-800 text-sm mb-3">Quick Start</h4>
           <ol className="space-y-2">
             <li className="flex items-start gap-2 text-sm">
-              <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#0052FF] text-white text-xs flex items-center justify-center font-medium">
+              <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#F97316] text-white text-xs flex items-center justify-center font-medium">
                 1
               </span>
               <span className="text-slate-600">
@@ -202,20 +202,20 @@ export function NPXCommandDisplay({
               </span>
             </li>
             <li className="flex items-start gap-2 text-sm">
-              <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#0052FF] text-white text-xs flex items-center justify-center font-medium">
+              <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#F97316] text-white text-xs flex items-center justify-center font-medium">
                 2
               </span>
               <span className="text-slate-600">
-                Navigate to <code className="text-[#0052FF] bg-slate-100 px-1 rounded">{outputDir || "./my-app"}</code>
+                Navigate to <code className="text-[#F97316] bg-slate-100 px-1 rounded">{outputDir || "./my-app"}</code>
               </span>
             </li>
             <li className="flex items-start gap-2 text-sm">
-              <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#0052FF] text-white text-xs flex items-center justify-center font-medium">
+              <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#F97316] text-white text-xs flex items-center justify-center font-medium">
                 3
               </span>
               <span className="text-slate-600">
-                Run <code className="text-[#0052FF] bg-slate-100 px-1 rounded">npm install</code> then{" "}
-                <code className="text-[#0052FF] bg-slate-100 px-1 rounded">npm run dev</code>
+                Run <code className="text-[#F97316] bg-slate-100 px-1 rounded">npm install</code> then{" "}
+                <code className="text-[#F97316] bg-slate-100 px-1 rounded">npm run dev</code>
               </span>
             </li>
           </ol>
@@ -263,7 +263,7 @@ export function NPXCommandDisplay({
             </div>
 
             <p className="text-xs text-slate-500 mt-2">
-              Create a <code className="text-[#0052FF]">.env.local</code> file in your project
+              Create a <code className="text-[#F97316]">.env.local</code> file in your project
               root and add these variables.
             </p>
           </div>
@@ -272,7 +272,7 @@ export function NPXCommandDisplay({
         {/* What's Included Summary */}
         <div className="border-t border-slate-200 pt-4">
           <h4 className="font-medium text-slate-800 text-sm mb-3 flex items-center gap-2">
-            <FileCode className="h-4 w-4 text-[#0052FF]" />
+            <FileCode className="h-4 w-4 text-[#F97316]" />
             What&apos;s Included
           </h4>
           <div className="grid grid-cols-2 gap-2 text-xs">

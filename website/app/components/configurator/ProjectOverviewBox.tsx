@@ -90,7 +90,7 @@ export function ProjectOverviewBox({
           <div className="flex items-center justify-between gap-4">
             {/* Project Name */}
             <div className="flex items-center gap-2 min-w-0">
-              <Folder className="h-4 w-4 text-[#0052FF] flex-shrink-0" />
+              <Folder className="h-4 w-4 text-[#F97316] flex-shrink-0" />
               <span className="font-medium text-slate-800 truncate">
                 {projectName || "Untitled Project"}
               </span>
@@ -128,7 +128,7 @@ export function ProjectOverviewBox({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-[#0052FF]" />
+            <Sparkles className="h-5 w-5 text-[#F97316]" />
             Project Overview
           </CardTitle>
           <Badge
@@ -145,8 +145,8 @@ export function ProjectOverviewBox({
         {/* Project Identity */}
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#0052FF]/10">
-              <Folder className="h-5 w-5 text-[#0052FF]" />
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#F97316]/10">
+              <Folder className="h-5 w-5 text-[#F97316]" />
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-slate-900 truncate">
@@ -221,7 +221,7 @@ export function ProjectOverviewBox({
                 <Badge
                   key={label}
                   variant="outline"
-                  className="text-xs bg-[#0052FF]/5 border-[#0052FF]/20 text-[#0052FF]"
+                  className="text-xs bg-[#F97316]/5 border-[#F97316]/20 text-[#F97316]"
                 >
                   {label}
                 </Badge>
@@ -262,7 +262,7 @@ export function ProjectOverviewBox({
         <div className="pt-2 border-t border-slate-100">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs text-slate-500">Configuration Progress</span>
-            <span className="text-xs font-medium text-[#0052FF]">
+            <span className="text-xs font-medium text-[#F97316]">
               {completionPercentage}%
             </span>
           </div>

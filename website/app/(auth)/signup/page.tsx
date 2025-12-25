@@ -59,7 +59,7 @@ export default function SignupPage() {
       <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-[#0052FF]">Authentication Not Configured</CardTitle>
+            <CardTitle className="text-2xl font-bold text-[#F97316]">Authentication Not Configured</CardTitle>
             <CardDescription>
               Supabase authentication is not set up. Please configure your environment variables.
             </CardDescription>
@@ -102,7 +102,7 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-[#0052FF]">Create Account</CardTitle>
+          <CardTitle className="text-2xl font-bold text-[#F97316]">Create Account</CardTitle>
           <CardDescription>
             Get started with your framework project
           </CardDescription>
@@ -159,16 +159,16 @@ export default function SignupPage() {
                 id="terms"
                 checked={acceptTerms}
                 onChange={(e) => setAcceptTerms(e.target.checked)}
-                className="mt-1 h-4 w-4 rounded border-gray-300 text-[#0052FF] focus:ring-[#0052FF]"
+                className="mt-1 h-4 w-4 rounded border-gray-300 text-[#F97316] focus:ring-[#F97316]"
                 disabled={loading}
               />
               <Label htmlFor="terms" className="text-sm text-muted-foreground leading-tight">
                 I agree to the{" "}
-                <Link href="/terms" className="text-[#0052FF] hover:underline">
+                <Link href="/terms" className="text-[#F97316] hover:underline">
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link href="/privacy" className="text-[#0052FF] hover:underline">
+                <Link href="/privacy" className="text-[#F97316] hover:underline">
                   Privacy Policy
                 </Link>
               </Label>
@@ -182,7 +182,7 @@ export default function SignupPage() {
 
             <Button
               type="submit"
-              className="w-full h-11 bg-[#0052FF] hover:bg-[#0052FF]/90"
+              className="w-full h-11 bg-[#F97316] hover:bg-[#F97316]/90"
               disabled={loading}
             >
               {loading ? (
@@ -200,7 +200,7 @@ export default function SignupPage() {
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/login" className="text-[#0052FF] hover:underline font-medium">
+            <Link href="/login" className="text-[#F97316] hover:underline font-medium">
               Sign in
             </Link>
           </p>

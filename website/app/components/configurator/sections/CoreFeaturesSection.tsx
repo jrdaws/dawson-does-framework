@@ -102,7 +102,7 @@ export function CoreFeaturesSection({
                         key={feature.id}
                         className={cn(
                           "flex items-start gap-2.5 p-2 rounded-md cursor-pointer transition-colors",
-                          isSelected ? "bg-[#0052FF]/5" : "hover:bg-slate-50"
+                          isSelected ? "bg-[#F97316]/5" : "hover:bg-slate-50"
                         )}
                         onClick={() => onToggleFeature(category.id, feature.id)}
                       >
@@ -117,7 +117,7 @@ export function CoreFeaturesSection({
                             htmlFor={feature.id}
                             className={cn(
                               "text-sm cursor-pointer",
-                              isSelected ? "text-[#0052FF] font-medium" : "text-slate-700"
+                              isSelected ? "text-[#F97316] font-medium" : "text-slate-700"
                             )}
                           >
                             {feature.label}

@@ -79,7 +79,7 @@ function FeatureCheckbox({
             onClick={() => canSelect && onToggle()}
             className={cn(
               "relative flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer",
-              isSelected && "bg-[#0052FF]/5 border-[#0052FF]",
+              isSelected && "bg-[#F97316]/5 border-[#F97316]",
               !isSelected && canSelect && "hover:bg-slate-50 border-slate-200",
               !canSelect && "opacity-50 cursor-not-allowed bg-slate-50 border-slate-200"
             )}
@@ -88,7 +88,7 @@ function FeatureCheckbox({
             <div
               className={cn(
                 "flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center mt-0.5 transition-colors",
-                isSelected && "bg-[#0052FF] border-[#0052FF]",
+                isSelected && "bg-[#F97316] border-[#F97316]",
                 !isSelected && canSelect && "border-slate-300",
                 !canSelect && "border-slate-200 bg-slate-100"
               )}
@@ -103,7 +103,7 @@ function FeatureCheckbox({
                 <span
                   className={cn(
                     "font-medium text-sm",
-                    isSelected && "text-[#0052FF]",
+                    isSelected && "text-[#F97316]",
                     !isSelected && "text-slate-700"
                   )}
                 >
@@ -234,10 +234,10 @@ export function CoreFeaturesSelector({ className }: CoreFeaturesSelectorProps) {
 
         {/* AI Recommendations */}
         {recommended.length > 0 && description && (
-          <div className="mt-3 p-3 bg-[#0052FF]/5 rounded-lg border border-[#0052FF]/20">
+          <div className="mt-3 p-3 bg-[#F97316]/5 rounded-lg border border-[#F97316]/20">
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="h-4 w-4 text-[#0052FF]" />
-              <span className="text-sm font-medium text-[#0052FF]">
+              <Sparkles className="h-4 w-4 text-[#F97316]" />
+              <span className="text-sm font-medium text-[#F97316]">
                 AI Recommendations
               </span>
             </div>
@@ -251,7 +251,7 @@ export function CoreFeaturesSelector({ className }: CoreFeaturesSelectorProps) {
                   <Badge
                     key={id}
                     variant="outline"
-                    className="text-xs bg-white border-[#0052FF]/30 text-[#0052FF]"
+                    className="text-xs bg-white border-[#F97316]/30 text-[#F97316]"
                   >
                     {feature.label}
                   </Badge>
@@ -261,7 +261,7 @@ export function CoreFeaturesSelector({ className }: CoreFeaturesSelectorProps) {
             <Button
               size="sm"
               onClick={applyRecommendations}
-              className="bg-[#0052FF] hover:bg-[#0052FF]/90 text-white text-xs"
+              className="bg-[#F97316] hover:bg-[#F97316]/90 text-white text-xs"
             >
               <Lightbulb className="h-3 w-3 mr-1" />
               Apply recommendations
@@ -326,7 +326,7 @@ export function CoreFeaturesSelector({ className }: CoreFeaturesSelectorProps) {
                           {category.label}
                         </span>
                         {selectedInCategory > 0 && (
-                          <Badge className="bg-[#0052FF] text-white text-xs">
+                          <Badge className="bg-[#F97316] text-white text-xs">
                             {selectedInCategory}
                           </Badge>
                         )}

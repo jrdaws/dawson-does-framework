@@ -74,7 +74,7 @@ export function IntegrateAISection({
               className={cn(
                 "flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors",
                 selectedProvider === provider.id
-                  ? "border-[#0052FF] bg-[#0052FF]/5"
+                  ? "border-[#F97316] bg-[#F97316]/5"
                   : "border-slate-200 hover:border-slate-300"
               )}
               onClick={() => onProviderChange(provider.id)}
@@ -87,7 +87,7 @@ export function IntegrateAISection({
                     className={cn(
                       "text-sm cursor-pointer",
                       selectedProvider === provider.id
-                        ? "text-[#0052FF] font-medium"
+                        ? "text-[#F97316] font-medium"
                         : "text-slate-700"
                     )}
                   >
@@ -149,7 +149,7 @@ export function IntegrateAISection({
               }
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#0052FF] hover:underline inline-flex items-center gap-0.5"
+              className="text-[#F97316] hover:underline inline-flex items-center gap-0.5"
             >
               {selectedProviderData?.name}
               <ExternalLink className="h-3 w-3" />

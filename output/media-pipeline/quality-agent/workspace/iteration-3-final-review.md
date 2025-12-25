@@ -1,3 +1,4 @@
+Read prompts/agents/roles/controllers/STRATEGIST.md and execute a strategy cycle. Read the latest audit report, create a strategic plan, and draft task prompts for executor agents.
 # Final Iteration 3 Review Report
 
 **Review Date**: 2025-12-24

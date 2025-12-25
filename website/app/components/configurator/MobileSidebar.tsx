@@ -179,7 +179,7 @@ export function MobileSidebar({
       <SheetContent side="left" className="w-80 p-0 bg-white flex flex-col">
         <SheetHeader className="p-4 border-b border-slate-200 shrink-0">
           <SheetTitle className="flex items-center justify-between">
-            <span className="text-[#0052FF] font-bold text-lg">Dawson Does</span>
+            <span className="text-[#F97316] font-bold text-lg">Dawson Does</span>
             <span className="text-xs text-slate-500">
               {completedSteps.size}/{NAV_SECTIONS.length} complete
             </span>
@@ -208,12 +208,12 @@ export function MobileSidebar({
                     onClick={() => handleSectionClick(section)}
                     className={cn(
                       "relative px-4 py-3 hover:bg-slate-50 hover:no-underline",
-                      isActive && "bg-[#0052FF]/5"
+                      isActive && "bg-[#F97316]/5"
                     )}
                   >
                     {/* Active indicator bar */}
                     {isActive && (
-                      <span className="absolute left-0 top-2 bottom-2 w-1 bg-[#0052FF] rounded-r" />
+                      <span className="absolute left-0 top-2 bottom-2 w-1 bg-[#F97316] rounded-r" />
                     )}
 
                     <div className="flex items-center gap-3 flex-1">
@@ -222,7 +222,7 @@ export function MobileSidebar({
                         className={cn(
                           "flex items-center justify-center w-7 h-7 rounded-lg transition-colors",
                           state === "completed" && "bg-emerald-100 text-emerald-600",
-                          state === "current" && "bg-[#0052FF]/10 text-[#0052FF]",
+                          state === "current" && "bg-[#F97316]/10 text-[#F97316]",
                           state === "pending" && "bg-slate-100 text-slate-400"
                         )}
                       >
@@ -240,7 +240,7 @@ export function MobileSidebar({
                             className={cn(
                               "font-medium text-sm",
                               state === "completed" && "text-emerald-600",
-                              state === "current" && "text-[#0052FF]",
+                              state === "current" && "text-[#F97316]",
                               state === "pending" && "text-slate-600"
                             )}
                           >
@@ -286,13 +286,13 @@ export function MobileSidebar({
         <div className="p-4 border-t border-slate-200 bg-slate-50 shrink-0">
           <div className="flex items-center justify-between text-sm mb-2">
             <span className="text-slate-600">Progress</span>
-            <span className="font-medium text-[#0052FF]">
+            <span className="font-medium text-[#F97316]">
               {Math.round(progress)}%
             </span>
           </div>
           <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#0052FF] transition-all duration-300 rounded-full"
+              className="h-full bg-[#F97316] transition-all duration-300 rounded-full"
               style={{ width: `${progress}%` }}
             />
           </div>

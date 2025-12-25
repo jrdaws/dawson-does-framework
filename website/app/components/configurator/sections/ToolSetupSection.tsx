@@ -31,7 +31,7 @@ const TOOL_CONFIGS: Record<string, {
     name: "Cursor",
     description: "AI-powered code editor that makes you extraordinarily productive",
     steps: [
-      { number: 1, content: <>Go to <a href="https://cursor.sh" target="_blank" rel="noopener noreferrer" className="text-[#0052FF] hover:underline">cursor.sh</a> to download</> },
+      { number: 1, content: <>Go to <a href="https://cursor.sh" target="_blank" rel="noopener noreferrer" className="text-[#F97316] hover:underline">cursor.sh</a> to download</> },
       { number: 2, content: "Install Cursor on your machine" },
       { number: 3, content: "Sign in with your GitHub account (recommended)" },
     ],
@@ -42,7 +42,7 @@ const TOOL_CONFIGS: Record<string, {
     name: "GitHub",
     description: "Create a repository to store your project code",
     steps: [
-      { number: 1, content: <>Go to <a href="https://github.com/new" target="_blank" rel="noopener noreferrer" className="text-[#0052FF] hover:underline">github.com/new</a> to create a repository</> },
+      { number: 1, content: <>Go to <a href="https://github.com/new" target="_blank" rel="noopener noreferrer" className="text-[#F97316] hover:underline">github.com/new</a> to create a repository</> },
       { number: 2, content: "Name your repository and choose visibility" },
       { number: 3, content: "Initialize with a README (optional)" },
     ],
@@ -64,7 +64,7 @@ const TOOL_CONFIGS: Record<string, {
     name: "Supabase",
     description: "Use Supabase to manage user authentication, database, and file storage",
     steps: [
-      { number: 1, content: <>Go to <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" className="text-[#0052FF] hover:underline">Supabase</a> to create an account or login</> },
+      { number: 1, content: <>Go to <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" className="text-[#F97316] hover:underline">Supabase</a> to create an account or login</> },
       { number: 2, content: "Create a new project or select an existing one" },
       { number: 3, content: <>Click &quot;Connect Supabase&quot; below to authorize access</> },
     ],
@@ -75,7 +75,7 @@ const TOOL_CONFIGS: Record<string, {
     name: "Vercel",
     description: "Deploy your application to the world",
     steps: [
-      { number: 1, content: <>Go to <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="text-[#0052FF] hover:underline">vercel.com</a> and sign in</> },
+      { number: 1, content: <>Go to <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="text-[#F97316] hover:underline">vercel.com</a> and sign in</> },
       { number: 2, content: "Import your GitHub repository" },
       { number: 3, content: "Configure environment variables" },
     ],
@@ -127,7 +127,7 @@ export function ToolSetupSection({
       <div className="space-y-3">
         {config.steps.map((step) => (
           <div key={step.number} className="flex items-start gap-3">
-            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#0052FF] text-white text-xs font-semibold shrink-0">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#F97316] text-white text-xs font-semibold shrink-0">
               {step.number}
             </div>
             <div className="text-sm text-slate-600 pt-0.5">{step.content}</div>
@@ -150,7 +150,7 @@ export function ToolSetupSection({
         {config.showConnectButton ? (
           <Button
             size="sm"
-            className="text-sm bg-[#0052FF] hover:bg-[#0041CC]"
+            className="text-sm bg-[#F97316] hover:bg-[#0041CC]"
             onClick={onConnect}
             disabled={isLoading}
           >
@@ -169,7 +169,7 @@ export function ToolSetupSection({
         ) : (
           <Button
             size="sm"
-            className="text-sm bg-[#0052FF] hover:bg-[#0041CC]"
+            className="text-sm bg-[#F97316] hover:bg-[#0041CC]"
             onClick={() => config.primaryUrl && window.open(config.primaryUrl, "_blank")}
           >
             {config.primaryAction}

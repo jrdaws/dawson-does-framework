@@ -120,7 +120,7 @@ function ProjectsContent() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-[#0052FF] mx-auto mb-4" />
+          <Loader2 className="h-8 w-8 animate-spin text-[#F97316] mx-auto mb-4" />
           <p className="text-muted-foreground">Loading projects...</p>
         </div>
       </div>
@@ -140,7 +140,7 @@ function ProjectsContent() {
               </p>
             </div>
             <Link href="/configure">
-              <Button className="gap-2 bg-[#0052FF] hover:bg-[#0052FF]/90">
+              <Button className="gap-2 bg-[#F97316] hover:bg-[#F97316]/90">
                 <Plus className="h-4 w-4" />
                 New Project
               </Button>
@@ -167,7 +167,7 @@ function ProjectsContent() {
                 Create your first project to get started
               </p>
               <Link href="/configure">
-                <Button className="gap-2 bg-[#0052FF] hover:bg-[#0052FF]/90">
+                <Button className="gap-2 bg-[#F97316] hover:bg-[#F97316]/90">
                   <Plus className="h-4 w-4" />
                   Create Project
                 </Button>
@@ -255,7 +255,7 @@ function ProjectsContent() {
                   <div className="flex gap-2 pt-2">
                     <Button
                       variant="default"
-                      className="flex-1 bg-[#0052FF] hover:bg-[#0052FF]/90"
+                      className="flex-1 bg-[#F97316] hover:bg-[#F97316]/90"
                       onClick={() => handleOpen(project.id)}
                     >
                       <FolderOpen className="h-4 w-4 mr-2" />

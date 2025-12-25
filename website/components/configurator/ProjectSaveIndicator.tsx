@@ -75,7 +75,7 @@ export function ProjectSaveIndicator({ className }: ProjectSaveIndicatorProps) {
     return (
       <div
         className={cn(
-          "flex items-center gap-2 text-xs text-[#0052FF]",
+          "flex items-center gap-2 text-xs text-[#F97316]",
           className
         )}
       >

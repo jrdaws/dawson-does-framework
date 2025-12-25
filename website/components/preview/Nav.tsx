@@ -37,7 +37,7 @@ export function Nav({
     >
       {/* Logo */}
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0052FF] to-indigo-500 flex items-center justify-center">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F97316] to-indigo-500 flex items-center justify-center">
           <span className="text-white font-bold text-sm">
             {projectName?.charAt(0)?.toUpperCase() || "P"}
           </span>
@@ -66,7 +66,7 @@ export function Nav({
           <button className="text-gray-400 hover:text-white transition-colors text-sm">
             Log in
           </button>
-              <button className="px-4 py-2 bg-[#0052FF] hover:bg-[#0052FF]/90 text-white rounded-lg text-sm font-medium transition-colors">
+              <button className="px-4 py-2 bg-[#F97316] hover:bg-[#F97316]/90 text-white rounded-lg text-sm font-medium transition-colors">
             Sign up
           </button>
             </>
@@ -83,8 +83,8 @@ export function Nav({
                     className="rounded-full"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-[#0052FF]/20 flex items-center justify-center">
-                    <User className="w-4 h-4 text-[#0052FF]" />
+                  <div className="w-8 h-8 rounded-full bg-[#F97316]/20 flex items-center justify-center">
+                    <User className="w-4 h-4 text-[#F97316]" />
                   </div>
                 )}
                 <span className="text-sm text-gray-300 hidden sm:block">
@@ -110,7 +110,7 @@ export function Nav({
               </Link>
               <Link
                 href="/signup"
-                className="px-4 py-2 bg-[#0052FF] hover:bg-[#0052FF]/90 text-white rounded-lg text-sm font-medium transition-colors"
+                className="px-4 py-2 bg-[#F97316] hover:bg-[#F97316]/90 text-white rounded-lg text-sm font-medium transition-colors"
               >
                 Sign up
               </Link>

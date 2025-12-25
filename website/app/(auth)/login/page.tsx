@@ -59,7 +59,7 @@ export default function LoginPage() {
       <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-[#0052FF]">Authentication Not Configured</CardTitle>
+            <CardTitle className="text-2xl font-bold text-[#F97316]">Authentication Not Configured</CardTitle>
             <CardDescription>
               Supabase authentication is not set up. Please configure your environment variables.
             </CardDescription>
@@ -78,7 +78,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-[#0052FF]">Welcome Back</CardTitle>
+          <CardTitle className="text-2xl font-bold text-[#F97316]">Welcome Back</CardTitle>
           <CardDescription>
             Sign in to continue to your projects
           </CardDescription>
@@ -183,7 +183,7 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full h-11 bg-[#0052FF] hover:bg-[#0052FF]/90"
+              className="w-full h-11 bg-[#F97316] hover:bg-[#F97316]/90"
               disabled={loading}
             >
               {loading ? (
@@ -201,7 +201,7 @@ export default function LoginPage() {
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-[#0052FF] hover:underline font-medium">
+            <Link href="/signup" className="text-[#F97316] hover:underline font-medium">
               Create one
             </Link>
           </p>

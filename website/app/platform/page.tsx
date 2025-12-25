@@ -170,8 +170,8 @@ const valueMetrics = [
     withFramework: "$0",
     withoutFramework: "$5,000-15,000",
     savings: "100%",
-    color: "text-[#0052FF]",
-    bgColor: "bg-[#0052FF]",
+    color: "text-[#F97316]",
+    bgColor: "bg-[#F97316]",
   },
   {
     icon: Puzzle,
@@ -208,7 +208,7 @@ export default function PlatformPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#0052FF] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-[#F97316] flex items-center justify-center">
               <Code2 className="h-5 w-5 text-white" />
             </div>
             <span className="font-bold text-slate-900">Framework</span>
@@ -226,7 +226,7 @@ export default function PlatformPage() {
               <Button variant="ghost" size="sm">Sign In</Button>
             </Link>
             <Link href="/configure">
-              <Button size="sm" className="bg-[#0052FF] hover:bg-[#0052FF]/90">
+              <Button size="sm" className="bg-[#F97316] hover:bg-[#F97316]/90">
                 Start Building
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -239,12 +239,12 @@ export default function PlatformPage() {
       <section className="pt-32 pb-20 px-4 relative overflow-hidden">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-white pointer-events-none" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#0052FF]/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#F97316]/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-500/5 rounded-full blur-3xl" />
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="mb-6 bg-[#0052FF]/10 text-[#0052FF] hover:bg-[#0052FF]/20 border-0">
+            <Badge className="mb-6 bg-[#F97316]/10 text-[#F97316] hover:bg-[#F97316]/20 border-0">
               <Sparkles className="mr-1 h-3 w-3" />
               Now with AI Context Generation
             </Badge>
@@ -252,7 +252,7 @@ export default function PlatformPage() {
             <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight">
               Build Production Apps
               <br />
-              <span className="text-[#0052FF]">In Minutes, Not Months</span>
+              <span className="text-[#F97316]">In Minutes, Not Months</span>
             </h1>
 
             <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto">
@@ -262,13 +262,13 @@ export default function PlatformPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/configure">
-                <Button size="lg" className="bg-[#0052FF] hover:bg-[#0052FF]/90 h-14 px-8 text-lg">
+                <Button size="lg" className="bg-[#F97316] hover:bg-[#F97316]/90 h-14 px-8 text-lg">
                   Start Building Free
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Button size="lg" variant="outline" className="h-14 px-8 text-lg group">
-                <Play className="mr-2 h-5 w-5 group-hover:text-[#0052FF] transition" />
+                <Play className="mr-2 h-5 w-5 group-hover:text-[#F97316] transition" />
                 Watch Demo
               </Button>
             </div>
@@ -331,8 +331,8 @@ export default function PlatformPage() {
               {/* Screenshot placeholder */}
               <div className="aspect-[16/9] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-[#0052FF]/20 flex items-center justify-center mx-auto mb-4">
-                    <Sparkles className="h-8 w-8 text-[#0052FF]" />
+                  <div className="w-16 h-16 rounded-2xl bg-[#F97316]/20 flex items-center justify-center mx-auto mb-4">
+                    <Sparkles className="h-8 w-8 text-[#F97316]" />
                   </div>
                   <p className="text-slate-400 text-sm">Visual Configurator Preview</p>
                 </div>
@@ -423,7 +423,7 @@ export default function PlatformPage() {
       <section id="features" className="py-24 px-4 bg-slate-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-[#0052FF]/10 text-[#0052FF] border-0">Features</Badge>
+            <Badge className="mb-4 bg-[#F97316]/10 text-[#F97316] border-0">Features</Badge>
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
               Everything You Need to Ship Fast
             </h2>
@@ -452,7 +452,7 @@ export default function PlatformPage() {
       <section id="how-it-works" className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-[#0052FF]/10 text-[#0052FF] border-0">How It Works</Badge>
+            <Badge className="mb-4 bg-[#F97316]/10 text-[#F97316] border-0">How It Works</Badge>
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
               From Idea to Production in 4 Steps
             </h2>
@@ -472,13 +472,13 @@ export default function PlatformPage() {
                 
                 <div className={`relative z-10 w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center transition-all ${
                   activeStep === index 
-                    ? 'bg-[#0052FF] shadow-lg shadow-[#0052FF]/25' 
+                    ? 'bg-[#F97316] shadow-lg shadow-[#F97316]/25' 
                     : 'bg-slate-100'
                 }`}>
                   <step.icon className={`h-7 w-7 ${activeStep === index ? 'text-white' : 'text-slate-500'}`} />
                 </div>
                 
-                <div className="text-sm font-bold text-[#0052FF] mb-2">{step.number}</div>
+                <div className="text-sm font-bold text-[#F97316] mb-2">{step.number}</div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">{step.title}</h3>
                 <p className="text-slate-600 text-sm">{step.description}</p>
               </div>
@@ -534,10 +534,10 @@ export default function PlatformPage() {
           {/* Side by Side Comparison */}
           <div className="grid lg:grid-cols-2 gap-8">
             {/* With Framework */}
-            <Card className="border-2 border-[#0052FF] shadow-lg shadow-[#0052FF]/10">
+            <Card className="border-2 border-[#F97316] shadow-lg shadow-[#F97316]/10">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-[#0052FF] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-[#F97316] flex items-center justify-center">
                     <Zap className="h-5 w-5 text-white" />
                   </div>
                   <div>
@@ -569,10 +569,10 @@ export default function PlatformPage() {
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 bg-[#0052FF]/5 rounded-lg border border-[#0052FF]/20">
+                <div className="mt-6 p-4 bg-[#F97316]/5 rounded-lg border border-[#F97316]/20">
                   <div className="flex items-center justify-between">
                     <span className="font-medium text-slate-900">Total Time</span>
-                    <span className="text-2xl font-bold text-[#0052FF]">~5 min</span>
+                    <span className="text-2xl font-bold text-[#F97316]">~5 min</span>
                   </div>
                 </div>
               </CardContent>
@@ -629,10 +629,10 @@ export default function PlatformPage() {
           {/* Bottom CTA */}
           <div className="text-center mt-12">
             <p className="text-slate-600 mb-4">
-              That's <span className="font-bold text-[#0052FF]">480x faster</span> than building from scratch.
+              That's <span className="font-bold text-[#F97316]">480x faster</span> than building from scratch.
             </p>
             <Link href="/configure">
-              <Button size="lg" className="bg-[#0052FF] hover:bg-[#0052FF]/90">
+              <Button size="lg" className="bg-[#F97316] hover:bg-[#F97316]/90">
                 Start Saving Time Now
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -657,7 +657,7 @@ export default function PlatformPage() {
           <div className="bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-700">
             <div className="grid grid-cols-3 p-4 border-b border-slate-700 bg-slate-800">
               <div className="text-slate-400 font-medium">Feature</div>
-              <div className="text-center font-bold text-[#0052FF]">Framework</div>
+              <div className="text-center font-bold text-[#F97316]">Framework</div>
               <div className="text-center text-slate-400">Others</div>
             </div>
             
@@ -691,7 +691,7 @@ export default function PlatformPage() {
       <section id="testimonials" className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-[#0052FF]/10 text-[#0052FF] border-0">Testimonials</Badge>
+            <Badge className="mb-4 bg-[#F97316]/10 text-[#F97316] border-0">Testimonials</Badge>
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
               Loved by Developers
             </h2>
@@ -728,7 +728,7 @@ export default function PlatformPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 bg-[#0052FF]">
+      <section className="py-24 px-4 bg-[#F97316]">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Ship Your Next Project?
@@ -740,7 +740,7 @@ export default function PlatformPage() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/configure">
-              <Button size="lg" className="bg-white text-[#0052FF] hover:bg-white/90 h-14 px-8 text-lg">
+              <Button size="lg" className="bg-white text-[#F97316] hover:bg-white/90 h-14 px-8 text-lg">
                 Start Building Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -761,7 +761,7 @@ export default function PlatformPage() {
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div>
               <Link href="/" className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-[#0052FF] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#F97316] flex items-center justify-center">
                   <Code2 className="h-5 w-5 text-white" />
                 </div>
                 <span className="font-bold">Framework</span>

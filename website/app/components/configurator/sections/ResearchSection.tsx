@@ -133,7 +133,7 @@ export function ResearchSection({
         </Button>
         <Button
           size="sm"
-          className="text-sm bg-[#0052FF] hover:bg-[#0041CC]"
+          className="text-sm bg-[#F97316] hover:bg-[#0041CC]"
           onClick={onStartResearch}
           disabled={isLoading || !domain.trim()}
         >
