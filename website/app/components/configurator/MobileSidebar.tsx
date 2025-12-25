@@ -1,51 +1,171 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Menu, Check } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Menu, Check, Github, Database, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Step, PHASES, STEPS } from "@/lib/configurator-state";
-import Image from "next/image";
-import { useState } from "react";
+import { Step } from "@/lib/configurator-state";
 
-// Map steps to nav icons
-const NAV_ICONS: Record<number, { icon: string; label: string }> = {
-  1: { icon: "/images/configurator/nav/template.svg", label: "Template" },
-  2: { icon: "/images/configurator/nav/inspiration.svg", label: "Inspiration" },
-  3: { icon: "/images/configurator/nav/home.svg", label: "Project Details" },
-  4: { icon: "/images/configurator/nav/integrations.svg", label: "Integrations" },
-  5: { icon: "/images/configurator/nav/keys.svg", label: "Environment" },
-  6: { icon: "/images/configurator/nav/preview.svg", label: "Preview" },
-  7: { icon: "/images/configurator/nav/inspiration.svg", label: "Context" },
-  8: { icon: "/images/configurator/nav/export.svg", label: "Export" },
-};
+// Sidebar navigation sections matching AccordionSidebar
+interface NavSection {
+  id: string;
+  label: string;
+  description: string;
+  stepNumber: number;
+}
+
+const NAV_SECTIONS: NavSection[] = [
+  {
+    id: "research",
+    label: "Research",
+    description: "Define your project vision",
+    stepNumber: 1,
+  },
+  {
+    id: "core-features",
+    label: "Core Features",
+    description: "Select features for your project",
+    stepNumber: 2,
+  },
+  {
+    id: "integrate-ai",
+    label: "Integrate AI",
+    description: "Add AI capabilities",
+    stepNumber: 3,
+  },
+  {
+    id: "cursor",
+    label: "Cursor",
+    description: "Download & Install",
+    stepNumber: 4,
+  },
+  {
+    id: "github",
+    label: "GitHub",
+    description: "Create repository",
+    stepNumber: 5,
+  },
+  {
+    id: "claude-code",
+    label: "Claude Code",
+    description: "Install CLI",
+    stepNumber: 6,
+  },
+  {
+    id: "supabase",
+    label: "Supabase",
+    description: "Configure database",
+    stepNumber: 7,
+  },
+  {
+    id: "vercel",
+    label: "Vercel",
+    description: "Deploy application",
+    stepNumber: 8,
+  },
+];
+
+// Custom SVG icon component (matching AccordionSidebar)
+function SectionIcon({ sectionId, className }: { sectionId: string; className?: string }) {
+  const customIconSections = ["research", "core-features", "integrate-ai", "cursor", "claude-code"];
+  
+  if (customIconSections.includes(sectionId)) {
+    const iconPath = `/images/configurator/sections/${
+      sectionId === "core-features" ? "features" : 
+      sectionId === "integrate-ai" ? "ai" : 
+      sectionId
+    }.svg`;
+    
+    return (
+      <Image
+        src={iconPath}
+        alt={sectionId}
+        width={18}
+        height={18}
+        className={cn("text-current", className)}
+      />
+    );
+  }
+  
+  // Fallback to Lucide icons
+  switch (sectionId) {
+    case "github":
+      return <Github className={cn("h-[18px] w-[18px]", className)} />;
+    case "supabase":
+      return <Database className={cn("h-[18px] w-[18px]", className)} />;
+    case "vercel":
+      return <Rocket className={cn("h-[18px] w-[18px]", className)} />;
+    default:
+      return null;
+  }
+}
+
+// Group sections by phase for organization
+const PHASE_GROUPS = [
+  { 
+    id: "research", 
+    label: "Research", 
+    sections: ["research"] 
+  },
+  { 
+    id: "features", 
+    label: "Features", 
+    sections: ["core-features", "integrate-ai"] 
+  },
+  { 
+    id: "tools", 
+    label: "Tools", 
+    sections: ["cursor", "github", "claude-code", "supabase", "vercel"] 
+  },
+];
 
 interface MobileSidebarProps {
   currentStep: Step;
   completedSteps: Set<number>;
   onStepChange: (step: Step) => void;
+  sectionBadges?: Record<string, string | number | undefined>;
+  children?: (sectionId: string) => React.ReactNode;
 }
 
 export function MobileSidebar({
   currentStep,
   completedSteps,
   onStepChange,
+  sectionBadges = {},
+  children,
 }: MobileSidebarProps) {
   const [open, setOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
+
+  // Get section ID for current step
+  const getCurrentSectionId = () => {
+    const section = NAV_SECTIONS.find((s) => s.stepNumber === currentStep);
+    return section?.id || NAV_SECTIONS[0].id;
+  };
 
   // Calculate progress percentage
   const progress = (completedSteps.size / 8) * 100;
 
-  // Get current step info
-  const currentStepInfo = STEPS.find((s) => s.number === currentStep);
-  const currentPhase = PHASES.find((p) => p.steps.includes(currentStep as number));
+  const handleSectionClick = (section: NavSection) => {
+    onStepChange(section.stepNumber as Step);
+    // Don't close sheet - let user browse content
+  };
 
-  const handleStepClick = (step: Step) => {
-    onStepChange(step);
-    setOpen(false);
+  // Determine step state
+  const getStepState = (stepNumber: number): "completed" | "current" | "pending" => {
+    if (completedSteps.has(stepNumber)) return "completed";
+    if (stepNumber === currentStep) return "current";
+    return "pending";
   };
 
   return (
@@ -56,118 +176,128 @@ export function MobileSidebar({
           <span className="sr-only">Open navigation</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-72 p-0 bg-card">
-        <SheetHeader className="p-4 border-b border-border">
-          <SheetTitle className="flex items-center gap-2">
-            <span className="text-primary font-display font-bold">DD</span>
-            <span className="text-sm font-normal text-muted-foreground">
-              Configurator
+      <SheetContent side="left" className="w-80 p-0 bg-white flex flex-col">
+        <SheetHeader className="p-4 border-b border-slate-200 shrink-0">
+          <SheetTitle className="flex items-center justify-between">
+            <span className="text-[#0052FF] font-bold text-lg">Dawson Does</span>
+            <span className="text-xs text-slate-500">
+              {completedSteps.size}/{NAV_SECTIONS.length} complete
             </span>
           </SheetTitle>
         </SheetHeader>
 
-        <ScrollArea className="flex-1 h-[calc(100vh-180px)]">
-          <nav className="p-2">
-            {PHASES.map((phase) => {
-              const phaseCompleted = phase.steps.every((s) =>
-                completedSteps.has(s)
-              );
-              const phaseCurrent = phase.steps.includes(currentStep as number);
+        <ScrollArea className="flex-1">
+          <Accordion
+            type="multiple"
+            value={expandedSections}
+            onValueChange={setExpandedSections}
+            className="w-full"
+          >
+            {NAV_SECTIONS.map((section) => {
+              const state = getStepState(section.stepNumber);
+              const isActive = section.stepNumber === currentStep;
+              const badge = sectionBadges[section.id];
 
               return (
-                <div key={phase.id} className="mb-4">
-                  {/* Phase header */}
-                  <div className="flex items-center gap-2 px-3 py-2">
-                    <div
-                      className={cn(
-                        "h-6 w-6 rounded-full flex items-center justify-center text-xs font-medium",
-                        phaseCompleted && "bg-emerald-500 text-white",
-                        phaseCurrent && !phaseCompleted && "bg-primary text-white",
-                        !phaseCurrent && !phaseCompleted && "bg-muted text-muted-foreground"
-                      )}
-                    >
-                      {phaseCompleted ? (
-                        <Check className="h-3 w-3" />
-                      ) : (
-                        phase.label.charAt(0)
+                <AccordionItem
+                  key={section.id}
+                  value={section.id}
+                  className="border-b border-slate-100"
+                >
+                  <AccordionTrigger
+                    onClick={() => handleSectionClick(section)}
+                    className={cn(
+                      "relative px-4 py-3 hover:bg-slate-50 hover:no-underline",
+                      isActive && "bg-[#0052FF]/5"
+                    )}
+                  >
+                    {/* Active indicator bar */}
+                    {isActive && (
+                      <span className="absolute left-0 top-2 bottom-2 w-1 bg-[#0052FF] rounded-r" />
+                    )}
+
+                    <div className="flex items-center gap-3 flex-1">
+                      {/* Status indicator or icon */}
+                      <div
+                        className={cn(
+                          "flex items-center justify-center w-7 h-7 rounded-lg transition-colors",
+                          state === "completed" && "bg-emerald-100 text-emerald-600",
+                          state === "current" && "bg-[#0052FF]/10 text-[#0052FF]",
+                          state === "pending" && "bg-slate-100 text-slate-400"
+                        )}
+                      >
+                        {state === "completed" ? (
+                          <Check className="h-3.5 w-3.5" />
+                        ) : (
+                          <SectionIcon sectionId={section.id} />
+                        )}
+                      </div>
+
+                      {/* Label and description */}
+                      <div className="flex-1 text-left">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={cn(
+                              "font-medium text-sm",
+                              state === "completed" && "text-emerald-600",
+                              state === "current" && "text-[#0052FF]",
+                              state === "pending" && "text-slate-600"
+                            )}
+                          >
+                            {section.label}
+                          </span>
+                          {badge !== undefined && (
+                            <Badge 
+                              variant={state === "completed" ? "success" : "secondary"} 
+                              className="h-5 px-1.5 text-xs"
+                            >
+                              {badge}
+                            </Badge>
+                          )}
+                          {state === "completed" && !badge && (
+                            <Badge variant="success" className="h-5 px-1.5 text-xs">
+                              ✓
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="text-xs text-slate-500 truncate max-w-[180px]">
+                          {section.description}
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+
+                  <AccordionContent className="px-4 pb-4 pt-0">
+                    <div className="pl-10 text-sm text-slate-600">
+                      {children ? children(section.id) : (
+                        <p className="text-slate-500 italic text-xs">
+                          Tap to configure {section.label.toLowerCase()}
+                        </p>
                       )}
                     </div>
-                    <span
-                      className={cn(
-                        "text-sm font-medium",
-                        phaseCurrent && "text-foreground",
-                        !phaseCurrent && "text-muted-foreground"
-                      )}
-                    >
-                      {phase.label}
-                    </span>
-                    {phaseCompleted && (
-                      <Badge variant="success" className="ml-auto text-[10px] px-1.5 py-0">
-                        Done
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Phase steps */}
-                  <div className="pl-6 space-y-1">
-                    {phase.steps.map((stepNum) => {
-                      const step = STEPS.find((s) => s.number === stepNum);
-                      if (!step) return null;
-
-                      const navIcon = NAV_ICONS[stepNum];
-                      const isActive = currentStep === stepNum;
-                      const isCompleted = completedSteps.has(stepNum);
-
-                      return (
-                        <button
-                          key={stepNum}
-                          onClick={() => handleStepClick(stepNum as Step)}
-                          className={cn(
-                            "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-left",
-                            "hover:bg-accent/10",
-                            isActive && "bg-primary/10 text-primary border-l-2 border-primary",
-                            !isActive && isCompleted && "text-emerald-500",
-                            !isActive && !isCompleted && "text-muted-foreground"
-                          )}
-                        >
-                          <Image
-                            src={navIcon?.icon || "/images/configurator/nav/home.svg"}
-                            alt=""
-                            width={20}
-                            height={20}
-                            className={cn(
-                              "transition-opacity",
-                              isActive && "opacity-100",
-                              !isActive && isCompleted && "opacity-80",
-                              !isActive && !isCompleted && "opacity-50"
-                            )}
-                          />
-                          <span className="text-sm">{navIcon?.label || step.label}</span>
-                          {isCompleted && !isActive && (
-                            <Check className="h-4 w-4 ml-auto text-emerald-500" />
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+                  </AccordionContent>
+                </AccordionItem>
               );
             })}
-          </nav>
+          </Accordion>
         </ScrollArea>
 
         {/* Footer with progress */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border bg-card">
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Progress</span>
-              <span className="font-medium">{completedSteps.size}/8 steps</span>
-            </div>
-            <Progress value={progress} className="h-2" />
+        <div className="p-4 border-t border-slate-200 bg-slate-50 shrink-0">
+          <div className="flex items-center justify-between text-sm mb-2">
+            <span className="text-slate-600">Progress</span>
+            <span className="font-medium text-[#0052FF]">
+              {Math.round(progress)}%
+            </span>
+          </div>
+          <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#0052FF] transition-all duration-300 rounded-full"
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
       </SheetContent>
     </Sheet>
   );
 }
-

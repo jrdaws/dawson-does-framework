@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 8cbeb3a 2025-12-24 feat(website): add persistent state for tool status, domain, and AI provider
 - 655bb72 2025-12-24 docs: update 5DS clone tasks with Phase 7 integration tasks
 - 23acf47 2025-12-24 feat(website): wire AccordionSidebar sections in configure page
 - 66fa15a 2025-12-24 feat(website): implement accordion sidebar with inline sections
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - a725c29 2025-12-24 feat(website): add ImageGenProviderPicker component (Task 4.3)
 - b32b656 2025-12-24 feat(website): add AIProviderPicker component (Task 4.1, 4.2, 4.4)
 - 62e18fc 2025-12-24 feat(templates): add nutritional info product feature components
-- 879a543 2025-12-24 feat(website): add My Projects dashboard page (Task 1.5)
 
 ## Agent Governance Structure
 

@@ -424,8 +424,11 @@ export default function ConfigurePage() {
           <MobileSidebar
             currentStep={currentStep}
             completedSteps={completedSteps}
-            onStepChange={setStep}
-          />
+            onStepChange={(step) => setStep(step as Step)}
+            sectionBadges={sectionBadges}
+          >
+            {renderSectionContent}
+          </MobileSidebar>
 
           {/* Breadcrumb */}
           <div className="flex-1">
