@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 46a638e 2025-12-25 docs(sop): add Governance Maintenance SOP - prevents re-bloating
 - 6c81507 2025-12-25 fix(website): replace purple/pink dark mode with warm stone tones
 - 7ac4808 2025-12-25 chore(tasks): cleanup completed tasks in documentation inbox
 - ac7eb2d 2025-12-25 test(configurator): add E2E tests for accordion sidebar and feature selection
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - f278a68 2025-12-25 chore(audit): cycle 15 audit - 732 tests passing, 5-cycle execution gap identified
 - 4447b5c 2025-12-25 docs(curator): cycle 14 curation - 6 tasks distributed, governance pause recommended
 - ea3b7d9 2025-12-25 chore(audit): cycle 13 audit + commit 4+ cycles of uncommitted work
-- 1f62eb1 2025-12-25 docs(curator): cycle 11 curation - 6 tasks distributed (avg 8.4 quality)
 
 ## Agent Governance Structure
 

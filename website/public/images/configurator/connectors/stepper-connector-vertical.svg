@@ -3,7 +3,7 @@
   <!-- Shows progress between steps with gradient and dashed pending -->
   
   <defs>
-    <!-- Completed gradient: Indigo → Violet -->
+    <!-- Completed gradient: Orange → Amber -->
     <linearGradient id="verticalGradient" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#F97316"/>
       <stop offset="100%" stop-color="#EA580C"/>
