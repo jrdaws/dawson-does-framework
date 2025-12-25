@@ -1,7 +1,7 @@
 # Dawson-Does Framework - Cursor Rules
 # Governance Version: 3.0 | Optimized for Token Efficiency
 # Quick Reference: See GOVERNANCE_CARD.md for 50-line summary
-# Hash: 23781cf23f6a | If unchanged, skip re-reading governance files
+# Hash: eefae7ec1d0e | If unchanged, skip re-reading governance files
 
 ---
 
@@ -94,6 +94,16 @@ Fenced commands must be PURE, runnable - no comments inside:
 ✅ GOOD: cd /path/to/project && open file.html
 ```
 Explanations go OUTSIDE the fence, before it.
+
+### Next Agent Prompt Rule (For Agent Handoffs)
+Agent handoffs use relative paths (no cd prefix needed):
+```
+Next Agent: [Role] Agent
+```
+Confirm you are the [Role] Agent.
+Read and execute: output/agents/[role]/inbox/TASK.txt
+```
+```
 
 ---
 

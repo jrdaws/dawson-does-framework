@@ -48,32 +48,45 @@ Next Agent: [Role] Agent
 ```
 Examples: `(DOCUMENTATION AGENT)` | `(WEBSITE AGENT)` | `(TESTING AGENT)`
 
-### 5. Clean Command Blocks (ALL FENCED COMMANDS)
+### 5. Human Terminal Command Rule (FOR HUMAN EXECUTION)
 
-**Fenced command blocks for human execution must be PURE, RUNNABLE commands.**
-
-❌ **NEVER include:**
-- Comments with `#` 
-- Explanatory text
-- Multiple alternative commands
+**When referencing a file for human interaction (view, open, edit, copy from, etc.):**
 
 ✅ **ALWAYS:**
-- Start with `cd /path/to/project &&` 
+- Start with full `cd /Users/joseph.dawson/Documents/dawson-does-framework &&`
 - Chain commands with `&&`
-- One clean, copy-paste-ready block
+- Pure, runnable - no `#` comments inside fence
 
-**BAD:**
-```bash
-# Open in browser
-open file.html
-```
+❌ **NEVER:**
+- Comments with `#` inside fence
+- Relative paths without cd prefix
+- Explanatory text inside fence
 
-**GOOD:**
+**Example - Human opens a file:**
+
+Open the color test page:
+
 ```bash
 cd /Users/joseph.dawson/Documents/dawson-does-framework && open output/shared/design/color-tests/index.html
 ```
 
-**Explanations go OUTSIDE the fence, BEFORE or AFTER - never inside.**
+### 6. Next Agent Prompt Rule (FOR AGENT HANDOFFS)
+
+**When handing off to another agent, use relative paths (no cd prefix needed):**
+
+```
+Next Agent: [Role] Agent
+```
+Confirm you are the [Role] Agent.
+
+Read and execute:
+output/agents/[role]/inbox/TASK_FILE.txt
+```
+```
+
+**Key difference:**
+- Human commands: Need full `cd /path &&` prefix
+- Agent prompts: Use relative paths, start with "Confirm you are..."
 
 ---
 

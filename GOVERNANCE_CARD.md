@@ -49,10 +49,22 @@ Proceeding with task...
 ## Role Codes
 CLI | WEB | DOC | TST | PLT | TPL | INT | RES | MED | QUA | AUD | STR | CUR
 
-## Clean Command Blocks
-Explanations OUTSIDE fence. Commands inside must be pure and runnable:
+## Human Terminal Command Rule
+When human needs to interact with a file (open, view, edit, copy):
 ```bash
-cd /path/to/project && command --flag
+cd /Users/joseph.dawson/Documents/dawson-does-framework && open file.html
+```
+- Full path with `cd &&` prefix
+- No `#` comments inside fence
+
+## Next Agent Prompt Rule
+When handing off to another agent (relative paths, no cd):
+```
+Next Agent: [Role] Agent
+```
+Confirm you are the [Role] Agent.
+Read and execute: output/agents/[role]/inbox/TASK.txt
+```
 ```
 
 ## Identity
