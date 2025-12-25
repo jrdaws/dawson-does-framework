@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 2303165 2025-12-25 docs(mindframe): add Next Agent Prompt generation rule
 - 9108402 2025-12-25 docs(governance): clarify Next Agent Prompt generation rule
 - b61f58b 2025-12-25 chore(media): complete P1 WebP regeneration task
 - 77aea0a 2025-12-25 feat(media): regenerate 5 WebP images with Orange/Stone palette
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - fa2d288 2025-12-25 docs(efficiency): recreate token optimization task with backup instructions
 - 6ac53d1 2025-12-25 feat(design): select Warm Neutral (Scheme C) as official color scheme
 - 80820e7 2025-12-25 docs(task): complete token efficiency optimization task
-- 4f1f675 2025-12-25 feat(governance): implement token efficiency optimization (P0)
 
 ## Agent Governance Structure
 

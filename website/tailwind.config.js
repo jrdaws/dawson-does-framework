@@ -82,17 +82,20 @@ module.exports = {
   		fontFamily: {
   			mono: [
   				'JetBrains Mono',
+  				'SF Mono',
   				'Courier New',
   				'monospace'
   			],
   			sans: [
-  				'Inter',
-  				'system-ui',
+  				'DM Sans',
+  				'-apple-system',
+  				'BlinkMacSystemFont',
   				'sans-serif'
   			],
   			display: [
-  				'Inter',
-  				'system-ui',
+  				'DM Sans',
+  				'-apple-system',
+  				'BlinkMacSystemFont',
   				'sans-serif'
   			]
   		},

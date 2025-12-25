@@ -211,15 +211,18 @@ export function AccordionSidebar({
   return (
     <aside
       className={cn(
-        "hidden md:flex flex-col w-[300px] bg-stone-50 border-r border-stone-200 shadow-sm h-screen",
+        "hidden md:flex flex-col w-[320px] bg-[var(--surface)] border-r border-[var(--border)] shadow-sm h-screen",
         className
       )}
     >
       {/* Logo/Brand area */}
-      <div className="h-14 flex items-center justify-between px-4 border-b border-stone-200 shrink-0">
-        <span className="font-bold text-[#F97316] text-lg">Dawson Does</span>
-        <span className="text-xs text-stone-500">
-          {completedSteps.size}/{NAV_SECTIONS.length} complete
+      <div className="h-14 flex items-center justify-between px-6 border-b border-[var(--border)] shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center text-white font-bold text-sm">D</div>
+          <span className="font-bold text-[var(--text-primary)] text-lg">Dawson Does</span>
+        </div>
+        <span className="text-xs text-[var(--text-secondary)]">
+          {completedSteps.size}/{NAV_SECTIONS.length}
         </span>
       </div>
 
