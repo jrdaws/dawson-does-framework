@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 5aee105 2025-12-25 docs(strategist): cycle 16 strategy - GOVERNANCE PAUSE, 6 executor tasks drafted
 - f278a68 2025-12-25 chore(audit): cycle 15 audit - 732 tests passing, 5-cycle execution gap identified
 - 4447b5c 2025-12-25 docs(curator): cycle 14 curation - 6 tasks distributed, governance pause recommended
 - ea3b7d9 2025-12-25 chore(audit): cycle 13 audit + commit 4+ cycles of uncommitted work
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 031c571 2025-12-24 docs(design): create comprehensive UI specification from reference screenshots
 - 7584307 2025-12-24 fix(preview): add defensive checks for undefined props in all preview components
 - 088f5b7 2025-12-24 fix(api): move user-projects routes to avoid dynamic route conflict
-- 7516e96 2025-12-24 feat(website): add value comparison and enhanced social proof sections
 
 ## Agent Governance Structure
 

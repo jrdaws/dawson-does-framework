@@ -1,118 +1,104 @@
-# Active Agent Tasks - Cycle 14
-# Last Updated: 2025-12-25 17:00 by CURATOR Agent
+# ACTIVATE EXECUTOR AGENTS - Cycle 16
+
+> **Status**: GOVERNANCE PAUSED - Activate executors NOW
+> **Updated**: 2025-12-25 19:00 NZDT
+> **Curator**: CURATOR Agent
 
 ---
 
-## ⚠️⚠️⚠️ CRITICAL: PAUSE GOVERNANCE CYCLES
+## ⚠️ CRITICAL: EXECUTION GAP = 5+ CYCLES
 
-Cycles 11, 12, 13, 14 have distributed tasks. **ZERO were executed.**
-**22 uncommitted files blocking all progress for 4+ cycles.**
-
-### RECOMMENDATION: 
-Do NOT run another Auditor cycle until executor agents complete work.
-
-**START WITH CLI AGENT - T0 UNBLOCKS EVERYTHING**
+Governance agents have been cycling for 5+ cycles with ZERO executor tasks completed.
+DO NOT run another Auditor/Strategist/Curator cycle until at least 3 executor tasks complete.
 
 ---
 
-## Priority 0 (IMMEDIATE - DO FIRST)
+## ACTIVATION SEQUENCE
 
-### CLI AGENT
-Task: Commit All Uncommitted Work (22 files, 4+ cycles overdue)
-File: output/agents/cli/inbox/20251225-1700-P0-task-commit-work.txt
-Quality Score: 9.2/10
-Launch: Read and execute the task in output/agents/cli/inbox/20251225-1700-P0-task-commit-work.txt
+### STEP 1: CLI Agent (5 min) - P0 URGENT
 
----
-
-## Priority 1 (After T0 Complete)
-
-### TESTING AGENT
-Task: Complete Accordion UI Tests
-File: output/agents/testing/inbox/20251225-1700-P1-task-accordion-tests.txt
-Quality Score: 8.6/10
-Launch: Read and execute the task in output/agents/testing/inbox/20251225-1700-P1-task-accordion-tests.txt
-
----
-
-## Priority 2 (Can Execute in Parallel After T0)
-
-### WEBSITE AGENT
-Task: Connected Services UI
-File: output/agents/website/inbox/20251225-1700-P2-task-connected-services-ui.txt
-Quality Score: 8.4/10
-Launch: Read and execute the task in output/agents/website/inbox/20251225-1700-P2-task-connected-services-ui.txt
-
-### TESTING AGENT (after T1 or in parallel)
-Task: Supabase OAuth E2E Tests
-File: output/agents/testing/inbox/20251225-1700-P2-task-oauth-e2e.txt
-Quality Score: 8.0/10
-Launch: Read and execute the task in output/agents/testing/inbox/20251225-1700-P2-task-oauth-e2e.txt
-
----
-
-## Priority 3 (Background/Documentation - Can Run Anytime)
-
-### DOCUMENTATION AGENT
-Task: Create CODING_STANDARDS.md
-File: output/agents/documentation/inbox/20251225-1700-P3-task-coding-standards.txt
-Quality Score: 8.2/10
-Launch: Read and execute the task in output/agents/documentation/inbox/20251225-1700-P3-task-coding-standards.txt
-
-### DOCUMENTATION AGENT
-Task: Create Deployment Guides
-File: output/agents/documentation/inbox/20251225-1700-P3-task-deployment-guides.txt
-Quality Score: 7.8/10
-Launch: Read and execute the task in output/agents/documentation/inbox/20251225-1700-P3-task-deployment-guides.txt
-
----
-
-## Execution Order
+Open new Cursor tab, paste this:
 
 ```
-T0 (CLI: Commit) ────────┬──────────▶ T1 (Testing: Accordion Tests)
-    MUST DO FIRST        │
-                         ├──────────▶ T2 (Website: Services UI)
-                         │
-                         └──────────▶ T4/T5 (Docs: Standards + Guides)
+Read prompts/agents/roles/CLI.md and execute task T0 from Cycle 16 strategy. 
+Commit all uncommitted work and push to origin/main. This is P0 priority.
+```
 
-T1 ──────────────────────▶ T3 (Testing: OAuth E2E)
+### STEP 2: Testing Agent (30 min) - P1
+
+After T0 completes, open new Cursor tab:
+
+```
+Read prompts/agents/roles/TESTING.md and execute task T1 from Cycle 16 strategy.
+Complete the accordion UI tests in website/tests/configurator-accordion.spec.ts.
+Verify the new sidebar accordion behavior works correctly. Run npm test to confirm.
+```
+
+### STEP 3: Website Agent (60 min) - P2
+
+After T1 completes (or in parallel if confident):
+
+```
+Read prompts/agents/roles/WEBSITE.md and execute task T2 from Cycle 16 strategy.
+Create the Connected Services UI component for the configurator.
+Backend routes are ready at website/app/api/services/connected/.
+Integrate into the accordion sidebar. Follow 5DS dark theme design.
+```
+
+### STEP 4: Testing Agent (30 min) - P2 (Parallel OK)
+
+Can run parallel to T2:
+
+```
+Read prompts/agents/roles/TESTING.md and execute task T3 from Cycle 16 strategy.
+Create E2E tests for Supabase OAuth flow in website/tests/supabase-oauth.spec.ts.
+Reference the UploadThing E2E tests for mock patterns. Test OAuth initiation, 
+callback handling, and connected services integration.
+```
+
+### STEP 5: Documentation Agent (40 min) - P3
+
+Lower priority, can run after T0-T3:
+
+```
+Read prompts/agents/roles/DOCUMENTATION.md and execute tasks T4 and T5 from Cycle 16 strategy.
+T4: Create docs/standards/CODING_STANDARDS.md
+T5: Create docs/deploy/vercel.md and docs/deploy/netlify.md
 ```
 
 ---
 
-## Total Active Tasks: 6
-## Agents with Tasks: 4 (CLI, Testing, Website, Documentation)
-## Average Quality Score: 8.4/10
+## TASK SUMMARY
+
+| Task | Agent | Priority | File |
+|------|-------|----------|------|
+| T0 | CLI | P0 | 20251225-1900-P0-task-commit-work.txt |
+| T1 | Testing | P1 | 20251225-1900-P1-task-accordion-tests.txt |
+| T2 | Website | P2 | 20251225-1900-P2-task-connected-services.txt |
+| T3 | Testing | P2 | 20251225-1900-P2-task-oauth-e2e.txt |
+| T4 | Documentation | P3 | 20251225-1900-P3-task-coding-standards.txt |
+| T5 | Documentation | P3 | 20251225-1900-P3-task-deploy-guides.txt |
 
 ---
 
-## Quick Copy Launch Commands
+## DO NOT
 
-**CLI AGENT (P0) - START HERE**
-Read and execute the task in output/agents/cli/inbox/20251225-1700-P0-task-commit-work.txt
-
-**TESTING AGENT (P1)**
-Read and execute the task in output/agents/testing/inbox/20251225-1700-P1-task-accordion-tests.txt
-
-**WEBSITE AGENT (P2)**
-Read and execute the task in output/agents/website/inbox/20251225-1700-P2-task-connected-services-ui.txt
-
-**DOCUMENTATION AGENT (P3)**
-Read and execute the tasks in output/agents/documentation/inbox/ (coding-standards first)
+- ❌ Run Auditor Agent (governance paused)
+- ❌ Run Strategist Agent (governance paused)
+- ❌ Run Curator Agent (governance paused)
+- ❌ Skip the T0 commit task
 
 ---
 
-## Legacy Task Cleanup Needed
+## WHEN TO RESUME GOVERNANCE
 
-The following inbox folders have duplicate tasks from Cycles 11-14:
-- output/cli-agent/inbox/ (4 versions of commit task)
-- output/testing-agent/inbox/ (12 tasks, many duplicates)
-- output/website-agent/inbox/ (4 versions of services UI)
-- output/documentation-agent/inbox/ (13+ tasks, many duplicates)
+Resume governance cycles ONLY when:
+- [ ] T0 complete (commit work)
+- [ ] T1 complete (accordion tests)
+- [ ] T2 complete (connected services UI)
 
-Recommend archiving older versions after current cycle tasks execute.
+3+ executor tasks must complete before next Auditor cycle.
 
 ---
 
-Generated by CURATOR Agent - Cycle 14
+*Generated by CURATOR Agent | Cycle 16 | 2025-12-25 19:00 NZDT*
