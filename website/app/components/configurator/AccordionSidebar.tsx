@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {
   Accordion,
@@ -9,70 +10,105 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Check, Search, Layers, Cpu, MousePointer, Github, Terminal, Database, Rocket } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Check, Github, Database, Rocket } from "lucide-react";
+
+// Custom SVG icon component
+interface SectionIconProps {
+  sectionId: string;
+  className?: string;
+}
+
+function SectionIcon({ sectionId, className }: SectionIconProps) {
+  // Map section IDs to custom SVG icons
+  const customIconSections = ["research", "core-features", "integrate-ai", "cursor", "claude-code"];
+  
+  if (customIconSections.includes(sectionId)) {
+    const iconPath = `/images/configurator/sections/${
+      sectionId === "core-features" ? "features" : 
+      sectionId === "integrate-ai" ? "ai" : 
+      sectionId
+    }.svg`;
+    
+    return (
+      <Image
+        src={iconPath}
+        alt={sectionId}
+        width={20}
+        height={20}
+        className={cn("text-current", className)}
+        style={{ filter: "currentcolor" }}
+      />
+    );
+  }
+  
+  // Fallback to Lucide icons for sections without custom icons
+  switch (sectionId) {
+    case "github":
+      return <Github className={cn("h-5 w-5", className)} />;
+    case "supabase":
+      return <Database className={cn("h-5 w-5", className)} />;
+    case "vercel":
+      return <Rocket className={cn("h-5 w-5", className)} />;
+    default:
+      return null;
+  }
+}
 
 // Sidebar navigation sections matching 5DaySprint design
-interface NavSection {
+export interface NavSection {
   id: string;
-  icon: React.ReactNode;
   label: string;
   description: string;
   stepNumber: number;
+  badge?: string | number;
 }
 
 const NAV_SECTIONS: NavSection[] = [
   {
     id: "research",
-    icon: <Search className="h-5 w-5" />,
     label: "Research",
     description: "Define your project vision",
     stepNumber: 1,
   },
   {
     id: "core-features",
-    icon: <Layers className="h-5 w-5" />,
     label: "Core Features",
     description: "Select features for your project",
     stepNumber: 2,
   },
   {
     id: "integrate-ai",
-    icon: <Cpu className="h-5 w-5" />,
     label: "Integrate AI",
     description: "Add AI capabilities to your project",
     stepNumber: 3,
   },
   {
     id: "cursor",
-    icon: <MousePointer className="h-5 w-5" />,
     label: "Cursor",
     description: "Download & Install Cursor",
     stepNumber: 4,
   },
   {
     id: "github",
-    icon: <Github className="h-5 w-5" />,
     label: "GitHub",
     description: "Create your GitHub repository",
     stepNumber: 5,
   },
   {
     id: "claude-code",
-    icon: <Terminal className="h-5 w-5" />,
     label: "Claude Code",
     description: "Install Claude Code CLI for AI assistance",
     stepNumber: 6,
   },
   {
     id: "supabase",
-    icon: <Database className="h-5 w-5" />,
     label: "Supabase",
     description: "Configure your Supabase project",
     stepNumber: 7,
   },
   {
     id: "vercel",
-    icon: <Rocket className="h-5 w-5" />,
     label: "Vercel",
     description: "Deploy your application",
     stepNumber: 8,
@@ -82,12 +118,21 @@ const NAV_SECTIONS: NavSection[] = [
 // Storage key for expanded state
 const STORAGE_KEY = "accordion-sidebar-expanded";
 
+export type StepState = "completed" | "current" | "pending";
+
+export interface SectionBadges {
+  [sectionId: string]: string | number | undefined;
+}
+
 interface AccordionSidebarProps {
   currentStep: number;
   completedSteps: Set<number>;
   onStepChange: (step: number) => void;
   className?: string;
+  /** Render function for section content - receives sectionId */
   children?: (sectionId: string) => React.ReactNode;
+  /** Badge counts/text per section */
+  sectionBadges?: SectionBadges;
 }
 
 export function AccordionSidebar({
@@ -96,9 +141,16 @@ export function AccordionSidebar({
   onStepChange,
   className,
   children,
+  sectionBadges = {},
 }: AccordionSidebarProps) {
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
+
+  // Get section ID for current step
+  const getCurrentSectionId = () => {
+    const section = NAV_SECTIONS.find((s) => s.stepNumber === currentStep);
+    return section?.id || NAV_SECTIONS[0].id;
+  };
 
   // Load expanded state from localStorage
   useEffect(() => {
@@ -124,11 +176,15 @@ export function AccordionSidebar({
     }
   }, [expandedSections, mounted]);
 
-  // Get section ID for current step
-  const getCurrentSectionId = () => {
-    const section = NAV_SECTIONS.find((s) => s.stepNumber === currentStep);
-    return section?.id || NAV_SECTIONS[0].id;
-  };
+  // Auto-expand current section when step changes
+  useEffect(() => {
+    if (mounted) {
+      const currentSectionId = getCurrentSectionId();
+      if (!expandedSections.includes(currentSectionId)) {
+        setExpandedSections([currentSectionId]);
+      }
+    }
+  }, [currentStep, mounted]);
 
   // Handle section click - navigate to step
   const handleSectionClick = (section: NavSection) => {
@@ -136,7 +192,7 @@ export function AccordionSidebar({
   };
 
   // Determine step state
-  const getStepState = (stepNumber: number): "completed" | "current" | "pending" => {
+  const getStepState = (stepNumber: number): StepState => {
     if (completedSteps.has(stepNumber)) return "completed";
     if (stepNumber === currentStep) return "current";
     return "pending";
@@ -144,7 +200,7 @@ export function AccordionSidebar({
 
   if (!mounted) {
     return (
-      <aside className={cn("hidden md:flex flex-col w-80 bg-white border-r border-slate-200", className)}>
+      <aside className={cn("hidden md:flex flex-col w-[300px] bg-white border-r border-slate-200", className)}>
         <div className="h-14 flex items-center px-4 border-b border-slate-200">
           <span className="font-bold text-[#0052FF]">Loading...</span>
         </div>
@@ -155,12 +211,12 @@ export function AccordionSidebar({
   return (
     <aside
       className={cn(
-        "hidden md:flex flex-col w-80 bg-white border-r border-slate-200 shadow-sm",
+        "hidden md:flex flex-col w-[300px] bg-white border-r border-slate-200 shadow-sm h-screen",
         className
       )}
     >
       {/* Logo/Brand area */}
-      <div className="h-14 flex items-center justify-between px-4 border-b border-slate-200">
+      <div className="h-14 flex items-center justify-between px-4 border-b border-slate-200 shrink-0">
         <span className="font-bold text-[#0052FF] text-lg">Dawson Does</span>
         <span className="text-xs text-slate-500">
           {completedSteps.size}/{NAV_SECTIONS.length} complete
@@ -178,12 +234,14 @@ export function AccordionSidebar({
           {NAV_SECTIONS.map((section) => {
             const state = getStepState(section.stepNumber);
             const isActive = section.stepNumber === currentStep;
+            const isExpanded = expandedSections.includes(section.id);
+            const badge = sectionBadges[section.id];
 
             return (
               <AccordionItem
                 key={section.id}
                 value={section.id}
-                className="border-b-0"
+                className="border-b border-slate-100"
               >
                 <AccordionTrigger
                   onClick={() => handleSectionClick(section)}
@@ -210,21 +268,36 @@ export function AccordionSidebar({
                       {state === "completed" ? (
                         <Check className="h-4 w-4" />
                       ) : (
-                        section.icon
+                        <SectionIcon sectionId={section.id} />
                       )}
                     </div>
 
                     {/* Label and description */}
                     <div className="flex-1 text-left">
-                      <div
-                        className={cn(
-                          "font-medium text-sm",
-                          state === "completed" && "text-emerald-600",
-                          state === "current" && "text-[#0052FF]",
-                          state === "pending" && "text-slate-600"
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={cn(
+                            "font-medium text-sm",
+                            state === "completed" && "text-emerald-600",
+                            state === "current" && "text-[#0052FF]",
+                            state === "pending" && "text-slate-600"
+                          )}
+                        >
+                          {section.label}
+                        </span>
+                        {badge !== undefined && (
+                          <Badge 
+                            variant={state === "completed" ? "success" : "secondary"} 
+                            className="h-5 px-1.5 text-xs"
+                          >
+                            {badge}
+                          </Badge>
                         )}
-                      >
-                        {section.label}
+                        {state === "completed" && !badge && (
+                          <Badge variant="success" className="h-5 px-1.5 text-xs">
+                            Ready
+                          </Badge>
+                        )}
                       </div>
                       <div className="text-xs text-slate-500">
                         {section.description}
@@ -249,7 +322,7 @@ export function AccordionSidebar({
       </ScrollArea>
 
       {/* Progress footer */}
-      <div className="p-4 border-t border-slate-200 bg-slate-50">
+      <div className="p-4 border-t border-slate-200 bg-slate-50 shrink-0">
         <div className="flex items-center justify-between text-sm mb-2">
           <span className="text-slate-600">Progress</span>
           <span className="font-medium text-[#0052FF]">
@@ -267,6 +340,4 @@ export function AccordionSidebar({
   );
 }
 
-export { NAV_SECTIONS };
-export type { NavSection };
-
+export { NAV_SECTIONS, SectionIcon };
