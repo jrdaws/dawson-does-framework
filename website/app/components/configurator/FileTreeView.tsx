@@ -709,5 +709,4 @@ export function generateProjectTree(config: {
   return tree;
 }
 
-export type { TreeNode, FileType, FileHighlight };
 
