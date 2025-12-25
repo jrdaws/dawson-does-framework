@@ -1166,6 +1166,7 @@ async function cmdHelp() {
   framework templates <list|search|info|categories|tags>
   framework export <templateId> <projectDir> [options]
   framework pull <token> [output-dir] [options]
+  framework <token> [options]                           # Pull project by token
   framework <templateId> <projectDir>
 
 Export Options:
@@ -1207,6 +1208,8 @@ Examples:
   framework pull fast-lion-1234                      # Pull project from web platform
   framework pull fast-lion-1234 --cursor --open      # Pull with Cursor AI files and open
   framework pull fast-lion-1234 ./my-app --dry-run   # Preview without making changes
+  framework d9d8c242-19af-4b6d-92d8-6d6a79094abc     # Pull by full UUID token
+  framework swift-eagle-1234                         # Pull by short token
   framework generate -d "A fitness app" -n fittrack  # AI-generate a project
   framework generate                                 # Interactive AI generation
 `);
@@ -1859,6 +1862,22 @@ Examples:
 }
 
 /**
+ * Check if a string looks like a project token (UUID format)
+ * Tokens are UUIDs: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+ * Also supports shorter tokens like: swift-eagle-1234
+ * @param {string} str - String to check
+ * @returns {boolean} True if it looks like a token
+ */
+function isProjectToken(str) {
+  if (!str || typeof str !== "string") return false
+  // Full UUID format (8-4-4-4-12 hex chars)
+  const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  // Short token format: word-word-number (e.g., swift-eagle-1234)
+  const shortTokenPattern = /^[a-z]+-[a-z]+-\d{4,}$/i
+  return uuidPattern.test(str) || shortTokenPattern.test(str)
+}
+
+/**
  * Unified dispatcher (single source of truth)
  */
 const selfPath = realpathSync(fileURLToPath(import.meta.url));
@@ -1934,6 +1953,15 @@ if (isEntrypoint) {
     
     await cmdExport(templateId, projectDir, restArgs);
     process.exit(0);
+  }
+
+  // Check if first arg is a project token (UUID or short format)
+  // This enables: npx @jrdaws/framework d9d8c242-19af-4b6d-...
+  // Or: npx @jrdaws/framework swift-eagle-1234
+  if (isProjectToken(a)) {
+    const pullArgs = process.argv.slice(3) // Everything after the token
+    await cmdPull(a, pullArgs)
+    process.exit(0)
   }
 
   // otherwise treat as template

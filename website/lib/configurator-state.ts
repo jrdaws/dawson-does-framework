@@ -109,6 +109,9 @@ export interface ConfiguratorState {
   mission: string;
   successCriteria: string;
 
+  // Feature selections (5DS clone)
+  selectedFeatures: Record<string, string[]>; // category -> feature IDs
+
   // Actions
   setStep: (step: Step) => void;
   completeStep: (step: Step) => void;
@@ -137,6 +140,12 @@ export interface ConfiguratorState {
   setVision: (vision: string) => void;
   setMission: (mission: string) => void;
   setSuccessCriteria: (criteria: string) => void;
+  
+  // Feature selection actions
+  toggleFeature: (category: string, featureId: string) => void;
+  setFeatures: (category: string, featureIds: string[]) => void;
+  clearFeatures: () => void;
+  
   reset: () => void;
 }
 
@@ -164,6 +173,7 @@ const initialState = {
   vision: '',
   mission: '',
   successCriteria: '',
+  selectedFeatures: {},
 };
 
 export const useConfiguratorStore = create<ConfiguratorState>()(
@@ -244,6 +254,29 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       setSuccessCriteria: (criteria) => set({ successCriteria: criteria }),
 
+      toggleFeature: (category, featureId) => set((state) => {
+        const currentFeatures = state.selectedFeatures[category] || [];
+        const isSelected = currentFeatures.includes(featureId);
+        
+        return {
+          selectedFeatures: {
+            ...state.selectedFeatures,
+            [category]: isSelected
+              ? currentFeatures.filter((id) => id !== featureId)
+              : [...currentFeatures, featureId],
+          },
+        };
+      }),
+
+      setFeatures: (category, featureIds) => set((state) => ({
+        selectedFeatures: {
+          ...state.selectedFeatures,
+          [category]: featureIds,
+        },
+      })),
+
+      clearFeatures: () => set({ selectedFeatures: {} }),
+
       reset: () => set(initialState),
     }),
     {
@@ -264,6 +297,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         vision: state.vision,
         mission: state.mission,
         successCriteria: state.successCriteria,
+        selectedFeatures: state.selectedFeatures,
       }),
       onRehydrateStorage: () => (state) => {
         // Convert completedSteps array back to Set

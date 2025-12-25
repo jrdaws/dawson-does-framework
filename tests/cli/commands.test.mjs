@@ -180,3 +180,43 @@ test("CLI: pull command without token shows usage", () => {
   // Pull without token shows usage, which may exit with 0 or 1
   assert.ok(result.stdout.includes("Usage") || result.stdout.includes("token"), "should show usage");
 });
+
+// Token detection tests - npx @framework {token} should auto-pull
+test("CLI: UUID token as first arg routes to pull", () => {
+  // Full UUID format should trigger pull command
+  const result = runFramework(["d9d8c242-19af-4b6d-92d8-6d6a79094abc", "--dry-run"]);
+  // Should attempt to fetch project (will fail with 404 since token doesn't exist)
+  const output = result.stdout + result.stderr;
+  assert.ok(
+    output.includes("Fetching project configuration") || output.includes("Failed to fetch project"),
+    "UUID token should trigger pull command"
+  );
+});
+
+test("CLI: short token as first arg routes to pull", () => {
+  // Short format (word-word-number) should trigger pull command
+  const result = runFramework(["swift-eagle-1234", "--dry-run"]);
+  const output = result.stdout + result.stderr;
+  assert.ok(
+    output.includes("Fetching project configuration") || output.includes("Failed to fetch project"),
+    "Short token should trigger pull command"
+  );
+});
+
+test("CLI: template name is not treated as token", () => {
+  // Template names like "saas" should not trigger pull
+  const result = runFramework(["saas"]);
+  const output = result.stdout + result.stderr;
+  // Should NOT say "Fetching project" - should fall through to template handling
+  assert.ok(
+    !output.includes("Fetching project configuration"),
+    "Template name should not trigger pull command"
+  );
+});
+
+test("CLI: help shows token usage", () => {
+  const result = runFramework(["--help"]);
+  assert.ok(result.stdout.includes("framework <token>"), "Help should show token usage");
+  assert.ok(result.stdout.includes("Pull by full UUID"), "Help should show UUID example");
+  assert.ok(result.stdout.includes("Pull by short token"), "Help should show short token example");
+});
