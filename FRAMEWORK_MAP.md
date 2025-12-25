@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 07fc3fa 2025-12-24 chore: update framework map and template memory
 - 7c10999 2025-12-24 docs(strategy): Cycle 10 strategy - consolidation focus
 - 0feac84 2025-12-24 docs(cli): complete P1 scaffold without env check task
 - 39ed2f6 2025-12-24 docs(audit): complete cycle 9 - 34 commits, 694 tests, high velocity day
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 1d95f5c 2025-12-24 feat: add color tokens and agent-settings schema + P1 cleanup task
 - 269abd2 2025-12-24 feat: add output/shared/schemas/ and output/shared/design/ folders with READMEs
 - c17a576 2025-12-24 feat: migrate media pipeline shared resources to output/shared/media/ + create P1 task
-- 70c1271 2025-12-24 feat(sops): add Folder Deprecation SOP + mark old agent folders as DEPRECATED
 
 ## Agent Governance Structure
 
