@@ -77,33 +77,35 @@ Standardize the use of shadcn/ui components across the dawson-does-framework web
 
 Map our brand colors to shadcn CSS variables in `globals.css`:
 
+> **Reference**: See `output/shared/media/COLOR_PHILOSOPHY.md` for official brand colors (v2.0 - Warm Neutral)
+
 ```css
 :root {
-  /* shadcn expects these variables */
-  --primary: 239 84% 67%;           /* #6366F1 Indigo */
+  /* shadcn expects these variables - Warm Neutral palette */
+  --primary: 25 95% 53%;            /* #F97316 Orange */
   --primary-foreground: 0 0% 100%;  /* White */
   
-  --secondary: 263 90% 66%;         /* #8B5CF6 Violet */
+  --secondary: 160 84% 39%;         /* #10B981 Emerald (success only) */
   --secondary-foreground: 0 0% 100%;
   
-  --accent: 160 84% 39%;            /* #10B981 Emerald */
+  --accent: 38 92% 50%;             /* #F59E0B Amber */
   --accent-foreground: 0 0% 100%;
   
   --destructive: 0 84% 60%;         /* #EF4444 Red */
   --destructive-foreground: 0 0% 100%;
   
-  --muted: 240 4% 46%;              /* #71717A Gray */
-  --muted-foreground: 240 5% 65%;
+  --muted: 30 6% 47%;               /* #78716C Stone */
+  --muted-foreground: 30 5% 55%;
   
-  --background: 0 0% 4%;            /* #0A0A0A Near Black */
-  --foreground: 0 0% 93%;           /* #EDEDED Light */
+  --background: 20 14% 4%;          /* #0C0A09 Stone 950 */
+  --foreground: 30 7% 97%;          /* #FAFAF9 Stone 50 */
   
-  --card: 0 0% 7%;                  /* Slightly lighter than bg */
-  --card-foreground: 0 0% 93%;
+  --card: 20 14% 10%;               /* Stone 900 */
+  --card-foreground: 30 7% 97%;
   
-  --border: 0 0% 20%;               /* #333333 */
-  --input: 0 0% 20%;
-  --ring: 239 84% 67%;              /* Indigo focus ring */
+  --border: 20 14% 15%;             /* Stone 800 */
+  --input: 20 14% 15%;
+  --ring: 25 95% 53%;               /* Orange focus ring */
 }
 ```
 
@@ -204,8 +206,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
       onClick={() => onSelect(opt.id)}
       className={`p-4 rounded-lg border ${
         selected === opt.id 
-          ? "border-indigo-500 bg-indigo-500/10" 
-          : "border-gray-700"
+          ? "border-orange-500 bg-orange-500/10" 
+          : "border-stone-700"
       }`}
     >
       {opt.label}
@@ -264,13 +266,13 @@ const [activeTab, setActiveTab] = useState("preview");
 
 <div className="flex gap-2">
   <button
-    className={activeTab === "preview" ? "bg-indigo-500" : "bg-gray-700"}
+    className={activeTab === "preview" ? "bg-orange-500" : "bg-stone-700"}
     onClick={() => setActiveTab("preview")}
   >
     Preview
   </button>
   <button
-    className={activeTab === "generate" ? "bg-indigo-500" : "bg-gray-700"}
+    className={activeTab === "generate" ? "bg-orange-500" : "bg-stone-700"}
     onClick={() => setActiveTab("generate")}
   >
     Generate
@@ -362,7 +364,7 @@ const badgeVariants = cva(
         // Custom variants for our brand
         success: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
         warning: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-        info: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
+        info: "bg-orange-500/20 text-orange-400 border-orange-500/30",
       },
     },
   }
@@ -408,7 +410,7 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/comp
 ```tsx
 <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
   <div 
-    className="h-full bg-indigo-500 transition-all"
+    className="h-full bg-orange-500 transition-all"
     style={{ width: `${progress}%` }}
   />
 </div>
@@ -554,8 +556,8 @@ const buttonVariants = cva(
         // ... existing variants
         
         // Custom brand variants
-        brand: "bg-gradient-to-r from-indigo-500 to-violet-500 text-white hover:opacity-90",
-        "brand-outline": "border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500/10",
+        brand: "bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:opacity-90",
+        "brand-outline": "border-2 border-orange-500 text-orange-500 hover:bg-orange-500/10",
       },
     },
   }
@@ -643,7 +645,7 @@ Before merging UI changes:
 - [shadcn/ui Documentation](https://ui.shadcn.com)
 - [Radix UI Primitives](https://www.radix-ui.com/primitives)
 - [Tailwind CSS](https://tailwindcss.com/docs)
-- [Our Color Philosophy](../output/shared/media/COLOR_PHILOSOPHY.md)
+- [Our Color Philosophy](../../output/shared/media/COLOR_PHILOSOPHY.md) - Official brand colors (Warm Neutral v2.0)
 
 ---
 

@@ -218,7 +218,7 @@ Write to `output/agents/quality/workspace/[project]-review.md`:
 **Feedback for Media Agent**:
 1. Resize to 64x64
 2. Adjust stroke to consistent 2px
-3. Use exact color #6366F1 from tokens
+3. Use exact color #F97316 from tokens (see COLOR_PHILOSOPHY.md)
 
 ### ❌ feature-illustration.webp - REJECTED (42/100)
 - **Visual Quality**: 15/40 - AI artifacts visible, hands malformed

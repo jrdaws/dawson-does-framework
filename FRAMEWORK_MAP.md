@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 688f777 2025-12-25 docs(governance): clarify Human Terminal Command vs Next Agent Prompt rules
 - 73b2216 2025-12-25 chore(media): complete P2 orange palette migration task
 - 762bfc5 2025-12-25 fix(media): update all SVG assets from Indigo to Orange palette
 - 4377555 2025-12-25 docs(governance): enforce Quick Actions + Handoff on EVERY response
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - fa88398 2025-12-25 docs(efficiency): add archive retention policy - no auto-delete, manual review for 90+ days
 - c163450 2025-12-25 docs(efficiency): create token optimization task - P0 cost reduction
 - 5ae4f3a 2025-12-25 docs(design): add color scheme research and 3 test mockup specifications
-- 3031d63 2025-12-25 docs(curator): update curator memory with cycle 16 session
 
 ## Agent Governance Structure
 

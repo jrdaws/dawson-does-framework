@@ -8,24 +8,30 @@
 
 ### 1. Color Tokens
 
+> **Reference**: See `output/shared/media/COLOR_PHILOSOPHY.md` for official brand colors (v2.0 - Warm Neutral)
+
 ```json
-// colors.tokens.json
+// colors.tokens.json - Warm Neutral Palette
 {
   "brand": {
-    "primary": "#6366f1",
-    "secondary": "#8b5cf6",
-    "accent": "#f59e0b"
+    "primary": "#F97316",
+    "primaryHover": "#EA580C",
+    "primaryLight": "#FFF7ED",
+    "accent": "#10B981"
   },
   "semantic": {
-    "success": "#22c55e",
-    "warning": "#f59e0b",
-    "error": "#ef4444",
-    "info": "#3b82f6"
+    "success": "#10B981",
+    "warning": "#F59E0B",
+    "error": "#EF4444",
+    "info": "#F97316"
   },
   "neutral": {
-    "50": "#fafafa",
-    "100": "#f5f5f5",
-    "900": "#171717"
+    "50": "#FAFAF9",
+    "100": "#F5F5F4",
+    "200": "#E7E5E4",
+    "500": "#78716C",
+    "900": "#1C1917",
+    "950": "#0C0A09"
   }
 }
 ```
@@ -95,8 +101,8 @@
   },
   "input": {
     "borderRadius": "0.375rem",
-    "borderColor": "#e5e7eb",
-    "focusRing": "#6366f1"
+    "borderColor": "#E7E5E4",
+    "focusRing": "#F97316"
   }
 }
 ```
@@ -125,11 +131,12 @@ export default {
 ### In CSS Variables
 
 ```css
-/* Generated from tokens */
+/* Generated from tokens - Warm Neutral palette */
 :root {
-  --color-primary: #6366f1;
-  --color-secondary: #8b5cf6;
-  --font-sans: Inter, system-ui, sans-serif;
+  --color-primary: #F97316;
+  --color-primary-hover: #EA580C;
+  --color-success: #10B981;
+  --font-sans: DM Sans, system-ui, sans-serif;
   --space-4: 1rem;
 }
 ```
