@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TEMPLATES } from "@/lib/templates";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Dynamically import components to avoid SSR issues
 const ConfiguratorSidebar = dynamic(() => import("@/app/components/configurator/ConfiguratorSidebar").then(mod => ({ default: mod.ConfiguratorSidebar })), { ssr: false });
@@ -44,6 +44,11 @@ const getPhaseForStep = (step: number): string => {
 
 export default function ConfigurePage() {
   const [aiTab, setAiTab] = useState<"component" | "preview" | "generate">("component");
+  
+  // Track navigation direction for slide animations
+  const [animationDirection, setAnimationDirection] = useState<"left" | "right">("right");
+  const [animationKey, setAnimationKey] = useState(0);
+  const prevStepRef = useRef<number | null>(null);
 
   const {
     currentStep,
@@ -78,6 +83,15 @@ export default function ConfigurePage() {
   } = useConfiguratorStore();
 
   const selectedTemplate = TEMPLATES[template as keyof typeof TEMPLATES];
+
+  // Track step changes and set animation direction
+  useEffect(() => {
+    if (prevStepRef.current !== null && prevStepRef.current !== currentStep) {
+      setAnimationDirection(currentStep > prevStepRef.current ? "right" : "left");
+      setAnimationKey((k) => k + 1);
+    }
+    prevStepRef.current = currentStep;
+  }, [currentStep]);
 
   // Calculate progress
   const progress = (completedSteps.size / 8) * 100;
@@ -181,7 +195,12 @@ export default function ConfigurePage() {
 
         {/* Scrollable Content */}
         <main className="flex-1 overflow-auto">
-          <div className="max-w-6xl mx-auto px-6 py-8">
+          <div 
+            key={animationKey}
+            className={`max-w-6xl mx-auto px-6 py-8 ${
+              animationDirection === "right" ? "slide-in-right" : "slide-in-left"
+            }`}
+          >
             {currentStep === 1 && (
               <TemplateSelector
                 selectedTemplate={template}

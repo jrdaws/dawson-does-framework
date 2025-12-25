@@ -237,6 +237,104 @@
   .celebration-enter {
     animation: celebrationPop 0.5s ease-out forwards;
   }
+
+  /* Panel slide animations (per UX Proposal) */
+  .panel-enter {
+    animation: panelSlideIn 200ms ease-out forwards;
+  }
+
+  .panel-exit {
+    animation: panelSlideOut 150ms ease-in forwards;
+  }
+
+  /* Content fade for step transitions */
+  .content-enter {
+    animation: contentFadeIn 250ms ease-out forwards;
+  }
+
+  .content-exit {
+    animation: contentFadeOut 150ms ease-in forwards;
+  }
+
+  /* Slide from right for next step */
+  .slide-in-right {
+    animation: slideInRight 250ms ease-out forwards;
+  }
+
+  /* Slide from left for previous step */
+  .slide-in-left {
+    animation: slideInLeft 250ms ease-out forwards;
+  }
+}
+
+/* Panel slide keyframes (per UX Proposal animation guidelines) */
+@keyframes panelSlideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes panelSlideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* Content fade keyframes */
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes contentFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* Slide from right (next step) */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide from left (previous step) */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes phasePulse {
