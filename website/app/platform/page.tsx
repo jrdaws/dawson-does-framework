@@ -22,6 +22,11 @@ import {
   Star,
   ChevronRight,
   Play,
+  DollarSign,
+  Timer,
+  Puzzle,
+  TrendingDown,
+  X,
 } from "lucide-react";
 
 const features = [
@@ -133,6 +138,52 @@ const comparisons = [
   { feature: "One-click deploy", us: true, them: true },
   { feature: "Export to local", us: true, them: false },
   { feature: "Customize everything", us: true, them: false },
+];
+
+// Value comparison data
+const valueMetrics = [
+  {
+    icon: Timer,
+    title: "Development Time",
+    withFramework: "5 minutes",
+    withoutFramework: "3-4 weeks",
+    savings: "99%",
+    color: "text-emerald-500",
+    bgColor: "bg-emerald-500",
+  },
+  {
+    icon: DollarSign,
+    title: "Development Cost",
+    withFramework: "$0",
+    withoutFramework: "$5,000-15,000",
+    savings: "100%",
+    color: "text-[#0052FF]",
+    bgColor: "bg-[#0052FF]",
+  },
+  {
+    icon: Puzzle,
+    title: "Integration Complexity",
+    withFramework: "Pre-configured",
+    withoutFramework: "Manual setup",
+    savings: "90%",
+    color: "text-violet-500",
+    bgColor: "bg-violet-500",
+  },
+];
+
+const buildFromScratchTasks = [
+  { task: "Set up Next.js project", time: "30 min", done: true },
+  { task: "Configure TypeScript", time: "15 min", done: true },
+  { task: "Set up Tailwind CSS", time: "20 min", done: true },
+  { task: "Integrate Supabase auth", time: "4-8 hours", done: false },
+  { task: "Implement Stripe billing", time: "8-16 hours", done: false },
+  { task: "Add PostHog analytics", time: "2-4 hours", done: false },
+  { task: "Configure file storage", time: "2-4 hours", done: false },
+  { task: "Set up OpenAI/Anthropic", time: "2-4 hours", done: false },
+  { task: "Create .env templates", time: "1 hour", done: false },
+  { task: "Write documentation", time: "4-8 hours", done: false },
+  { task: "Set up health checks", time: "2-4 hours", done: false },
+  { task: "Create deployment config", time: "2-4 hours", done: false },
 ];
 
 export default function PlatformPage() {
@@ -340,6 +391,160 @@ export default function PlatformPage() {
                 <p className="text-slate-600 text-sm">{step.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Value Comparison Section */}
+      <section id="value" className="py-24 px-4 bg-gradient-to-b from-slate-50 to-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-emerald-500/10 text-emerald-600 border-0">
+              <TrendingDown className="mr-1 h-3 w-3" />
+              Value Comparison
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+              Save Weeks of Development Time
+            </h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+              See exactly how much time, money, and effort you save compared to building from scratch.
+            </p>
+          </div>
+
+          {/* Savings Metrics */}
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {valueMetrics.map((metric) => (
+              <Card key={metric.title} className="border-0 shadow-lg overflow-hidden">
+                <CardContent className="p-0">
+                  <div className={`${metric.bgColor} p-6 text-white`}>
+                    <metric.icon className="h-8 w-8 mb-3" />
+                    <div className="text-4xl font-bold mb-1">{metric.savings}</div>
+                    <div className="text-white/80">Time/Cost Savings</div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-bold text-slate-900 mb-4">{metric.title}</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-slate-500">With Framework</span>
+                        <span className="font-semibold text-emerald-600">{metric.withFramework}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-slate-500">From Scratch</span>
+                        <span className="font-semibold text-red-500 line-through">{metric.withoutFramework}</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Side by Side Comparison */}
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* With Framework */}
+            <Card className="border-2 border-[#0052FF] shadow-lg shadow-[#0052FF]/10">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-lg bg-[#0052FF] flex items-center justify-center">
+                    <Zap className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900">With Framework</h3>
+                    <p className="text-sm text-emerald-600 font-medium">~ 5 minutes total</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 p-3 bg-emerald-50 rounded-lg">
+                    <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                    <span className="text-slate-700">Run one NPX command</span>
+                    <span className="ml-auto text-xs text-emerald-600 font-medium">1 min</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-emerald-50 rounded-lg">
+                    <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                    <span className="text-slate-700">All integrations pre-configured</span>
+                    <span className="ml-auto text-xs text-emerald-600 font-medium">0 min</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-emerald-50 rounded-lg">
+                    <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                    <span className="text-slate-700">Add your API keys</span>
+                    <span className="ml-auto text-xs text-emerald-600 font-medium">2 min</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-emerald-50 rounded-lg">
+                    <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                    <span className="text-slate-700">Deploy to Vercel</span>
+                    <span className="ml-auto text-xs text-emerald-600 font-medium">2 min</span>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-[#0052FF]/5 rounded-lg border border-[#0052FF]/20">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-slate-900">Total Time</span>
+                    <span className="text-2xl font-bold text-[#0052FF]">~5 min</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Without Framework */}
+            <Card className="border border-slate-200">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-lg bg-slate-200 flex items-center justify-center">
+                    <Clock className="h-5 w-5 text-slate-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900">Building From Scratch</h3>
+                    <p className="text-sm text-red-500 font-medium">~ 40-80 hours total</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-2 max-h-[280px] overflow-y-auto pr-2">
+                  {buildFromScratchTasks.map((item, index) => (
+                    <div 
+                      key={index}
+                      className={`flex items-center gap-3 p-2.5 rounded-lg ${
+                        item.done ? 'bg-slate-50' : 'bg-red-50'
+                      }`}
+                    >
+                      {item.done ? (
+                        <Check className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                      ) : (
+                        <X className="h-4 w-4 text-red-400 flex-shrink-0" />
+                      )}
+                      <span className={`text-sm ${item.done ? 'text-slate-500' : 'text-slate-700'}`}>
+                        {item.task}
+                      </span>
+                      <span className={`ml-auto text-xs font-medium ${
+                        item.done ? 'text-slate-400' : 'text-red-500'
+                      }`}>
+                        {item.time}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 p-4 bg-red-50 rounded-lg border border-red-100">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-slate-900">Total Time</span>
+                    <span className="text-2xl font-bold text-red-500">40-80 hrs</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="text-center mt-12">
+            <p className="text-slate-600 mb-4">
+              That's <span className="font-bold text-[#0052FF]">480x faster</span> than building from scratch.
+            </p>
+            <Link href="/configure">
+              <Button size="lg" className="bg-[#0052FF] hover:bg-[#0052FF]/90">
+                Start Saving Time Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

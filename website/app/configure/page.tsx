@@ -23,6 +23,7 @@ const ComponentAwarePreview = dynamic(() => import("@/app/components/configurato
 const ProjectGenerator = dynamic(() => import("@/app/components/configurator/ProjectGenerator").then(mod => ({ default: mod.ProjectGenerator })), { ssr: false });
 const ContextFields = dynamic(() => import("@/app/components/configurator/ContextFields").then(mod => ({ default: mod.ContextFields })), { ssr: false });
 const ExportView = dynamic(() => import("@/app/components/configurator/ExportView").then(mod => ({ default: mod.ExportView })), { ssr: false });
+const GenerateFramework = dynamic(() => import("@/app/components/configurator/GenerateFramework").then(mod => ({ default: mod.GenerateFramework })), { ssr: false });
 const LivePreviewPanel = dynamic(() => import("@/app/components/configurator/LivePreviewPanel").then(mod => ({ default: mod.LivePreviewPanel })), { ssr: false });
 const PreviewToggleButton = dynamic(() => import("@/app/components/configurator/LivePreviewPanel").then(mod => ({ default: mod.PreviewToggleButton })), { ssr: false });
 
@@ -352,16 +353,7 @@ export default function ConfigurePage() {
             )}
 
             {currentStep === 8 && (
-              <ExportView
-                template={template}
-                projectName={projectName}
-                outputDir={outputDir}
-                integrations={integrations}
-                vision={vision}
-                mission={mission}
-                successCriteria={successCriteria}
-                envKeys={envKeys}
-              />
+              <GenerateFramework />
             )}
           </div>
         </main>
