@@ -2,7 +2,7 @@
 
 > **Purpose**: Track CLI Agent session history, priorities, and context
 > **Agent Role**: CLI Agent
-> **Last Updated**: 2025-12-22
+> **Last Updated**: 2025-12-24
 
 ---
 
@@ -18,18 +18,55 @@
 8. ✅ Pull command updated for new standardized API format
 9. ✅ Deploy command enhanced (P2 task completed)
 10. ✅ Generate command implemented (AI-powered project generation)
-11. All CLI work complete and synced with Platform API
-12. (Optional) Live API testing with production endpoint
+11. ✅ Export without env vars (P2 task completed)
+12. All CLI work complete and synced with Platform API
+13. (Optional) Live API testing with production endpoint
 
 ---
 
 ## Known Blockers
 
-- None - Pull command is production-ready
+- None - All CLI features production-ready
 
 ---
 
 ## Session History
+
+### Session: 2025-12-24 18:15 PST (Export Without Env Vars - P2)
+
+**Work Completed**
+- ✅ Executed P2 task: Enable export without env vars
+- ✅ Generate `.env.local.example` with all required integration env vars
+- ✅ Add "Environment Setup" section to generated README
+- ✅ Append env setup instructions to existing template READMEs
+- ✅ All 710 tests passing
+
+**Changes Made**
+1. **bin/framework.js**: Enhanced export command to:
+   - Generate `.env.local.example` with integration-specific env vars
+   - Also copy to `.env.example` for compatibility
+   - Build "Environment Setup" section with credentials instructions
+   - Append env setup to existing template READMEs (if not already present)
+
+**Features Added**
+- New file: `.env.local.example` generated on export with all required vars
+- README gets "Environment Setup" section with:
+  - Copy command for env file
+  - Integration-specific setup instructions (Supabase, Stripe, Clerk, etc.)
+  - Links to provider dashboards
+
+**Verified Success Criteria**
+1. ✅ `npx @jrdaws/framework export saas ./test --payments stripe` works without env
+2. ✅ Generated `.env.local.example` includes all required variables
+3. ✅ README includes "Environment Setup" section
+4. ✅ All 710 tests pass: npm test
+
+**Task Completed**
+- Moved `20251224-1800-P2-task-scaffold-without-env.txt` to `done/`
+- Committed: `feat(cli): allow export without env vars`
+- Pushed to origin/main
+
+---
 
 ### Session: 2025-12-24 16:45 PST (Scaffold Without Env Check - P1)
 
