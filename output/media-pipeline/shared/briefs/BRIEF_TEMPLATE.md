@@ -59,11 +59,26 @@
 | hero-001 | hero-main | 1920x1080 | WebP | P1 | [Description] |
 | hero-002 | hero-mobile | 750x1334 | WebP | P1 | [Description] |
 
-**Generation Prompt for hero-001**:
+**Generation Prompt for hero-001** (MUST use photorealistic formula):
 ```
-[Detailed, specific prompt for AI image generation]
-[Include style descriptors, mood, composition notes]
-[Negative prompts if applicable]
+[Subject description], shot on [Camera Model] with [Lens mm f/stop],
+[Lighting description], [Photography style], [Color grade/post-processing]
+
+Negative prompt: cartoon, illustration, 3d render, CGI, anime, 
+oversaturated, plastic skin, waxy, stock photo generic, perfect symmetry,
+uncanny valley, HDR overdone, malformed hands, bad anatomy
+```
+
+**Example (copy and adapt):**
+```
+Professional woman working on MacBook Pro in modern co-working space,
+candid focused expression, shot on Canon EOS R5 with 85mm f/1.4 lens,
+natural window light from left side, shallow depth of field with soft bokeh,
+editorial lifestyle photography, subtle Lightroom color grade
+
+Negative prompt: cartoon, illustration, 3d render, CGI, anime, 
+oversaturated, plastic skin, waxy, stock photo generic, perfect symmetry,
+uncanny valley, HDR overdone, malformed hands, bad anatomy, vacant stare
 ```
 
 ### Category 2: Icons

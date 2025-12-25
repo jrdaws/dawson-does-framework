@@ -21,7 +21,8 @@
 11. ✅ Export without env vars (P2 task completed)
 12. ✅ NPX token command system (5DS Clone 1.6 completed)
 13. ✅ Feature-assembler integration with pull command
-14. All CLI work complete and synced with Platform API
+14. ✅ Clone command implemented (wrapper for pull+features)
+15. All CLI work complete and synced with Platform API
 15. (Optional) Live API testing with production endpoint
 
 ---
@@ -33,6 +34,23 @@
 ---
 
 ## Session History
+
+### Session: 2025-12-24 (Clone Command)
+
+**Work Completed**
+- ✅ Added dedicated `clone` command as wrapper for pull+features
+- ✅ Clone always enables `--cursor` for AI-ready projects
+- ✅ Updated help with Clone Options section and examples
+- ✅ Added 4 tests for clone command functionality
+- ✅ All 732 tests passing
+
+**Clone Command Usage**:
+```bash
+npx @jrdaws/framework clone swift-eagle-1234
+npx @jrdaws/framework clone {token} ./my-project --open
+```
+
+---
 
 ### Session: 2025-12-24 (Feature Assembler Integration)
 

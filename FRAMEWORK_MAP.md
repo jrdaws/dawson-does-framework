@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 5e916a0 2025-12-24 feat(cli): add clone command for configurator projects
 - 77fa719 2025-12-24 feat(website): add CompletionChecklist component (Task 5.1)
 - ee196a2 2025-12-24 feat(templates): complete all feature template files for feature-mapping.json
 - a725c29 2025-12-24 feat(website): add ImageGenProviderPicker component (Task 4.3)
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - f1f5fe4 2025-12-24 feat(website): implement 3-panel integration selector and workspace layout
 - 2154c90 2025-12-24 docs(memory): record successful Vercel deployment
 - 5cd1744 2025-12-24 fix(website): resolve Vercel build issues with tsconfig paths and stubs
-- 86f8098 2025-12-24 fix(website): update stubs to match actual package APIs for Vercel build
 
 ## Agent Governance Structure
 
