@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 39ed2f6 2025-12-24 docs(audit): complete cycle 9 - 34 commits, 694 tests, high velocity day
 - 39e2753 2025-12-24 chore(audit): pre-audit commit - framework.js + memory update
 - 8858ab9 2025-12-24 chore(memory): checkpoint - Auditor approved checkpoint snapshots
 - a964eaf 2025-12-24 chore(auditor): approve checkpoint snapshots feature
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 70c1271 2025-12-24 feat(sops): add Folder Deprecation SOP + mark old agent folders as DEPRECATED
 - 8a1fd77 2025-12-24 feat(sops): add Agent Creation SOP with automation script
 - f15b215 2025-12-24 feat(agents): add default settings.json for all 13 agents + P1 task for path updates
-- a85827a 2025-12-24 chore(curator): complete cycle 9 - 5 tasks distributed (8.6 avg score)
 
 ## Agent Governance Structure
 
