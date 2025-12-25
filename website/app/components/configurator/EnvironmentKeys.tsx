@@ -224,7 +224,7 @@ export function EnvironmentKeys({
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Key className={`h-4 w-4 ${isFilled ? "text-primary" : "text-muted-foreground"}`} />
-                  {doc?.label || envVar}
+                    {doc?.label || envVar}
                   {isFilled && <Badge variant="success" className="ml-auto">Filled</Badge>}
                 </CardTitle>
               </CardHeader>
@@ -372,30 +372,30 @@ export function EnvironmentKeys({
               <CardContent className="space-y-4">
                 <p className="text-xs text-muted-foreground">
                   If you prefer, copy this content and paste it into a new file called <code className="text-primary">.env.local</code> in your project root:
-                </p>
+              </p>
                 <pre className="text-xs bg-muted p-4 rounded border border-border overflow-x-auto font-mono text-foreground">
-                  {requiredEnvVars.map((varName) => (
-                    <div key={varName}>
-                      {varName}={envKeys[varName] || "your_value_here"}
-                    </div>
-                  ))}
-                </pre>
-                <Button
-                  onClick={handleCopyEnvFile}
+                {requiredEnvVars.map((varName) => (
+                  <div key={varName}>
+                    {varName}={envKeys[varName] || "your_value_here"}
+                  </div>
+                ))}
+              </pre>
+              <Button
+                onClick={handleCopyEnvFile}
                   className="w-full"
-                >
-                  {copiedKey === "__all__" ? (
-                    <>
-                      <Check className="mr-2 h-4 w-4" />
+              >
+                {copiedKey === "__all__" ? (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
                       Copied to Clipboard!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="mr-2 h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    <Copy className="mr-2 h-4 w-4" />
                       Copy .env.local Content
-                    </>
-                  )}
-                </Button>
+                  </>
+                )}
+              </Button>
               </CardContent>
             </Card>
 

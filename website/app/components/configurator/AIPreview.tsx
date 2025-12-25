@@ -266,11 +266,11 @@ export function AIPreview({
             <CardTitle className="text-sm flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" />
               AI Generation Controls
-              {!userApiKey && remainingDemoGenerations !== null && (
+            {!userApiKey && remainingDemoGenerations !== null && (
                 <Badge variant="info" className="ml-auto">
-                  {remainingDemoGenerations} demo generations remaining
+                {remainingDemoGenerations} demo generations remaining
                 </Badge>
-              )}
+            )}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -464,11 +464,11 @@ export function AIPreview({
                     {localPreviewHtml !== previewHtml && !saved && (
                       <Badge variant="warning" className="ml-2">unsaved changes</Badge>
                     )}
-                    {components.length > 0 && (
+                  {components.length > 0 && (
                       <span className="ml-auto text-[10px] text-muted-foreground">
-                        Components: {components.join(" · ")}
-                      </span>
-                    )}
+                      Components: {components.join(" · ")}
+                    </span>
+                  )}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0" style={{ height: "700px" }}>
@@ -526,11 +526,11 @@ export function AIPreview({
             <CardTitle className="text-sm flex items-center gap-2 text-primary">
               <Info className="h-4 w-4" />
               About AI Preview
-              {generatedAt && (
+            {generatedAt && (
                 <span className="ml-auto text-[10px] text-muted-foreground font-normal">
-                  Generated: {new Date(generatedAt).toLocaleTimeString()}
-                </span>
-              )}
+                Generated: {new Date(generatedAt).toLocaleTimeString()}
+              </span>
+            )}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-muted-foreground">

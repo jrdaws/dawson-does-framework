@@ -117,7 +117,7 @@ export function IntegrationSelector({
                         className="opacity-80"
                       />
                     )}
-                    <CardTitle className="text-lg capitalize">{type}</CardTitle>
+                  <CardTitle className="text-lg capitalize">{type}</CardTitle>
                   </div>
                   {isRequired && <Badge variant="destructive">Required</Badge>}
                 </div>

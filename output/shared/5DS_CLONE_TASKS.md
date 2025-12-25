@@ -29,12 +29,12 @@
 
 | Task | Agent | Status | Inbox File |
 |------|-------|--------|------------|
-| 3.1 Guided Setup Component | Website | 📋 Ready (1.3 done) | - |
-| 3.2 Cursor Setup | Website | ⏳ Waiting on 3.1 | - |
-| 3.3 GitHub Setup | Website | ⏳ Waiting on 3.1 | - |
-| 3.4 Claude Code Setup | Website | ⏳ Waiting on 3.1 | - |
+| 3.1 Guided Setup Component | Website | ✅ Complete | - |
+| 3.2 Cursor Setup | Website | ✅ Complete (in 3.1) | - |
+| 3.3 GitHub Setup | Website | ✅ Complete (in 3.1) | - |
+| 3.4 Claude Code Setup | Website | ✅ Complete (in 3.1) | - |
 | 3.5 Supabase OAuth | Platform | ⏳ Waiting on 1.1 | - |
-| 3.6 Vercel Deploy | Website | ⏳ Waiting on 3.1 | - |
+| 3.6 Vercel Deploy | Website | ✅ Complete (in 3.1) | - |
 
 ## Phase 4: AI Integration (Week 4-5)
 

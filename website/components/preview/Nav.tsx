@@ -63,12 +63,12 @@ export function Nav({
           {previewMode ? (
             // Static preview buttons
             <>
-              <button className="text-gray-400 hover:text-white transition-colors text-sm">
-                Log in
-              </button>
+          <button className="text-gray-400 hover:text-white transition-colors text-sm">
+            Log in
+          </button>
               <button className="px-4 py-2 bg-[#0052FF] hover:bg-[#0052FF]/90 text-white rounded-lg text-sm font-medium transition-colors">
-                Sign up
-              </button>
+            Sign up
+          </button>
             </>
           ) : user ? (
             // Logged in state
