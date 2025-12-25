@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 623b964 2025-12-24 feat(cli): integrate feature-assembler with pull command
 - 20ea1ce 2025-12-24 feat(website): add ProjectOverviewBox component (Task 2.3)
 - 9002bde 2025-12-24 docs(priorities): mark feature-to-code mapping as complete
 - be86b51 2025-12-24 feat(website): add Core Features UI and NPX Command Display components
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - e96bf62 2025-12-24 test(website): expand configurator E2E tests - 48 tests pass
 - a5b0933 2025-12-24 docs(deploy): add provider-specific deployment guides
 - 48fc52f 2025-12-24 chore(agents): move completed P3 task to done
-- b2be2b7 2025-12-24 feat(website): add panel slide animations for step transitions
 
 ## Agent Governance Structure
 

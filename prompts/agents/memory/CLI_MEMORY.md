@@ -20,8 +20,9 @@
 10. ✅ Generate command implemented (AI-powered project generation)
 11. ✅ Export without env vars (P2 task completed)
 12. ✅ NPX token command system (5DS Clone 1.6 completed)
-13. All CLI work complete and synced with Platform API
-14. (Optional) Live API testing with production endpoint
+13. ✅ Feature-assembler integration with pull command
+14. All CLI work complete and synced with Platform API
+15. (Optional) Live API testing with production endpoint
 
 ---
 
@@ -32,6 +33,42 @@
 ---
 
 ## Session History
+
+### Session: 2025-12-24 (Feature Assembler Integration)
+
+**Work Completed**
+- ✅ Integrated feature-assembler.mjs with pull command
+- ✅ Feature files assembled after base template clone
+- ✅ CLAUDE.md generated with feature context for AI
+- ✅ features.json saved with selection and summary
+- ✅ Dry-run preview updated to show features (7 steps)
+- ✅ Pull metadata includes features array
+- ✅ Added 14 tests for feature-assembler functions
+- ✅ All 728 tests passing
+
+**Changes Made**
+1. **bin/framework.js**:
+   - Import feature-assembler functions
+   - Add feature assembly step in pull command
+   - Validate features, display summary, copy templates
+   - Generate CLAUDE.md with feature context
+   - Save features.json to .dd/ directory
+   - Update dry-run to show 7 steps including features
+
+2. **tests/feature-assembler.test.mjs** (new):
+   - 14 tests covering all feature-assembler functions
+   - loadFeatureMapping, resolveFeatureDependencies
+   - getTemplateFiles, getRequiredPackages, getRequiredEnvVars
+   - validateFeatureSelection, getFeatureSummary
+
+**Feature Assembly Flow**
+1. Project pulled from API includes `features` array
+2. Features validated and dependencies resolved
+3. Template files copied to project
+4. CLAUDE.md generated with feature context
+5. features.json saved for reference
+
+---
 
 ### Session: 2025-12-24 (NPX Token Command - P2 5DS Clone)
 
