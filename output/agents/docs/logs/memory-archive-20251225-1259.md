@@ -576,11 +576,3 @@ None currently.
 
 *Last Updated: 2025-12-24*
 *Next Agent: Documentation Agent or any role needing governance context*
-
-## Session History (Rotated - Last 5 Sessions)
-
-
-
-
-
-

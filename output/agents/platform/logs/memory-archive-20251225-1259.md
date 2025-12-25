@@ -955,6 +955,3 @@ Configure environment variables in Vercel Dashboard:
 ---
 
 *Session memory maintained by Platform Agent | Governance v2.3*
-
-## Session History (Rotated - Last 5 Sessions)
-
