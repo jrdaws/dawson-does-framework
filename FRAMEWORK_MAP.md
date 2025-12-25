@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 20ea1ce 2025-12-24 feat(website): add ProjectOverviewBox component (Task 2.3)
 - 9002bde 2025-12-24 docs(priorities): mark feature-to-code mapping as complete
 - be86b51 2025-12-24 feat(website): add Core Features UI and NPX Command Display components
 - 760a520 2025-12-24 feat(templates): add feature-to-code mapping system
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - a5b0933 2025-12-24 docs(deploy): add provider-specific deployment guides
 - 48fc52f 2025-12-24 chore(agents): move completed P3 task to done
 - b2be2b7 2025-12-24 feat(website): add panel slide animations for step transitions
-- 0df5a94 2025-12-24 feat(ai-agent): implement chunked code generation for complex projects
 
 ## Agent Governance Structure
 
