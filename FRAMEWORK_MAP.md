@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 1b03124 2025-12-24 docs: update 5DS task status - all Website Agent tasks complete
 - 1841221 2025-12-24 feat(website): add social proof elements to platform page
 - 2933486 2025-12-24 feat(website): add LandingPage marketing component (Task 6.1)
 - 0cdcf95 2025-12-24 feat(website): add GenerateFramework component for unified export flow
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - be86b51 2025-12-24 feat(website): add Core Features UI and NPX Command Display components
 - 760a520 2025-12-24 feat(templates): add feature-to-code mapping system
 - f88cf09 2025-12-24 feat(website): add auth state to Nav component
-- 5163150 2025-12-24 docs(5ds): mark completed tasks and update status tracking
 
 ## Agent Governance Structure
 
