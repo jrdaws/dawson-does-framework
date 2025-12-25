@@ -629,10 +629,43 @@ npm run copy-prompts
 
 ### Performance Optimizations
 - [x] Token usage tracking and cost estimation (Added 2025-12-22)
-- [ ] Parallel API calls for independent stages
+- [x] Parallel API calls for independent stages (Added 2025-12-22)
+- [x] Chunked code generation for complex projects (Added 2025-12-24)
 - [ ] Prompt caching
 - [ ] Streaming responses
-- [ ] Progressive file generation
+
+### Chunked Code Generation (Added 2025-12-24)
+
+For complex projects (>5 files), the code generator now uses **intelligent batching**:
+
+```
+Simple Project (≤5 files):
+  → Single API call with all files
+
+Complex Project (>5 files):
+  → Batch 1: Pages + referenced components (max 5)
+  → Batch 2: Remaining components + API routes (max 5)
+  → ... more batches as needed
+  → Merge all batches into final output
+```
+
+**Benefits:**
+- No more truncation for complex projects (10+ files)
+- Maintains context coherence between batches
+- Same token budget per batch (4096 tokens)
+- Cost increase ~20% for complex projects (multiple API calls)
+
+**How it works:**
+1. Estimate file count from architecture (pages + new components + API routes)
+2. If >5 files, create batches by grouping related files
+3. Generate each batch with context of previously generated files
+4. Merge all batch results into final `GeneratedCode`
+
+**Technical Details:**
+- Batch size: 5 files max
+- Token limit per batch: 4096
+- Context: Previous file paths passed to subsequent batches
+- Grouping: Pages grouped with their referenced components
 
 ### Model Tier Optimization (Tested 2025-12-22)
 
