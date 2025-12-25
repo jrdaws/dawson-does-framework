@@ -1,5 +1,5 @@
 /**
- * POST /api/projects/create
+ * POST /api/user-projects/create
  * Create a new user-owned project for the My Projects dashboard
  * 
  * Requires authentication via Supabase Auth
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (insertError) {
-      console.error("[Projects Create] Insert error:", insertError);
+      console.error("[User Projects Create] Insert error:", insertError);
       return NextResponse.json(
         { error: "DATABASE_ERROR", message: insertError.message },
         { status: 500 }
@@ -86,11 +86,10 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error: unknown) {
-    console.error("[Projects Create] Error:", error);
+    console.error("[User Projects Create] Error:", error);
     return NextResponse.json(
       { error: "INTERNAL_ERROR", message: "Failed to create project" },
       { status: 500 }
     );
   }
 }
-

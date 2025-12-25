@@ -1,5 +1,5 @@
 /**
- * GET /api/projects/list
+ * GET /api/user-projects/list
  * List all projects for the authenticated user
  * 
  * Query params:
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
     const { data: projects, error: selectError, count } = await query;
 
     if (selectError) {
-      console.error("[Projects List] Select error:", selectError);
+      console.error("[User Projects List] Select error:", selectError);
       return NextResponse.json(
         { error: "DATABASE_ERROR", message: selectError.message },
         { status: 500 }
@@ -89,11 +89,10 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error: unknown) {
-    console.error("[Projects List] Error:", error);
+    console.error("[User Projects List] Error:", error);
     return NextResponse.json(
       { error: "INTERNAL_ERROR", message: "Failed to list projects" },
       { status: 500 }
     );
   }
 }
-
