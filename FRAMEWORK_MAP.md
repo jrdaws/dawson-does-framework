@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- ea3b7d9 2025-12-25 chore(audit): cycle 13 audit + commit 4+ cycles of uncommitted work
 - 1f62eb1 2025-12-25 docs(curator): cycle 11 curation - 6 tasks distributed (avg 8.4 quality)
 - 2538ed0 2025-12-24 chore: update framework map and add uploadthing e2e test
 - ce1fefa 2025-12-24 feat(configurator): integrate SupabaseSetup component into sidebar
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 7516e96 2025-12-24 feat(website): add value comparison and enhanced social proof sections
 - 1b03124 2025-12-24 docs: update 5DS task status - all Website Agent tasks complete
 - 1841221 2025-12-24 feat(website): add social proof elements to platform page
-- 2933486 2025-12-24 feat(website): add LandingPage marketing component (Task 6.1)
 
 ## Agent Governance Structure
 
