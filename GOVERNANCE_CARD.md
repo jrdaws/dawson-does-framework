@@ -22,6 +22,7 @@ git push origin main        # Share work
 - Add unrequested features
 - Split fenced code blocks
 - Add `#` comments in command blocks for humans
+- Omit Next Agent Prompt option (unless no obvious next steps)
 
 ## Session Start (SLIM - Default)
 ```

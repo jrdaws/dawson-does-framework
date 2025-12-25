@@ -209,16 +209,18 @@ Approved assets go to Template Agent (for templates) or Website Agent (for proje
 
 | Metric | Value | Trend |
 |--------|-------|-------|
-| Assets reviewed | 35 | ↑↑↑ |
-| First-pass approval rate | 83% (29/35) | ↑ |
-| Average iterations needed | 1.2 | ↓ |
-| Revision rate | 17% (6/35) | ↓ |
+| Assets reviewed | 48 | ↑↑↑ |
+| First-pass approval rate | 79% (38/48) | → |
+| Average iterations needed | 1.3 | → |
+| Revision rate | 21% (10/48) | ↑ |
 | Perfect reviews (100%) | 1 | ✓ |
-| SOPs audited | 17 | NEW |
+| SOPs audited | 17 | ✓ |
+| WebP audited (color) | 13 | NEW |
 
 ### Review History
 | Date | Project | Total | Approved | Revisions | Avg Score |
 |------|---------|-------|----------|-----------|-----------|
+| 2025-12-25 | webp-indigo-audit | 13 | 8 | 5 | N/A |
 | 2025-12-23 | configurator-ux-redesign | 12 | 12 | 0 | 99/100 ⭐ |
 | 2025-12-23 | framework-ui-redesign | 18 | 16 | 1 | 92/100 |
 | 2025-12-23 | e2e-test-project | 5 | 2 | 3 | 74/100 |
