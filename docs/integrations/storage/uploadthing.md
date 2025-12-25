@@ -1,33 +1,28 @@
 # UploadThing Integration
 
-Type-safe file uploads for Next.js with built-in security, CDN delivery, and excellent developer experience.
+> Type-safe file uploads for Next.js with UploadThing.
+
+---
 
 ## Overview
 
-| Feature | Details |
-|---------|---------|
-| **Provider** | [UploadThing](https://uploadthing.com) |
-| **Type** | Storage |
-| **Best For** | Type-safe uploads, quick setup, SaaS apps |
-| **Free Tier** | 2GB storage, 2GB bandwidth/month |
+UploadThing is a file upload service built specifically for Next.js applications. It provides:
 
-## Why UploadThing?
+- **Type-safe uploads** - Full TypeScript support with file router
+- **Direct-to-storage** - Files go directly to cloud storage (no server memory)
+- **Progress tracking** - Built-in upload progress indicators
+- **React components** - Pre-built upload button and dropzone
+- **Generous free tier** - 2GB/month free for development
 
-✅ **Type-safe** - Full TypeScript support with generated types  
-✅ **Simple setup** - No S3 configuration needed  
-✅ **Built-in CDN** - Files served globally via CDN  
-✅ **Secure** - Signed URLs, middleware authentication  
-✅ **React components** - Pre-built upload button and dropzone  
-✅ **Next.js native** - Works seamlessly with App Router  
-✅ **Generous free tier** - 2GB storage to start  
+---
 
-## Quick Start
+## Setup
 
-### 1. Get Your API Token
+### 1. Get API Token
 
-1. Go to [uploadthing.com](https://uploadthing.com)
-2. Create an account and new app
-3. Copy your API token from the dashboard
+1. Create an account at [uploadthing.com](https://uploadthing.com)
+2. Create a new app in the dashboard
+3. Copy your API token
 
 ### 2. Add Environment Variable
 
@@ -38,18 +33,55 @@ UPLOADTHING_TOKEN=your_token_here
 
 ### 3. Install Dependencies
 
-The integration includes these dependencies:
-- `uploadthing` - Core library
-- `@uploadthing/react` - React components and hooks
+Dependencies are automatically added when you export with the storage integration:
 
-### 4. Use the Upload Component
+```bash
+framework export saas ./my-app --storage uploadthing
+```
+
+Or install manually:
+
+```bash
+npm install uploadthing @uploadthing/react
+```
+
+---
+
+## Usage
+
+### Upload Button
+
+Simple button that triggers file selection:
 
 ```tsx
-import { FileUpload } from "@/components/storage/file-upload";
+import { StorageUploadButton } from "@/components/storage";
 
-export default function Page() {
+export function MyComponent() {
   return (
-    <FileUpload
+    <StorageUploadButton
+      endpoint="imageUploader"
+      onUploadComplete={(files) => {
+        console.log("Uploaded:", files);
+        // files = [{ url, name, size }]
+      }}
+      onUploadError={(error) => {
+        console.error("Upload failed:", error);
+      }}
+    />
+  );
+}
+```
+
+### Upload Dropzone
+
+Drag-and-drop area for file uploads:
+
+```tsx
+import { StorageUploadDropzone } from "@/components/storage";
+
+export function MyComponent() {
+  return (
+    <StorageUploadDropzone
       endpoint="imageUploader"
       onUploadComplete={(files) => {
         console.log("Uploaded:", files);
@@ -59,361 +91,287 @@ export default function Page() {
 }
 ```
 
-## File Structure
+### File Preview
 
+Display uploaded files with preview and remove functionality:
+
+```tsx
+import { FilePreview } from "@/components/storage";
+import { useState } from "react";
+
+export function MyComponent() {
+  const [files, setFiles] = useState([]);
+
+  return (
+    <>
+      <StorageUploadButton
+        endpoint="imageUploader"
+        onUploadComplete={(newFiles) => {
+          setFiles((prev) => [...prev, ...newFiles]);
+        }}
+      />
+      
+      <FilePreview
+        files={files}
+        onRemove={(file) => {
+          setFiles((prev) => prev.filter((f) => f.url !== file.url));
+        }}
+      />
+    </>
+  );
+}
 ```
-integrations/storage/uploadthing/
-├── integration.json          # Integration metadata
-├── package.json              # Dependencies
-├── lib/
-│   └── uploadthing.ts        # Core exports and utilities
-├── app/
-│   └── api/
-│       └── uploadthing/
-│           ├── core.ts       # File router definitions
-│           └── route.ts      # API route handler
-└── components/
-    └── storage/
-        └── file-upload.tsx   # Upload components
-```
+
+---
 
 ## Available Endpoints
 
-The integration includes 4 pre-configured upload endpoints:
+The integration includes pre-configured upload endpoints:
 
-| Endpoint | Max Size | Max Files | Use Case |
-|----------|----------|-----------|----------|
-| `imageUploader` | 4MB | 4 | Gallery, product images |
-| `documentUploader` | 16MB | 1 | PDFs, documents |
-| `avatarUploader` | 2MB | 1 | Profile pictures |
-| `fileUploader` | 32MB | 1 | General files |
+| Endpoint | File Types | Max Size | Max Files |
+|----------|------------|----------|-----------|
+| `imageUploader` | jpg, png, gif, webp | 4MB | 4 |
+| `documentUploader` | pdf, doc, docx | 16MB | 1 |
+| `avatarUploader` | jpg, png, gif, webp | 2MB | 1 |
+| `videoUploader` | mp4, mov, webm | 64MB | 1 |
 
-## Components
+### Custom Endpoints
 
-### FileUpload
-
-Full-featured upload component with drag-and-drop:
-
-```tsx
-import { FileUpload } from "@/components/storage/file-upload";
-
-<FileUpload
-  endpoint="imageUploader"          // Required: upload endpoint
-  onUploadComplete={(files) => {}}  // Callback on success
-  onUploadError={(error) => {}}     // Callback on error
-  maxFiles={4}                      // Max files to accept
-  accept="image/*"                  // Accepted file types
-  disabled={false}                  // Disable uploads
-/>
-```
-
-### ImageUploadPreview
-
-Simple image upload with preview:
-
-```tsx
-import { ImageUploadPreview } from "@/components/storage/file-upload";
-
-<ImageUploadPreview
-  endpoint="avatarUploader"
-  onUploadComplete={(url) => {
-    // Save URL to user profile
-    updateUser({ avatarUrl: url });
-  }}
-/>
-```
-
-### Pre-built Button and Dropzone
-
-```tsx
-import { UploadButton, UploadDropzone } from "@/lib/uploadthing";
-
-// Simple button
-<UploadButton
-  endpoint="imageUploader"
-  onClientUploadComplete={(res) => console.log("Files:", res)}
-  onUploadError={(error) => alert(error.message)}
-/>
-
-// Drag-and-drop zone
-<UploadDropzone
-  endpoint="fileUploader"
-  onClientUploadComplete={(res) => console.log("Files:", res)}
-/>
-```
-
-## Custom File Router
-
-Define custom upload endpoints in `app/api/uploadthing/core.ts`:
+Add custom endpoints in `lib/uploadthing.ts`:
 
 ```typescript
-import { createUploadthing, type FileRouter } from "uploadthing/next";
-
-const f = createUploadthing();
-
 export const ourFileRouter = {
-  // Custom endpoint for video uploads
-  videoUploader: f({ video: { maxFileSize: "256MB", maxFileCount: 1 } })
-    .middleware(async ({ req }) => {
-      // Add authentication
-      const user = await getUser(req);
-      if (!user) throw new Error("Unauthorized");
-      return { userId: user.id };
+  // Existing endpoints...
+
+  // Custom endpoint for audio files
+  audioUploader: f({
+    audio: {
+      maxFileSize: "32MB",
+      maxFileCount: 10,
+    },
+  })
+    .middleware(async () => {
+      // Add authentication here
+      return { uploadedAt: new Date().toISOString() };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
-      // Process uploaded video
-      await saveVideoToDatabase(metadata.userId, file);
-      return { url: file.url };
+    .onUploadComplete(async ({ file }) => {
+      return { url: file.url, name: file.name };
     }),
 } satisfies FileRouter;
 ```
 
+---
+
 ## Authentication
 
-Add authentication in the middleware:
-
-### With Supabase
+Add authentication to uploads in the middleware:
 
 ```typescript
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { auth } from "@clerk/nextjs/server";
+import { UploadThingError } from "uploadthing/server";
 
-.middleware(async ({ req }) => {
-  const supabase = createServerComponentClient({ cookies });
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) throw new UploadThingError("Unauthorized");
-  
-  return { userId: user.id };
-})
-```
-
-### With Clerk
-
-```typescript
-import { auth } from "@clerk/nextjs";
-
-.middleware(async ({ req }) => {
-  const { userId } = auth();
-  
-  if (!userId) throw new UploadThingError("Unauthorized");
-  
-  return { userId };
-})
-```
-
-## Using Uploaded Files
-
-### Get File URL
-
-```typescript
-onUploadComplete={(files) => {
-  const fileUrl = files[0].url;
-  // Use the URL in your app
-}}
-```
-
-### Save to Database
-
-```typescript
-import { db } from "@/lib/db";
-
-.onUploadComplete(async ({ metadata, file }) => {
-  await db.file.create({
-    data: {
-      userId: metadata.userId,
-      url: file.url,
-      name: file.name,
-      size: file.size,
-    }
-  });
-})
-```
-
-### Display Image
-
-```tsx
-<img src={uploadedFile.url} alt={uploadedFile.name} />
-```
-
-## Hooks
-
-### useUploadThing
-
-For custom upload implementations:
-
-```tsx
-import { useUploadThing } from "@/lib/uploadthing";
-
-function CustomUploader() {
-  const { startUpload, isUploading, permittedFileInfo } = useUploadThing("imageUploader", {
-    onClientUploadComplete: (files) => {
-      console.log("Upload complete:", files);
-    },
-    onUploadError: (error) => {
-      console.error("Upload error:", error);
-    },
-    onUploadProgress: (progress) => {
-      console.log(`Progress: ${progress}%`);
-    },
-  });
-
-  const handleUpload = async (files: File[]) => {
-    await startUpload(files);
-  };
-
-  return (
-    <button onClick={() => fileInputRef.current?.click()}>
-      {isUploading ? "Uploading..." : "Upload"}
-    </button>
-  );
-}
-```
-
-## Common Patterns
-
-### Avatar Upload Form
-
-```tsx
-"use client";
-
-import { ImageUploadPreview } from "@/components/storage/file-upload";
-import { useState } from "react";
-
-export function AvatarForm() {
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-
-  const handleSave = async () => {
-    if (!avatarUrl) return;
-    
-    await fetch("/api/user/avatar", {
-      method: "POST",
-      body: JSON.stringify({ avatarUrl }),
-    });
-  };
-
-  return (
-    <div>
-      <ImageUploadPreview
-        endpoint="avatarUploader"
-        onUploadComplete={setAvatarUrl}
-      />
-      <button onClick={handleSave} disabled={!avatarUrl}>
-        Save Avatar
-      </button>
-    </div>
-  );
-}
-```
-
-### Multi-file Gallery
-
-```tsx
-"use client";
-
-import { FileUpload } from "@/components/storage/file-upload";
-import { useState } from "react";
-
-export function GalleryUpload() {
-  const [images, setImages] = useState<string[]>([]);
-
-  return (
-    <div>
-      <FileUpload
-        endpoint="imageUploader"
-        maxFiles={4}
-        onUploadComplete={(files) => {
-          setImages((prev) => [...prev, ...files.map(f => f.url)]);
-        }}
-      />
+export const ourFileRouter = {
+  imageUploader: f({ image: { maxFileSize: "4MB" } })
+    .middleware(async ({ req }) => {
+      // Get user from Clerk
+      const { userId } = await auth();
       
-      <div className="grid grid-cols-4 gap-4 mt-4">
-        {images.map((url, i) => (
-          <img key={i} src={url} className="rounded-lg" />
-        ))}
-      </div>
-    </div>
-  );
-}
+      // Reject if not authenticated
+      if (!userId) throw new UploadThingError("Unauthorized");
+      
+      // Pass user ID to onUploadComplete
+      return { userId };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      // metadata.userId is available here
+      console.log("User", metadata.userId, "uploaded", file.name);
+      
+      // Save to database
+      // await db.files.create({ userId: metadata.userId, url: file.url });
+      
+      return { url: file.url };
+    }),
+};
 ```
+
+---
+
+## Utility Functions
+
+The integration includes helpful utilities:
+
+```typescript
+import {
+  formatFileSize,
+  isAllowedFileType,
+  isWithinSizeLimit,
+  generateUniqueFilename,
+  getFileExtension,
+  isUploadThingUrl,
+} from "@/lib/uploadthing";
+
+// Format bytes to human-readable size
+formatFileSize(1024 * 1024); // "1 MB"
+
+// Check file type
+isAllowedFileType(file, ["image/*", "application/pdf"]); // true/false
+
+// Check file size
+isWithinSizeLimit(file, 4); // 4MB limit, true/false
+
+// Generate unique filename
+generateUniqueFilename("photo.jpg"); // "photo-1704567890123-abc123.jpg"
+
+// Get file extension
+getFileExtension("document.pdf"); // "pdf"
+
+// Check if URL is from UploadThing
+isUploadThingUrl("https://utfs.io/f/abc123.jpg"); // true
+```
+
+---
+
+## Styling
+
+### Custom Button Styling
+
+```tsx
+<StorageUploadButton
+  endpoint="imageUploader"
+  className="bg-green-600 hover:bg-green-700"
+  buttonText="Upload Photo"
+/>
+```
+
+### Custom Dropzone Styling
+
+```tsx
+<StorageUploadDropzone
+  endpoint="imageUploader"
+  className="border-blue-400 bg-blue-50"
+/>
+```
+
+---
 
 ## Error Handling
 
 ```tsx
-<FileUpload
+<StorageUploadButton
   endpoint="imageUploader"
   onUploadError={(error) => {
-    if (error.message.includes("too large")) {
-      alert("File is too large. Maximum size is 4MB.");
-    } else if (error.message.includes("Unauthorized")) {
-      alert("Please sign in to upload files.");
+    // Common errors:
+    // - "Unauthorized" - Authentication failed
+    // - "File too large" - Exceeds max size
+    // - "Invalid file type" - Type not allowed
+    
+    if (error.message.includes("Unauthorized")) {
+      alert("Please sign in to upload files");
     } else {
-      alert("Upload failed. Please try again.");
+      alert(`Upload failed: ${error.message}`);
     }
   }}
 />
 ```
 
-## Pricing
+---
 
-| Plan | Storage | Bandwidth | Price |
-|------|---------|-----------|-------|
-| Free | 2GB | 2GB/month | $0 |
-| Pro | 100GB | 100GB/month | $25/month |
-| Enterprise | Unlimited | Unlimited | Custom |
+## Best Practices
 
-## Resources
+### 1. Always Authenticate Uploads
 
-- [UploadThing Documentation](https://docs.uploadthing.com)
-- [API Reference](https://docs.uploadthing.com/api-reference)
-- [Examples](https://github.com/uploadthing/uploadthing/tree/main/examples)
-- [Discord Community](https://discord.gg/uploadthing)
+Don't allow anonymous uploads in production:
+
+```typescript
+.middleware(async () => {
+  const { userId } = await auth();
+  if (!userId) throw new UploadThingError("Unauthorized");
+  return { userId };
+})
+```
+
+### 2. Store References in Database
+
+After upload, save the URL to your database:
+
+```typescript
+.onUploadComplete(async ({ metadata, file }) => {
+  await db.files.create({
+    userId: metadata.userId,
+    url: file.url,
+    name: file.name,
+    size: file.size,
+  });
+})
+```
+
+### 3. Handle Upload States
+
+Show loading and error states:
+
+```tsx
+const [uploading, setUploading] = useState(false);
+const [error, setError] = useState<string | null>(null);
+
+<StorageUploadButton
+  endpoint="imageUploader"
+  onUploadBegin={() => {
+    setUploading(true);
+    setError(null);
+  }}
+  onUploadComplete={() => setUploading(false)}
+  onUploadError={(err) => {
+    setUploading(false);
+    setError(err.message);
+  }}
+/>
+{uploading && <p>Uploading...</p>}
+{error && <p className="text-red-500">{error}</p>}
+```
+
+---
 
 ## Troubleshooting
 
-### "UPLOADTHING_TOKEN is not set"
+### "UPLOADTHING_TOKEN not configured"
 
-Add the token to your `.env.local` file:
+Make sure your `.env.local` file contains:
 ```bash
 UPLOADTHING_TOKEN=your_token_here
 ```
 
-### "Unauthorized" Error
+Then restart your development server.
 
-Ensure your middleware returns user data:
+### "Unauthorized" errors
+
+Check that your middleware is returning a valid user:
 ```typescript
-.middleware(async ({ req }) => {
-  const user = await getUser(req);
-  if (!user) throw new UploadThingError("Unauthorized");
-  return { userId: user.id }; // Must return metadata
+.middleware(async () => {
+  const { userId } = await auth();
+  console.log("User ID:", userId); // Debug
+  if (!userId) throw new UploadThingError("Unauthorized");
+  return { userId };
 })
 ```
 
-### File Type Not Accepted
+### Files not appearing
 
-Check the endpoint configuration in `core.ts`. Add the file type:
+Verify the upload completed successfully:
 ```typescript
-f({ image: {}, pdf: {}, blob: {} }) // Add more types
+onUploadComplete={(files) => {
+  console.log("Uploaded files:", files);
+  // Check the URL is valid
+}}
 ```
 
-### Uploads Failing in Production
+---
 
-Verify your production environment has the `UPLOADTHING_TOKEN` set correctly.
+## Resources
 
-## Comparison with Other Storage Options
+- [UploadThing Documentation](https://docs.uploadthing.com)
+- [UploadThing Dashboard](https://uploadthing.com/dashboard)
+- [Next.js App Router Guide](https://docs.uploadthing.com/getting-started/appdir)
 
-| Feature | UploadThing | Supabase Storage | AWS S3 |
-|---------|-------------|------------------|--------|
-| Setup Time | Minutes | Minutes | Hours |
-| Type Safety | ✅ Full | ⚠️ Partial | ❌ Manual |
-| Free Tier | 2GB | 1GB | None |
-| CDN Included | ✅ Yes | ✅ Yes | Extra cost |
-| React Components | ✅ Built-in | ❌ Manual | ❌ Manual |
-| Next.js Integration | ✅ Native | ✅ Good | ⚠️ Requires SDK |
+---
 
-## Next Steps
-
-- [Authentication Integration](../auth/supabase.md) - Secure uploads with auth
-- [Database Integration](../database/supabase.md) - Store file metadata
-- [Supabase Storage](supabase.md) - Alternative storage option
-
+*This integration is maintained by the Integration Agent.*
