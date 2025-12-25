@@ -24,6 +24,7 @@ import { createCheckpoint, restoreCheckpoint, listCheckpoints, cleanupCheckpoint
 import { validateIntegrations, applyIntegrations } from "../src/dd/integrations.mjs";
 import { parsePullFlags, getApiUrl, fetchProject, generateEnvExample, generateContext, openInCursor, formatIntegrations } from "../src/dd/pull.mjs";
 import { generateCursorRules, generateStartPrompt } from "../src/dd/cursorrules.mjs";
+import { assembleFeatures, generateClaudeMd, getFeatureSummary, validateFeatureSelection } from "../src/dd/feature-assembler.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, "..");
@@ -1628,11 +1629,11 @@ Examples:
     console.log(`Template: ${project.template}`);
     console.log("");
 
-    console.log(`[1/6] Clone template`);
+    console.log(`[1/7] Clone template`);
     console.log(`      Template: ${project.template}`);
     console.log(`      Destination: ${absTargetDir}`);
 
-    console.log(`\n[2/6] Apply integrations`);
+    console.log(`\n[2/7] Apply integrations`);
     const integrations = project.integrations || {};
     const activeIntegrations = Object.entries(integrations).filter(([, v]) => v);
     if (activeIntegrations.length > 0) {
@@ -1643,7 +1644,7 @@ Examples:
       console.log(`      (no integrations selected)`);
     }
 
-    console.log(`\n[3/6] Write project context`);
+    console.log(`\n[3/7] Write project context`);
     console.log(`      - .dd/context.json (project metadata)`);
     console.log(`      - .dd/manifest.json (template manifest)`);
     if (project.vision) console.log(`      - .dd/vision.md`);
@@ -1652,10 +1653,23 @@ Examples:
     if (project.description) console.log(`      - .dd/description.md`);
     if (project.inspirations?.length > 0) console.log(`      - .dd/inspirations.md`);
 
-    console.log(`\n[4/6] Generate environment files`);
+    console.log(`\n[4/7] Assemble features`);
+    const features = project.features || [];
+    if (features.length > 0) {
+      console.log(`      Selected features: ${features.length}`);
+      for (const featureId of features) {
+        console.log(`      - ${featureId}`);
+      }
+      console.log(`      - CLAUDE.md (feature context for AI)`);
+      console.log(`      - .dd/features.json (feature selection)`);
+    } else {
+      console.log(`      (no features selected)`);
+    }
+
+    console.log(`\n[5/7] Generate environment files`);
     console.log(`      - .env.example (required env vars)`);
 
-    console.log(`\n[5/6] Generate Cursor files`);
+    console.log(`\n[6/7] Generate Cursor files`);
     if (flags.cursor) {
       console.log(`      - .cursorrules (AI context)`);
       console.log(`      - START_PROMPT.md (onboarding prompt)`);
@@ -1663,7 +1677,7 @@ Examples:
       console.log(`      (skipped - use --cursor to generate)`);
     }
 
-    console.log(`\n[6/6] Initialize git repository`);
+    console.log(`\n[7/7] Initialize git repository`);
     console.log(`      git init -b main`);
     console.log(`      git add -A`);
     console.log(`      git commit -m "Initial commit (pulled via framework)"`);
@@ -1750,6 +1764,81 @@ Examples:
 
   logger.endStep("context", "     Project context ready");
 
+  // Assemble features if project has feature selections
+  // Features come from the configurator UI and map to code templates
+  if (project.features && project.features.length > 0) {
+    logger.startStep("features", "Assembling selected features...");
+    
+    // Validate feature selection first
+    const validation = await validateFeatureSelection(project.features);
+    if (validation.warnings.length > 0) {
+      for (const warning of validation.warnings) {
+        logger.stepInfo(`⚠️  ${warning}`);
+      }
+    }
+    if (!validation.valid) {
+      for (const error of validation.errors) {
+        logger.stepError(`❌ ${error}`);
+      }
+      logger.stepInfo("Continuing with valid features only...");
+    }
+    
+    // Get feature summary for display
+    const summary = await getFeatureSummary(project.features);
+    logger.stepInfo(`Features: ${summary.totalFeatures} (${summary.byComplexity.simple} simple, ${summary.byComplexity.medium} medium, ${summary.byComplexity.complex} complex)`);
+    logger.stepInfo(`Complexity: ${summary.level} (estimated ${summary.estimatedHours} hours)`);
+    
+    // Assemble feature files
+    const assemblyResult = await assembleFeatures(absTargetDir, project.features, {
+      dryRun: false,
+      projectName: project.project_name || path.basename(absTargetDir),
+    });
+    
+    if (assemblyResult.success) {
+      logger.stepSuccess(`${assemblyResult.copiedFiles.length} feature files assembled`);
+      
+      // Log skipped files if any
+      if (assemblyResult.skipped.length > 0) {
+        logger.stepInfo(`${assemblyResult.skipped.length} template files not found (may need creation)`);
+      }
+      
+      // Show required packages
+      if (assemblyResult.packages.length > 0) {
+        logger.stepInfo(`Additional packages needed: ${assemblyResult.packages.join(", ")}`);
+      }
+    } else {
+      logger.stepWarning("Some features could not be assembled:");
+      for (const error of assemblyResult.errors) {
+        logger.stepInfo(`  ❌ ${error.templatePath}: ${error.error}`);
+      }
+    }
+    
+    // Generate CLAUDE.md with feature context for AI assistance
+    try {
+      await generateClaudeMd(absTargetDir, project.features, {
+        projectName: project.project_name || path.basename(absTargetDir),
+        description: project.description || "",
+      });
+      logger.stepSuccess("CLAUDE.md generated with feature context");
+    } catch (err) {
+      logger.stepInfo(`Note: Could not generate CLAUDE.md: ${err.message}`);
+    }
+    
+    // Save feature selection to .dd for reference
+    fs.writeFileSync(
+      path.join(ddDir, "features.json"),
+      JSON.stringify({
+        selected: project.features,
+        resolved: assemblyResult.features,
+        summary: summary,
+        assembledAt: new Date().toISOString(),
+      }, null, 2),
+      "utf8"
+    );
+    
+    logger.endStep("features", "     Features assembled");
+  }
+
   // Generate .env.example
   logger.startStep("env", "Generating environment template...");
   const envExampleContent = generateEnvExample(project);
@@ -1811,6 +1900,7 @@ Examples:
     platformUrl: apiUrl,
     template: project.template,
     integrations: project.integrations,
+    features: project.features || [],
     flags: {
       cursor: flags.cursor,
       open: flags.open,

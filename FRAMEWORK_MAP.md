@@ -1,9 +1,10 @@
 # FRAMEWORK_MAP
 
 Generated: (deterministic)
-Hash: cc90b85a1f
+Hash: 890a7cc38d
 
 ## Recent changes
+- 9002bde 2025-12-24 docs(priorities): mark feature-to-code mapping as complete
 - be86b51 2025-12-24 feat(website): add Core Features UI and NPX Command Display components
 - 760a520 2025-12-24 feat(templates): add feature-to-code mapping system
 - f88cf09 2025-12-24 feat(website): add auth state to Nav component
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 48fc52f 2025-12-24 chore(agents): move completed P3 task to done
 - b2be2b7 2025-12-24 feat(website): add panel slide animations for step transitions
 - 0df5a94 2025-12-24 feat(ai-agent): implement chunked code generation for complex projects
-- 0e3226e 2025-12-24 test(ai-agent): add 31 integration tests for JSON repair utility
 
 ## Agent Governance Structure
 
@@ -135,6 +135,7 @@ Used for: runtime reasoning, blast-radius analysis, debugging
   - `src/dd/integrations.mjs`
   - `src/dd/pull.mjs`
   - `src/dd/cursorrules.mjs`
+  - `src/dd/feature-assembler.mjs`
   - `scripts/orchestrator/project-config.mjs`
   - `scripts/orchestrator/capability-engine.mjs`
     - `src/dd/recovery-guidance.mjs`
@@ -250,6 +251,8 @@ Used for: onboarding, refactors, capability ownership
 - `│  src/dd/pull.mjs`
 - `├─ src/dd/cursorrules.mjs`
 - `│  src/dd/cursorrules.mjs`
+- `├─ src/dd/feature-assembler.mjs`
+- `│  src/dd/feature-assembler.mjs`
 - `├─ scripts/orchestrator/project-config.mjs`
 - `│  scripts/orchestrator/project-config.mjs`
 - `└─ scripts/orchestrator/capability-engine.mjs`
@@ -277,6 +280,7 @@ Used for: onboarding, refactors, capability ownership
 - `src/dd/integrations.mjs` <- `bin/framework.js`
 - `src/dd/pull.mjs` <- `bin/framework.js`
 - `src/dd/cursorrules.mjs` <- `bin/framework.js`
+- `src/dd/feature-assembler.mjs` <- `bin/framework.js`
 - `scripts/orchestrator/project-config.mjs` <- `bin/framework.js`, `scripts/orchestrator/capability-engine.mjs`
 - `scripts/orchestrator/capability-engine.mjs` <- `bin/framework.js`
 - `src/dd/recovery-guidance.mjs` <- `src/commands/llm.mjs`, `src/commands/auth.mjs`

@@ -21,7 +21,7 @@
 |------|-------|--------|------------|
 | 2.1 Feature Categories Data | Website | ✅ Complete | `20251224-P1-5ds-clone-feature-categories.txt` |
 | 2.2 Core Features UI | Website | ✅ Complete | - |
-| 2.3 Project Overview Box | Website | 📋 Ready (2.2 done) | - |
+| 2.3 Project Overview Box | Website | ✅ Complete | - |
 | 2.4 Feature-to-Code Mapping | Template | 📋 Ready | `20251224-P2-5ds-clone-feature-code-mapping.txt` |
 | 2.5 Add Feedback Toggle | Website | 📋 Ready (2.2 done) | - |
 
