@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 88f76c0 2025-12-24 chore(curator): cycle 10 cleanup - acknowledge completed tasks
 - 4529937 2025-12-24 chore(test): verify export clarity - CLI & ZIP both export full templates
 - eda7180 2025-12-24 chore: mark export build verification complete
 - 16814c0 2025-12-24 fix(saas): add paths config to tsconfig.json for @/ alias
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - b5c9c9d 2025-12-24 docs(memory): update CURATOR_MEMORY.md with cycle 9 session
 - 7078ddc 2025-12-24 feat(strategist): complete cycle 9 strategy - 5 tasks for execution
 - 5edf78a 2025-12-24 docs: add 'cp' shorthand for checkpoint trigger
-- 0259f95 2025-12-24 chore(curator): complete cycle 9 curation - 5 prompts approved (9.0 avg)
 
 ## Agent Governance Structure
 

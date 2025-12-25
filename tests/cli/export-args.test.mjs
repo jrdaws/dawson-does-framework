@@ -5,8 +5,8 @@ import { parseExportFlags } from "../../bin/framework.js";
 function defaults() {
   return {
     afterInstall: "prompt",
-    templateSource: "auto",
-    frameworkVersion: null,
+  templateSource: "auto",
+  frameworkVersion: null,
     name: null,
     remote: null,
     push: false,

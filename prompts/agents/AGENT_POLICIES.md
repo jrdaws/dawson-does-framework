@@ -561,6 +561,12 @@ If you hit a permission error mid-session, you failed to predict your needs. Not
    - Include in checkpoint output
    - Escalate to formal SOP proposal when count ≥ 3
    
+   **Save Checkpoint Snapshot (NEW - MANDATORY):**
+   - Write to `output/shared/checkpoints/CP-[DATE]-[TIME]-[ROLE].md`
+   - Include: tasks completed, commits, files changed, pending work
+   - Creates persistent audit trail of all sessions
+   - View past checkpoints: `ls output/shared/checkpoints/`
+   
    **Format:**
    ```markdown
    ## 📦 Checkpoint [HH:MM]
