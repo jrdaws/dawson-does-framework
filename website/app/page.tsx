@@ -51,8 +51,8 @@ const techStack = [
 
 // Enhanced stats with more impressive numbers
 const heroStats = [
-  { value: '192', label: 'Tests Passing', icon: '✓' },
-  { value: '8+', label: 'Integrations', icon: '⚡' },
+  { value: '732', label: 'Tests Passing', icon: '✓' },
+  { value: '20+', label: 'Features', icon: '⚡' },
   { value: '5', label: 'Templates', icon: '📦' },
   { value: '< 2min', label: 'To Production', icon: '🚀' },
 ];
@@ -154,7 +154,8 @@ export default function Home() {
   const [showCursor, setShowCursor] = useState(true);
   const [level, setLevel] = useState<'beginner' | 'advanced'>('beginner');
 
-  const command = 'npx @jrdaws/framework export saas ./my-app';
+  // Updated to showcase the clone command with feature-assembler
+  const command = 'npx @jrdaws/framework clone swift-eagle-1234';
 
   useEffect(() => {
     let i = 0;
@@ -287,25 +288,25 @@ export default function Home() {
             </div>
                   {terminalText === command && (
                     <div className="animate-fade-in space-y-2">
-                      <div className="text-zinc-500">Creating project from saas template...</div>
+                      <div className="text-zinc-500">Fetching project configuration...</div>
                       <div className="text-zinc-400">
-                        <span className="text-brand-success">✓</span> Next.js 15 + App Router
+                        <span className="text-brand-success">✓</span> Loaded: <span className="text-brand-primary">swift-eagle-1234</span>
                       </div>
                       <div className="text-zinc-400">
-                        <span className="text-brand-success">✓</span> TypeScript configured
+                        <span className="text-brand-success">✓</span> Features: auth, billing, analytics
                       </div>
                       <div className="text-zinc-400">
-                        <span className="text-brand-success">✓</span> Supabase auth integrated
+                        <span className="text-brand-success">✓</span> Template: flagship-saas
                       </div>
                       <div className="text-zinc-400">
-                        <span className="text-brand-success">✓</span> Stripe billing connected
+                        <span className="text-brand-success">✓</span> Assembling 12 feature modules...
                       </div>
                       <div className="text-zinc-300 mt-4">
                         <span className="text-brand-success">✓</span> Project ready at{' '}
-                        <span className="text-brand-primary">./my-app</span>
-          </div>
-                      <div className="text-zinc-500 mt-2">Run: cd my-app && npm install && npm run dev</div>
-          </div>
+                        <span className="text-brand-primary">./swift-eagle-1234</span>
+                      </div>
+                      <div className="text-zinc-500 mt-2">Run: cd swift-eagle-1234 && npm install && npm run dev</div>
+                    </div>
                   )}
             </div>
             </div>
@@ -380,7 +381,7 @@ export default function Home() {
           {level === 'beginner' ? (
               <div className="terminal-window">
                 <div className="terminal-header-modern">
-                  <span className="terminal-title">Quick Start</span>
+                  <span className="terminal-title">Quick Start with Clone</span>
                   <div className="flex gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-zinc-600" />
                     <div className="w-2 h-2 rounded-full bg-zinc-600" />
@@ -390,39 +391,39 @@ export default function Home() {
                 <div className="terminal-content">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <span className="text-brand-primary">$</span>
+                    <span className="text-brand-primary">1.</span>
                       <div>
-                      <div className="text-zinc-200">npm install -g @jrdaws/framework</div>
-                      <div className="text-zinc-500 text-xs mt-1">Install globally</div>
+                      <div className="text-zinc-200">Configure your project at <span className="text-brand-primary">dawson.does/configure</span></div>
+                      <div className="text-zinc-500 text-xs mt-1">Select features, integrations, and tools</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-brand-primary">2.</span>
+                      <div>
+                      <div className="text-zinc-200">Get your project token: <span className="text-brand-secondary">swift-eagle-1234</span></div>
+                      <div className="text-zinc-500 text-xs mt-1">Unique token for your configuration</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
                       <div>
-                      <div className="text-zinc-200">framework export saas ./my-app</div>
-                      <div className="text-zinc-500 text-xs mt-1">Export SaaS template with auth & billing</div>
+                      <div className="text-zinc-200">npx @jrdaws/framework clone swift-eagle-1234</div>
+                      <div className="text-zinc-500 text-xs mt-1">Clone with all your selected features</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-brand-primary">$</span>
                       <div>
-                      <div className="text-zinc-200">cd my-app && npm install</div>
-                      <div className="text-zinc-500 text-xs mt-1">Install dependencies</div>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="text-brand-primary">$</span>
-                      <div>
-                      <div className="text-zinc-200">npm run dev</div>
+                      <div className="text-zinc-200">cd swift-eagle-1234 && npm run dev</div>
                       <div className="text-zinc-500 text-xs mt-1">Start development server</div>
                     </div>
                   </div>
                   <div className="border-l-2 border-brand-success pl-4 mt-6">
                     <div className="text-zinc-200">
-                      <span className="text-brand-success">✓</span> Your SaaS app is running at{' '}
+                      <span className="text-brand-success">✓</span> Your custom app is running at{' '}
                       <span className="text-brand-primary">http://localhost:3000</span>
                     </div>
-                    <div className="text-zinc-500 text-xs mt-1">Auth, billing, and database configured</div>
+                    <div className="text-zinc-500 text-xs mt-1">All selected features assembled and ready</div>
                   </div>
                 </div>
               </div>

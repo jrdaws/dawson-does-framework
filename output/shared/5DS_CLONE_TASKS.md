@@ -33,7 +33,7 @@
 | 3.2 Cursor Setup | Website | ✅ Complete (in 3.1) | - |
 | 3.3 GitHub Setup | Website | ✅ Complete (in 3.1) | - |
 | 3.4 Claude Code Setup | Website | ✅ Complete (in 3.1) | - |
-| 3.5 Supabase OAuth | Platform | 📋 Ready (1.1 done) | - |
+| 3.5 Supabase OAuth | Platform | ✅ Complete | - |
 | 3.6 Vercel Deploy | Website | ✅ Complete (in 3.1) | - |
 
 ## Phase 4: AI Integration (Week 4-5)
