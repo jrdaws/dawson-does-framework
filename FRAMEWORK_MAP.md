@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: cc90b85a1f
 
 ## Recent changes
+- 48fc52f 2025-12-24 chore(agents): move completed P3 task to done
 - b2be2b7 2025-12-24 feat(website): add panel slide animations for step transitions
 - 0df5a94 2025-12-24 feat(ai-agent): implement chunked code generation for complex projects
 - 0e3226e 2025-12-24 test(ai-agent): add 31 integration tests for JSON repair utility
@@ -28,7 +29,6 @@ Hash: cc90b85a1f
 - 09696b4 2025-12-24 feat(templates): add dashboard, pricing, and settings pages to SaaS template
 - 9d827c7 2025-12-24 fix(website): P0 - fix ZIP export to include actual template components
 - 8cf9fb9 2025-12-24 docs(memory): verify agent folder standardization complete
-- feea63c 2025-12-24 chore(agents): standardize folder structure across all agents
 
 ## Agent Governance Structure
 
