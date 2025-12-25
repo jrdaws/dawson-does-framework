@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 2780a08 2025-12-24 docs(media): add P3 UI media polish task for Media Agent
 - 031c571 2025-12-24 docs(design): create comprehensive UI specification from reference screenshots
 - 7584307 2025-12-24 fix(preview): add defensive checks for undefined props in all preview components
 - 088f5b7 2025-12-24 fix(api): move user-projects routes to avoid dynamic route conflict
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 4fa5147 2025-12-24 feat(website): add FeedbackToggle component (Task 2.5)
 - f9e7488 2025-12-24 docs(memory): update CLI_MEMORY with feature-assembler session
 - 623b964 2025-12-24 feat(cli): integrate feature-assembler with pull command
-- 20ea1ce 2025-12-24 feat(website): add ProjectOverviewBox component (Task 2.3)
 
 ## Agent Governance Structure
 
