@@ -42,7 +42,7 @@
 |------|-------|--------|------------|
 | 4.1 AI Provider Picker | Website | ✅ Complete | - |
 | 4.2 API Key Inputs | Website | ✅ Complete (in 4.1) | - |
-| 4.3 Image Gen Providers | Website | 📋 Ready | - |
+| 4.3 Image Gen Providers | Website | ✅ Complete | - |
 | 4.4 Provider Comparison | Website | ✅ Complete (in 4.1) | - |
 
 ## Phase 5: Final Review (Week 5)

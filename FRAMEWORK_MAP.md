@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- b32b656 2025-12-24 feat(website): add AIProviderPicker component (Task 4.1, 4.2, 4.4)
 - 62e18fc 2025-12-24 feat(templates): add nutritional info product feature components
 - 879a543 2025-12-24 feat(website): add My Projects dashboard page (Task 1.5)
 - 08992b0 2025-12-24 feat(website): add GuidedSetup wizard (Task 3.1-3.4, 3.6)
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 55c2a35 2025-12-24 chore(docs): mark coding-standards task complete (already exists)
 - 54975f4 2025-12-24 chore(auditor): move review task to done
 - 15e1630 2025-12-24 docs(deploy): add Vercel execution checklist and complete P2 tasks
-- a7655ec 2025-12-24 docs(memory): update CLI_MEMORY.md with export without env session
 
 ## Agent Governance Structure
 
