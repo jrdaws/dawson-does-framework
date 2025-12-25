@@ -11,8 +11,8 @@
 | 1.1 Database Schema | Platform | 📋 Ready | `20251224-P1-5ds-clone-database-schema.txt` |
 | 1.2 User Auth Flow | Website | ✅ Complete | `20251224-P1-5ds-clone-user-auth.txt` |
 | 1.3 Accordion Navigation | Website | ✅ Complete | `20251224-P1-5ds-clone-accordion-nav.txt` |
-| 1.4 Persistent Project State | Website | ⏳ Waiting on 1.1 | - |
-| 1.5 My Projects Dashboard | Website | 📋 Ready (1.2 done) | - |
+| 1.4 Persistent Project State | Website | ✅ Complete | - |
+| 1.5 My Projects Dashboard | Website | ✅ Complete | - |
 | 1.6 NPX Command Generation | CLI | ✅ Complete | `20251224-P2-5ds-clone-npx-command.txt` |
 
 ## Phase 2: Core Features System (Week 2-3)
@@ -59,8 +59,8 @@
 | Task | Agent | Status | Inbox File |
 |------|-------|--------|------------|
 | 6.1 Marketing Landing | Website | ✅ Complete | - |
-| 6.2 Value Comparison | Website | ⏳ Waiting on 6.1 | - |
-| 6.3 Social Proof | Website | ⏳ Waiting on 6.1 | - |
+| 6.2 Value Comparison | Website | ✅ Complete | - |
+| 6.3 Social Proof | Website | ✅ Complete | - |
 
 ---
 
