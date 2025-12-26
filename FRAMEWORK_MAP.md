@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 6043641 2025-12-25 fix(auth): update ProtectedRoute for Navy theme
 - de5e64b 2025-12-25 feat(marketing): update LandingPage for Navy theme (60-30-10)
 - b387547 2025-12-25 feat(ui): update card components for Navy theme
 - 1914f0b 2025-12-25 feat(ui): update button variants for Navy theme
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 77aea0a 2025-12-25 feat(media): regenerate 5 WebP images with Orange/Stone palette
 - 6fb471d 2025-12-25 docs: update color references for Warm Neutral scheme
 - 6d675c0 2025-12-25 test(website): verify accordion UI tests complete - 732 tests pass
-- 688f777 2025-12-25 docs(governance): clarify Human Terminal Command vs Next Agent Prompt rules
 
 ## Agent Governance Structure
 

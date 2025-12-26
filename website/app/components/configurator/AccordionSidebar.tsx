@@ -200,7 +200,7 @@ export function AccordionSidebar({
 
   if (!mounted) {
     return (
-      <aside className={cn("hidden md:flex flex-col w-[320px] bg-[var(--surface)] border-r border-[var(--border)]", className)}>
+      <aside className={cn("hidden md:flex flex-col w-[340px] min-w-[340px] bg-[var(--surface)] border-r border-[var(--border)]", className)}>
         <div className="h-14 flex items-center px-6 border-b border-[var(--border)]">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center text-white font-bold text-sm">D</div>
@@ -214,7 +214,7 @@ export function AccordionSidebar({
   return (
     <aside
       className={cn(
-        "hidden md:flex flex-col w-[320px] bg-[var(--surface)] border-r border-[var(--border)] shadow-sm h-screen",
+        "hidden md:flex flex-col w-[340px] min-w-[340px] bg-[var(--surface)] border-r border-[var(--border)] shadow-sm h-screen overflow-hidden",
         className
       )}
     >
@@ -314,8 +314,8 @@ export function AccordionSidebar({
                   </div>
                 </AccordionTrigger>
 
-                <AccordionContent className="px-4 pb-4 pt-0">
-                  <div className="pl-12 text-sm text-[var(--text-secondary)]">
+                <AccordionContent className="px-3 pb-4 pt-2">
+                  <div className="text-sm text-[var(--text-secondary)]">
                     {children ? children(section.id) : (
                       <p className="text-[var(--text-secondary)] italic">
                         Click to configure {section.label.toLowerCase()}
