@@ -200,11 +200,11 @@ export function AccordionSidebar({
 
   if (!mounted) {
     return (
-      <aside className={cn("hidden md:flex flex-col w-[340px] min-w-[340px] bg-[var(--surface)] border-r border-[var(--border)]", className)}>
-        <div className="h-14 flex items-center px-6 border-b border-[var(--border)]">
+      <aside className={cn("hidden md:flex flex-col w-[340px] min-w-[340px] bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)]", className)}>
+        <div className="h-14 flex items-center px-6 border-b border-[var(--sidebar-border)]">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center text-white font-bold text-sm">D</div>
-            <span className="font-bold text-[var(--text-secondary)]">Loading...</span>
+            <div className="w-10 h-10 bg-[var(--primary)] rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-[0_4px_12px_rgba(249,115,22,0.25)]">D</div>
+            <span className="font-bold text-white">Loading...</span>
           </div>
         </div>
       </aside>
@@ -214,17 +214,17 @@ export function AccordionSidebar({
   return (
     <aside
       className={cn(
-        "hidden md:flex flex-col w-[340px] min-w-[340px] bg-[var(--surface)] border-r border-[var(--border)] shadow-sm h-screen overflow-hidden",
+        "hidden md:flex flex-col w-[340px] min-w-[340px] bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] h-screen overflow-hidden",
         className
       )}
     >
-      {/* Logo/Brand area */}
-      <div className="h-14 flex items-center justify-between px-6 border-b border-[var(--border)] shrink-0">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center text-white font-bold text-sm">D</div>
-          <span className="font-bold text-[var(--text-primary)] text-lg">Dawson Does</span>
+      {/* Logo/Brand area - Navy Solid with subtle gradient */}
+      <div className="h-16 flex items-center justify-between px-6 border-b border-[var(--sidebar-border)] shrink-0 bg-gradient-to-b from-white/5 to-transparent">
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 bg-[var(--primary)] rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-[0_4px_12px_rgba(249,115,22,0.25)]">D</div>
+          <span className="font-bold text-white text-lg">Dawson Does</span>
         </div>
-        <span className="text-xs text-[var(--text-secondary)]">
+        <span className="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white/80 font-medium">
           {completedSteps.size}/{NAV_SECTIONS.length}
         </span>
       </div>
@@ -247,28 +247,28 @@ export function AccordionSidebar({
               <AccordionItem
                 key={section.id}
                 value={section.id}
-                className="border-b border-[var(--border)]"
+                className="border-b border-[var(--sidebar-border)]"
               >
                 <AccordionTrigger
                   onClick={() => handleSectionClick(section)}
                   className={cn(
-                    "sidebar-item relative px-4 py-3.5 hover:bg-[var(--primary-light)] hover:no-underline group",
-                    isActive && "bg-[var(--primary-light)]"
+                    "sidebar-item relative px-4 py-3.5 hover:bg-[var(--sidebar-hover)] hover:no-underline group transition-colors",
+                    isActive && "bg-[var(--sidebar-active)]"
                   )}
                 >
                   {/* Active indicator bar */}
                   {isActive && (
-                    <span className="absolute left-0 top-2.5 bottom-2.5 w-1 bg-[var(--primary)] rounded-r-md" />
+                    <span className="absolute left-0 top-2 bottom-2 w-1 bg-[var(--primary)] rounded-r" />
                   )}
 
                   <div className="flex items-center gap-3.5 flex-1">
                     {/* Status indicator or icon */}
                     <div
                       className={cn(
-                        "sidebar-icon flex items-center justify-center w-9 h-9 rounded-xl transition-colors",
-                        state === "completed" && "bg-[var(--success-light)] text-[var(--success-dark)]",
-                        state === "current" && "bg-[var(--primary-light)] text-[var(--primary)]",
-                        state === "pending" && "bg-[var(--muted)] text-[var(--text-secondary)]"
+                        "sidebar-icon flex items-center justify-center w-10 h-10 rounded-xl transition-all",
+                        state === "completed" && "bg-[rgba(16,185,129,0.15)] text-emerald-400",
+                        state === "current" && "bg-[var(--primary)] text-white shadow-[0_4px_12px_rgba(249,115,22,0.25)]",
+                        state === "pending" && "bg-[var(--sidebar-icon-pending)] text-white/50"
                       )}
                     >
                       {state === "completed" ? (
@@ -284,30 +284,32 @@ export function AccordionSidebar({
                         <span
                           className={cn(
                             "font-semibold text-[15px]",
-                            state === "completed" && "text-[var(--success-dark)]",
+                            state === "completed" && "text-emerald-400",
                             state === "current" && "text-[var(--primary)]",
-                            state === "pending" && "text-[var(--text-primary)]"
+                            state === "pending" && "text-[var(--sidebar-text)]"
                           )}
                         >
                           {section.label}
                         </span>
                         {badge !== undefined && (
                           <span className={cn(
-                            "sidebar-badge px-2.5 py-0.5 rounded-full text-xs font-semibold",
+                            "sidebar-badge px-2.5 py-0.5 rounded-lg text-xs font-semibold",
                             state === "completed" 
-                              ? "bg-[var(--success-light)] text-[var(--success-dark)]" 
-                              : "bg-[var(--muted)] text-[var(--text-secondary)]"
+                              ? "bg-[rgba(16,185,129,0.15)] text-emerald-400" 
+                              : state === "current"
+                              ? "bg-[var(--primary)] text-white"
+                              : "bg-white/10 text-white/70"
                           )}>
                             {badge}
                           </span>
                         )}
                         {state === "completed" && !badge && (
-                          <span className="sidebar-badge px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--success-light)] text-[var(--success-dark)]">
+                          <span className="sidebar-badge px-2.5 py-0.5 rounded-lg text-xs font-semibold bg-[rgba(16,185,129,0.15)] text-emerald-400">
                             Ready
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-[var(--text-secondary)] mt-0.5">
+                      <div className="text-xs text-[var(--sidebar-text-muted)] mt-0.5">
                         {section.description}
                       </div>
                     </div>
@@ -315,9 +317,9 @@ export function AccordionSidebar({
                 </AccordionTrigger>
 
                 <AccordionContent className="px-3 pb-4 pt-2">
-                  <div className="text-sm text-[var(--text-secondary)]">
+                  <div className="text-sm text-[var(--sidebar-text-muted)] bg-black/20 rounded-xl p-4 border border-[var(--sidebar-border)]">
                     {children ? children(section.id) : (
-                      <p className="text-[var(--text-secondary)] italic">
+                      <p className="text-[var(--sidebar-text-muted)] italic">
                         Click to configure {section.label.toLowerCase()}
                       </p>
                     )}
@@ -329,20 +331,23 @@ export function AccordionSidebar({
         </Accordion>
       </ScrollArea>
 
-      {/* Progress footer */}
-      <div className="sidebar-progress p-5 border-t border-[var(--border)] bg-[var(--surface)] shrink-0">
-        <div className="progress-bar h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
+      {/* Progress footer - Navy Solid */}
+      <div className="sidebar-progress p-5 border-t border-[var(--sidebar-border)] bg-black/10 shrink-0">
+        <div className="progress-bar h-1.5 bg-white/10 rounded-full overflow-hidden">
           <div
             className="progress-fill h-full transition-all duration-300 rounded-full"
             style={{ 
               width: `${(completedSteps.size / NAV_SECTIONS.length) * 100}%`,
-              background: 'linear-gradient(90deg, var(--primary), #FB923C)'
+              background: 'var(--primary)'
             }}
           />
         </div>
         <div className="flex items-center justify-between text-[13px] mt-2.5">
-          <span className="text-[var(--text-secondary)] font-medium">
+          <span className="text-[var(--primary)] font-semibold">
             {Math.round((completedSteps.size / NAV_SECTIONS.length) * 100)}% complete
+          </span>
+          <span className="text-[var(--sidebar-text-muted)]">
+            {completedSteps.size} of {NAV_SECTIONS.length}
           </span>
         </div>
       </div>
