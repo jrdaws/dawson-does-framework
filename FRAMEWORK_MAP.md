@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 7ada972 2025-12-25 feat(scripts): add tiered checkpoint support
 - 2eea711 2025-12-25 fix(website): replace remaining gray colors with stone
 - ca6e0bd 2025-12-25 feat(governance): implement tiered checkpoint system
 - 97120ba 2025-12-25 docs(task): add mandatory backup step to checkpoint implementation task
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - ac7eb2d 2025-12-25 test(configurator): add E2E tests for accordion sidebar and feature selection
 - e35490a 2025-12-25 feat(website): implement Warm Neutral color scheme (Orange/Stone)
 - 02cda18 2025-12-25 docs(task): complete governance optimization Phase 2
-- 1548915 2025-12-25 feat(governance): implement Phase 2 token optimization
 
 ## Agent Governance Structure
 
