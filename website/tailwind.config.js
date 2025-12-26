@@ -9,15 +9,28 @@ module.exports = {
   theme: {
   	extend: {
   		colors: {
-  			// Warm Neutral Color Scheme - Orange/Stone palette
+  			// HubSpot Adapted Color Scheme - Orange primary, Navy secondary
   			brand: {
-  				primary: '#F97316',      // orange-500
-  				secondary: '#EA580C',    // orange-600
-  				success: '#10B981',      // emerald-500 (unchanged)
-  				light: '#FAFAF9',        // stone-50
-  				dark: '#1C1917',         // stone-900
-  				muted: '#78716C',        // stone-500
-  				'muted-light': '#A8A29E' // stone-400
+  				primary: '#F97316',      // orange-500 (the star!)
+  				secondary: '#1E3A5F',    // deep navy
+  				success: '#10B981',      // emerald-500
+  				light: '#FFFFFF',        // pure white
+  				dark: '#1C1917',         // near-black
+  				muted: '#64748B',        // slate gray
+  				'muted-light': '#94A3B8' // slate-400
+  			},
+  			// Navy palette for secondary actions
+  			navy: {
+  				50: '#F0F4F8',
+  				100: '#E1E8F0',
+  				200: '#C3D0E0',
+  				300: '#8BA3BD',
+  				400: '#5C7A99',
+  				500: '#2C4A73',
+  				600: '#1E3A5F',
+  				700: '#15294a',
+  				800: '#0D1A30',
+  				900: '#080F1A',
   			},
   			// Orange palette for primary actions
   			orange: {
@@ -33,10 +46,12 @@ module.exports = {
   				900: '#7C2D12',
   			},
   			terminal: {
-  				bg: '#1C1917',           // stone-900
-  				text: '#F97316',         // orange-500
-  				dim: '#78716C',          // stone-500
-  				accent: '#FB923C',       // orange-400
+  				bg: '#1E293B',           // slate-800
+  				header: '#334155',       // slate-700
+  				text: '#94A3B8',         // slate-400
+  				bright: '#E2E8F0',       // slate-200
+  				prompt: '#F97316',       // orange-500
+  				success: '#10B981',      // emerald-500
   				error: '#EF4444',
   				warning: '#F59E0B'
   			},
