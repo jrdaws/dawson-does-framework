@@ -50,7 +50,7 @@ export function Nav({
         {(links || []).map((link, i) => (
           <span
             key={i}
-            className="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm"
+            className="text-stone-400 hover:text-white transition-colors cursor-pointer text-sm"
           >
             {link}
           </span>
@@ -63,7 +63,7 @@ export function Nav({
           {previewMode ? (
             // Static preview buttons
             <>
-          <button className="text-gray-400 hover:text-white transition-colors text-sm">
+          <button className="text-stone-400 hover:text-white transition-colors text-sm">
             Log in
           </button>
               <button className="px-4 py-2 bg-[#F97316] hover:bg-[#F97316]/90 text-white rounded-lg text-sm font-medium transition-colors">
@@ -87,13 +87,13 @@ export function Nav({
                     <User className="w-4 h-4 text-[#F97316]" />
                   </div>
                 )}
-                <span className="text-sm text-gray-300 hidden sm:block">
+                <span className="text-sm text-stone-300 hidden sm:block">
                   {user.user_metadata?.full_name || user.email?.split("@")[0]}
                 </span>
               </div>
               <button
                 onClick={() => signOut?.()}
-                className="p-2 text-gray-400 hover:text-white transition-colors"
+                className="p-2 text-stone-400 hover:text-white transition-colors"
                 title="Sign out"
               >
                 <LogOut className="w-4 h-4" />
@@ -104,7 +104,7 @@ export function Nav({
             <>
               <Link
                 href="/login"
-                className="text-gray-400 hover:text-white transition-colors text-sm"
+                className="text-stone-400 hover:text-white transition-colors text-sm"
               >
                 Log in
               </Link>

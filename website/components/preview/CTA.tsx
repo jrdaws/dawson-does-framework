@@ -38,7 +38,7 @@ export function CTA({
           <p
             className={cn(
               "text-lg mb-8 max-w-2xl mx-auto",
-              variant === "outlined" ? "text-gray-400" : "text-white/80"
+              variant === "outlined" ? "text-stone-400" : "text-white/80"
             )}
           >
             {subtitle}
@@ -48,9 +48,9 @@ export function CTA({
           className={cn(
             "px-8 py-4 rounded-xl font-semibold text-lg transition-all",
             variant === "gradient" &&
-              "bg-stone-50 text-orange-600 hover:bg-gray-100 shadow-lg",
+              "bg-stone-50 text-orange-600 hover:bg-stone-100 shadow-lg",
             variant === "solid" &&
-              "bg-stone-50 text-orange-600 hover:bg-gray-100",
+              "bg-stone-50 text-orange-600 hover:bg-stone-100",
             variant === "outlined" &&
               "bg-gradient-to-r from-orange-500 to-orange-400 text-white hover:from-orange-600 hover:to-orange-600"
           )}

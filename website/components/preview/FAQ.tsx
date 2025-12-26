@@ -46,7 +46,7 @@ export function FAQ({
                   <span className="text-white font-medium">{item.question}</span>
                   <svg
                     className={cn(
-                      "w-5 h-5 text-gray-400 transition-transform",
+                      "w-5 h-5 text-stone-400 transition-transform",
                       openIndex === i && "rotate-180"
                     )}
                     fill="none"
@@ -58,7 +58,7 @@ export function FAQ({
                 </button>
                 {openIndex === i && (
                   <div className="px-6 pb-4">
-                    <p className="text-gray-400 text-sm">{item.answer}</p>
+                    <p className="text-stone-400 text-sm">{item.answer}</p>
                   </div>
                 )}
               </div>
@@ -69,7 +69,7 @@ export function FAQ({
             {items.map((item, i) => (
               <div key={i} className="bg-[#111111] rounded-xl p-6 border border-white/5">
                 <h3 className="text-white font-medium mb-3">{item.question}</h3>
-                <p className="text-gray-400 text-sm">{item.answer}</p>
+                <p className="text-stone-400 text-sm">{item.answer}</p>
               </div>
             ))}
           </div>

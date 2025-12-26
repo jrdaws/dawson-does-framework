@@ -47,7 +47,7 @@ export function DashboardPreview({
                     "px-3 py-2 rounded-lg text-sm cursor-pointer transition-colors",
                     i === 0
                       ? "bg-orange-500/10 text-orange-400"
-                      : "text-gray-400 hover:text-white hover:bg-stone-50/5"
+                      : "text-stone-400 hover:text-white hover:bg-stone-50/5"
                   )}
                 >
                   {item}
@@ -63,7 +63,7 @@ export function DashboardPreview({
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-2xl font-bold text-white">Overview</h1>
             <div className="flex items-center gap-3">
-              <div className="px-4 py-2 bg-[#111111] rounded-lg text-sm text-gray-400">
+              <div className="px-4 py-2 bg-[#111111] rounded-lg text-sm text-stone-400">
                 Last 7 days
               </div>
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-orange-400 flex items-center justify-center text-white font-medium">
@@ -79,7 +79,7 @@ export function DashboardPreview({
                 key={i}
                 className="bg-[#111111] rounded-xl p-4 border border-white/5"
               >
-                <p className="text-gray-400 text-sm mb-1">{stat.label}</p>
+                <p className="text-stone-400 text-sm mb-1">{stat.label}</p>
                 <p className="text-2xl font-bold text-white mb-2">{stat.value}</p>
                 {stat.change !== undefined && (
                   <div
@@ -117,7 +117,7 @@ export function DashboardPreview({
                       "px-3 py-1 rounded text-xs",
                       i === 1
                         ? "bg-orange-500 text-white"
-                        : "bg-stone-50/5 text-gray-400 hover:text-white"
+                        : "bg-stone-50/5 text-stone-400 hover:text-white"
                     )}
                   >
                     {period}
@@ -141,7 +141,7 @@ export function DashboardPreview({
                       )}
                       style={{ height: `${height * 100}%` }}
                     />
-                    <span className="text-xs text-gray-600">
+                    <span className="text-xs text-stone-600">
                       {["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][i]}
                     </span>
                   </div>

@@ -119,13 +119,15 @@ Read and execute: output/agents/[role]/inbox/TASK.txt
 
 ---
 
-## Session End (Tiered - Rec 6)
+## Checkpoint / Session End (Tiered)
 
-| Session Type | Required Steps |
-|--------------|----------------|
-| **Simple** (<30 min) | 1. Commit + push 2. Sign off |
-| **Standard** (30+ min) | 1. Commit 2. Brief memory (5 lines) 3. Handoff if needed |
-| **Major** (multi-hour) | Full protocol: memory, MINDFRAME, priorities, handoff |
+| Tier | Trigger | Steps |
+|------|---------|-------|
+| Light | `cp light` | Commit + Sign off |
+| Standard | `cp` | Test + Commit + Brief memory (5 lines) |
+| Full | `cp full` | All: memory, MINDFRAME, SOP scan, handoff |
+
+**Default**: Standard tier when just `cp` is used
 
 ---
 

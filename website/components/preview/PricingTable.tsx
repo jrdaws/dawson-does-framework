@@ -40,7 +40,7 @@ export function PricingTable({
               <button className="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-md">
                 Monthly
               </button>
-              <button className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white">
+              <button className="px-4 py-2 text-sm font-medium text-stone-400 hover:text-white">
                 Yearly <span className="text-emerald-400 text-xs">Save 20%</span>
               </button>
             </div>
@@ -75,12 +75,12 @@ export function PricingTable({
                   <span className="text-4xl font-bold text-white">
                     ${plan.price}
                   </span>
-                  <span className="text-gray-400">/{plan.period || "month"}</span>
+                  <span className="text-stone-400">/{plan.period || "month"}</span>
                 </div>
 
                 <ul className="space-y-3 mb-8">
                   {(plan.features || []).map((feature, j) => (
-                    <li key={j} className="flex items-center gap-3 text-gray-300">
+                    <li key={j} className="flex items-center gap-3 text-stone-300">
                       <svg className="w-5 h-5 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>

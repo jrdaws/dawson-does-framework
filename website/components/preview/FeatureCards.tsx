@@ -103,7 +103,7 @@ export function FeatureCards({
                     <h3 className="text-white font-semibold mb-2">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-400 text-sm">{feature.description}</p>
+                    <p className="text-stone-400 text-sm">{feature.description}</p>
                   </div>
                 </>
               ) : (
@@ -112,7 +112,7 @@ export function FeatureCards({
                     {getIcon(feature.iconName)}
                   </div>
                   <h3 className="text-white font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-gray-400 text-sm">{feature.description}</p>
+                  <p className="text-stone-400 text-sm">{feature.description}</p>
                 </>
               )}
             </div>

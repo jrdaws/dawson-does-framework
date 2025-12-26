@@ -131,17 +131,26 @@ cd /Users/joseph.dawson/Documents/dawson-does-framework && cat docs/automation/A
 
 ---
 
-## 📦 Checkpoint Protocol (Tiered)
+## 📦 Checkpoint Protocol
 
-| Tier | Trigger | Steps |
-|------|---------|-------|
-| Light | `cp light` | Commit + Sign off |
-| Standard | `cp` | Test + Commit + Brief memory (5 lines) |
-| Full | `cp full` | All: memory, MINDFRAME, SOP scan, handoff |
+**Trigger**: `checkpoint` or `cp`
 
-**Default**: Standard tier
+**Graceful Stop First:**
+- Complete quick tasks (< 2 min remaining)
+- Find safe stopping point (no broken code)
+- Complete current file before stopping
 
-**Graceful Stop (all tiers)**: Complete current file, no broken code
+**Steps:**
+1. **Pre-Check**: Review recent commits for governance changes
+2. **Stage**: `git add -A` (do NOT commit directly)
+3. **SOP Scan**: Identify patterns that could become SOPs
+4. **Handoff**: Create review request for Auditor Agent
+5. **Auditor**: Reviews and commits when ready
+
+**SOP Scan Questions:**
+- Did I encounter a workaround?
+- Did I repeat a process?
+- Was there confusion a procedure could prevent?
 
 **Full SOP**: `docs/sops/CHECKPOINT_SOP.md`
 

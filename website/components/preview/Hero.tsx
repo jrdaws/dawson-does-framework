@@ -58,7 +58,7 @@ export function Hero({
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
           {title}
         </h1>
-        <p className="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-stone-400 mb-8 max-w-2xl mx-auto">
           {subtitle}
         </p>
         <div
