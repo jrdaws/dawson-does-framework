@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- dd46fea 2025-12-25 docs(media): add HubSpot-adapted color scheme task for Media Agent
 - 2a5c91d 2025-12-25 fix(export): add template validation and graceful error handling
 - 43c05e1 2025-12-25 chore: move checkpoint task to done
 - 7ada972 2025-12-25 feat(scripts): add tiered checkpoint support
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 46a638e 2025-12-25 docs(sop): add Governance Maintenance SOP - prevents re-bloating
 - 6c81507 2025-12-25 fix(website): replace purple/pink dark mode with warm stone tones
 - 7ac4808 2025-12-25 chore(tasks): cleanup completed tasks in documentation inbox
-- ac7eb2d 2025-12-25 test(configurator): add E2E tests for accordion sidebar and feature selection
 
 ## Agent Governance Structure
 
