@@ -24,6 +24,8 @@ const ContextFields = dynamic(() => import("@/app/components/configurator/Contex
 const GenerateFramework = dynamic(() => import("@/app/components/configurator/GenerateFramework").then(mod => ({ default: mod.GenerateFramework })), { ssr: false });
 const LivePreviewPanel = dynamic(() => import("@/app/components/configurator/LivePreviewPanel").then(mod => ({ default: mod.LivePreviewPanel })), { ssr: false });
 const PreviewToggleButton = dynamic(() => import("@/app/components/configurator/LivePreviewPanel").then(mod => ({ default: mod.PreviewToggleButton })), { ssr: false });
+const PreviewCard = dynamic(() => import("@/app/components/configurator/PreviewCard").then(mod => ({ default: mod.PreviewCard })), { ssr: false });
+const ProjectOverviewBox = dynamic(() => import("@/app/components/configurator/ProjectOverviewBox").then(mod => ({ default: mod.ProjectOverviewBox })), { ssr: false });
 
 // Import section components for inline sidebar content
 const ResearchSection = dynamic(() => import("@/app/components/configurator/sections/ResearchSection").then(mod => ({ default: mod.ResearchSection })), { ssr: false });
@@ -31,48 +33,61 @@ const CoreFeaturesSection = dynamic(() => import("@/app/components/configurator/
 const IntegrateAISection = dynamic(() => import("@/app/components/configurator/sections/IntegrateAISection").then(mod => ({ default: mod.IntegrateAISection })), { ssr: false });
 const ToolSetupSection = dynamic(() => import("@/app/components/configurator/sections/ToolSetupSection").then(mod => ({ default: mod.ToolSetupSection })), { ssr: false });
 const SupabaseSetup = dynamic(() => import("@/app/components/configurator/setup/SupabaseSetup").then(mod => ({ default: mod.SupabaseSetup })), { ssr: false });
+const TemplateSection = dynamic(() => import("@/app/components/configurator/sections/TemplateSection").then(mod => ({ default: mod.TemplateSection })), { ssr: false });
+const ProjectSetupSection = dynamic(() => import("@/app/components/configurator/sections/ProjectSetupSection").then(mod => ({ default: mod.ProjectSetupSection })), { ssr: false });
+const ExportSection = dynamic(() => import("@/app/components/configurator/sections/ExportSection").then(mod => ({ default: mod.ExportSection })), { ssr: false });
 
-// Map section IDs to step numbers (for the new 8-section layout)
+// Map section IDs to step numbers (10-section layout with Template & Export)
 const SECTION_TO_STEP: Record<string, number> = {
-  "research": 1,
-  "core-features": 2,
-  "integrate-ai": 3,
-  "cursor": 4,
-  "github": 5,
-  "claude-code": 6,
-  "supabase": 7,
-  "vercel": 8,
+  "template": 1,
+  "research": 2,
+  "core-features": 3,
+  "integrate-ai": 4,
+  "project-setup": 5,
+  "cursor": 6,
+  "github": 7,
+  "supabase": 8,
+  "vercel": 9,
+  "export": 10,
 };
 
 const STEP_TO_SECTION: Record<number, string> = {
-  1: "research",
-  2: "core-features",
-  3: "integrate-ai",
-  4: "cursor",
-  5: "github",
-  6: "claude-code",
-  7: "supabase",
-  8: "vercel",
+  1: "template",
+  2: "research",
+  3: "core-features",
+  4: "integrate-ai",
+  5: "project-setup",
+  6: "cursor",
+  7: "github",
+  8: "supabase",
+  9: "vercel",
+  10: "export",
 };
 
 // Step titles for breadcrumb
 const STEP_TITLES: Record<number, string> = {
-  1: "Research",
-  2: "Core Features",
-  3: "Integrate AI",
-  4: "Cursor Setup",
-  5: "GitHub Setup",
-  6: "Claude Code",
-  7: "Supabase",
-  8: "Vercel Deploy",
+  1: "Template",
+  2: "Research",
+  3: "Core Features",
+  4: "AI Integration",
+  5: "Project Setup",
+  6: "Cursor",
+  7: "GitHub",
+  8: "Supabase",
+  9: "Vercel",
+  10: "Export",
 };
 
 // Phase names for breadcrumb
 const getPhaseForStep = (step: number): string => {
-  if (step <= 1) return "Research";
-  if (step <= 3) return "Features";
-  return "Tools";
+  if (step <= 2) return "Setup";
+  if (step <= 5) return "Configure";
+  if (step <= 9) return "Tools";
+  return "Export";
 };
+
+// Total number of steps
+const TOTAL_STEPS = 10;
 
 export default function ConfigurePage() {
   const [aiTab, setAiTab] = useState<"component" | "preview" | "generate">("component");
@@ -139,36 +154,54 @@ export default function ConfigurePage() {
     prevStepRef.current = currentStep;
   }, [currentStep]);
 
-  // Calculate section badges (e.g., feature count)
+  // Calculate section badges for all sections
   const sectionBadges = useMemo(() => {
     const totalFeatures = Object.values(selectedFeatures).flat().length;
+    const integrationCount = Object.values(integrations).filter(Boolean).length;
+    const toolsReady = Object.values(toolStatus).filter(Boolean).length;
+    
     return {
+      // Research - show if domain is set
+      "research": researchDomain ? "✓" : undefined,
+      // Core Features - show count
       "core-features": totalFeatures > 0 ? totalFeatures : undefined,
+      // Integrate AI - show provider or count
+      "integrate-ai": aiProvider ? "1" : (integrationCount > 0 ? integrationCount : undefined),
+      // Tool sections - show "Ready" when complete
+      "cursor": toolStatus.cursor ? "Ready" : undefined,
+      "github": toolStatus.github ? "Ready" : undefined,
+      "claude-code": toolStatus["claude-code"] ? "Ready" : undefined,
+      "supabase": toolStatus.supabase ? "Ready" : undefined,
+      "vercel": toolStatus.vercel ? "Ready" : undefined,
     };
-  }, [selectedFeatures]);
+  }, [selectedFeatures, integrations, toolStatus, researchDomain, aiProvider]);
 
   // Calculate progress
-  const progress = (completedSteps.size / 8) * 100;
+  const progress = (completedSteps.size / TOTAL_STEPS) * 100;
 
   // Validation for each step
   const canProceed = () => {
     switch (currentStep) {
-      case 1: // Research
+      case 1: // Template
+        return template !== "";
+      case 2: // Research
         return researchDomain.length > 0 || description.length > 0;
-      case 2: // Core Features
+      case 3: // Core Features
         return Object.values(selectedFeatures).flat().length > 0;
-      case 3: // Integrate AI
+      case 4: // Integrate AI
         return aiProvider !== "";
-      case 4: // Cursor
+      case 5: // Project Setup
+        return projectName.length > 0 && outputDir.length > 0;
+      case 6: // Cursor
         return toolStatus.cursor;
-      case 5: // GitHub
+      case 7: // GitHub
         return toolStatus.github;
-      case 6: // Claude Code
+      case 8: // Supabase
         return true; // Optional
-      case 7: // Supabase
+      case 9: // Vercel
         return true; // Optional
-      case 8: // Vercel
-        return true; // Optional
+      case 10: // Export
+        return true; // Final step
       default:
         return false;
     }
@@ -179,7 +212,7 @@ export default function ConfigurePage() {
 
     completeStep(currentStep);
     const nextStep = (currentStep + 1) as Step;
-    if (nextStep <= 8) {
+    if (nextStep <= TOTAL_STEPS) {
       setStep(nextStep);
     }
   };
@@ -197,11 +230,21 @@ export default function ConfigurePage() {
   };
 
   const isFirstStep = currentStep === 1;
-  const isLastStep = currentStep === 8;
+  const isLastStep = currentStep === TOTAL_STEPS;
 
   // Render inline section content for accordion
   const renderSectionContent = (sectionId: string) => {
     switch (sectionId) {
+      case "template":
+        return (
+          <TemplateSection
+            selectedTemplate={template}
+            onTemplateChange={(t) => {
+              setTemplate(t);
+              completeStep(1);
+            }}
+          />
+        );
       case "research":
         return (
           <ResearchSection
@@ -210,8 +253,8 @@ export default function ConfigurePage() {
             inspirationUrls={inspirationUrls}
             onInspirationUrlsChange={setInspirationUrls}
             onStartResearch={() => {
-              completeStep(1);
-              setStep(2);
+              completeStep(2);
+              setStep(3);
             }}
             onShowMe={() => {
               // Show documentation or tutorial
@@ -286,6 +329,30 @@ export default function ConfigurePage() {
             toolId="vercel"
             isComplete={toolStatus.vercel}
             onMarkComplete={() => handleToolComplete("vercel")}
+          />
+        );
+      case "project-setup":
+        return (
+          <ProjectSetupSection
+            projectName={projectName}
+            onProjectNameChange={setProjectName}
+            outputDir={outputDir}
+            onOutputDirChange={setOutputDir}
+            envKeys={envKeys}
+            onEnvKeyChange={setEnvKey}
+          />
+        );
+      case "export":
+        return (
+          <ExportSection
+            projectName={projectName}
+            template={template}
+            featureCount={Object.values(selectedFeatures).flat().length}
+            isReady={completedSteps.size >= 5}
+            onExport={(method) => {
+              console.log("Export with method:", method);
+              completeStep(10);
+            }}
           />
         );
       default:
@@ -453,15 +520,24 @@ export default function ConfigurePage() {
           <ModeToggle mode={mode} onChange={setMode} />
         </header>
 
-        {/* Scrollable Content */}
+        {/* Scrollable Content with Preview Card */}
         <main className="flex-1 overflow-auto">
-          <div 
-            key={animationKey}
-            className={`max-w-4xl mx-auto px-6 py-8 ${
-              animationDirection === "right" ? "slide-in-right" : "slide-in-left"
-            }`}
-          >
-            {renderMainContent()}
+          <div className="flex gap-6 px-6 py-8">
+            {/* Main Content */}
+            <div 
+              key={animationKey}
+              className={`flex-1 max-w-3xl ${
+                animationDirection === "right" ? "slide-in-right" : "slide-in-left"
+              }`}
+            >
+              {renderMainContent()}
+            </div>
+
+            {/* Right Panel - Preview Card & Overview (hidden on mobile) */}
+            <div className="hidden xl:flex flex-col gap-4 w-80 shrink-0 sticky top-0 h-fit">
+              <PreviewCard />
+              <ProjectOverviewBox showAnalysis={currentStep > 2} />
+            </div>
           </div>
         </main>
 

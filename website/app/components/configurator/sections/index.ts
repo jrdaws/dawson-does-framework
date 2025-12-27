@@ -3,4 +3,6 @@ export { CoreFeaturesSection } from "./CoreFeaturesSection";
 export { IntegrateAISection } from "./IntegrateAISection";
 export { ToolSetupSection } from "./ToolSetupSection";
 export { ConnectedServicesSection } from "./ConnectedServicesSection";
-
+export { TemplateSection } from "./TemplateSection";
+export { ProjectSetupSection } from "./ProjectSetupSection";
+export { ExportSection } from "./ExportSection";

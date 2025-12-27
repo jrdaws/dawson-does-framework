@@ -9,9 +9,21 @@ interface TemplateSectionProps {
   onTemplateChange: (templateId: string) => void;
 }
 
-const TEMPLATE_LIST = Object.entries(TEMPLATES).map(([id, template]) => ({
-  id,
-  ...template,
+// Icons for each template
+const TEMPLATE_ICONS: Record<string, string> = {
+  saas: "🚀",
+  ecommerce: "🛒",
+  blog: "📝",
+  portfolio: "💼",
+  dashboard: "📊",
+  landing: "🎯",
+};
+
+const TEMPLATE_LIST = Object.entries(TEMPLATES).map(([templateId, template]) => ({
+  id: templateId,
+  name: template.name,
+  description: template.description,
+  icon: TEMPLATE_ICONS[templateId] || "📦",
 }));
 
 export function TemplateSection({

@@ -1,294 +1,179 @@
 "use client";
 
-import { useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useConfiguratorStore } from "@/lib/configurator-state";
-import { calculateComplexityScore, getFeatureById } from "@/lib/features";
-import {
-  Folder,
-  Layers,
-  Plug,
-  Clock,
-  Gauge,
-  FileCode,
-  Sparkles,
-  CheckCircle2,
-  Circle,
-} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Sparkles, FileCode, Package, Zap } from "lucide-react";
 
 interface ProjectOverviewBoxProps {
   className?: string;
-  compact?: boolean;
+  /** Show AI analysis details */
+  showAnalysis?: boolean;
 }
 
+/**
+ * ProjectOverviewBox - Blue-bordered summary box showing project details
+ * Reference: 5DaySprint project description box
+ */
 export function ProjectOverviewBox({
   className,
-  compact = false,
+  showAnalysis = true,
 }: ProjectOverviewBoxProps) {
   const {
     projectName,
-    template,
-    outputDir,
-    selectedFeatures,
-    integrations,
-    completedSteps,
     description,
+    template,
+    selectedFeatures,
+    researchDomain,
+    vision,
+    aiProvider,
   } = useConfiguratorStore();
 
-  // Calculate feature count
-  const featureCount = useMemo(() => {
-    return Object.values(selectedFeatures).flat().length;
-  }, [selectedFeatures]);
+  // Count features by category
+  const featureCounts = Object.entries(selectedFeatures).reduce(
+    (acc, [category, features]) => {
+      if (features.length > 0) {
+        acc[category] = features.length;
+      }
+      return acc;
+    },
+    {} as Record<string, number>
+  );
 
-  // Calculate integration count
-  const integrationCount = useMemo(() => {
-    return Object.values(integrations).filter(Boolean).length;
-  }, [integrations]);
+  const totalFeatures = Object.values(selectedFeatures).flat().length;
+  const hasContent = projectName || description || researchDomain || vision;
 
-  // Calculate complexity
-  const complexity = useMemo(() => {
-    const allFeatureIds = Object.values(selectedFeatures).flat();
-    return calculateComplexityScore(allFeatureIds);
-  }, [selectedFeatures]);
-
-  // Get top features for display
-  const topFeatures = useMemo(() => {
-    const allIds = Object.values(selectedFeatures).flat().slice(0, 3);
-    return allIds.map((id) => getFeatureById(id)?.label).filter(Boolean);
-  }, [selectedFeatures]);
-
-  // Get active integrations for display
-  const activeIntegrations = useMemo(() => {
-    return Object.entries(integrations)
-      .filter(([_, value]) => value)
-      .map(([type, provider]) => ({
-        type: type.charAt(0).toUpperCase() + type.slice(1),
-        provider: provider.charAt(0).toUpperCase() + provider.slice(1),
-      }))
-      .slice(0, 3);
-  }, [integrations]);
-
-  // Calculate completion percentage
-  const completionPercentage = useMemo(() => {
-    return Math.round((completedSteps.size / 8) * 100);
-  }, [completedSteps]);
-
-  // Complexity colors
-  const complexityColors = {
-    low: "bg-emerald-100 text-emerald-700 border-emerald-200",
-    medium: "bg-amber-100 text-amber-700 border-amber-200",
-    high: "bg-rose-100 text-rose-700 border-rose-200",
-  };
-
-  if (compact) {
+  if (!hasContent) {
     return (
-      <Card className={cn("border-border", className)}>
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between gap-4">
-            {/* Project Name */}
-            <div className="flex items-center gap-2 min-w-0">
-              <Folder className="h-4 w-4 text-[#F97316] flex-shrink-0" />
-              <span className="font-medium text-foreground truncate">
-                {projectName || "Untitled Project"}
-              </span>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="flex items-center gap-3 flex-shrink-0">
-              {featureCount > 0 && (
-                <Badge variant="outline" className="text-xs">
-                  <Layers className="h-3 w-3 mr-1" />
-                  {featureCount}
-                </Badge>
-              )}
-              {integrationCount > 0 && (
-                <Badge variant="outline" className="text-xs">
-                  <Plug className="h-3 w-3 mr-1" />
-                  {integrationCount}
-                </Badge>
-              )}
-              <Badge
-                variant="outline"
-                className={cn("text-xs", complexityColors[complexity.level])}
-              >
-                {complexity.level}
-              </Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div
+        className={cn(
+          "bg-[#0052FF]/5 border-2 border-dashed border-[#0052FF]/30 rounded-xl p-6 text-center",
+          className
+        )}
+      >
+        <Sparkles className="h-8 w-8 text-[#0052FF]/40 mx-auto mb-3" />
+        <p className="text-sm text-[#0052FF]/60 font-medium">
+          Complete the Research step to see your project overview
+        </p>
+      </div>
     );
   }
 
   return (
-    <Card className={cn("border-border", className)}>
-      <CardHeader className="pb-3">
+    <div
+      className={cn(
+        "bg-[#0052FF]/5 border-2 border-[#0052FF] rounded-xl overflow-hidden",
+        className
+      )}
+    >
+      {/* Header */}
+      <div className="bg-[#0052FF]/10 px-4 py-3 border-b border-[#0052FF]/20">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-bold text-foreground flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-[#F97316]" />
-            Project Overview
-          </CardTitle>
-          <Badge
-            variant="outline"
-            className={cn("text-xs", complexityColors[complexity.level])}
-          >
-            <Gauge className="h-3 w-3 mr-1" />
-            {complexity.level} complexity
-          </Badge>
-        </div>
-      </CardHeader>
-
-      <CardContent className="space-y-4">
-        {/* Project Identity */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#F97316]/10">
-              <Folder className="h-5 w-5 text-[#F97316]" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-foreground truncate">
-                {projectName || "Untitled Project"}
-              </h3>
-              <p className="text-xs text-foreground-muted truncate">
-                {outputDir || "./my-app"}
-              </p>
-            </div>
-          </div>
-
-          {description && (
-            <p className="text-sm text-foreground-secondary line-clamp-2 bg-card p-2 rounded-md">
-              {description}
-            </p>
-          )}
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-3">
-          {/* Template */}
-          <div className="bg-card rounded-lg p-3 border border-stone-100">
-            <div className="flex items-center gap-2 mb-1">
-              <FileCode className="h-4 w-4 text-foreground-muted" />
-              <span className="text-xs text-foreground-muted">Template</span>
-            </div>
-            <p className="font-medium text-foreground capitalize">{template}</p>
-          </div>
-
-          {/* Estimated Time */}
-          <div className="bg-card rounded-lg p-3 border border-stone-100">
-            <div className="flex items-center gap-2 mb-1">
-              <Clock className="h-4 w-4 text-foreground-muted" />
-              <span className="text-xs text-foreground-muted">Est. Setup</span>
-            </div>
-            <p className="font-medium text-foreground">
-              {complexity.estimatedHours > 0
-                ? `~${complexity.estimatedHours}h`
-                : "Minimal"}
-            </p>
-          </div>
-
-          {/* Features */}
-          <div className="bg-card rounded-lg p-3 border border-stone-100">
-            <div className="flex items-center gap-2 mb-1">
-              <Layers className="h-4 w-4 text-foreground-muted" />
-              <span className="text-xs text-foreground-muted">Features</span>
-            </div>
-            <p className="font-medium text-foreground">
-              {featureCount} selected
-            </p>
-          </div>
-
-          {/* Integrations */}
-          <div className="bg-card rounded-lg p-3 border border-stone-100">
-            <div className="flex items-center gap-2 mb-1">
-              <Plug className="h-4 w-4 text-foreground-muted" />
-              <span className="text-xs text-foreground-muted">Integrations</span>
-            </div>
-            <p className="font-medium text-foreground">
-              {integrationCount} configured
-            </p>
-          </div>
-        </div>
-
-        {/* Features Preview */}
-        {topFeatures.length > 0 && (
-          <div>
-            <h4 className="text-xs text-foreground-muted mb-2">Selected Features</h4>
-            <div className="flex flex-wrap gap-1">
-              {topFeatures.map((label) => (
-                <Badge
-                  key={label}
-                  variant="outline"
-                  className="text-xs bg-[#F97316]/5 border-[#F97316]/20 text-[#F97316]"
-                >
-                  {label}
-                </Badge>
-              ))}
-              {featureCount > 3 && (
-                <Badge variant="outline" className="text-xs text-foreground-muted">
-                  +{featureCount - 3} more
-                </Badge>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Integrations Preview */}
-        {activeIntegrations.length > 0 && (
-          <div>
-            <h4 className="text-xs text-foreground-muted mb-2">Active Integrations</h4>
-            <div className="flex flex-wrap gap-1">
-              {activeIntegrations.map(({ type, provider }) => (
-                <Badge
-                  key={`${type}-${provider}`}
-                  variant="outline"
-                  className="text-xs"
-                >
-                  {type}: {provider}
-                </Badge>
-              ))}
-              {integrationCount > 3 && (
-                <Badge variant="outline" className="text-xs text-foreground-muted">
-                  +{integrationCount - 3} more
-                </Badge>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Progress */}
-        <div className="pt-2 border-t border-stone-100">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-foreground-muted">Configuration Progress</span>
-            <span className="text-xs font-medium text-[#F97316]">
-              {completionPercentage}%
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-[#0052FF]" />
+            <span className="font-semibold text-[#0052FF] text-sm">
+              Project Overview
             </span>
           </div>
-          <Progress value={completionPercentage} className="h-2" />
-          
-          {/* Step indicators */}
-          <div className="flex justify-between mt-2">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((step) => (
-              <div
-                key={step}
-                className="flex flex-col items-center"
-                title={`Step ${step}`}
-              >
-                {completedSteps.has(step as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8) ? (
-                  <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-                ) : (
-                  <Circle className="h-3 w-3 text-stone-300" />
-                )}
+          {aiProvider && (
+            <Badge
+              variant="outline"
+              className="text-[10px] border-[#0052FF]/30 text-[#0052FF]"
+            >
+              <Zap className="h-3 w-3 mr-1" />
+              AI Enhanced
+            </Badge>
+          )}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-4 space-y-4">
+        {/* Project Name */}
+        {projectName && (
+          <div>
+            <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+              Project
+            </label>
+            <h3 className="text-lg font-semibold text-slate-900 mt-0.5">
+              {projectName}
+            </h3>
+          </div>
+        )}
+
+        {/* Description */}
+        {(description || vision) && (
+          <div>
+            <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+              Description
+            </label>
+            <p className="text-sm text-slate-600 mt-0.5 leading-relaxed">
+              {description || vision}
+            </p>
+          </div>
+        )}
+
+        {/* Domain */}
+        {researchDomain && (
+          <div>
+            <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+              Domain
+            </label>
+            <p className="text-sm text-slate-700 mt-0.5 font-medium">
+              {researchDomain}
+            </p>
+          </div>
+        )}
+
+        {/* Template & Features */}
+        <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-[#0052FF]/10 flex items-center justify-center">
+              <Package className="h-4 w-4 text-[#0052FF]" />
+            </div>
+            <div>
+              <div className="text-xs text-slate-500">Template</div>
+              <div className="text-sm font-medium text-slate-900 capitalize">
+                {template}
               </div>
-            ))}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+              <FileCode className="h-4 w-4 text-emerald-600" />
+            </div>
+            <div>
+              <div className="text-xs text-slate-500">Features</div>
+              <div className="text-sm font-medium text-slate-900">
+                {totalFeatures} selected
+              </div>
+            </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Feature Categories */}
+        {showAnalysis && Object.keys(featureCounts).length > 0 && (
+          <div className="pt-3 border-t border-slate-200">
+            <label className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2 block">
+              Selected Categories
+            </label>
+            <div className="flex flex-wrap gap-1.5">
+              {Object.entries(featureCounts).map(([category, count]) => (
+                <Badge
+                  key={category}
+                  variant="secondary"
+                  className="text-xs capitalize bg-slate-100 text-slate-700"
+                >
+                  {category.replace(/-/g, " ")} ({count})
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
 export default ProjectOverviewBox;
-
