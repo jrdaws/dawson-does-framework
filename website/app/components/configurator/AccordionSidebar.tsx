@@ -331,6 +331,36 @@ export function AccordionSidebar({
         </Accordion>
       </ScrollArea>
 
+      {/* Connected Services Status */}
+      <div className="px-5 py-3 border-t border-[var(--sidebar-border)] bg-black/5 shrink-0">
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-[var(--sidebar-text-muted)] font-medium">Services</span>
+          <div className="flex items-center gap-1.5">
+            {/* GitHub indicator */}
+            <div 
+              className="w-5 h-5 rounded flex items-center justify-center bg-white/10" 
+              title="GitHub"
+            >
+              <Github className="h-3 w-3 text-zinc-400" />
+            </div>
+            {/* Supabase indicator */}
+            <div 
+              className="w-5 h-5 rounded flex items-center justify-center bg-white/10" 
+              title="Supabase"
+            >
+              <Database className="h-3 w-3 text-zinc-400" />
+            </div>
+            {/* Vercel indicator */}
+            <div 
+              className="w-5 h-5 rounded flex items-center justify-center bg-white/10" 
+              title="Vercel"
+            >
+              <Rocket className="h-3 w-3 text-zinc-400" />
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Progress footer - Navy Solid */}
       <div className="sidebar-progress p-5 border-t border-[var(--sidebar-border)] bg-black/10 shrink-0">
         <div className="progress-bar h-1.5 bg-white/10 rounded-full overflow-hidden">
