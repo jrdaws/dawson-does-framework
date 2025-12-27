@@ -338,24 +338,48 @@ export function AccordionSidebar({
           <div className="flex items-center gap-1.5">
             {/* GitHub indicator */}
             <div 
-              className="w-5 h-5 rounded flex items-center justify-center bg-white/10" 
-              title="GitHub"
+              className={cn(
+                "w-5 h-5 rounded flex items-center justify-center transition-colors",
+                completedSteps.has(5) 
+                  ? "bg-emerald-500/20" 
+                  : "bg-white/10"
+              )}
+              title={completedSteps.has(5) ? "GitHub: Connected" : "GitHub: Not connected"}
             >
-              <Github className="h-3 w-3 text-zinc-400" />
+              <Github className={cn(
+                "h-3 w-3",
+                completedSteps.has(5) ? "text-emerald-400" : "text-white/40"
+              )} />
             </div>
             {/* Supabase indicator */}
             <div 
-              className="w-5 h-5 rounded flex items-center justify-center bg-white/10" 
-              title="Supabase"
+              className={cn(
+                "w-5 h-5 rounded flex items-center justify-center transition-colors",
+                completedSteps.has(7) 
+                  ? "bg-emerald-500/20" 
+                  : "bg-white/10"
+              )}
+              title={completedSteps.has(7) ? "Supabase: Connected" : "Supabase: Not connected"}
             >
-              <Database className="h-3 w-3 text-zinc-400" />
+              <Database className={cn(
+                "h-3 w-3",
+                completedSteps.has(7) ? "text-emerald-400" : "text-white/40"
+              )} />
             </div>
             {/* Vercel indicator */}
             <div 
-              className="w-5 h-5 rounded flex items-center justify-center bg-white/10" 
-              title="Vercel"
+              className={cn(
+                "w-5 h-5 rounded flex items-center justify-center transition-colors",
+                completedSteps.has(8) 
+                  ? "bg-emerald-500/20" 
+                  : "bg-white/10"
+              )}
+              title={completedSteps.has(8) ? "Vercel: Connected" : "Vercel: Not connected"}
             >
-              <Rocket className="h-3 w-3 text-zinc-400" />
+              <Rocket className={cn(
+                "h-3 w-3",
+                completedSteps.has(8) ? "text-emerald-400" : "text-white/40"
+              )} />
             </div>
           </div>
         </div>

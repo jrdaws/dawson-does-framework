@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 579de9f 2025-12-27 feat(configurator): add Connected Services UI component
 - 7fabea1 2025-12-26 feat(sidebar): implement Navy Solid design for configurator sidebar
 - e40dbcb 2025-12-26 chore(testing): complete accordion tests task - 21/21 pass
 - 6a43c2c 2025-12-26 fix(test): update progress indicator test to match new sidebar design
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 1c0272e 2025-12-25 feat(website): implement Warm Neutral design system
 - efc8838 2025-12-25 docs(audit): checkpoint efficiency analysis - tiered system proposal
 - 2303165 2025-12-25 docs(mindframe): add Next Agent Prompt generation rule
-- 9108402 2025-12-25 docs(governance): clarify Next Agent Prompt generation rule
 
 ## Agent Governance Structure
 
