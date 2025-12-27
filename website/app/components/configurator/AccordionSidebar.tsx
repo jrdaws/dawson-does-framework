@@ -66,52 +66,64 @@ export interface NavSection {
 
 const NAV_SECTIONS: NavSection[] = [
   {
+    id: "template",
+    label: "Template",
+    description: "Choose your starting template",
+    stepNumber: 1,
+  },
+  {
     id: "research",
     label: "Research",
     description: "Define your project vision",
-    stepNumber: 1,
+    stepNumber: 2,
   },
   {
     id: "core-features",
     label: "Core Features",
-    description: "Select features for your project",
-    stepNumber: 2,
+    description: "Select features & integrations",
+    stepNumber: 3,
   },
   {
     id: "integrate-ai",
     label: "Integrate AI",
-    description: "Add AI capabilities to your project",
-    stepNumber: 3,
+    description: "Add AI capabilities",
+    stepNumber: 4,
+  },
+  {
+    id: "project-setup",
+    label: "Project Setup",
+    description: "Name, directory & environment",
+    stepNumber: 5,
   },
   {
     id: "cursor",
     label: "Cursor",
     description: "Download & Install Cursor",
-    stepNumber: 4,
+    stepNumber: 6,
   },
   {
     id: "github",
     label: "GitHub",
-    description: "Create your GitHub repository",
-    stepNumber: 5,
-  },
-  {
-    id: "claude-code",
-    label: "Claude Code",
-    description: "Install Claude Code CLI for AI assistance",
-    stepNumber: 6,
+    description: "Create your repository",
+    stepNumber: 7,
   },
   {
     id: "supabase",
     label: "Supabase",
-    description: "Configure your Supabase project",
-    stepNumber: 7,
+    description: "Connect your database",
+    stepNumber: 8,
   },
   {
     id: "vercel",
     label: "Vercel",
-    description: "Deploy your application",
-    stepNumber: 8,
+    description: "Deploy your app",
+    stepNumber: 9,
+  },
+  {
+    id: "export",
+    label: "Export",
+    description: "Generate & download",
+    stepNumber: 10,
   },
 ];
 
@@ -336,22 +348,7 @@ export function AccordionSidebar({
         <div className="flex items-center justify-between">
           <span className="text-xs text-[var(--sidebar-text-muted)] font-medium">Services</span>
           <div className="flex items-center gap-1.5">
-            {/* GitHub indicator */}
-            <div 
-              className={cn(
-                "w-5 h-5 rounded flex items-center justify-center transition-colors",
-                completedSteps.has(5) 
-                  ? "bg-emerald-500/20" 
-                  : "bg-white/10"
-              )}
-              title={completedSteps.has(5) ? "GitHub: Connected" : "GitHub: Not connected"}
-            >
-              <Github className={cn(
-                "h-3 w-3",
-                completedSteps.has(5) ? "text-emerald-400" : "text-white/40"
-              )} />
-            </div>
-            {/* Supabase indicator */}
+            {/* GitHub indicator - step 7 */}
             <div 
               className={cn(
                 "w-5 h-5 rounded flex items-center justify-center transition-colors",
@@ -359,14 +356,14 @@ export function AccordionSidebar({
                   ? "bg-emerald-500/20" 
                   : "bg-white/10"
               )}
-              title={completedSteps.has(7) ? "Supabase: Connected" : "Supabase: Not connected"}
+              title={completedSteps.has(7) ? "GitHub: Connected" : "GitHub: Not connected"}
             >
-              <Database className={cn(
+              <Github className={cn(
                 "h-3 w-3",
                 completedSteps.has(7) ? "text-emerald-400" : "text-white/40"
               )} />
             </div>
-            {/* Vercel indicator */}
+            {/* Supabase indicator - step 8 */}
             <div 
               className={cn(
                 "w-5 h-5 rounded flex items-center justify-center transition-colors",
@@ -374,11 +371,26 @@ export function AccordionSidebar({
                   ? "bg-emerald-500/20" 
                   : "bg-white/10"
               )}
-              title={completedSteps.has(8) ? "Vercel: Connected" : "Vercel: Not connected"}
+              title={completedSteps.has(8) ? "Supabase: Connected" : "Supabase: Not connected"}
+            >
+              <Database className={cn(
+                "h-3 w-3",
+                completedSteps.has(8) ? "text-emerald-400" : "text-white/40"
+              )} />
+            </div>
+            {/* Vercel indicator - step 9 */}
+            <div 
+              className={cn(
+                "w-5 h-5 rounded flex items-center justify-center transition-colors",
+                completedSteps.has(9) 
+                  ? "bg-emerald-500/20" 
+                  : "bg-white/10"
+              )}
+              title={completedSteps.has(9) ? "Vercel: Connected" : "Vercel: Not connected"}
             >
               <Rocket className={cn(
                 "h-3 w-3",
-                completedSteps.has(8) ? "text-emerald-400" : "text-white/40"
+                completedSteps.has(9) ? "text-emerald-400" : "text-white/40"
               )} />
             </div>
           </div>

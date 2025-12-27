@@ -184,23 +184,201 @@ module.exports = {
 
 ---
 
-## What Stays the Same
+---
 
-- All component styling (cards, terminals, buttons)
-- Theme toggle button location (bottom-right)
-- Color palette values for both themes
-- Responsive design
+## Pages to Update (ALL)
+
+### 1. Landing Page (`app/page.tsx`)
+- [x] Hero section: Navy background
+- [x] Features section: Slate-900 background
+- [x] All cards: Slate-800 with proper shadows
+- [x] Terminal mockups: Consistent dark styling
+- [x] Footer: Navy background
+
+### 2. Project Configurator (`app/configurator/` or similar)
+
+**This is CRITICAL - the configurator must match the landing page theme!**
+
+| Configurator Element | Theme Styling |
+|---------------------|---------------|
+| **Sidebar** | `bg-slate-800` or `bg-[#1E293B]` |
+| **Sidebar active item** | Orange left border, `bg-orange-500/10` |
+| **Main content area** | `bg-slate-900` or `bg-[#0F172A]` |
+| **Step cards** | `bg-slate-800 border-slate-700` |
+| **Form inputs** | `bg-slate-800 border-slate-600 text-white` |
+| **Buttons (primary)** | `bg-orange-500 text-white` |
+| **Buttons (secondary)** | `bg-slate-700 text-white` |
+| **Progress bar** | Orange gradient on slate background |
+| **Phase indicators** | Orange for active, slate for inactive |
+| **Preview panel** | `bg-slate-900` with subtle border |
+| **File tree** | Slate backgrounds, orange highlights |
+
+#### Configurator Sidebar Example:
+```tsx
+<aside className="w-80 bg-slate-800 border-r border-slate-700">
+  {/* Logo */}
+  <div className="p-4 border-b border-slate-700">
+    <span className="text-white font-bold">Configurator</span>
+  </div>
+  
+  {/* Nav items */}
+  <nav className="p-2">
+    {/* Active item */}
+    <div className="flex items-center gap-3 p-3 rounded-lg bg-orange-500/10 border-l-4 border-orange-500">
+      <div className="w-8 h-8 bg-orange-500/20 text-orange-500 rounded-lg flex items-center justify-center">
+        Icon
+      </div>
+      <span className="text-white font-medium">Active Step</span>
+    </div>
+    
+    {/* Inactive item */}
+    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-700/50">
+      <div className="w-8 h-8 bg-slate-700 text-slate-400 rounded-lg flex items-center justify-center">
+        Icon
+      </div>
+      <span className="text-slate-400">Inactive Step</span>
+    </div>
+    
+    {/* Completed item */}
+    <div className="flex items-center gap-3 p-3 rounded-lg">
+      <div className="w-8 h-8 bg-emerald-500/20 text-emerald-500 rounded-lg flex items-center justify-center">
+        ✓
+      </div>
+      <span className="text-slate-300">Completed Step</span>
+    </div>
+  </nav>
+  
+  {/* Progress */}
+  <div className="p-4 border-t border-slate-700 mt-auto">
+    <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+      <div className="h-full bg-gradient-to-r from-orange-500 to-amber-500 w-[60%]" />
+    </div>
+    <span className="text-sm text-slate-400 mt-2">60% complete</span>
+  </div>
+</aside>
+```
+
+#### Configurator Main Content:
+```tsx
+<main className="flex-1 bg-slate-900 p-8">
+  {/* Header */}
+  <h1 className="text-2xl font-bold text-white mb-2">Step Title</h1>
+  <p className="text-slate-400 mb-8">Step description...</p>
+  
+  {/* Form cards */}
+  <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+    <label className="block text-sm font-medium text-slate-300 mb-2">
+      Field Label
+    </label>
+    <input 
+      className="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-lg 
+                 text-white placeholder-slate-500
+                 focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+      placeholder="Enter value..."
+    />
+  </div>
+  
+  {/* Action buttons */}
+  <div className="flex gap-4 mt-8">
+    <button className="px-6 py-3 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
+      Back
+    </button>
+    <button className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 
+                       shadow-lg shadow-orange-500/25">
+      Continue
+    </button>
+  </div>
+</main>
+```
+
+### 3. Platform Page (`app/platform/page.tsx`)
+- Background: Slate-900
+- All cards: Slate-800
+- Accents: Orange
+
+### 4. Any Other Pages
+Apply the same Navy/Slate theme to ALL pages in `app/` directory.
 
 ---
 
-## Validation
+## Component Files to Update
 
-After changes:
-1. Fresh browser (no localStorage) → Should see Navy/Dark theme
-2. Toggle to light → Should see Warm Sand theme
-3. Reload → Light should persist
-4. Toggle back to dark → Navy theme
-5. Reload → Dark should persist
+Search and update these component files:
+
+| Component | Update Required |
+|-----------|----------------|
+| `components/configurator/*` | All to use Navy theme |
+| `components/ui/Card.tsx` | Slate-800 bg, slate-700 border |
+| `components/ui/Button.tsx` | Orange primary, slate secondary |
+| `components/ui/Input.tsx` | Slate-900 bg, slate-600 border |
+| `components/ui/Sidebar.tsx` | Slate-800 bg |
+| `components/preview/*` | Dark theme styling |
+| `components/marketing/*` | Navy/slate theme |
+
+---
+
+## Files to Search and Update
+
+Run these searches to find hardcoded colors:
+
+```bash
+# Find any remaining light backgrounds
+grep -r "bg-white" website/app/
+grep -r "bg-stone-50" website/app/
+grep -r "bg-gray-" website/app/
+
+# Find light text that needs darkening
+grep -r "text-gray-900" website/app/
+grep -r "text-stone-900" website/app/
+
+# Find borders that need updating  
+grep -r "border-gray-" website/app/
+grep -r "border-stone-200" website/app/
+```
+
+Replace with theme-aware classes:
+- `bg-white` → `bg-card` or `bg-slate-800`
+- `bg-stone-50` → `bg-background` or `bg-slate-900`
+- `text-gray-900` → `text-foreground` or `text-white`
+- `border-gray-200` → `border-border` or `border-slate-700`
+
+---
+
+## Validation Checklist
+
+### A. Theme Default
+- [ ] Fresh browser (no localStorage) → Navy theme loads
+- [ ] Theme toggle works (light/dark switch)
+- [ ] Theme persists across page refresh
+
+### B. Landing Page
+- [ ] Hero: Navy background with orange glow
+- [ ] All sections: Slate-900 background
+- [ ] Cards: Slate-800 with proper shadows
+- [ ] Terminals: Consistent dark styling
+- [ ] Footer: Navy background
+
+### C. Project Configurator (CRITICAL)
+- [ ] Sidebar: Slate-800 background
+- [ ] Active step: Orange accent/border
+- [ ] Completed steps: Emerald checkmarks
+- [ ] Form inputs: Dark background, light text
+- [ ] Buttons: Orange primary, slate secondary
+- [ ] Preview panel: Dark theme
+- [ ] File tree: Dark theme with orange highlights
+- [ ] Progress bar: Orange on slate background
+- [ ] NO white or light-colored sections
+
+### D. All Other Pages
+- [ ] Platform page: Navy/slate theme
+- [ ] All marketing pages: Navy/slate theme
+- [ ] No page should have a white/light background
+
+### E. Overall Consistency
+- [ ] Same dark theme across ALL pages
+- [ ] No jarring color shifts when navigating
+- [ ] Orange accents used consistently for CTAs
+- [ ] All text is readable on dark backgrounds
 
 ---
 
@@ -210,7 +388,19 @@ After changes:
 npm run dev
 ```
 
-Verify Navy theme loads by default. Share screenshot for final approval.
+**Test ALL pages:**
+1. Homepage (http://localhost:3000)
+2. **Configurator** (http://localhost:3000/configurator)
+3. Platform (http://localhost:3000/platform)
+4. Any other pages
+
+**Take screenshots of:**
+1. Homepage hero
+2. **Configurator sidebar + main content**
+3. Configurator preview panel
+4. Footer
+
+Share screenshots for final Quality Agent approval.
 
 ---
 
