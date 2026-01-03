@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 25cecc8 2026-01-03 docs(task): create research UX Option A implementation task
 - 7bf96cf 2026-01-03 feat(configurator): add brand colors section
 - c71b05a 2026-01-03 docs(audit): add research UX improvement proposal and configurator test suite
 - 9610c44 2026-01-03 fix(research): make URL extractor helpers defensive + API compatibility
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 218326e 2025-12-25 feat(ui): update form components for Navy theme
 - f4d92bd 2025-12-25 docs(cursorrules): clarify bootstrap runs once per chat session
 - 2ca0457 2025-12-25 docs(design): add comprehensive website cohesion analysis
-- c610af1 2025-12-25 chore(media): complete P1 HubSpot-adapted color assets task
 
 ## Agent Governance Structure
 

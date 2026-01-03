@@ -46,15 +46,18 @@ export function ResearchSection({
       {/* Domain Input - Compact */}
       <div className="space-y-1">
         <Label htmlFor="domain" className="text-xs font-medium text-white/70">
-          What domain is your project in?
+          Describe your specific niche
         </Label>
         <Input
           id="domain"
           value={domain}
           onChange={(e) => onDomainChange(e.target.value)}
-          placeholder="e.g., E-commerce, SaaS..."
+          placeholder="e.g., Pet food subscription, HR software for restaurants..."
           className="h-8 text-xs bg-black/30 border-white/15 text-white placeholder:text-white/40"
         />
+        <p className="text-[10px] text-white/40 mt-1">
+          Be specific! Better descriptions = better AI recommendations
+        </p>
       </div>
 
       {/* Inspiration Toggle - Compact */}
