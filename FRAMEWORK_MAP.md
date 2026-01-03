@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- f17632d 2026-01-03 feat(ux): smart pre-fill Research field based on template (Option C)
 - e3ae726 2026-01-03 fix(ux): improve Research section clarity - Option A
 - 25cecc8 2026-01-03 docs(task): create research UX Option A implementation task
 - 7bf96cf 2026-01-03 feat(configurator): add brand colors section
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - b387547 2025-12-25 feat(ui): update card components for Navy theme
 - 1914f0b 2025-12-25 feat(ui): update button variants for Navy theme
 - 218326e 2025-12-25 feat(ui): update form components for Navy theme
-- f4d92bd 2025-12-25 docs(cursorrules): clarify bootstrap runs once per chat session
 
 ## Agent Governance Structure
 

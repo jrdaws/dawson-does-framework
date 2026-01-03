@@ -12,7 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Menu, Check, Github, Database, Rocket } from "lucide-react";
+import { Menu, Check, Github, Database, Rocket, CreditCard, Mail, BarChart3, Shield, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Step } from "@/lib/configurator-state";
 
@@ -25,54 +25,24 @@ interface NavSection {
 }
 
 const NAV_SECTIONS: NavSection[] = [
-  {
-    id: "research",
-    label: "Research",
-    description: "Define your project vision",
-    stepNumber: 1,
-  },
-  {
-    id: "core-features",
-    label: "Core Features",
-    description: "Select features for your project",
-    stepNumber: 2,
-  },
-  {
-    id: "integrate-ai",
-    label: "Integrate AI",
-    description: "Add AI capabilities",
-    stepNumber: 3,
-  },
-  {
-    id: "cursor",
-    label: "Cursor",
-    description: "Download & Install",
-    stepNumber: 4,
-  },
-  {
-    id: "github",
-    label: "GitHub",
-    description: "Create repository",
-    stepNumber: 5,
-  },
-  {
-    id: "claude-code",
-    label: "Claude Code",
-    description: "Install CLI",
-    stepNumber: 6,
-  },
-  {
-    id: "supabase",
-    label: "Supabase",
-    description: "Configure database",
-    stepNumber: 7,
-  },
-  {
-    id: "vercel",
-    label: "Vercel",
-    description: "Deploy application",
-    stepNumber: 8,
-  },
+  // Setup Phase (1-4)
+  { id: "template", label: "Template", description: "Choose your starting template", stepNumber: 1 },
+  { id: "research", label: "Research", description: "Industry & inspiration", stepNumber: 2 },
+  { id: "branding", label: "Branding", description: "Colors & identity", stepNumber: 3 },
+  { id: "core-features", label: "Features", description: "Select core features", stepNumber: 4 },
+  // Configure Phase (5-10)
+  { id: "integrate-ai", label: "AI", description: "Add AI capabilities", stepNumber: 5 },
+  { id: "payments", label: "Payments", description: "Accept payments", stepNumber: 6 },
+  { id: "email", label: "Email", description: "Send emails", stepNumber: 7 },
+  { id: "analytics", label: "Analytics", description: "Track users", stepNumber: 8 },
+  { id: "auth-provider", label: "Auth", description: "User authentication", stepNumber: 9 },
+  { id: "project-setup", label: "Project", description: "Name & output", stepNumber: 10 },
+  // Launch Phase (11-15)
+  { id: "cursor", label: "Cursor", description: "AI code editor", stepNumber: 11 },
+  { id: "github", label: "GitHub", description: "Code repository", stepNumber: 12 },
+  { id: "supabase", label: "Supabase", description: "Database & storage", stepNumber: 13 },
+  { id: "vercel", label: "Vercel", description: "Deploy & host", stepNumber: 14 },
+  { id: "export", label: "Export", description: "Generate & download", stepNumber: 15 },
 ];
 
 // Custom SVG icon component (matching AccordionSidebar)
@@ -105,6 +75,16 @@ function SectionIcon({ sectionId, className }: { sectionId: string; className?: 
       return <Database className={cn("h-[18px] w-[18px]", className)} />;
     case "vercel":
       return <Rocket className={cn("h-[18px] w-[18px]", className)} />;
+    case "payments":
+      return <CreditCard className={cn("h-[18px] w-[18px]", className)} />;
+    case "email":
+      return <Mail className={cn("h-[18px] w-[18px]", className)} />;
+    case "analytics":
+      return <BarChart3 className={cn("h-[18px] w-[18px]", className)} />;
+    case "auth-provider":
+      return <Shield className={cn("h-[18px] w-[18px]", className)} />;
+    case "project-setup":
+      return <Settings className={cn("h-[18px] w-[18px]", className)} />;
     default:
       return null;
   }
@@ -113,19 +93,19 @@ function SectionIcon({ sectionId, className }: { sectionId: string; className?: 
 // Group sections by phase for organization
 const PHASE_GROUPS = [
   { 
-    id: "research", 
-    label: "Research", 
-    sections: ["research"] 
+    id: "setup", 
+    label: "Setup", 
+    sections: ["template", "research", "branding", "core-features"] 
   },
   { 
-    id: "features", 
-    label: "Features", 
-    sections: ["core-features", "integrate-ai"] 
+    id: "configure", 
+    label: "Configure", 
+    sections: ["integrate-ai", "payments", "email", "analytics", "auth-provider", "project-setup"] 
   },
   { 
-    id: "tools", 
-    label: "Tools", 
-    sections: ["cursor", "github", "claude-code", "supabase", "vercel"] 
+    id: "launch", 
+    label: "Launch", 
+    sections: ["cursor", "github", "supabase", "vercel", "export"] 
   },
 ];
 
@@ -154,7 +134,7 @@ export function MobileSidebar({
   };
 
   // Calculate progress percentage
-  const progress = (completedSteps.size / 8) * 100;
+  const progress = (completedSteps.size / NAV_SECTIONS.length) * 100;
 
   const handleSectionClick = (section: NavSection) => {
     onStepChange(section.stepNumber as Step);

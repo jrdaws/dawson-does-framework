@@ -51,6 +51,16 @@ function SectionIcon({ sectionId, className }: SectionIconProps) {
       return <Database className={cn("h-5 w-5", className)} />;
     case "vercel":
       return <Rocket className={cn("h-5 w-5", className)} />;
+    case "payments":
+      return <CreditCard className={cn("h-5 w-5", className)} />;
+    case "email":
+      return <Mail className={cn("h-5 w-5", className)} />;
+    case "analytics":
+      return <BarChart3 className={cn("h-5 w-5", className)} />;
+    case "auth-provider":
+      return <Shield className={cn("h-5 w-5", className)} />;
+    case "project-setup":
+      return <Settings className={cn("h-5 w-5", className)} />;
     default:
       return null;
   }
@@ -68,6 +78,7 @@ export interface NavSection {
 }
 
 const NAV_SECTIONS: NavSection[] = [
+  // Setup Phase (1-4)
   {
     id: "template",
     label: "Template",
@@ -92,51 +103,85 @@ const NAV_SECTIONS: NavSection[] = [
   },
   {
     id: "core-features",
-    label: "Core Features",
-    description: "Select features & integrations",
+    label: "Features",
+    description: "Select core features",
     stepNumber: 4,
   },
+  // Configure Phase (5-10)
   {
     id: "integrate-ai",
-    label: "Integrate AI",
+    label: "AI",
     description: "Add AI capabilities",
     stepNumber: 5,
     optional: true,
     tooltip: "Connect to OpenAI, Anthropic, or Google AI for intelligent features in your app",
   },
   {
-    id: "project-setup",
-    label: "Project Setup",
-    description: "Name & output directory",
+    id: "payments",
+    label: "Payments",
+    description: "Accept payments",
     stepNumber: 6,
+    optional: true,
+    tooltip: "Process payments with Stripe, Paddle, or LemonSqueezy. Required for selling products or subscriptions.",
   },
+  {
+    id: "email",
+    label: "Email",
+    description: "Send transactional emails",
+    stepNumber: 7,
+    optional: true,
+    tooltip: "Send emails for signups, password resets, and notifications with Resend, SendGrid, or Postmark.",
+  },
+  {
+    id: "analytics",
+    label: "Analytics",
+    description: "Track user behavior",
+    stepNumber: 8,
+    optional: true,
+    tooltip: "Understand how users interact with your app using PostHog, Plausible, or Google Analytics.",
+  },
+  {
+    id: "auth-provider",
+    label: "Auth",
+    description: "User authentication",
+    stepNumber: 9,
+    optional: true,
+    tooltip: "Add login/signup with Clerk, Auth0, NextAuth, or use Supabase Auth from the Tools section.",
+  },
+  {
+    id: "project-setup",
+    label: "Project",
+    description: "Name & output directory",
+    stepNumber: 10,
+  },
+  // Launch Phase (11-15)
   {
     id: "cursor",
     label: "Cursor",
-    description: "AI-powered code editor",
-    stepNumber: 7,
+    description: "AI code editor",
+    stepNumber: 11,
     tooltip: "Cursor is an AI code editor that helps you write code faster. Free to download.",
   },
   {
     id: "github",
     label: "GitHub",
-    description: "Code repository hosting",
-    stepNumber: 8,
+    description: "Code repository",
+    stepNumber: 12,
     tooltip: "GitHub stores your code online and enables collaboration. Create a free account at github.com",
   },
   {
     id: "supabase",
     label: "Supabase",
-    description: "Database & authentication",
-    stepNumber: 9,
+    description: "Database & storage",
+    stepNumber: 13,
     optional: true,
     tooltip: "Supabase is an open-source backend with PostgreSQL database, authentication, and storage. Free tier available.",
   },
   {
     id: "vercel",
     label: "Vercel",
-    description: "Deploy & host your site",
-    stepNumber: 10,
+    description: "Deploy & host",
+    stepNumber: 14,
     optional: true,
     tooltip: "Vercel hosts your website with automatic deployments from GitHub. Free for personal projects.",
   },
@@ -144,7 +189,7 @@ const NAV_SECTIONS: NavSection[] = [
     id: "export",
     label: "Export",
     description: "Generate & download",
-    stepNumber: 11,
+    stepNumber: 15,
   },
 ];
 
@@ -388,49 +433,49 @@ export function AccordionSidebar({
         <div className="flex items-center justify-between">
           <span className="text-xs text-[var(--sidebar-text-muted)] font-medium">Services</span>
           <div className="flex items-center gap-1.5">
-            {/* GitHub indicator - step 8 */}
+            {/* GitHub indicator - step 12 */}
             <div 
               className={cn(
                 "w-5 h-5 rounded flex items-center justify-center transition-colors",
-                completedSteps.has(8) 
+                completedSteps.has(12) 
                   ? "bg-emerald-500/20" 
                   : "bg-white/10"
               )}
-              title={completedSteps.has(8) ? "GitHub: Connected" : "GitHub: Not connected"}
+              title={completedSteps.has(12) ? "GitHub: Connected" : "GitHub: Not connected"}
             >
               <Github className={cn(
                 "h-3 w-3",
-                completedSteps.has(8) ? "text-emerald-400" : "text-white/40"
+                completedSteps.has(12) ? "text-emerald-400" : "text-white/40"
               )} />
             </div>
-            {/* Supabase indicator - step 9 */}
+            {/* Supabase indicator - step 13 */}
             <div 
               className={cn(
                 "w-5 h-5 rounded flex items-center justify-center transition-colors",
-                completedSteps.has(9) 
+                completedSteps.has(13) 
                   ? "bg-emerald-500/20" 
                   : "bg-white/10"
               )}
-              title={completedSteps.has(9) ? "Supabase: Connected" : "Supabase: Not connected"}
+              title={completedSteps.has(13) ? "Supabase: Connected" : "Supabase: Not connected"}
             >
               <Database className={cn(
                 "h-3 w-3",
-                completedSteps.has(9) ? "text-emerald-400" : "text-white/40"
+                completedSteps.has(13) ? "text-emerald-400" : "text-white/40"
               )} />
             </div>
-            {/* Vercel indicator - step 10 */}
+            {/* Vercel indicator - step 14 */}
             <div 
               className={cn(
                 "w-5 h-5 rounded flex items-center justify-center transition-colors",
-                completedSteps.has(10) 
+                completedSteps.has(14) 
                   ? "bg-emerald-500/20" 
                   : "bg-white/10"
               )}
-              title={completedSteps.has(10) ? "Vercel: Connected" : "Vercel: Not connected"}
+              title={completedSteps.has(14) ? "Vercel: Connected" : "Vercel: Not connected"}
             >
               <Rocket className={cn(
                 "h-3 w-3",
-                completedSteps.has(10) ? "text-emerald-400" : "text-white/40"
+                completedSteps.has(14) ? "text-emerald-400" : "text-white/40"
               )} />
             </div>
           </div>

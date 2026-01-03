@@ -40,34 +40,52 @@ const TemplateSection = dynamic(() => import("@/app/components/configurator/sect
 const ProjectSetupSection = dynamic(() => import("@/app/components/configurator/sections/ProjectSetupSection").then(mod => ({ default: mod.ProjectSetupSection })), { ssr: false });
 const ExportSection = dynamic(() => import("@/app/components/configurator/sections/ExportSection").then(mod => ({ default: mod.ExportSection })), { ssr: false });
 const BrandingSection = dynamic(() => import("@/app/components/configurator/sections/BrandingSection").then(mod => ({ default: mod.BrandingSection })), { ssr: false });
+const PaymentsSection = dynamic(() => import("@/app/components/configurator/sections/PaymentsSection").then(mod => ({ default: mod.PaymentsSection })), { ssr: false });
+const EmailSection = dynamic(() => import("@/app/components/configurator/sections/EmailSection").then(mod => ({ default: mod.EmailSection })), { ssr: false });
+const AnalyticsSection = dynamic(() => import("@/app/components/configurator/sections/AnalyticsSection").then(mod => ({ default: mod.AnalyticsSection })), { ssr: false });
+const AuthProviderSection = dynamic(() => import("@/app/components/configurator/sections/AuthProviderSection").then(mod => ({ default: mod.AuthProviderSection })), { ssr: false });
 
-// Map section IDs to step numbers (11-section layout with Branding)
+// Map section IDs to step numbers (15-section layout with service providers)
 const SECTION_TO_STEP: Record<string, number> = {
+  // Setup Phase (1-4)
   "template": 1,
   "research": 2,
   "branding": 3,
   "core-features": 4,
+  // Configure Phase (5-10)
   "integrate-ai": 5,
-  "project-setup": 6,
-  "cursor": 7,
-  "github": 8,
-  "supabase": 9,
-  "vercel": 10,
-  "export": 11,
+  "payments": 6,
+  "email": 7,
+  "analytics": 8,
+  "auth-provider": 9,
+  "project-setup": 10,
+  // Launch Phase (11-15)
+  "cursor": 11,
+  "github": 12,
+  "supabase": 13,
+  "vercel": 14,
+  "export": 15,
 };
 
 const STEP_TO_SECTION: Record<number, string> = {
+  // Setup Phase
   1: "template",
   2: "research",
   3: "branding",
   4: "core-features",
+  // Configure Phase
   5: "integrate-ai",
-  6: "project-setup",
-  7: "cursor",
-  8: "github",
-  9: "supabase",
-  10: "vercel",
-  11: "export",
+  6: "payments",
+  7: "email",
+  8: "analytics",
+  9: "auth-provider",
+  10: "project-setup",
+  // Launch Phase
+  11: "cursor",
+  12: "github",
+  13: "supabase",
+  14: "vercel",
+  15: "export",
 };
 
 // Step titles for breadcrumb
@@ -75,26 +93,29 @@ const STEP_TITLES: Record<number, string> = {
   1: "Template",
   2: "Research",
   3: "Branding",
-  4: "Core Features",
-  5: "AI Integration",
-  6: "Project Setup",
-  7: "Cursor",
-  8: "GitHub",
-  9: "Supabase",
-  10: "Vercel",
-  11: "Export",
+  4: "Features",
+  5: "AI",
+  6: "Payments",
+  7: "Email",
+  8: "Analytics",
+  9: "Auth",
+  10: "Project",
+  11: "Cursor",
+  12: "GitHub",
+  13: "Supabase",
+  14: "Vercel",
+  15: "Export",
 };
 
 // Phase names for breadcrumb
 const getPhaseForStep = (step: number): string => {
-  if (step <= 3) return "Setup";
-  if (step <= 6) return "Configure";
-  if (step <= 10) return "Tools";
-  return "Export";
+  if (step <= 4) return "Setup";
+  if (step <= 10) return "Configure";
+  return "Launch";
 };
 
 // Total number of steps
-const TOTAL_STEPS = 11;
+const TOTAL_STEPS = 15;
 
 // Smart pre-fill prompts based on template selection (Option C UX improvement)
 const DOMAIN_PROMPTS: Record<string, string> = {
@@ -144,6 +165,10 @@ export default function ConfigurePage() {
     aiApiKey,
     colorScheme,
     customColors,
+    paymentProvider,
+    emailProvider,
+    analyticsProvider,
+    authProvider,
     setStep,
     completeStep,
     setMode,
@@ -168,6 +193,10 @@ export default function ConfigurePage() {
     setAiApiKey,
     setColorScheme,
     setCustomColor,
+    setPaymentProvider,
+    setEmailProvider,
+    setAnalyticsProvider,
+    setAuthProvider,
   } = useConfiguratorStore();
 
   const selectedTemplate = TEMPLATES[template as keyof typeof TEMPLATES];
@@ -208,7 +237,12 @@ export default function ConfigurePage() {
       // Core Features - show count
       "core-features": totalFeatures > 0 ? totalFeatures : undefined,
       // Integrate AI - show provider or count
-      "integrate-ai": aiProvider ? "1" : (integrationCount > 0 ? integrationCount : undefined),
+      "integrate-ai": aiProvider ? "✓" : undefined,
+      // Service providers - show checkmark when selected
+      "payments": paymentProvider ? "✓" : undefined,
+      "email": emailProvider ? "✓" : undefined,
+      "analytics": analyticsProvider ? "✓" : undefined,
+      "auth-provider": authProvider ? "✓" : undefined,
       // Tool sections - show "Ready" when complete
       "cursor": toolStatus.cursor ? "Ready" : undefined,
       "github": toolStatus.github ? "Ready" : undefined,
@@ -216,7 +250,7 @@ export default function ConfigurePage() {
       "supabase": toolStatus.supabase ? "Ready" : undefined,
       "vercel": toolStatus.vercel ? "Ready" : undefined,
     };
-  }, [selectedFeatures, integrations, toolStatus, researchDomain, aiProvider, colorScheme]);
+  }, [selectedFeatures, integrations, toolStatus, researchDomain, aiProvider, colorScheme, paymentProvider, emailProvider, analyticsProvider, authProvider]);
 
   // Calculate progress
   const progress = (completedSteps.size / TOTAL_STEPS) * 100;
@@ -292,6 +326,7 @@ export default function ConfigurePage() {
   // Validation for each step
   const canProceed = () => {
     switch (currentStep) {
+      // Setup Phase
       case 1: // Template
         return template !== "";
       case 2: // Research (optional)
@@ -300,19 +335,29 @@ export default function ConfigurePage() {
         return true;
       case 4: // Core Features
         return Object.values(selectedFeatures).flat().length > 0;
+      // Configure Phase
       case 5: // Integrate AI (optional)
         return true;
-      case 6: // Project Setup
+      case 6: // Payments (optional)
+        return true;
+      case 7: // Email (optional)
+        return true;
+      case 8: // Analytics (optional)
+        return true;
+      case 9: // Auth Provider (optional)
+        return true;
+      case 10: // Project Setup
         return projectName.length > 0 && outputDir.length > 0;
-      case 7: // Cursor
+      // Launch Phase
+      case 11: // Cursor
         return toolStatus.cursor;
-      case 8: // GitHub
+      case 12: // GitHub
         return toolStatus.github;
-      case 9: // Supabase (optional)
+      case 13: // Supabase (optional)
         return true;
-      case 10: // Vercel (optional)
+      case 14: // Vercel (optional)
         return true;
-      case 11: // Export
+      case 15: // Export
         return true;
       default:
         return false;
@@ -408,6 +453,34 @@ export default function ConfigurePage() {
             isKeyValid={aiApiKey.length > 10}
           />
         );
+      case "payments":
+        return (
+          <PaymentsSection
+            selectedProvider={paymentProvider}
+            onProviderChange={setPaymentProvider}
+          />
+        );
+      case "email":
+        return (
+          <EmailSection
+            selectedProvider={emailProvider}
+            onProviderChange={setEmailProvider}
+          />
+        );
+      case "analytics":
+        return (
+          <AnalyticsSection
+            selectedProvider={analyticsProvider}
+            onProviderChange={setAnalyticsProvider}
+          />
+        );
+      case "auth-provider":
+        return (
+          <AuthProviderSection
+            selectedProvider={authProvider}
+            onProviderChange={setAuthProvider}
+          />
+        );
       case "cursor":
         return (
           <ToolSetupSection
@@ -474,7 +547,7 @@ export default function ConfigurePage() {
             isReady={completedSteps.size >= 5}
             onExport={(method) => {
               console.log("Export with method:", method);
-              completeStep(11);
+              completeStep(15);
             }}
           />
         );
@@ -562,9 +635,55 @@ export default function ConfigurePage() {
           </div>
         );
         
+      case "payments":
+      case "email":
+      case "analytics":
+      case "auth-provider":
+        return (
+          <div className="space-y-6">
+            <div className="max-w-2xl">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                {STEP_TITLES[currentStep]} Integration
+              </h2>
+              <p className="text-foreground-secondary">
+                Choose a provider in the sidebar. All integrations are optional.
+              </p>
+            </div>
+            
+            {/* Show configured providers */}
+            <div className="bg-card rounded-xl p-6 border border-border">
+              <h3 className="font-semibold text-foreground mb-4">Configured Services</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "AI Provider", value: aiProvider },
+                  { label: "Payments", value: paymentProvider },
+                  { label: "Email", value: emailProvider },
+                  { label: "Analytics", value: analyticsProvider },
+                  { label: "Auth", value: authProvider },
+                ].map(({ label, value }) => (
+                  <div
+                    key={label}
+                    className={`flex items-center gap-2 p-3 rounded-lg ${
+                      value ? "bg-success/10 text-success" : "bg-background-alt text-foreground-secondary"
+                    }`}
+                  >
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                        value ? "bg-success text-white" : "bg-border"
+                      }`}
+                    >
+                      {value ? "✓" : ""}
+                    </div>
+                    <span>{label}: {value || "Not set"}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
       case "cursor":
       case "github":
-      case "claude-code":
       case "supabase":
       case "vercel":
         return (
@@ -585,7 +704,7 @@ export default function ConfigurePage() {
             
             {/* Show progress overview for tool setup steps */}
             <div className="bg-card rounded-xl p-6 border border-border">
-              <h3 className="font-semibold text-foreground mb-4">Setup Progress</h3>
+              <h3 className="font-semibold text-foreground mb-4">Tools Setup Progress</h3>
               <div className="grid grid-cols-2 gap-4">
                 {Object.entries(toolStatus).map(([tool, isComplete]) => (
                   <div
@@ -690,7 +809,7 @@ export default function ConfigurePage() {
           <div className="flex-1 flex items-center gap-4">
             <Progress value={progress} className="flex-1 h-2 max-w-xs" />
             <span className="text-sm text-foreground-muted">
-              {completedSteps.size}/8 complete
+              {completedSteps.size}/{TOTAL_STEPS} complete
             </span>
           </div>
 
