@@ -88,16 +88,37 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       extractedContent = await extractMultipleUrls(inspirationUrls.slice(0, 5)); // Limit to 5 URLs
     }
 
-    // Build context from extracted URLs
+    // Build context from extracted URLs (enhanced with Firecrawl structured data)
     const urlContext = extractedContent
       .filter(ec => ec.success)
-      .map(ec => `
+      .map(ec => {
+        let context = `
 ### ${ec.title} (${ec.url})
-${ec.description}
+**Source**: ${ec.source === "firecrawl" ? "Firecrawl (structured)" : "Jina Reader"}
+${ec.description}`;
 
-Content excerpt:
-${ec.content.slice(0, 2000)}
-      `)
+        // Add Firecrawl structured data if available
+        if (ec.structured) {
+          if (ec.structured.features?.length) {
+            context += `\n**Extracted Features**: ${ec.structured.features.join(", ")}`;
+          }
+          if (ec.structured.designPatterns?.length) {
+            context += `\n**Design Patterns**: ${ec.structured.designPatterns.join(", ")}`;
+          }
+          if (ec.structured.targetAudience) {
+            context += `\n**Target Audience**: ${ec.structured.targetAudience}`;
+          }
+          if (ec.structured.techStack?.length) {
+            context += `\n**Tech Stack**: ${ec.structured.techStack.join(", ")}`;
+          }
+          if (ec.structured.pricing) {
+            context += `\n**Pricing**: ${ec.structured.pricing}`;
+          }
+        }
+
+        context += `\n\nContent excerpt:\n${ec.content.slice(0, 1500)}`;
+        return context;
+      })
       .join("\n\n");
 
     // Build the research prompt

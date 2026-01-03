@@ -1,8 +1,10 @@
 /**
  * URL Content Extractor
- * Uses Jina Reader API to extract clean content from URLs
- * Free tier: https://jina.ai/reader/
+ * Primary: Firecrawl (better quality, JS rendering, structured extraction)
+ * Fallback: Jina Reader API (free, no API key required)
  */
+
+import FirecrawlApp from "@mendable/firecrawl-js";
 
 export interface ExtractedContent {
   url: string;
@@ -13,84 +15,185 @@ export interface ExtractedContent {
   images: string[];
   success: boolean;
   error?: string;
+  source: "firecrawl" | "jina" | "failed";
+  // Firecrawl structured extraction (when available)
+  structured?: {
+    features?: string[];
+    designPatterns?: string[];
+    targetAudience?: string;
+    techStack?: string[];
+    pricing?: string;
+  };
+}
+
+// Firecrawl extraction schema for websites
+const EXTRACTION_SCHEMA = {
+  type: "object",
+  properties: {
+    features: {
+      type: "array",
+      items: { type: "string" },
+      description: "List of product features or capabilities mentioned",
+    },
+    designPatterns: {
+      type: "array",
+      items: { type: "string" },
+      description: "UI/UX design patterns observed (e.g., 'hero section', 'pricing table', 'testimonials')",
+    },
+    targetAudience: {
+      type: "string",
+      description: "Who this product/website is targeting",
+    },
+    techStack: {
+      type: "array",
+      items: { type: "string" },
+      description: "Technologies or frameworks mentioned",
+    },
+    pricing: {
+      type: "string",
+      description: "Pricing information if available",
+    },
+  },
+  required: ["features"],
+};
+
+/**
+ * Extract content using Firecrawl (primary method)
+ */
+async function extractWithFirecrawl(url: string): Promise<ExtractedContent | null> {
+  const apiKey = process.env.FIRECRAWL_API_KEY;
+  if (!apiKey) {
+    console.log("[URL Extractor] Firecrawl API key not configured, skipping");
+    return null;
+  }
+
+  try {
+    const firecrawl = new FirecrawlApp({ apiKey });
+
+    const result = await firecrawl.scrapeUrl(url, {
+      formats: ["markdown", "extract"],
+      extract: {
+        schema: EXTRACTION_SCHEMA,
+      },
+    });
+
+    if (!result.success) {
+      console.warn(`[Firecrawl] Failed for ${url}:`, result.error);
+      return null;
+    }
+
+    const extractData = result.extract as {
+      features?: string[];
+      designPatterns?: string[];
+      targetAudience?: string;
+      techStack?: string[];
+      pricing?: string;
+    } | undefined;
+
+    return {
+      url,
+      title: result.metadata?.title || extractTitle(result.markdown || "") || url,
+      description: result.metadata?.description || extractDescription(result.markdown || ""),
+      content: (result.markdown || "").slice(0, 5000),
+      links: result.links || [],
+      images: result.metadata?.ogImage ? [result.metadata.ogImage] : [],
+      success: true,
+      source: "firecrawl",
+      structured: extractData ? {
+        features: extractData.features || [],
+        designPatterns: extractData.designPatterns || [],
+        targetAudience: extractData.targetAudience,
+        techStack: extractData.techStack || [],
+        pricing: extractData.pricing,
+      } : undefined,
+    };
+  } catch (error) {
+    console.error(`[Firecrawl] Error for ${url}:`, error);
+    return null;
+  }
 }
 
 /**
- * Extract content from a URL using Jina Reader API
+ * Extract content using Jina Reader API (fallback)
  * Jina Reader is free and doesn't require an API key for basic usage
  */
-export async function extractUrlContent(url: string): Promise<ExtractedContent> {
+async function extractWithJina(url: string): Promise<ExtractedContent | null> {
   try {
     // Jina Reader API - prefix URL with r.jina.ai to get clean markdown
     const jinaUrl = `https://r.jina.ai/${url}`;
-    
+
     const response = await fetch(jinaUrl, {
       method: "GET",
       headers: {
-        "Accept": "application/json",
-        "X-Return-Format": "markdown",
+        Accept: "text/plain",
       },
     });
 
     if (!response.ok) {
-      // Fallback: try text format
-      const textResponse = await fetch(jinaUrl, {
-        method: "GET",
-        headers: {
-          "Accept": "text/plain",
-        },
-      });
-      
-      if (!textResponse.ok) {
-        throw new Error(`Failed to fetch: ${response.status}`);
-      }
-      
-      const text = await textResponse.text();
-      return {
-        url,
-        title: extractTitle(text) || url,
-        description: extractDescription(text),
-        content: text.slice(0, 5000), // Limit content size
-        links: extractLinks(text),
-        images: [],
-        success: true,
-      };
+      console.warn(`[Jina] Failed for ${url}: ${response.status}`);
+      return null;
     }
 
-    const data = await response.json();
-    
+    const text = await response.text();
+
     return {
       url,
-      title: data.title || extractTitle(data.content) || url,
-      description: data.description || extractDescription(data.content),
-      content: (data.content || "").slice(0, 5000),
-      links: data.links || extractLinks(data.content),
-      images: data.images || [],
+      title: extractTitle(text) || url,
+      description: extractDescription(text),
+      content: text.slice(0, 5000),
+      links: extractLinks(text),
+      images: [],
       success: true,
+      source: "jina",
     };
   } catch (error) {
-    console.error(`[URL Extractor] Failed to extract ${url}:`, error);
-    return {
-      url,
-      title: url,
-      description: "",
-      content: "",
-      links: [],
-      images: [],
-      success: false,
-      error: error instanceof Error ? error.message : "Failed to extract content",
-    };
+    console.error(`[Jina] Error for ${url}:`, error);
+    return null;
   }
+}
+
+/**
+ * Extract content from a URL
+ * Tries Firecrawl first (if configured), falls back to Jina
+ */
+export async function extractUrlContent(url: string): Promise<ExtractedContent> {
+  console.log(`[URL Extractor] Extracting: ${url}`);
+
+  // Try Firecrawl first (better quality)
+  const firecrawlResult = await extractWithFirecrawl(url);
+  if (firecrawlResult) {
+    console.log(`[URL Extractor] Success via Firecrawl: ${url}`);
+    return firecrawlResult;
+  }
+
+  // Fall back to Jina Reader
+  const jinaResult = await extractWithJina(url);
+  if (jinaResult) {
+    console.log(`[URL Extractor] Success via Jina: ${url}`);
+    return jinaResult;
+  }
+
+  // Both failed
+  console.error(`[URL Extractor] All methods failed for: ${url}`);
+  return {
+    url,
+    title: url,
+    description: "",
+    content: "",
+    links: [],
+    images: [],
+    success: false,
+    error: "Failed to extract content from URL",
+    source: "failed",
+  };
 }
 
 /**
  * Extract content from multiple URLs in parallel
  */
 export async function extractMultipleUrls(urls: string[]): Promise<ExtractedContent[]> {
-  const results = await Promise.allSettled(
-    urls.map(url => extractUrlContent(url))
-  );
-  
+  const results = await Promise.allSettled(urls.map((url) => extractUrlContent(url)));
+
   return results.map((result, index) => {
     if (result.status === "fulfilled") {
       return result.value;
@@ -104,6 +207,7 @@ export async function extractMultipleUrls(urls: string[]): Promise<ExtractedCont
       images: [],
       success: false,
       error: "Failed to extract",
+      source: "failed" as const,
     };
   });
 }
@@ -113,11 +217,11 @@ function extractTitle(text: string): string {
   // Try to find a title in markdown format
   const h1Match = text.match(/^#\s+(.+)$/m);
   if (h1Match) return h1Match[1].trim();
-  
+
   // Try first line if it looks like a title
   const firstLine = text.split("\n")[0]?.trim();
   if (firstLine && firstLine.length < 100) return firstLine;
-  
+
   return "";
 }
 
@@ -138,4 +242,3 @@ function extractLinks(text: string): string[] {
   const matches = text.match(linkRegex) || [];
   return [...new Set(matches)].slice(0, 20);
 }
-

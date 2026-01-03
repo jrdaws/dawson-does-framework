@@ -37,7 +37,7 @@ export function TemplateSection({
       </p>
       
       <div className="space-y-1">
-        {TEMPLATE_LIST.slice(0, 4).map((template) => {
+        {TEMPLATE_LIST.map((template) => {
           const isSelected = selectedTemplate === template.id;
           
           return (
