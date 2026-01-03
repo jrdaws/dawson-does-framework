@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 9610c44 2026-01-03 fix(research): make URL extractor helpers defensive + API compatibility
 - 573427d 2026-01-03 fix(configurator): address all audit gaps and issues
 - 5c25b2e 2026-01-03 feat(research): add Firecrawl integration with Jina fallback
 - 44bd8a7 2026-01-03 docs(audit): comprehensive configurator workflow audit with 16 use cases
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - c610af1 2025-12-25 chore(media): complete P1 HubSpot-adapted color assets task
 - 942f309 2025-12-25 feat(design): create HubSpot-adapted color scheme assets
 - dd46fea 2025-12-25 docs(media): add HubSpot-adapted color scheme task for Media Agent
-- 2a5c91d 2025-12-25 fix(export): add template validation and graceful error handling
 
 ## Agent Governance Structure
 
