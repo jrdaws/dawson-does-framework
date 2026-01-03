@@ -3,7 +3,84 @@ import { persist } from 'zustand/middleware';
 
 export type Mode = 'beginner' | 'advanced';
 
-export type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+
+// Brand color scheme options
+export interface ColorScheme {
+  id: string;
+  name: string;
+  primary: string;
+  secondary: string;
+  accent: string;
+  background: string;
+  foreground: string;
+}
+
+export const COLOR_SCHEMES: ColorScheme[] = [
+  {
+    id: "ocean-blue",
+    name: "Ocean Blue",
+    primary: "#0066CC",
+    secondary: "#004999",
+    accent: "#00A3E0",
+    background: "#FFFFFF",
+    foreground: "#1A1A1A",
+  },
+  {
+    id: "forest-green",
+    name: "Forest Green",
+    primary: "#228B22",
+    secondary: "#1B5E20",
+    accent: "#4CAF50",
+    background: "#FFFFFF",
+    foreground: "#1A1A1A",
+  },
+  {
+    id: "sunset-orange",
+    name: "Sunset Orange",
+    primary: "#F97316",
+    secondary: "#EA580C",
+    accent: "#FDBA74",
+    background: "#FFFFFF",
+    foreground: "#1A1A1A",
+  },
+  {
+    id: "royal-purple",
+    name: "Royal Purple",
+    primary: "#7C3AED",
+    secondary: "#5B21B6",
+    accent: "#A78BFA",
+    background: "#FFFFFF",
+    foreground: "#1A1A1A",
+  },
+  {
+    id: "midnight-dark",
+    name: "Midnight Dark",
+    primary: "#3B82F6",
+    secondary: "#1E40AF",
+    accent: "#60A5FA",
+    background: "#0F172A",
+    foreground: "#F8FAFC",
+  },
+  {
+    id: "rose-pink",
+    name: "Rose Pink",
+    primary: "#EC4899",
+    secondary: "#BE185D",
+    accent: "#F9A8D4",
+    background: "#FFFFFF",
+    foreground: "#1A1A1A",
+  },
+  {
+    id: "custom",
+    name: "Custom Colors",
+    primary: "#000000",
+    secondary: "#333333",
+    accent: "#666666",
+    background: "#FFFFFF",
+    foreground: "#1A1A1A",
+  },
+];
 
 export type ModelTier = 'fast' | 'balanced' | 'quality';
 
@@ -123,6 +200,16 @@ export interface ConfiguratorState {
   aiProvider: string;
   aiApiKey: string;
 
+  // Branding settings
+  colorScheme: string; // ColorScheme id
+  customColors: {
+    primary: string;
+    secondary: string;
+    accent: string;
+    background: string;
+    foreground: string;
+  };
+
   // Actions
   setStep: (step: Step) => void;
   completeStep: (step: Step) => void;
@@ -168,6 +255,10 @@ export interface ConfiguratorState {
   setAiProvider: (provider: string) => void;
   setAiApiKey: (key: string) => void;
   
+  // Branding actions
+  setColorScheme: (schemeId: string) => void;
+  setCustomColor: (colorKey: keyof ConfiguratorState['customColors'], value: string) => void;
+  
   reset: () => void;
 }
 
@@ -207,6 +298,14 @@ const initialState = {
   inspirationUrls: [],
   aiProvider: '',
   aiApiKey: '',
+  colorScheme: 'sunset-orange',
+  customColors: {
+    primary: '#F97316',
+    secondary: '#EA580C',
+    accent: '#FDBA74',
+    background: '#FFFFFF',
+    foreground: '#1A1A1A',
+  },
 };
 
 export const useConfiguratorStore = create<ConfiguratorState>()(
@@ -325,6 +424,32 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       setAiApiKey: (key) => set({ aiApiKey: key }),
 
+      setColorScheme: (schemeId) => {
+        const scheme = COLOR_SCHEMES.find(s => s.id === schemeId);
+        if (scheme && schemeId !== 'custom') {
+          set({
+            colorScheme: schemeId,
+            customColors: {
+              primary: scheme.primary,
+              secondary: scheme.secondary,
+              accent: scheme.accent,
+              background: scheme.background,
+              foreground: scheme.foreground,
+            },
+          });
+        } else {
+          set({ colorScheme: schemeId });
+        }
+      },
+
+      setCustomColor: (colorKey, value) => set((state) => ({
+        colorScheme: 'custom',
+        customColors: {
+          ...state.customColors,
+          [colorKey]: value,
+        },
+      })),
+
       reset: () => set(initialState),
     }),
     {
@@ -350,6 +475,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         researchDomain: state.researchDomain,
         inspirationUrls: state.inspirationUrls,
         aiProvider: state.aiProvider,
+        colorScheme: state.colorScheme,
+        customColors: state.customColors,
         // Note: aiApiKey is NOT persisted for security
       }),
       onRehydrateStorage: () => (state) => {

@@ -83,16 +83,24 @@ const NAV_SECTIONS: NavSection[] = [
     tooltip: "Describe your project domain (e.g., 'e-commerce', 'SaaS') and add competitor/inspiration websites for AI analysis",
   },
   {
+    id: "branding",
+    label: "Branding",
+    description: "Colors & visual identity",
+    stepNumber: 3,
+    optional: true,
+    tooltip: "Choose a color scheme for your project or enter custom brand colors (hex codes)",
+  },
+  {
     id: "core-features",
     label: "Core Features",
     description: "Select features & integrations",
-    stepNumber: 3,
+    stepNumber: 4,
   },
   {
     id: "integrate-ai",
     label: "Integrate AI",
     description: "Add AI capabilities",
-    stepNumber: 4,
+    stepNumber: 5,
     optional: true,
     tooltip: "Connect to OpenAI, Anthropic, or Google AI for intelligent features in your app",
   },
@@ -100,27 +108,27 @@ const NAV_SECTIONS: NavSection[] = [
     id: "project-setup",
     label: "Project Setup",
     description: "Name & output directory",
-    stepNumber: 5,
+    stepNumber: 6,
   },
   {
     id: "cursor",
     label: "Cursor",
     description: "AI-powered code editor",
-    stepNumber: 6,
+    stepNumber: 7,
     tooltip: "Cursor is an AI code editor that helps you write code faster. Free to download.",
   },
   {
     id: "github",
     label: "GitHub",
     description: "Code repository hosting",
-    stepNumber: 7,
+    stepNumber: 8,
     tooltip: "GitHub stores your code online and enables collaboration. Create a free account at github.com",
   },
   {
     id: "supabase",
     label: "Supabase",
     description: "Database & authentication",
-    stepNumber: 8,
+    stepNumber: 9,
     optional: true,
     tooltip: "Supabase is an open-source backend with PostgreSQL database, authentication, and storage. Free tier available.",
   },
@@ -128,7 +136,7 @@ const NAV_SECTIONS: NavSection[] = [
     id: "vercel",
     label: "Vercel",
     description: "Deploy & host your site",
-    stepNumber: 9,
+    stepNumber: 10,
     optional: true,
     tooltip: "Vercel hosts your website with automatic deployments from GitHub. Free for personal projects.",
   },
@@ -136,7 +144,7 @@ const NAV_SECTIONS: NavSection[] = [
     id: "export",
     label: "Export",
     description: "Generate & download",
-    stepNumber: 10,
+    stepNumber: 11,
   },
 ];
 
@@ -380,22 +388,7 @@ export function AccordionSidebar({
         <div className="flex items-center justify-between">
           <span className="text-xs text-[var(--sidebar-text-muted)] font-medium">Services</span>
           <div className="flex items-center gap-1.5">
-            {/* GitHub indicator - step 7 */}
-            <div 
-              className={cn(
-                "w-5 h-5 rounded flex items-center justify-center transition-colors",
-                completedSteps.has(7) 
-                  ? "bg-emerald-500/20" 
-                  : "bg-white/10"
-              )}
-              title={completedSteps.has(7) ? "GitHub: Connected" : "GitHub: Not connected"}
-            >
-              <Github className={cn(
-                "h-3 w-3",
-                completedSteps.has(7) ? "text-emerald-400" : "text-white/40"
-              )} />
-            </div>
-            {/* Supabase indicator - step 8 */}
+            {/* GitHub indicator - step 8 */}
             <div 
               className={cn(
                 "w-5 h-5 rounded flex items-center justify-center transition-colors",
@@ -403,14 +396,14 @@ export function AccordionSidebar({
                   ? "bg-emerald-500/20" 
                   : "bg-white/10"
               )}
-              title={completedSteps.has(8) ? "Supabase: Connected" : "Supabase: Not connected"}
+              title={completedSteps.has(8) ? "GitHub: Connected" : "GitHub: Not connected"}
             >
-              <Database className={cn(
+              <Github className={cn(
                 "h-3 w-3",
                 completedSteps.has(8) ? "text-emerald-400" : "text-white/40"
               )} />
             </div>
-            {/* Vercel indicator - step 9 */}
+            {/* Supabase indicator - step 9 */}
             <div 
               className={cn(
                 "w-5 h-5 rounded flex items-center justify-center transition-colors",
@@ -418,11 +411,26 @@ export function AccordionSidebar({
                   ? "bg-emerald-500/20" 
                   : "bg-white/10"
               )}
-              title={completedSteps.has(9) ? "Vercel: Connected" : "Vercel: Not connected"}
+              title={completedSteps.has(9) ? "Supabase: Connected" : "Supabase: Not connected"}
+            >
+              <Database className={cn(
+                "h-3 w-3",
+                completedSteps.has(9) ? "text-emerald-400" : "text-white/40"
+              )} />
+            </div>
+            {/* Vercel indicator - step 10 */}
+            <div 
+              className={cn(
+                "w-5 h-5 rounded flex items-center justify-center transition-colors",
+                completedSteps.has(10) 
+                  ? "bg-emerald-500/20" 
+                  : "bg-white/10"
+              )}
+              title={completedSteps.has(10) ? "Vercel: Connected" : "Vercel: Not connected"}
             >
               <Rocket className={cn(
                 "h-3 w-3",
-                completedSteps.has(9) ? "text-emerald-400" : "text-white/40"
+                completedSteps.has(10) ? "text-emerald-400" : "text-white/40"
               )} />
             </div>
           </div>

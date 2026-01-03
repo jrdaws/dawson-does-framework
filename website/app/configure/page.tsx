@@ -39,58 +39,62 @@ const SupabaseSetup = dynamic(() => import("@/app/components/configurator/setup/
 const TemplateSection = dynamic(() => import("@/app/components/configurator/sections/TemplateSection").then(mod => ({ default: mod.TemplateSection })), { ssr: false });
 const ProjectSetupSection = dynamic(() => import("@/app/components/configurator/sections/ProjectSetupSection").then(mod => ({ default: mod.ProjectSetupSection })), { ssr: false });
 const ExportSection = dynamic(() => import("@/app/components/configurator/sections/ExportSection").then(mod => ({ default: mod.ExportSection })), { ssr: false });
+const BrandingSection = dynamic(() => import("@/app/components/configurator/sections/BrandingSection").then(mod => ({ default: mod.BrandingSection })), { ssr: false });
 
-// Map section IDs to step numbers (10-section layout with Template & Export)
+// Map section IDs to step numbers (11-section layout with Branding)
 const SECTION_TO_STEP: Record<string, number> = {
   "template": 1,
   "research": 2,
-  "core-features": 3,
-  "integrate-ai": 4,
-  "project-setup": 5,
-  "cursor": 6,
-  "github": 7,
-  "supabase": 8,
-  "vercel": 9,
-  "export": 10,
+  "branding": 3,
+  "core-features": 4,
+  "integrate-ai": 5,
+  "project-setup": 6,
+  "cursor": 7,
+  "github": 8,
+  "supabase": 9,
+  "vercel": 10,
+  "export": 11,
 };
 
 const STEP_TO_SECTION: Record<number, string> = {
   1: "template",
   2: "research",
-  3: "core-features",
-  4: "integrate-ai",
-  5: "project-setup",
-  6: "cursor",
-  7: "github",
-  8: "supabase",
-  9: "vercel",
-  10: "export",
+  3: "branding",
+  4: "core-features",
+  5: "integrate-ai",
+  6: "project-setup",
+  7: "cursor",
+  8: "github",
+  9: "supabase",
+  10: "vercel",
+  11: "export",
 };
 
 // Step titles for breadcrumb
 const STEP_TITLES: Record<number, string> = {
   1: "Template",
   2: "Research",
-  3: "Core Features",
-  4: "AI Integration",
-  5: "Project Setup",
-  6: "Cursor",
-  7: "GitHub",
-  8: "Supabase",
-  9: "Vercel",
-  10: "Export",
+  3: "Branding",
+  4: "Core Features",
+  5: "AI Integration",
+  6: "Project Setup",
+  7: "Cursor",
+  8: "GitHub",
+  9: "Supabase",
+  10: "Vercel",
+  11: "Export",
 };
 
 // Phase names for breadcrumb
 const getPhaseForStep = (step: number): string => {
-  if (step <= 2) return "Setup";
-  if (step <= 5) return "Configure";
-  if (step <= 9) return "Tools";
+  if (step <= 3) return "Setup";
+  if (step <= 6) return "Configure";
+  if (step <= 10) return "Tools";
   return "Export";
 };
 
 // Total number of steps
-const TOTAL_STEPS = 10;
+const TOTAL_STEPS = 11;
 
 export default function ConfigurePage() {
   const [aiTab, setAiTab] = useState<"component" | "preview" | "generate">("component");
@@ -127,6 +131,8 @@ export default function ConfigurePage() {
     inspirationUrls,
     aiProvider,
     aiApiKey,
+    colorScheme,
+    customColors,
     setStep,
     completeStep,
     setMode,
@@ -149,6 +155,8 @@ export default function ConfigurePage() {
     setInspirationUrls,
     setAiProvider,
     setAiApiKey,
+    setColorScheme,
+    setCustomColor,
   } = useConfiguratorStore();
 
   const selectedTemplate = TEMPLATES[template as keyof typeof TEMPLATES];
@@ -171,6 +179,8 @@ export default function ConfigurePage() {
     return {
       // Research - show if domain is set
       "research": researchDomain ? "✓" : undefined,
+      // Branding - show scheme name or "Custom"
+      "branding": colorScheme && colorScheme !== 'sunset-orange' ? (colorScheme === 'custom' ? 'Custom' : '✓') : undefined,
       // Core Features - show count
       "core-features": totalFeatures > 0 ? totalFeatures : undefined,
       // Integrate AI - show provider or count
@@ -182,7 +192,7 @@ export default function ConfigurePage() {
       "supabase": toolStatus.supabase ? "Ready" : undefined,
       "vercel": toolStatus.vercel ? "Ready" : undefined,
     };
-  }, [selectedFeatures, integrations, toolStatus, researchDomain, aiProvider]);
+  }, [selectedFeatures, integrations, toolStatus, researchDomain, aiProvider, colorScheme]);
 
   // Calculate progress
   const progress = (completedSteps.size / TOTAL_STEPS) * 100;
@@ -260,24 +270,26 @@ export default function ConfigurePage() {
     switch (currentStep) {
       case 1: // Template
         return template !== "";
-      case 2: // Research
-        return researchDomain.length > 0 || description.length > 0;
-      case 3: // Core Features
-        return Object.values(selectedFeatures).flat().length > 0;
-      case 4: // Integrate AI (optional - can skip)
+      case 2: // Research (optional)
         return true;
-      case 5: // Project Setup
+      case 3: // Branding (optional)
+        return true;
+      case 4: // Core Features
+        return Object.values(selectedFeatures).flat().length > 0;
+      case 5: // Integrate AI (optional)
+        return true;
+      case 6: // Project Setup
         return projectName.length > 0 && outputDir.length > 0;
-      case 6: // Cursor
+      case 7: // Cursor
         return toolStatus.cursor;
-      case 7: // GitHub
+      case 8: // GitHub
         return toolStatus.github;
-      case 8: // Supabase
-        return true; // Optional
-      case 9: // Vercel
-        return true; // Optional
-      case 10: // Export
-        return true; // Final step
+      case 9: // Supabase (optional)
+        return true;
+      case 10: // Vercel (optional)
+        return true;
+      case 11: // Export
+        return true;
       default:
         return false;
     }
@@ -334,6 +346,18 @@ export default function ConfigurePage() {
               window.open("/docs/research", "_blank");
             }}
             isLoading={isResearching}
+          />
+        );
+      case "branding":
+        return (
+          <BrandingSection
+            selectedScheme={colorScheme}
+            onSchemeChange={(schemeId) => {
+              setColorScheme(schemeId);
+              completeStep(3);
+            }}
+            customColors={customColors}
+            onCustomColorChange={setCustomColor}
           />
         );
       case "core-features":
@@ -426,7 +450,7 @@ export default function ConfigurePage() {
             isReady={completedSteps.size >= 5}
             onExport={(method) => {
               console.log("Export with method:", method);
-              completeStep(10);
+              completeStep(11);
             }}
           />
         );

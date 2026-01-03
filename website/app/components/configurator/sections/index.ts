@@ -6,3 +6,4 @@ export { ConnectedServicesSection } from "./ConnectedServicesSection";
 export { TemplateSection } from "./TemplateSection";
 export { ProjectSetupSection } from "./ProjectSetupSection";
 export { ExportSection } from "./ExportSection";
+export { BrandingSection } from "./BrandingSection";
