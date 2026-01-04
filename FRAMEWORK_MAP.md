@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 6962afa 2026-01-03 fix(progress): align progress bars and auto-complete provider steps
 - 54341d7 2026-01-03 feat: add OpenAI, Clerk, Algolia integration templates
 - 3c03c8c 2026-01-03 feat: add Resend/PostHog templates, wire generator to ZIP export
 - 7d91459 2026-01-03 chore: update framework map
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 9610c44 2026-01-03 fix(research): make URL extractor helpers defensive + API compatibility
 - 573427d 2026-01-03 fix(configurator): address all audit gaps and issues
 - 5c25b2e 2026-01-03 feat(research): add Firecrawl integration with Jina fallback
-- 44bd8a7 2026-01-03 docs(audit): comprehensive configurator workflow audit with 16 use cases
 
 ## Agent Governance Structure
 

@@ -29,6 +29,7 @@ Build a complete system where:
 | **PostHog Analytics Template** | `packages/templates/integrations/analytics/posthog/` | ✅ Events, feature flags, A/B testing |
 | **OpenAI AI Template** | `packages/templates/integrations/ai/openai/` | ✅ Chat, completions, embeddings |
 | **Algolia Search Template** | `packages/templates/integrations/search/algolia/` | ✅ Search box, modal, instant search |
+| **Uploadthing Storage Template** | `packages/templates/integrations/storage/uploadthing/` | ✅ Upload button, dropzone, file preview |
 | **Generator Orchestrator** | `website/lib/generator/` | ✅ Combines templates into projects |
 | **ZIP Export Integration** | `app/api/export/zip/route.ts` | ✅ Uses generator when templates unavailable |
 
@@ -37,7 +38,7 @@ Build a complete system where:
 | Component | Purpose |
 |-----------|---------|
 | Feature Code Templates | Actual code files for each feature (shopping cart, etc.) |
-| More Integration Templates | Uploadthing storage, Plausible analytics, etc. |
+| More Integration Templates | Plausible analytics, SendGrid email, etc. |
 | Feature Preview Components | Visual representations in preview |
 | Dependency Graph | Auto-include required features |
 

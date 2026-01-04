@@ -215,6 +215,39 @@ const INTEGRATION_MANIFESTS: Record<string, Record<string, IntegrationManifest>>
       ],
     },
   },
+  storage: {
+    uploadthing: {
+      id: "uploadthing",
+      name: "Uploadthing",
+      category: "storage",
+      version: "1.0.0",
+      description: "File uploads with Uploadthing",
+      files: [
+        { path: "lib/uploadthing.ts", template: "storage/uploadthing/lib/uploadthing.ts" },
+        { path: "app/api/uploadthing/core.ts", template: "storage/uploadthing/app/api/uploadthing/core.ts" },
+        { path: "app/api/uploadthing/route.ts", template: "storage/uploadthing/app/api/uploadthing/route.ts" },
+        { path: "components/upload/UploadButton.tsx", template: "storage/uploadthing/components/UploadButton.tsx" },
+        { path: "components/upload/UploadDropzone.tsx", template: "storage/uploadthing/components/UploadDropzone.tsx" },
+        { path: "components/upload/FilePreview.tsx", template: "storage/uploadthing/components/FilePreview.tsx" },
+        { path: "hooks/useUpload.ts", template: "storage/uploadthing/hooks/useUpload.ts" },
+      ],
+      dependencies: {
+        npm: {
+          "uploadthing": "^6.13.0",
+          "@uploadthing/react": "^6.7.0",
+        },
+        env: [
+          { name: "UPLOADTHING_SECRET", description: "Uploadthing secret key", required: true },
+          { name: "UPLOADTHING_APP_ID", description: "Uploadthing app ID", required: true },
+        ],
+      },
+      postInstall: [
+        "Create an account at https://uploadthing.com",
+        "Create an app and get your API keys",
+        "Configure file types in app/api/uploadthing/core.ts",
+      ],
+    },
+  },
   search: {
     algolia: {
       id: "algolia",

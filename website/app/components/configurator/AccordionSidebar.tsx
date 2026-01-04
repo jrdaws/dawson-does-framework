@@ -37,8 +37,7 @@ function SectionIcon({ sectionId, className }: SectionIconProps) {
         alt={sectionId}
         width={20}
         height={20}
-        className={cn("text-current", className)}
-        style={{ filter: "currentcolor" }}
+        className={cn(className)}
       />
     );
   }
