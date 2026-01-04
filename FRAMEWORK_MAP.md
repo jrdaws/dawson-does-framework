@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 8da3fbb 2026-01-03 refactor(configurator): consolidate research inputs into sidebar
 - 53d2ca2 2026-01-03 fix(configurator): theme colors + research loading UX
 - a8e0ee0 2026-01-03 fix(configurator): address 8 UX issues
 - d9aac9a 2026-01-03 feat(configurator): add 4 new service provider sections
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 6a43c2c 2025-12-26 fix(test): update progress indicator test to match new sidebar design
 - 65c1d05 2025-12-26 chore: commit Cycle 20 governance work, demos, and reports
 - 6043641 2025-12-25 fix(auth): update ProtectedRoute for Navy theme
-- de5e64b 2025-12-25 feat(marketing): update LandingPage for Navy theme (60-30-10)
 
 ## Agent Governance Structure
 

@@ -46,7 +46,7 @@ export function PreviewCard({ className, compact = false }: PreviewCardProps) {
   const featureCount = Object.values(selectedFeatures).flat().length;
   const integrationCount = Object.values(integrations).filter(Boolean).length;
   const completedCount = completedSteps.size;
-  const totalSteps = 8;
+  const totalSteps = 15; // Match sidebar's NAV_SECTIONS.length
 
   // Check service status
   const services = {
@@ -151,16 +151,21 @@ export function PreviewCard({ className, compact = false }: PreviewCardProps) {
       {/* Expanded Content */}
       {expanded && (
         <div className="px-4 pb-4 space-y-4 border-t border-[var(--sidebar-border)] pt-4">
-          {/* Progress */}
+          {/* Progress - matches sidebar style */}
           <div>
-            <div className="flex items-center justify-between text-xs text-[var(--sidebar-text-muted)] mb-1.5">
-              <span>Setup Progress</span>
-              <span className="font-medium text-[var(--sidebar-text)]">{completedCount}/{totalSteps}</span>
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="text-[var(--primary)] font-semibold">
+                {Math.round((completedCount / totalSteps) * 100)}% complete
+              </span>
+              <span className="text-[var(--sidebar-text-muted)]">{completedCount} of {totalSteps}</span>
             </div>
-            <div className="h-1.5 bg-black/30 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
               <div
-                className="h-full bg-emerald-400 rounded-full transition-all duration-300"
-                style={{ width: `${(completedCount / totalSteps) * 100}%` }}
+                className="h-full rounded-full transition-all duration-300"
+                style={{ 
+                  width: `${(completedCount / totalSteps) * 100}%`,
+                  background: 'var(--primary)'
+                }}
               />
             </div>
           </div>
