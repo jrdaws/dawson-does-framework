@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 81c2afe 2026-01-03 fix(P0): export builds failing due to missing deps and lazy init
 - f92d2ad 2026-01-03 test: add 8 new test cases for new integrations
 - 7b96e5b 2026-01-03 docs: add deprecation schedule for PreviewCard and ProjectOverviewBox
 - 853d3fc 2026-01-03 chore: mark P1 remaining integrations task as done
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 6962afa 2026-01-03 fix(progress): align progress bars and auto-complete provider steps
 - 54341d7 2026-01-03 feat: add OpenAI, Clerk, Algolia integration templates
 - 3c03c8c 2026-01-03 feat: add Resend/PostHog templates, wire generator to ZIP export
-- 7d91459 2026-01-03 chore: update framework map
 
 ## Agent Governance Structure
 
