@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 9c17c75 2026-01-03 feat(testing): build export validation framework for 20 test configs
 - 8b7925c 2026-01-03 feat: add export validation framework with 20 test configurations
 - 36948a9 2026-01-03 chore: move completed P0 supabase fix to done
 - 8dead2a 2026-01-03 fix(P0): split Supabase lib into client.ts and server.ts to fix build errors
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 53d2ca2 2026-01-03 fix(configurator): theme colors + research loading UX
 - a8e0ee0 2026-01-03 fix(configurator): address 8 UX issues
 - d9aac9a 2026-01-03 feat(configurator): add 4 new service provider sections
-- f17632d 2026-01-03 feat(ux): smart pre-fill Research field based on template (Option C)
 
 ## Agent Governance Structure
 

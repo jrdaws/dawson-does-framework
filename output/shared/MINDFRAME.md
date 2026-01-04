@@ -53,13 +53,13 @@ Next Agent: [Role] Agent
 ```
 ```
 
-### 4. Identity Declaration (EVERY RESPONSE)
+### 5. Identity Declaration (EVERY RESPONSE)
 ```
 (FULL ROLE NAME AGENT)
 ```
 Examples: `(DOCUMENTATION AGENT)` | `(WEBSITE AGENT)` | `(TESTING AGENT)`
 
-### 5. Human Terminal Command Rule (FOR HUMAN EXECUTION)
+### 6. Human Terminal Command Rule (FOR HUMAN EXECUTION)
 
 **When referencing a file for human interaction (view, open, edit, copy from, etc.):**
 

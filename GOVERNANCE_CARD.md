@@ -35,6 +35,7 @@ Proceeding with task...
 1. **Quick Actions** - Numbered options with DEFAULT + auto-continue timer
 2. **Handoff Prompt** - `Next Agent: [Role] Agent` with fenced task
 3. **Identity** - `(ROLE AGENT)` in ALL CAPS
+4. **Advanced Prompt** (when applicable) - Offer optimized prompt if better results possible
 
 ## Session End (Tiered)
 
