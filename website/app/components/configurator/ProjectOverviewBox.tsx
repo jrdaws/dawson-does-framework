@@ -12,6 +12,11 @@ interface ProjectOverviewBoxProps {
 }
 
 /**
+ * @deprecated Since 2026-01-03. Use ProjectStatusCard instead.
+ * Scheduled for archive: 2026-01-17
+ * Scheduled for deletion: 2026-02-02
+ * See: docs/maintenance/DEPRECATED_COMPONENTS.md
+ * 
  * ProjectOverviewBox - Summary box showing project details
  * Uses theme colors (navy/orange) for consistency
  */
