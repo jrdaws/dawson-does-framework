@@ -36,8 +36,14 @@ export const TEMPLATE_COMPOSITIONS: Record<string, TemplateComposition> = {
       Nav: {
         showAuth: true,
         variant: 'solid',
+        showCart: true,
+        showSearch: true,
       },
       Hero: {
+        title: "Shop the Collection",
+        subtitle: "Discover quality products curated just for you. Free shipping on orders over $50.",
+        ctaText: "Shop Now",
+        ctaSecondaryText: "Browse Categories",
         backgroundStyle: 'gradient',
         alignment: 'center',
       },
@@ -84,6 +90,10 @@ export const TEMPLATE_COMPOSITIONS: Record<string, TemplateComposition> = {
         variant: 'transparent',
       },
       Hero: {
+        title: "Build Something Amazing",
+        subtitle: "The all-in-one platform to launch, grow, and scale your business. Start free today.",
+        ctaText: "Start Free Trial",
+        ctaSecondaryText: "Book a Demo",
         backgroundStyle: 'mesh',
         alignment: 'center',
       },
@@ -132,6 +142,10 @@ export const TEMPLATE_COMPOSITIONS: Record<string, TemplateComposition> = {
         variant: 'solid',
       },
       Hero: {
+        title: "Ideas Worth Sharing",
+        subtitle: "Insights, tutorials, and stories from our team. Subscribe for updates.",
+        ctaText: "Subscribe",
+        ctaSecondaryText: "Browse Posts",
         backgroundStyle: 'solid',
         alignment: 'left',
       },
@@ -190,6 +204,10 @@ export const TEMPLATE_COMPOSITIONS: Record<string, TemplateComposition> = {
         variant: 'transparent',
       },
       Hero: {
+        title: "Transform Your Business",
+        subtitle: "Join thousands of companies already using our solution to drive growth and efficiency.",
+        ctaText: "Get Started",
+        ctaSecondaryText: "Learn More",
         backgroundStyle: 'gradient',
         alignment: 'center',
       },

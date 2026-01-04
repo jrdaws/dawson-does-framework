@@ -12,7 +12,7 @@ interface GuidedStep {
 }
 
 interface ToolSetupSectionProps {
-  toolId: "cursor" | "github" | "claude-code" | "supabase" | "vercel";
+  toolId: "cursor" | "github" | "supabase" | "vercel";
   isComplete?: boolean;
   isLoading?: boolean;
   onMarkComplete?: () => void;
@@ -48,17 +48,6 @@ const TOOL_CONFIGS: Record<string, {
     ],
     primaryAction: "Create Repository",
     primaryUrl: "https://github.com/new",
-  },
-  "claude-code": {
-    name: "Claude Code",
-    description: "AI coding assistant CLI for your terminal",
-    steps: [
-      { number: 1, content: "Open your terminal" },
-      { number: 2, content: <>Run: <code className="bg-background-alt px-1.5 py-0.5 rounded text-xs font-mono text-foreground">npm install -g @anthropic-ai/claude-code</code></> },
-      { number: 3, content: <>Run: <code className="bg-background-alt px-1.5 py-0.5 rounded text-xs font-mono text-foreground">claude-code auth</code> to authenticate</> },
-    ],
-    primaryAction: "View Documentation",
-    primaryUrl: "https://docs.anthropic.com",
   },
   supabase: {
     name: "Supabase",

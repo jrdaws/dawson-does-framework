@@ -295,7 +295,16 @@ export function PreviewFrame({
       </div>
 
       {/* Preview Content */}
-      <div className="max-h-[600px] overflow-y-auto bg-background">
+      <div className="relative max-h-[600px] overflow-y-auto bg-background">
+        {/* Floating Integration Stack */}
+        {activeCount > 0 && (
+          <div className="absolute top-2 right-2 z-20">
+            <IntegrationStack 
+              integrations={integrations} 
+              maxShow={4}
+            />
+          </div>
+        )}
         <PreviewRenderer
           template={template}
           componentProps={componentProps}

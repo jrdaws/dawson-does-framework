@@ -683,14 +683,6 @@ export default function ConfigurePage() {
             onMarkComplete={() => handleToolComplete("github")}
           />
         );
-      case "claude-code":
-        return (
-          <ToolSetupSection
-            toolId="claude-code"
-            isComplete={toolStatus["claude-code"]}
-            onMarkComplete={() => handleToolComplete("claude-code")}
-          />
-        );
       case "supabase":
         return (
           <SupabaseSetup

@@ -40,7 +40,7 @@ export interface ToolConfig {
   estimatedTime: string;
 }
 
-export type ToolId = "cursor" | "github" | "claude-code" | "supabase" | "vercel";
+export type ToolId = "cursor" | "github" | "supabase" | "vercel";
 
 export type ToolStatus = "pending" | "in-progress" | "completed" | "skipped" | "error";
 
@@ -69,15 +69,6 @@ const TOOLS: ToolConfig[] = [
     required: true,
     docsUrl: "https://github.com/",
     estimatedTime: "3 min",
-  },
-  {
-    id: "claude-code",
-    name: "Claude Code",
-    description: "AI coding assistant CLI",
-    icon: <Terminal className="h-5 w-5" />,
-    required: false,
-    docsUrl: "https://docs.anthropic.com/",
-    estimatedTime: "2 min",
   },
   {
     id: "supabase",
@@ -273,15 +264,6 @@ export function GuidedSetup({
       case "github":
         return (
           <GitHubSetupContent
-            state={state}
-            actions={actions}
-            copyCommand={copyCommand}
-            copiedCommands={copiedCommands}
-          />
-        );
-      case "claude-code":
-        return (
-          <ClaudeCodeSetupContent
             state={state}
             actions={actions}
             copyCommand={copyCommand}
@@ -550,56 +532,6 @@ git commit -m "Initial commit"`}
         <Button size="sm" onClick={() => actions.markComplete()}>
           <Check className="h-4 w-4 mr-1" />
           Repository created
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-function ClaudeCodeSetupContent({ state, actions, copyCommand, copiedCommands }: SetupContentProps) {
-  if (state.status === "completed") {
-    return (
-      <div className="text-sm text-emerald-600 flex items-center gap-2">
-        <Check className="h-4 w-4" />
-        Claude Code CLI installed
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-4 text-sm">
-      <p className="text-foreground-secondary">
-        Claude Code provides AI assistance directly in your terminal.
-      </p>
-
-      <div className="bg-stone-900 rounded-lg p-3 font-mono text-xs text-stone-100">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-foreground-muted"># Install via npm</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-6 text-foreground-muted hover:text-white"
-            onClick={() => copyCommand("npm install -g @anthropic-ai/claude-code", "claude-install")}
-          >
-            {copiedCommands["claude-install"] ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-          </Button>
-        </div>
-        <pre>npm install -g @anthropic-ai/claude-code</pre>
-      </div>
-
-      <ol className="space-y-2 list-decimal list-inside text-foreground-secondary">
-        <li>Run the install command above</li>
-        <li>Run <code className="bg-stone-100 px-1 rounded">claude-code auth</code> to authenticate</li>
-        <li>Use <code className="bg-stone-100 px-1 rounded">claude-code</code> in your project</li>
-      </ol>
-
-      <div className="flex gap-2 mt-4">
-        <Button size="sm" onClick={() => actions.markComplete()}>
-          <Check className="h-4 w-4 mr-1" />
-          Installed
-        </Button>
-        <Button size="sm" variant="outline" onClick={actions.markSkipped}>
-          Skip for now
         </Button>
       </div>
     </div>

@@ -55,7 +55,7 @@ const NAV_SECTIONS: NavSection[] = [
 
 // Custom SVG icon component (matching AccordionSidebar)
 function SectionIcon({ sectionId, className }: { sectionId: string; className?: string }) {
-  const customIconSections = ["research", "core-features", "integrate-ai", "cursor", "claude-code"];
+  const customIconSections = ["research", "core-features", "integrate-ai", "cursor"];
   
   if (customIconSections.includes(sectionId)) {
     const iconPath = `/images/configurator/sections/${

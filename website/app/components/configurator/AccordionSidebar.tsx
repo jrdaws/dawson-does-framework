@@ -22,7 +22,7 @@ interface SectionIconProps {
 
 function SectionIcon({ sectionId, className }: SectionIconProps) {
   // Map section IDs to custom SVG icons
-  const customIconSections = ["research", "core-features", "integrate-ai", "cursor", "claude-code"];
+  const customIconSections = ["research", "core-features", "integrate-ai", "cursor"];
   
   if (customIconSections.includes(sectionId)) {
     const iconPath = `/images/configurator/sections/${
