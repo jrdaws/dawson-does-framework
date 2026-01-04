@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 7eca558 2026-01-03 docs: add export validation reports for testprojectnew03
 - 28fecd4 2026-01-03 fix(configurator): remove GenerateFramework from Vercel step, update preview styling
 - 6157dcb 2026-01-03 chore(testing): complete Supabase OAuth E2E tests task - 18/18 pass
 - fc1d9f8 2026-01-03 docs(governance): add Advanced Prompt Suggestions rule
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 71afda9 2026-01-03 feat(configurator): show features in preview + header counts
 - 6692c24 2026-01-03 fix(research): add timeouts to prevent Vercel function timeout
 - 547f282 2026-01-03 fix(PreviewCard): sync progress bar with sidebar
-- 8da3fbb 2026-01-03 refactor(configurator): consolidate research inputs into sidebar
 
 ## Agent Governance Structure
 

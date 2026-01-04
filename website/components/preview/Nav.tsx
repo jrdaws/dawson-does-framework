@@ -55,18 +55,31 @@ export function Nav({
     <nav
       className={cn(
         "w-full px-6 py-4 flex items-center justify-between",
-        variant === "solid" && "bg-[#0A0A0A] border-b border-white/10",
-        variant === "transparent" && "bg-transparent absolute top-0 left-0 right-0 z-50"
+        variant === "transparent" && "absolute top-0 left-0 right-0 z-50"
       )}
+      style={{
+        backgroundColor: variant === "solid" ? 'var(--preview-background, #0A0A0A)' : 'transparent',
+        borderBottom: variant === "solid" ? '1px solid color-mix(in srgb, var(--preview-foreground, #FFF) 10%, transparent)' : 'none',
+      }}
     >
-      {/* Logo */}
+      {/* Logo - uses branding primary color */}
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F97316] to-orange-500 flex items-center justify-center">
+        <div 
+          className="w-8 h-8 rounded-lg flex items-center justify-center"
+          style={{
+            background: `linear-gradient(to bottom right, var(--preview-primary, #F97316), var(--preview-secondary, #EA580C))`
+          }}
+        >
           <span className="text-white font-bold text-sm">
             {projectName?.charAt(0)?.toUpperCase() || "P"}
           </span>
         </div>
-        <span className="text-white font-semibold text-lg">{projectName || "Project"}</span>
+        <span 
+          className="font-semibold text-lg"
+          style={{ color: 'var(--preview-foreground, #FFFFFF)' }}
+        >
+          {projectName || "Project"}
+        </span>
       </div>
 
       {/* Links */}
@@ -74,7 +87,8 @@ export function Nav({
         {(links || []).map((link, i) => (
           <span
             key={i}
-            className="text-stone-400 hover:text-white transition-colors cursor-pointer text-sm"
+            className="transition-colors cursor-pointer text-sm hover:opacity-100"
+            style={{ color: 'var(--preview-muted, #78716C)' }}
           >
             {link}
           </span>

@@ -137,25 +137,52 @@ export function PreviewRenderer({
   const showBilling = hasBillingFeatures(selectedFeatures) || !!integrations.payments;
 
   // Apply branding colors if provided (using CSS custom properties)
-  const brandingStyles: Record<string, string> = {};
-  if (branding?.customColors?.primary) {
-    brandingStyles['--preview-primary'] = branding.customColors.primary;
-  }
-  if (branding?.customColors?.secondary) {
-    brandingStyles['--preview-secondary'] = branding.customColors.secondary;
-  }
-  if (branding?.customColors?.accent) {
-    brandingStyles['--preview-accent'] = branding.customColors.accent;
-  }
-  if (branding?.customColors?.background) {
-    brandingStyles['--preview-background'] = branding.customColors.background;
+  // Default to orange theme if no custom colors provided
+  const defaultColors = {
+    primary: '#F97316',      // Orange-500
+    secondary: '#EA580C',    // Orange-600
+    accent: '#FB923C',       // Orange-400  
+    background: '#0A0A0A',   // Dark background
+    foreground: '#FFFFFF',   // White text
+    muted: '#78716C',        // Stone-500
+    card: '#1A1A1A',         // Slightly lighter dark
+  };
+
+  const brandingStyles: Record<string, string> = {
+    '--preview-primary': branding?.customColors?.primary || defaultColors.primary,
+    '--preview-secondary': branding?.customColors?.secondary || defaultColors.secondary,
+    '--preview-accent': branding?.customColors?.accent || defaultColors.accent,
+    '--preview-background': branding?.customColors?.background || defaultColors.background,
+    '--preview-foreground': branding?.customColors?.foreground || defaultColors.foreground,
+    '--preview-muted': defaultColors.muted,
+    '--preview-card': defaultColors.card,
+  };
+
+  // Apply color scheme presets if selected
+  if (branding?.colorScheme) {
+    const presets: Record<string, Record<string, string>> = {
+      'ocean': { primary: '#0EA5E9', secondary: '#0284C7', accent: '#38BDF8', background: '#0C1222' },
+      'forest': { primary: '#22C55E', secondary: '#16A34A', accent: '#4ADE80', background: '#0A1A0F' },
+      'sunset': { primary: '#F97316', secondary: '#EA580C', accent: '#FB923C', background: '#1A0A0A' },
+      'lavender': { primary: '#A855F7', secondary: '#9333EA', accent: '#C084FC', background: '#0F0A1A' },
+      'coral': { primary: '#F43F5E', secondary: '#E11D48', accent: '#FB7185', background: '#1A0A0F' },
+      'midnight': { primary: '#6366F1', secondary: '#4F46E5', accent: '#818CF8', background: '#0A0A14' },
+    };
+    const preset = presets[branding.colorScheme];
+    if (preset) {
+      brandingStyles['--preview-primary'] = preset.primary;
+      brandingStyles['--preview-secondary'] = preset.secondary;
+      brandingStyles['--preview-accent'] = preset.accent;
+      brandingStyles['--preview-background'] = preset.background;
+    }
   }
 
   return (
     <div 
-      className={`w-full min-h-screen bg-[#0A0A0A] ${className}`}
+      className={`w-full min-h-screen ${className}`}
       style={{
         ...(brandingStyles as React.CSSProperties),
+        backgroundColor: 'var(--preview-background)',
         transform: scale !== 1 ? `scale(${scale})` : undefined,
         transformOrigin: "top left",
         width: scale !== 1 ? `${100 / scale}%` : undefined,
