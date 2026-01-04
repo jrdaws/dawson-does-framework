@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 510cfc4 2026-01-04 feat: auto-include features + integration bridges + e-commerce templates
 - 9d3591d 2026-01-03 fix(P1): resolve remaining P1 export failures
 - 3d478da 2026-01-03 chore: move completed task to done
 - 1f44926 2026-01-03 fix: add supabase re-export shim for backward compatibility
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - ec1ab3e 2026-01-03 feat(templates): add base UI components for all exports (P0)
 - 72b9cb9 2026-01-03 feat(preview): inject branding colors into preview components
 - b7595fa 2026-01-03 feat: add parallel agent prompts for export fixes
-- 7eca558 2026-01-03 docs: add export validation reports for testprojectnew03
 
 ## Agent Governance Structure
 

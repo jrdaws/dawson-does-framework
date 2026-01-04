@@ -300,7 +300,6 @@ export default function ConfigurePage() {
       // Tool sections - show "Ready" when complete
       "cursor": toolStatus.cursor ? "Ready" : undefined,
       "github": toolStatus.github ? "Ready" : undefined,
-      "claude-code": toolStatus["claude-code"] ? "Ready" : undefined,
       "supabase": toolStatus.supabase ? "Ready" : undefined,
       "vercel": toolStatus.vercel ? "Ready" : undefined,
     };
