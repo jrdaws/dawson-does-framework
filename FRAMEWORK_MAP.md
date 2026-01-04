@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- e874913 2026-01-03 feat: add 6 new integration templates
 - e1f8afc 2026-01-03 feat(features): complete feature-to-code mapping with 31 features
 - e78ad35 2026-01-03 feat(configurator): consolidate PreviewCard + ProjectOverviewBox into ProjectStatusCard
 - ec1ab3e 2026-01-03 feat(templates): add base UI components for all exports (P0)
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 11d7bc0 2026-01-03 fix(ui): address 4 UX issues from visual QA
 - 6528df1 2026-01-03 feat(seo): add complete SEO content pipeline
 - d947dd0 2026-01-03 feat(preview): add feature preview components for WYSIWYG experience
-- 0fde215 2026-01-03 feat: add integration templates and project generator
 
 ## Agent Governance Structure
 
