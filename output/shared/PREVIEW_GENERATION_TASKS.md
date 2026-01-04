@@ -23,9 +23,12 @@ Build a complete system where:
 | ZIP Generator | `lib/zip-generator.ts` | Bundles files for download |
 | AI Agent Package | `packages/ai-agent/` | Architecture + code generation |
 | **Supabase Auth Template** | `packages/templates/integrations/auth/supabase/` | ✅ Full auth with login/signup/oauth |
+| **Clerk Auth Template** | `packages/templates/integrations/auth/clerk/` | ✅ Drop-in auth with sign-in/up pages |
 | **Stripe Payments Template** | `packages/templates/integrations/payments/stripe/` | ✅ Checkout, billing portal, webhooks |
 | **Resend Email Template** | `packages/templates/integrations/email/resend/` | ✅ Welcome, reset, invoice emails |
 | **PostHog Analytics Template** | `packages/templates/integrations/analytics/posthog/` | ✅ Events, feature flags, A/B testing |
+| **OpenAI AI Template** | `packages/templates/integrations/ai/openai/` | ✅ Chat, completions, embeddings |
+| **Algolia Search Template** | `packages/templates/integrations/search/algolia/` | ✅ Search box, modal, instant search |
 | **Generator Orchestrator** | `website/lib/generator/` | ✅ Combines templates into projects |
 | **ZIP Export Integration** | `app/api/export/zip/route.ts` | ✅ Uses generator when templates unavailable |
 
@@ -34,7 +37,7 @@ Build a complete system where:
 | Component | Purpose |
 |-----------|---------|
 | Feature Code Templates | Actual code files for each feature (shopping cart, etc.) |
-| More Integration Templates | OpenAI, Clerk, Algolia, etc. |
+| More Integration Templates | Uploadthing storage, Plausible analytics, etc. |
 | Feature Preview Components | Visual representations in preview |
 | Dependency Graph | Auto-include required features |
 

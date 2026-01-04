@@ -1,0 +1,130 @@
+# Task: Build Feature Code Templates
+
+## Context
+The Platform Agent has completed integration templates (Supabase Auth, Stripe, Resend, PostHog). Now we need feature code templates that combine these integrations into user-facing functionality.
+
+## Your Task
+Create feature code templates in `packages/templates/features/` that generate working code for common features.
+
+## Priority Features to Build
+
+### 1. Shopping Cart Feature
+Location: `packages/templates/features/ecommerce/shopping-cart/`
+
+Files needed:
+```
+shopping-cart/
+├── files.json              # Manifest
+├── components/
+│   ├── CartDrawer.tsx      # Slide-out cart panel
+│   ├── CartItem.tsx        # Individual cart item row
+│   ├── AddToCartButton.tsx # Add to cart button
+│   └── CartBadge.tsx       # Cart icon with count badge
+├── context/
+│   └── CartContext.tsx     # Cart state provider
+├── hooks/
+│   └── useCart.ts          # Cart operations hook
+└── lib/
+    └── cart-storage.ts     # Local storage persistence
+```
+
+Requirements:
+- Works with or without auth
+- Persists to localStorage by default
+- If Stripe integration present, include checkout integration
+- TypeScript with proper types
+
+### 2. Admin Dashboard Feature
+Location: `packages/templates/features/admin/dashboard/`
+
+Files needed:
+```
+dashboard/
+├── files.json
+├── app/
+│   ├── admin/
+│   │   ├── layout.tsx      # Admin layout with sidebar
+│   │   ├── page.tsx        # Dashboard overview
+│   │   └── users/
+│   │       └── page.tsx    # User management
+├── components/
+│   ├── AdminSidebar.tsx
+│   ├── StatsCard.tsx
+│   └── UserTable.tsx
+└── lib/
+    └── admin-guard.ts      # Admin role check
+```
+
+Requirements:
+- Requires auth integration
+- Role-based access (admin role)
+- Shows user count, recent signups stats
+- If analytics present, show analytics widgets
+
+### 3. Subscription Management Feature
+Location: `packages/templates/features/billing/subscription/`
+
+Files needed:
+```
+subscription/
+├── files.json
+├── components/
+│   ├── CurrentPlan.tsx     # Shows current subscription
+│   ├── PlanSelector.tsx    # Upgrade/downgrade UI
+│   └── UsageDisplay.tsx    # Usage limits/quotas
+├── hooks/
+│   └── useSubscription.ts
+└── app/
+    └── account/
+        └── billing/
+            └── page.tsx
+```
+
+Requirements:
+- Requires Stripe payments integration
+- Requires auth integration
+- Shows current plan, usage, billing date
+
+## Manifest Schema
+Each `files.json` should follow this structure:
+
+```json
+{
+  "id": "shopping-cart",
+  "name": "Shopping Cart",
+  "category": "ecommerce",
+  "version": "1.0.0",
+  "description": "Full shopping cart with checkout",
+  "files": [
+    { "path": "components/CartDrawer.tsx", "template": "components/CartDrawer.tsx" }
+  ],
+  "dependencies": {
+    "npm": { "zustand": "^4.5.0" },
+    "integrations": ["payments"],
+    "features": []
+  },
+  "previewComponent": "CartBadge"
+}
+```
+
+## Reference
+- Existing integration templates: `packages/templates/integrations/`
+- Type definitions: `website/lib/generator/types.ts`
+- Task breakdown: `output/shared/PREVIEW_GENERATION_TASKS.md`
+
+## Success Criteria
+- [ ] Shopping cart feature works standalone
+- [ ] Shopping cart integrates with Stripe when present
+- [ ] Admin dashboard has working user list (mock data)
+- [ ] Subscription management shows plan details
+- [ ] All features use TypeScript with proper types
+- [ ] Each feature has a `files.json` manifest
+
+## Deliverables
+1. Feature templates in `packages/templates/features/`
+2. Update `website/lib/generator/feature-loader.ts` (create if needed)
+3. Update `PREVIEW_GENERATION_TASKS.md` when complete
+
+---
+Website Agent - work on this in parallel with Platform Agent
+

@@ -48,6 +48,35 @@ const INTEGRATION_MANIFESTS: Record<string, Record<string, IntegrationManifest>>
         "Enable Email Auth in Authentication > Providers",
       ],
     },
+    clerk: {
+      id: "clerk",
+      name: "Clerk",
+      category: "auth",
+      version: "1.0.0",
+      description: "Drop-in authentication with Clerk",
+      files: [
+        { path: "components/auth/ClerkProvider.tsx", template: "auth/clerk/components/ClerkProvider.tsx" },
+        { path: "components/auth/UserButton.tsx", template: "auth/clerk/components/UserButton.tsx" },
+        { path: "components/auth/SignInButton.tsx", template: "auth/clerk/components/SignInButton.tsx" },
+        { path: "middleware.ts", template: "auth/clerk/middleware.ts" },
+        { path: "app/sign-in/[[...sign-in]]/page.tsx", template: "auth/clerk/app/sign-in/page.tsx" },
+        { path: "app/sign-up/[[...sign-up]]/page.tsx", template: "auth/clerk/app/sign-up/page.tsx", transform: "mustache" },
+      ],
+      dependencies: {
+        npm: {
+          "@clerk/nextjs": "^5.0.0",
+        },
+        env: [
+          { name: "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", description: "Clerk publishable key", required: true, public: true },
+          { name: "CLERK_SECRET_KEY", description: "Clerk secret key", required: true },
+        ],
+      },
+      postInstall: [
+        "Create a Clerk account at https://clerk.com",
+        "Create an application and get your API keys",
+        "Wrap your app with ClerkProvider in layout.tsx",
+      ],
+    },
   },
   email: {
     resend: {
@@ -150,6 +179,73 @@ const INTEGRATION_MANIFESTS: Record<string, Record<string, IntegrationManifest>>
         "Create products and prices in Stripe Dashboard",
         "Set up webhook endpoint: /api/webhooks/stripe",
         "For local dev: stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+      ],
+    },
+  },
+  ai: {
+    openai: {
+      id: "openai",
+      name: "OpenAI",
+      category: "ai",
+      version: "1.0.0",
+      description: "AI chat and completions with GPT models",
+      files: [
+        { path: "lib/ai/openai.ts", template: "ai/openai/lib/openai.ts" },
+        { path: "lib/ai/embeddings.ts", template: "ai/openai/lib/embeddings.ts" },
+        { path: "components/ai/ChatInterface.tsx", template: "ai/openai/components/ChatInterface.tsx" },
+        { path: "components/ai/ChatMessage.tsx", template: "ai/openai/components/ChatMessage.tsx" },
+        { path: "components/ai/ChatInput.tsx", template: "ai/openai/components/ChatInput.tsx" },
+        { path: "hooks/useChat.ts", template: "ai/openai/hooks/useChat.ts" },
+        { path: "app/api/ai/chat/route.ts", template: "ai/openai/app/api/chat/route.ts" },
+        { path: "app/api/ai/completion/route.ts", template: "ai/openai/app/api/completion/route.ts" },
+      ],
+      dependencies: {
+        npm: {
+          "openai": "^4.50.0",
+          "ai": "^3.2.0",
+        },
+        env: [
+          { name: "OPENAI_API_KEY", description: "OpenAI API key", required: true },
+          { name: "OPENAI_MODEL", description: "Default model (optional)", required: false, example: "gpt-4o" },
+        ],
+      },
+      postInstall: [
+        "Get your API key from https://platform.openai.com/api-keys",
+        "Add OPENAI_API_KEY to your .env.local",
+      ],
+    },
+  },
+  search: {
+    algolia: {
+      id: "algolia",
+      name: "Algolia",
+      category: "search",
+      version: "1.0.0",
+      description: "Lightning-fast search with Algolia",
+      files: [
+        { path: "lib/search/algolia.ts", template: "search/algolia/lib/algolia.ts" },
+        { path: "lib/search/indexer.ts", template: "search/algolia/lib/indexer.ts" },
+        { path: "components/search/SearchBox.tsx", template: "search/algolia/components/SearchBox.tsx" },
+        { path: "components/search/SearchResults.tsx", template: "search/algolia/components/SearchResults.tsx" },
+        { path: "components/search/SearchModal.tsx", template: "search/algolia/components/SearchModal.tsx" },
+        { path: "hooks/useSearch.ts", template: "search/algolia/hooks/useSearch.ts" },
+      ],
+      dependencies: {
+        npm: {
+          "algoliasearch": "^4.23.0",
+          "react-instantsearch": "^7.6.0",
+        },
+        env: [
+          { name: "NEXT_PUBLIC_ALGOLIA_APP_ID", description: "Algolia App ID", required: true, public: true },
+          { name: "NEXT_PUBLIC_ALGOLIA_SEARCH_KEY", description: "Algolia Search Key", required: true, public: true },
+          { name: "ALGOLIA_ADMIN_KEY", description: "Algolia Admin Key (for indexing)", required: true },
+          { name: "NEXT_PUBLIC_ALGOLIA_INDEX_NAME", description: "Index name", required: true, public: true },
+        ],
+      },
+      postInstall: [
+        "Create an Algolia account at https://www.algolia.com",
+        "Create an application and index",
+        "Add all API keys to .env.local",
       ],
     },
   },
