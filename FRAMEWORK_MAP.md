@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 8ece2be 2026-01-03 feat(governance): add 'rr' shortcut for re-reading rules
 - f16cfb3 2026-01-03 feat(governance): add role-based SOP requirements
 - 1477da2 2026-01-03 feat(sops): add comprehensive Bug Prevention & Detection System
 - 5070a4d 2026-01-03 fix: resolve P0 export build failures for Stripe and Resend
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 6157dcb 2026-01-03 chore(testing): complete Supabase OAuth E2E tests task - 18/18 pass
 - fc1d9f8 2026-01-03 docs(governance): add Advanced Prompt Suggestions rule
 - 9c17c75 2026-01-03 feat(testing): build export validation framework for 20 test configs
-- 8b7925c 2026-01-03 feat: add export validation framework with 20 test configurations
 
 ## Agent Governance Structure
 
