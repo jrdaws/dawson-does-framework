@@ -336,7 +336,6 @@ const initialState = {
   toolStatus: {
     cursor: false,
     github: false,
-    'claude-code': false,
     supabase: false,
     vercel: false,
   },

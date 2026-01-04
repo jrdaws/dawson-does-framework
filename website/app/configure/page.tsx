@@ -335,6 +335,33 @@ export default function ConfigurePage() {
     }
   }, [selectedFeatures, completedSteps, completeStep]);
 
+  // Auto-complete step 3 (branding) when color scheme is changed or custom colors are set
+  useEffect(() => {
+    // Complete if user has changed from default scheme or set any custom color
+    const hasCustomBranding = colorScheme !== 'sunset-orange' || 
+      customColors.primary !== '#F97316' ||
+      customColors.secondary !== '#EA580C';
+    if (hasCustomBranding && !completedSteps.has(3)) {
+      completeStep(3 as Step);
+    }
+  }, [colorScheme, customColors, completedSteps, completeStep]);
+
+  // Auto-complete step 18 (project-setup) when project name is entered
+  useEffect(() => {
+    if (projectName && projectName.trim().length > 0 && !completedSteps.has(18)) {
+      completeStep(18 as Step);
+    }
+  }, [projectName, completedSteps, completeStep]);
+
+  // Auto-complete tool steps when tools are marked complete
+  useEffect(() => {
+    // Step 19: Cursor, Step 20: GitHub, Step 21: Supabase, Step 22: Vercel
+    if (toolStatus.cursor && !completedSteps.has(19)) completeStep(19 as Step);
+    if (toolStatus.github && !completedSteps.has(20)) completeStep(20 as Step);
+    if (toolStatus.supabase && !completedSteps.has(21)) completeStep(21 as Step);
+    if (toolStatus.vercel && !completedSteps.has(22)) completeStep(22 as Step);
+  }, [toolStatus, completedSteps, completeStep]);
+
   // Handle research API call
   const handleStartResearch = useCallback(async () => {
     if (!researchDomain.trim()) return;

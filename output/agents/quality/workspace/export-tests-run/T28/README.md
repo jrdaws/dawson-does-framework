@@ -39,4 +39,4 @@ See the `.dd/` directory for project vision, mission, and goals.
 
 ---
 
-Generated on 1/3/2026
+Generated on 1/4/2026

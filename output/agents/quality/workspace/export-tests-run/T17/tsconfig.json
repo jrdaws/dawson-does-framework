@@ -20,9 +20,6 @@
     "plugins": [
       {
         "name": "test-t17"
-      },
-      {
-        "name": "next"
       }
     ]
   },

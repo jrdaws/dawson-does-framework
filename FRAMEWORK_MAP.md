@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 9d3591d 2026-01-03 fix(P1): resolve remaining P1 export failures
 - 3d478da 2026-01-03 chore: move completed task to done
 - 1f44926 2026-01-03 fix: add supabase re-export shim for backward compatibility
 - a814819 2026-01-03 fix(exports): add missing components to e-commerce template
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 72b9cb9 2026-01-03 feat(preview): inject branding colors into preview components
 - b7595fa 2026-01-03 feat: add parallel agent prompts for export fixes
 - 7eca558 2026-01-03 docs: add export validation reports for testprojectnew03
-- 28fecd4 2026-01-03 fix(configurator): remove GenerateFramework from Vercel step, update preview styling
 
 ## Agent Governance Structure
 

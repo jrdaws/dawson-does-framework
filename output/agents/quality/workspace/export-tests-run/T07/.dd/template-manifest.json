@@ -1,7 +1,7 @@
 {
   "template": "saas",
   "version": "1.0.0",
-  "generatedAt": "2026-01-04T07:26:25.163Z",
+  "generatedAt": "2026-01-04T08:53:14.111Z",
   "generatedBy": "dawson-does-framework-configurator",
   "integrations": {
     "auth": "clerk",

@@ -10,6 +10,7 @@ import {
   type FileRouter,
 } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { generateReactHelpers } from "@uploadthing/react";
 
 // ============================================================
 // Environment Validation
@@ -238,3 +239,13 @@ export function getFileExtension(filename: string): string {
 export function isUploadThingUrl(url: string): boolean {
   return url.includes("uploadthing") || url.includes("utfs.io");
 }
+
+// ============================================================
+// React Helpers
+// ============================================================
+
+/**
+ * Generate type-safe React hooks and components for UploadThing
+ */
+export const { useUploadThing, uploadFiles } =
+  generateReactHelpers<OurFileRouter>();

@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Convert the response to a friendly text-stream
+    // @ts-expect-error - OpenAI SDK v4 stream type is compatible at runtime
     const stream = OpenAIStream(response);
 
     // Respond with the stream

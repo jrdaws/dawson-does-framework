@@ -5,6 +5,45 @@ import JSZip from "jszip";
 import { apiError, ErrorCodes } from "@/lib/api-errors";
 import { generateProject, type ProjectConfig, type IntegrationCategory } from "@/lib/generator";
 
+// Template-specific auto-included features based on template type
+const TEMPLATE_AUTO_FEATURES: Record<string, string[]> = {
+  ecommerce: [
+    "ecommerce-shopping-cart",
+    "ecommerce-checkout-flow",
+    "ecommerce-order-history",
+    "ecommerce-product-variants",
+    "user-management-email-registration",
+  ],
+  saas: [
+    "user-management-email-registration",
+  ],
+  dashboard: [
+    "user-management-email-registration",
+    "analytics-page-views",
+  ],
+  blog: [
+    "search-filter-full-text-search",
+  ],
+  "landing-page": [],
+  "seo-directory": [],
+};
+
+// Integration bridges - code that connects multiple integrations together
+const INTEGRATION_BRIDGES: Record<string, { requires: string[]; files: string[] }> = {
+  "auth-payments": {
+    requires: ["auth", "payments"],
+    files: ["bridges/auth-payments/lib/auth-stripe-bridge.ts"],
+  },
+  "auth-email": {
+    requires: ["auth", "email"],
+    files: ["bridges/auth-email/lib/auth-email-bridge.ts"],
+  },
+  "payments-email": {
+    requires: ["payments", "email"],
+    files: ["bridges/payments-email/lib/order-confirmation.ts"],
+  },
+};
+
 // Template component manifests - what core pages/components each template includes
 const TEMPLATE_COMPONENTS: Record<string, {
   pages: string[];
@@ -41,19 +80,26 @@ const TEMPLATE_COMPONENTS: Record<string, {
     config: ["package.json", "tailwind.config.ts", "tsconfig.json", "next.config.js", "postcss.config.js"],
   },
   ecommerce: {
-    pages: ["app/page.tsx", "app/layout.tsx"],
+    pages: [
+      "app/page.tsx",
+      "app/layout.tsx",
+      "app/products/page.tsx",
+      "app/products/[slug]/page.tsx",
+    ],
     components: [
       "components/Hero.tsx",
       "components/Nav.tsx",
       "components/CTA.tsx",
-      "components/DashboardPreview.tsx",
-      "components/FAQ.tsx",
-      "components/FeatureCards.tsx",
       "components/Footer.tsx",
-      "components/PricingTable.tsx",
-      "components/Testimonials.tsx",
-      "components/index.ts",
-      "components/ui/empty-state.tsx",
+      "components/products/ProductCard.tsx",
+      "components/products/ProductGrid.tsx",
+      "components/products/ProductFilters.tsx",
+      "components/products/ProductGallery.tsx",
+      "components/products/ProductInfo.tsx",
+      "components/products/FeaturedProducts.tsx",
+      "components/products/RelatedProducts.tsx",
+      "components/products/Categories.tsx",
+      "components/products/index.ts",
     ],
     lib: ["lib/utils.ts"],
     styles: ["app/globals.css"],
@@ -523,12 +569,9 @@ export async function POST(request: NextRequest) {
     // Get template component manifest
     const templateManifest = TEMPLATE_COMPONENTS[template] || TEMPLATE_COMPONENTS.saas;
 
-    // Verify template files are accessible - check a few key files
-    const keyFiles = [
-      path.join(templatePath, "app/page.tsx"),
-      path.join(templatePath, "app/layout.tsx"),
-    ];
-    
+    // Verify template files are accessible - check a few key files from manifest
+    const keyFiles = templateManifest.pages.slice(0, 2).map(p => path.join(templatePath, p));
+
     const templateFilesAccessible = keyFiles.some(f => fs.existsSync(f));
     
     if (!templateFilesAccessible) {
@@ -623,6 +666,61 @@ export async function POST(request: NextRequest) {
         const storageCode = generateR2StorageCode();
         for (const [filePath, content] of Object.entries(storageCode)) {
           zip.file(filePath, content);
+        }
+      }
+    }
+
+    // 3.5. Add auto-included features based on template type
+    const autoFeatures = TEMPLATE_AUTO_FEATURES[template] || [];
+    const featuresPath = path.join(templatesPath, "features");
+    
+    for (const featureId of autoFeatures) {
+      // Parse feature ID like "ecommerce-shopping-cart" -> category: "ecommerce", feature: "shopping-cart"
+      const parts = featureId.split("-");
+      const category = parts[0];
+      const featureName = parts.slice(1).join("-");
+      const featurePath = path.join(featuresPath, category, featureName);
+      
+      // Check if feature manifest exists
+      const manifestPath = path.join(featurePath, "files.json");
+      if (fs.existsSync(manifestPath)) {
+        try {
+          const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
+          // Copy feature files
+          for (const file of manifest.files || []) {
+            const sourcePath = path.join(featurePath, file.template);
+            const content = safeReadFile(sourcePath);
+            if (content) {
+              zip.file(file.path, content);
+            }
+          }
+        } catch (e) {
+          console.warn(`Could not load feature ${featureId}:`, e);
+        }
+      }
+    }
+
+    // 3.6. Add integration bridge files when multiple integrations need to work together
+    const activeIntegrationTypes = Object.entries(integrations)
+      .filter(([, provider]) => provider)
+      .map(([type]) => type);
+    
+    for (const [bridgeName, bridgeConfig] of Object.entries(INTEGRATION_BRIDGES)) {
+      // Check if all required integrations are present
+      const hasAllRequired = bridgeConfig.requires.every(req => 
+        activeIntegrationTypes.includes(req)
+      );
+      
+      if (hasAllRequired) {
+        const bridgesPath = path.join(templatesPath, "saas");
+        for (const bridgeFile of bridgeConfig.files) {
+          const fullPath = path.join(bridgesPath, bridgeFile);
+          const content = safeReadFile(fullPath);
+          if (content) {
+            // Map bridge path to output path
+            const outputPath = bridgeFile.replace(/^bridges\/[^/]+\//, "");
+            zip.file(outputPath, content);
+          }
         }
       }
     }

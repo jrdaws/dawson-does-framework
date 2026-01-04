@@ -21,6 +21,7 @@
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.40.0",
     "next-sanity": "^9.0.0",
+    "styled-components": "^6.1.0",
     "@sentry/nextjs": "^8.0.0",
     "algoliasearch": "^4.23.0",
     "react-instantsearch": "^7.6.0",

@@ -1,89 +1,37 @@
 # test-t19
 
+Generated with [dawson-does-framework](https://github.com/jrdaws/dawson-does-framework)
 
+## Template: seo-directory
+
+## Integrations
+
+No integrations selected
 
 ## Getting Started
 
-### Prerequisites
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-- Node.js 18+
-- npm or yarn or pnpm
+2. **Set up environment variables:**
+   ```bash
+   cp .env.local.example .env.local
+   ```
+   Then edit `.env.local` and add your API keys.
 
-### Installation
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
 
-```bash
-# Clone the repository
-git clone <your-repo-url>
-cd test-t19
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-# Install dependencies
-npm install
+## Project Context
 
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your values
-
-# Run the development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser.
-
-## Tech Stack
-
-- **Framework**: Next.js 15
-- **Styling**: Tailwind CSS
-- **Language**: TypeScript
-
-### Integrations
-
-No integrations configured.
-
-## Project Structure
-
-```
-test-t19/
-├── app/                    # Next.js App Router pages
-│   ├── layout.tsx         # Root layout
-│   ├── page.tsx           # Home page
-│   └── ...
-├── components/            # React components
-├── lib/                   # Utilities and configurations
-├── hooks/                 # Custom React hooks
-└── public/               # Static assets
-```
-
-## Configuration
-
-### Environment Variables
-
-Copy `.env.example` to `.env.local` and configure:
-
-```bash
-cp .env.example .env.local
-```
-
-See `.env.example` for all available variables.
-
-
-
-## Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-
-## Deployment
-
-The easiest way to deploy is with [Vercel](https://vercel.com):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
-## License
-
-MIT
+See the `.dd/` directory for project vision, mission, and goals.
 
 ---
 
-Built with [Dawson-Does Framework](https://dawson-does.com)
+Generated on 1/4/2026

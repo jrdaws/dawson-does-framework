@@ -17,7 +17,8 @@
     "sanity": "^3.40.0",
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.40.0",
-    "next-sanity": "^9.0.0"
+    "next-sanity": "^9.0.0",
+    "styled-components": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
