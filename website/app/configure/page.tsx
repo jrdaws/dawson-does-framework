@@ -29,6 +29,7 @@ const ResearchResults = dynamic(() => import("@/app/components/configurator/Rese
 
 // Import section components for inline sidebar content
 const ResearchSection = dynamic(() => import("@/app/components/configurator/sections/ResearchSection").then(mod => ({ default: mod.ResearchSection })), { ssr: false });
+import type { ResearchStats } from "@/app/components/configurator/sections/ResearchSection";
 const CoreFeaturesSection = dynamic(() => import("@/app/components/configurator/sections/CoreFeaturesSection").then(mod => ({ default: mod.CoreFeaturesSection })), { ssr: false });
 const IntegrateAISection = dynamic(() => import("@/app/components/configurator/sections/IntegrateAISection").then(mod => ({ default: mod.IntegrateAISection })), { ssr: false });
 const ToolSetupSection = dynamic(() => import("@/app/components/configurator/sections/ToolSetupSection").then(mod => ({ default: mod.ToolSetupSection })), { ssr: false });
@@ -133,6 +134,7 @@ export default function ConfigurePage() {
   const [researchResult, setResearchResult] = useState<ResearchResult | null>(null);
   const [isResearching, setIsResearching] = useState(false);
   const [researchError, setResearchError] = useState<string | null>(null);
+  const [researchStats, setResearchStats] = useState<ResearchStats | null>(null);
   
   // Track navigation direction for slide animations
   const [animationDirection, setAnimationDirection] = useState<"left" | "right">("right");
@@ -258,16 +260,35 @@ export default function ConfigurePage() {
     
     setIsResearching(true);
     setResearchError(null);
+    setResearchStats(null);
     
     try {
       const result = await analyzeProject({
         domain: researchDomain,
         inspirationUrls: inspirationUrls.length > 0 ? inspirationUrls : undefined,
-        vision: description || undefined,
+        vision: vision || description || undefined,
       });
       
       if (result.success) {
         setResearchResult(result);
+        
+        // Build stats from results
+        const { analysis } = result;
+        const urlCount = analysis.urlAnalysis?.length || 0;
+        const featuresFromUrls = analysis.urlAnalysis?.reduce((acc, u) => acc + (u.features?.length || 0), 0) || 0;
+        const patternsFromUrls = analysis.urlAnalysis?.reduce((acc, u) => acc + (u.designPatterns?.length || 0), 0) || 0;
+        const suggestedFeaturesCount = analysis.recommendations?.suggestedFeatures?.reduce((acc, cat) => acc + (cat.features?.length || 0), 0) || 0;
+        
+        setResearchStats({
+          sitesAnalyzed: urlCount || inspirationUrls.length,
+          pagesExtracted: urlCount,
+          featuresIdentified: featuresFromUrls + (analysis.domainInsights?.commonFeatures?.length || 0),
+          designPatterns: patternsFromUrls,
+          recommendedTemplate: analysis.recommendations?.suggestedTemplate || template,
+          suggestedFeatures: suggestedFeaturesCount,
+          integrationsFound: analysis.recommendations?.suggestedIntegrations?.length || 0,
+        });
+        
         completeStep(2);
       } else {
         setResearchError(result.error || "Research failed");
@@ -277,7 +298,14 @@ export default function ConfigurePage() {
     } finally {
       setIsResearching(false);
     }
-  }, [researchDomain, inspirationUrls, description, completeStep]);
+  }, [researchDomain, inspirationUrls, vision, description, template, completeStep]);
+  
+  // Reset research to try again
+  const handleResetResearch = useCallback(() => {
+    setResearchResult(null);
+    setResearchStats(null);
+    setResearchError(null);
+  }, []);
 
   // Handle applying research recommendations
   const handleApplyRecommendations = useCallback((recommendations: {
@@ -404,14 +432,20 @@ export default function ConfigurePage() {
           <ResearchSection
             domain={researchDomain}
             onDomainChange={setResearchDomain}
+            vision={vision}
+            onVisionChange={setVision}
             inspirationUrls={inspirationUrls}
             onInspirationUrlsChange={setInspirationUrls}
             onStartResearch={handleStartResearch}
             onShowMe={() => {
-              // Open docs in new tab
-              window.open("/docs/research", "_blank");
+              // Scroll to results in main content area
+              const resultsEl = document.getElementById("research-results");
+              resultsEl?.scrollIntoView({ behavior: "smooth" });
             }}
+            onResetResearch={handleResetResearch}
             isLoading={isResearching}
+            isComplete={!!researchResult?.success}
+            stats={researchStats || undefined}
           />
         );
       case "branding":
@@ -561,27 +595,90 @@ export default function ConfigurePage() {
     switch (currentSection) {
       case "research":
         return (
-          <div className="space-y-6">
-            <div className="max-w-2xl">
-              <h2 className="text-2xl font-bold text-foreground mb-2">Define Your Project</h2>
-              <p className="text-foreground-secondary">
-                Start by describing your project domain and adding inspiration websites. 
-                This helps us understand what you&apos;re building.
-              </p>
-            </div>
-            
-            <InspirationUpload
-              inspirations={inspirations}
-              description={description}
-              onAddInspiration={addInspiration}
-              onRemoveInspiration={removeInspiration}
-              onDescriptionChange={setDescription}
-            />
+          <div className="space-y-6" id="research-results">
+            {/* Before research: Show instructions */}
+            {!researchResult && !isResearching && (
+              <div className="max-w-2xl">
+                <h2 className="text-2xl font-bold text-foreground mb-2">Research Your Project</h2>
+                <p className="text-foreground-secondary mb-4">
+                  Use the sidebar to describe your niche and add inspiration URLs.
+                  Our AI will analyze competitors and recommend features.
+                </p>
+                <div className="bg-card border border-border rounded-xl p-6">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">1</span>
+                    Enter your domain in the sidebar
+                  </h3>
+                  <p className="text-sm text-foreground-secondary ml-8 mb-4">
+                    Be specific! &quot;Pet food subscription for senior dogs&quot; is better than &quot;pet store&quot;
+                  </p>
+                  
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">2</span>
+                    Add inspiration websites (optional)
+                  </h3>
+                  <p className="text-sm text-foreground-secondary ml-8 mb-4">
+                    Competitor sites help us understand your market and recommend features
+                  </p>
+                  
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">3</span>
+                    Click &quot;Research&quot; to start AI analysis
+                  </h3>
+                  <p className="text-sm text-foreground-secondary ml-8">
+                    We&apos;ll crawl sites, extract insights, and recommend a template + features
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* During research: Show loading state */}
+            {isResearching && (
+              <div className="max-w-2xl">
+                <h2 className="text-2xl font-bold text-foreground mb-2">Analyzing Your Project...</h2>
+                <p className="text-foreground-secondary mb-6">
+                  Our AI is researching your domain and analyzing inspiration sites.
+                </p>
+                <div className="bg-card border border-border rounded-xl p-6 animate-pulse">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                      <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground">Processing...</div>
+                      <div className="text-sm text-foreground-secondary">This may take 10-30 seconds</div>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm text-foreground-secondary">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                      Analyzing domain: {researchDomain}
+                    </div>
+                    {inspirationUrls.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                        Crawling {inspirationUrls.length} inspiration site(s)...
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-muted" />
+                      Generating recommendations...
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Research Error */}
             {researchError && (
               <div className="bg-destructive/10 text-destructive rounded-lg p-4 text-sm">
-                {researchError}
+                <strong>Research Failed:</strong> {researchError}
+                <button 
+                  onClick={handleResetResearch}
+                  className="ml-4 underline hover:no-underline"
+                >
+                  Try again
+                </button>
               </div>
             )}
 
