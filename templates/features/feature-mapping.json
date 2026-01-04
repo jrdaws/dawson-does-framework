@@ -27,6 +27,16 @@
       "label": "Analytics",
       "description": "Tracking, metrics, and reporting",
       "icon": "bar-chart"
+    },
+    "billing": {
+      "label": "Billing & Subscriptions",
+      "description": "Payments, subscriptions, and invoicing",
+      "icon": "credit-card"
+    },
+    "enterprise": {
+      "label": "Enterprise Features",
+      "description": "Security, compliance, and administration",
+      "icon": "shield"
     }
   },
   "features": {
@@ -260,6 +270,146 @@
       ],
       "envVars": [],
       "packages": ["recharts"]
+    },
+    "charts-visualization": {
+      "category": "analytics",
+      "complexity": "medium",
+      "dependencies": [],
+      "templates": [
+        "analytics/charts-visualization/components/charts/LineChart.tsx",
+        "analytics/charts-visualization/components/charts/BarChart.tsx",
+        "analytics/charts-visualization/components/charts/PieChart.tsx",
+        "analytics/charts-visualization/lib/charts/chart-utils.ts"
+      ],
+      "envVars": [],
+      "packages": ["recharts"]
+    },
+    "subscription-billing": {
+      "category": "billing",
+      "complexity": "complex",
+      "dependencies": ["email-registration"],
+      "templates": [
+        "billing/subscription-billing/lib/billing/stripe-subscriptions.ts",
+        "billing/subscription-billing/app/billing/page.tsx",
+        "billing/subscription-billing/app/billing/plans/page.tsx",
+        "billing/subscription-billing/app/api/webhooks/stripe/route.ts",
+        "billing/subscription-billing/components/billing/PricingTable.tsx",
+        "billing/subscription-billing/components/billing/SubscriptionStatus.tsx"
+      ],
+      "envVars": ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"],
+      "packages": ["stripe"]
+    },
+    "one-time-payments": {
+      "category": "billing",
+      "complexity": "medium",
+      "dependencies": [],
+      "templates": [
+        "billing/one-time-payments/lib/billing/stripe-checkout.ts",
+        "billing/one-time-payments/app/api/checkout/session/route.ts"
+      ],
+      "envVars": ["STRIPE_SECRET_KEY", "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"],
+      "packages": ["stripe"]
+    },
+    "invoicing": {
+      "category": "billing",
+      "complexity": "medium",
+      "dependencies": ["subscription-billing"],
+      "templates": [
+        "billing/invoicing/lib/billing/invoices.ts",
+        "billing/invoicing/app/billing/invoices/page.tsx",
+        "billing/invoicing/components/billing/InvoiceCard.tsx"
+      ],
+      "envVars": [],
+      "packages": []
+    },
+    "inventory-management": {
+      "category": "ecommerce",
+      "complexity": "medium",
+      "dependencies": ["stock-availability"],
+      "templates": [
+        "ecommerce/inventory-management/lib/inventory/inventory-manager.ts",
+        "ecommerce/inventory-management/app/admin/inventory/page.tsx",
+        "ecommerce/inventory-management/components/inventory/StockLevelBar.tsx",
+        "ecommerce/inventory-management/components/inventory/LowStockAlert.tsx"
+      ],
+      "envVars": [],
+      "packages": []
+    },
+    "product-variants": {
+      "category": "ecommerce",
+      "complexity": "medium",
+      "dependencies": ["product-categories"],
+      "templates": [
+        "ecommerce/product-variants/lib/products/variants.ts",
+        "ecommerce/product-variants/components/product/VariantSelector.tsx",
+        "ecommerce/product-variants/components/product/SizeChart.tsx",
+        "ecommerce/product-variants/components/product/ColorSwatches.tsx"
+      ],
+      "envVars": [],
+      "packages": []
+    },
+    "shipping-integration": {
+      "category": "ecommerce",
+      "complexity": "complex",
+      "dependencies": ["checkout-flow"],
+      "templates": [
+        "ecommerce/shipping-integration/lib/shipping/carriers.ts",
+        "ecommerce/shipping-integration/lib/shipping/rate-calculator.ts",
+        "ecommerce/shipping-integration/components/checkout/ShippingOptions.tsx",
+        "ecommerce/shipping-integration/components/orders/TrackingInfo.tsx",
+        "ecommerce/shipping-integration/app/api/shipping/rates/route.ts"
+      ],
+      "envVars": ["SHIPPO_API_KEY"],
+      "packages": []
+    },
+    "rbac": {
+      "category": "enterprise",
+      "complexity": "complex",
+      "dependencies": ["admin-dashboard"],
+      "templates": [
+        "enterprise/rbac/lib/auth/rbac.ts",
+        "enterprise/rbac/lib/auth/permissions.ts",
+        "enterprise/rbac/app/admin/roles/page.tsx",
+        "enterprise/rbac/components/admin/RoleEditor.tsx",
+        "enterprise/rbac/middleware.ts"
+      ],
+      "envVars": [],
+      "packages": []
+    },
+    "audit-logging": {
+      "category": "enterprise",
+      "complexity": "medium",
+      "dependencies": ["email-registration"],
+      "templates": [
+        "enterprise/audit-logging/lib/audit/audit-logger.ts",
+        "enterprise/audit-logging/app/admin/audit-log/page.tsx",
+        "enterprise/audit-logging/components/admin/AuditLogTable.tsx"
+      ],
+      "envVars": [],
+      "packages": []
+    },
+    "rate-limiting": {
+      "category": "enterprise",
+      "complexity": "medium",
+      "dependencies": [],
+      "templates": [
+        "enterprise/rate-limiting/lib/security/rate-limiter.ts",
+        "enterprise/rate-limiting/middleware.ts"
+      ],
+      "envVars": ["UPSTASH_REDIS_REST_URL", "UPSTASH_REDIS_REST_TOKEN"],
+      "packages": ["@upstash/ratelimit", "@upstash/redis"]
+    },
+    "multi-tenancy": {
+      "category": "enterprise",
+      "complexity": "complex",
+      "dependencies": ["rbac"],
+      "templates": [
+        "enterprise/multi-tenancy/lib/tenants/tenant-manager.ts",
+        "enterprise/multi-tenancy/app/[tenant]/layout.tsx",
+        "enterprise/multi-tenancy/components/tenant/TenantSwitcher.tsx"
+      ],
+      "envVars": [],
+      "packages": []
     }
   }
 }

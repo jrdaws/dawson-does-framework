@@ -6,6 +6,7 @@
 
 import { ProjectConfig, GeneratedProject, GeneratedFile, IntegrationCategory } from "./types";
 import { getIntegrationFiles, checkIntegrationDependencies } from "./integration-loader";
+import { getFeatureFiles, validateFeatureSelection, resolveFeatureDependencies } from "./feature-loader";
 import { getTemplateBase } from "./template-base";
 import { buildPackageJson } from "./package-builder";
 import { buildEnvTemplate } from "./env-builder";
@@ -24,32 +25,73 @@ export async function generateProject(config: ProjectConfig): Promise<GeneratedP
     warnings.push(...depCheck.missing);
   }
 
-  // 2. Get base template files
+  // 2. Validate feature selection
+  if (config.features && config.features.length > 0) {
+    const featureValidation = validateFeatureSelection(config.features);
+    warnings.push(...featureValidation.warnings);
+    if (!featureValidation.valid) {
+      warnings.push(...featureValidation.errors);
+    }
+  }
+
+  // 3. Get base template files
   const baseFiles = await getTemplateBase(config.template, config);
 
-  // 3. Get integration files
+  // 4. Get integration files
   const integrationResult = await getIntegrationFiles(
     config.integrations as Partial<Record<IntegrationCategory, string>>,
     { projectName: config.projectName }
   );
 
-  // 4. Merge all files
-  const allFiles = mergeFiles([baseFiles, integrationResult.files]);
+  // 5. Get feature files
+  const featureResult = config.features && config.features.length > 0
+    ? getFeatureFiles(config.features, { projectName: config.projectName })
+    : { files: [], packages: {}, devPackages: {}, envVars: [] };
 
-  // 5. Apply branding to files
+  // 6. Merge all files (base + integrations + features)
+  const allFiles = mergeFiles([baseFiles, integrationResult.files, featureResult.files]);
+
+  // 7. Apply branding to files
   const brandedFiles = applyBranding(allFiles, config.branding, config.projectName);
 
-  // 6. Build package.json
-  const packageJson = buildPackageJson(config, integrationResult.dependencies, integrationResult.devDependencies);
+  // 8. Merge all dependencies
+  const allDependencies = {
+    ...integrationResult.dependencies,
+    ...featureResult.packages,
+  };
+  const allDevDependencies = {
+    ...integrationResult.devDependencies,
+    ...featureResult.devPackages,
+  };
 
-  // 7. Build .env.example
-  const envTemplate = buildEnvTemplate(integrationResult.envVars);
+  // 9. Merge all env vars
+  const allEnvVars = [...integrationResult.envVars];
+  for (const envVar of featureResult.envVars) {
+    if (!allEnvVars.some(e => e.name === envVar.name)) {
+      allEnvVars.push(envVar);
+    }
+  }
 
-  // 8. Build README
+  // 10. Build package.json
+  const packageJson = buildPackageJson(config, allDependencies, allDevDependencies);
+
+  // 11. Build .env.example
+  const envTemplate = buildEnvTemplate(allEnvVars);
+
+  // 12. Build README with feature info
   const readme = buildReadme(config, integrationResult.postInstall);
 
-  // 9. Collect setup instructions
+  // 13. Collect setup instructions
   setupInstructions.push(...integrationResult.postInstall);
+
+  // Add feature-specific instructions
+  if (config.features && config.features.length > 0) {
+    const resolvedFeatures = resolveFeatureDependencies(config.features);
+    setupInstructions.push(`\n## Selected Features (${resolvedFeatures.length})\n`);
+    for (const featureId of resolvedFeatures) {
+      setupInstructions.push(`- ${featureId}`);
+    }
+  }
 
   return {
     files: brandedFiles,
@@ -112,4 +154,5 @@ function applyBranding(
 
 export * from "./types";
 export { getIntegrationManifest, checkIntegrationDependencies } from "./integration-loader";
+export { getFeatureFiles, validateFeatureSelection, resolveFeatureDependencies, getFeatureSummary } from "./feature-loader";
 

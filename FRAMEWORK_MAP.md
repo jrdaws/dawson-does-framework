@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 72b9cb9 2026-01-03 feat(preview): inject branding colors into preview components
 - b7595fa 2026-01-03 feat: add parallel agent prompts for export fixes
 - 7eca558 2026-01-03 docs: add export validation reports for testprojectnew03
 - 28fecd4 2026-01-03 fix(configurator): remove GenerateFramework from Vercel step, update preview styling
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 45da8a0 2026-01-03 feat: connect sidebar integrations to existing preview system
 - 44bdce0 2026-01-03 feat(configurator): add 8 more service provider sections (23 total steps)
 - 71afda9 2026-01-03 feat(configurator): show features in preview + header counts
-- 6692c24 2026-01-03 fix(research): add timeouts to prevent Vercel function timeout
 
 ## Agent Governance Structure
 
