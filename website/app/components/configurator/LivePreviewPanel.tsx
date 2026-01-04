@@ -252,12 +252,14 @@ export function LivePreviewPanel({
             <MobilePreviewFrame
               template={template}
               componentProps={componentProps}
+              integrations={integrations}
             />
           </div>
         ) : (
           <PreviewFrame
             template={template}
             componentProps={componentProps}
+            integrations={integrations}
           />
         )}
       </div>

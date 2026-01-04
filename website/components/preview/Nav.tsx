@@ -13,7 +13,17 @@ interface NavProps {
   variant?: "solid" | "transparent";
   /** When true, shows static auth buttons (for preview mode) */
   previewMode?: boolean;
+  /** Selected integrations (passed from PreviewRenderer) */
+  integrations?: Record<string, string>;
 }
+
+// Auth provider metadata for styling
+const AUTH_PROVIDERS: Record<string, { name: string; color: string; icon: string }> = {
+  "supabase-auth": { name: "Supabase", color: "#3ECF8E", icon: "⚡" },
+  "clerk": { name: "Clerk", color: "#6C47FF", icon: "🔐" },
+  "auth0": { name: "Auth0", color: "#EB5424", icon: "🛡️" },
+  "nextauth": { name: "NextAuth", color: "#000000", icon: "🔑" },
+};
 
 export function Nav({
   projectName,
@@ -21,11 +31,17 @@ export function Nav({
   showAuth = true,
   variant = "solid",
   previewMode = false,
+  integrations = {},
 }: NavProps) {
   // Only use auth hook when not in preview mode
   const auth = previewMode ? null : useAuth();
   const user = auth?.user;
   const signOut = auth?.signOut;
+  
+  // Get auth provider info for preview styling
+  const authProvider = integrations.auth;
+  const authInfo = authProvider ? AUTH_PROVIDERS[authProvider] : null;
+  const buttonColor = authInfo?.color || "#F97316";
 
   return (
     <nav
@@ -61,15 +77,26 @@ export function Nav({
       {showAuth && (
         <div className="flex items-center gap-3">
           {previewMode ? (
-            // Static preview buttons
-            <>
-          <button className="text-stone-400 hover:text-white transition-colors text-sm">
-            Log in
-          </button>
-              <button className="px-4 py-2 bg-[#F97316] hover:bg-[#F97316]/90 text-white rounded-lg text-sm font-medium transition-colors">
-            Sign up
-          </button>
-            </>
+            // Static preview buttons with provider styling
+            <div className="flex items-center gap-3">
+              {authInfo && (
+                <span 
+                  className="text-[9px] px-1.5 py-0.5 rounded"
+                  style={{ backgroundColor: `${buttonColor}20`, color: buttonColor }}
+                >
+                  {authInfo.icon} {authInfo.name}
+                </span>
+              )}
+              <button className="text-stone-400 hover:text-white transition-colors text-sm">
+                Log in
+              </button>
+              <button 
+                className="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors"
+                style={{ backgroundColor: buttonColor }}
+              >
+                Sign up
+              </button>
+            </div>
           ) : user ? (
             // Logged in state
             <div className="flex items-center gap-3">

@@ -4,6 +4,9 @@ import dynamic from "next/dynamic";
 import { getTemplateComposition } from "@/lib/preview/template-compositions";
 import { Loader2 } from "lucide-react";
 
+// Feature preview components - show selected integrations visually
+import { IntegrationStack } from "./features/IntegrationBadge";
+
 // Dynamically import components to reduce initial bundle
 const Nav = dynamic(() => import("./Nav").then(m => ({ default: m.Nav })), {
   loading: () => <ComponentLoader />,
@@ -69,6 +72,7 @@ function ComponentLoader({ height = "100px" }: { height?: string }) {
 interface PreviewRendererProps {
   template: string;
   componentProps: Record<string, Record<string, unknown>>;
+  integrations?: Record<string, string>;
   scale?: number;
   className?: string;
 }
@@ -82,10 +86,17 @@ interface PreviewRendererProps {
 export function PreviewRenderer({
   template,
   componentProps,
+  integrations = {},
   scale = 1,
   className = "",
 }: PreviewRendererProps) {
   const composition = getTemplateComposition(template);
+  
+  // Filter out empty integrations for display
+  const activeIntegrations = Object.fromEntries(
+    Object.entries(integrations).filter(([_, v]) => v)
+  );
+  const hasIntegrations = Object.keys(activeIntegrations).length > 0;
 
   return (
     <div 
@@ -104,9 +115,12 @@ export function PreviewRenderer({
           return null;
         }
 
+        // Merge props: defaults < template < AI-generated
         const props = {
           ...composition.defaultProps[section.component],
           ...componentProps[section.component],
+          // Pass integrations to components that can use them
+          integrations: activeIntegrations,
         };
 
         // Skip optional sections without props
@@ -116,6 +130,14 @@ export function PreviewRenderer({
 
         return <Component key={`${section.component}-${index}`} {...props} />;
       })}
+      
+      {/* Integration Stack - Shows what services are configured */}
+      {hasIntegrations && (
+        <div className="fixed bottom-4 left-4 z-50 bg-black/80 backdrop-blur-sm rounded-lg p-3 border border-white/10">
+          <div className="text-[10px] text-white/50 mb-1.5">Configured Services</div>
+          <IntegrationStack integrations={activeIntegrations} maxShow={6} />
+        </div>
+      )}
     </div>
   );
 }
@@ -128,8 +150,11 @@ export function PreviewRenderer({
 export function PreviewFrame({
   template,
   componentProps,
+  integrations = {},
   title = "Preview",
 }: PreviewRendererProps & { title?: string }) {
+  const activeCount = Object.values(integrations).filter(Boolean).length;
+  
   return (
     <div className="rounded-xl overflow-hidden bg-[#111111] border border-white/10 shadow-2xl">
       {/* Browser Chrome */}
@@ -146,7 +171,14 @@ export function PreviewFrame({
             </span>
           </div>
         </div>
-        <span className="text-foreground-muted text-xs">{title}</span>
+        <div className="flex items-center gap-2">
+          {activeCount > 0 && (
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">
+              {activeCount} services
+            </span>
+          )}
+          <span className="text-foreground-muted text-xs">{title}</span>
+        </div>
       </div>
 
       {/* Preview Content */}
@@ -154,6 +186,7 @@ export function PreviewFrame({
         <PreviewRenderer
           template={template}
           componentProps={componentProps}
+          integrations={integrations}
           scale={0.6}
         />
       </div>
@@ -169,6 +202,7 @@ export function PreviewFrame({
 export function MobilePreviewFrame({
   template,
   componentProps,
+  integrations = {},
 }: PreviewRendererProps) {
   return (
     <div className="w-[375px] mx-auto">
@@ -184,6 +218,7 @@ export function MobilePreviewFrame({
           <PreviewRenderer
             template={template}
             componentProps={componentProps}
+            integrations={integrations}
             scale={0.4}
           />
         </div>

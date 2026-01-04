@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 45da8a0 2026-01-03 feat: connect sidebar integrations to existing preview system
 - 44bdce0 2026-01-03 feat(configurator): add 8 more service provider sections (23 total steps)
 - 71afda9 2026-01-03 feat(configurator): show features in preview + header counts
 - 6692c24 2026-01-03 fix(research): add timeouts to prevent Vercel function timeout
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - dafd8bc 2025-12-27 feat(sidebar): make service indicators dynamic based on step completion
 - 368addd 2025-12-27 feat(sidebar): add Connected Services UI panel and status indicators
 - 579de9f 2025-12-27 feat(configurator): add Connected Services UI component
-- 7fabea1 2025-12-26 feat(sidebar): implement Navy Solid design for configurator sidebar
 
 ## Agent Governance Structure
 
