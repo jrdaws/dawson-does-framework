@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 5dd762b 2026-01-04 fix: progress bar can now reach 100% - remove hidden claude-code tool
 - bdeded9 2026-01-04 chore: move completed task to done
 - 510cfc4 2026-01-04 feat: auto-include features + integration bridges + e-commerce templates
 - 9d3591d 2026-01-03 fix(P1): resolve remaining P1 export failures
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - e1f8afc 2026-01-03 feat(features): complete feature-to-code mapping with 31 features
 - e78ad35 2026-01-03 feat(configurator): consolidate PreviewCard + ProjectOverviewBox into ProjectStatusCard
 - ec1ab3e 2026-01-03 feat(templates): add base UI components for all exports (P0)
-- 72b9cb9 2026-01-03 feat(preview): inject branding colors into preview components
 
 ## Agent Governance Structure
 
