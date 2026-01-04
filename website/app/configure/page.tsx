@@ -871,6 +871,19 @@ export default function ConfigurePage() {
             onToggle={() => setShowLivePreview(!showLivePreview)} 
           />
 
+          {/* Feature/Integration Counts */}
+          <div className="hidden sm:flex items-center gap-3 text-sm">
+            <div className="flex items-center gap-1.5 text-foreground-muted">
+              <span className="font-medium text-primary">{Object.values(selectedFeatures).flat().length}</span>
+              <span>features</span>
+            </div>
+            <span className="text-border">•</span>
+            <div className="flex items-center gap-1.5 text-foreground-muted">
+              <span className="font-medium text-primary">{Object.values(integrations).filter(Boolean).length}</span>
+              <span>integrations</span>
+            </div>
+          </div>
+
           {/* Theme Toggle */}
           <ThemeToggle />
 
@@ -905,6 +918,7 @@ export default function ConfigurePage() {
       <LivePreviewPanel
         template={template}
         integrations={integrations}
+        selectedFeatures={selectedFeatures}
         projectName={projectName}
         description={description}
         isVisible={showLivePreview}

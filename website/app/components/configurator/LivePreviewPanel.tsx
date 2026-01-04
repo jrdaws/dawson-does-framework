@@ -22,15 +22,34 @@ import {
 interface LivePreviewPanelProps {
   template: string;
   integrations: Record<string, string>;
+  selectedFeatures?: Record<string, string[]>;
   projectName: string;
   description?: string;
   isVisible: boolean;
   onToggle: () => void;
 }
 
+// Feature icons for preview
+const FEATURE_ICONS: Record<string, string> = {
+  "user-management": "👤",
+  "authentication": "🔐",
+  "product-database": "📦",
+  "search-filter": "🔍",
+  "e-commerce": "🛒",
+  "ecommerce-integration": "💳",
+  "enterprise": "🏢",
+  "billing": "💰",
+  "analytics": "📊",
+  "ai": "🤖",
+  "storage": "📁",
+  "communication": "📧",
+  "ui": "🎨",
+};
+
 export function LivePreviewPanel({
   template,
   integrations,
+  selectedFeatures = {},
   projectName,
   description,
   isVisible,
@@ -46,12 +65,15 @@ export function LivePreviewPanel({
     template: "",
     integrations: {} as Record<string, string>,
     projectName: "",
+    featureCount: 0,
   });
 
   const selectedTemplate = TEMPLATES[template as keyof typeof TEMPLATES];
   
-  // Count configured integrations
+  // Count configured integrations and features
   const configuredIntegrations = Object.values(integrations).filter(Boolean).length;
+  const featureCount = Object.values(selectedFeatures).flat().length;
+  const featureCategories = Object.entries(selectedFeatures).filter(([, features]) => features.length > 0);
 
   // Generate preview content based on configuration
   const previewContent = useMemo(() => {
@@ -60,6 +82,25 @@ export function LivePreviewPanel({
       .filter(([, v]) => v)
       .map(([k, v]) => `${k}: ${v}`)
       .join(", ");
+    
+    // Generate feature cards HTML
+    const featureCardsHtml = featureCategories.map(([category, features]) => {
+      const icon = FEATURE_ICONS[category] || "✨";
+      const displayName = category.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+      return `
+        <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
+          <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4 text-xl">${icon}</div>
+          <h3 class="font-semibold mb-2">${displayName}</h3>
+          <p class="text-stone-400 text-sm">${features.length} feature${features.length > 1 ? 's' : ''} configured</p>
+          <div class="flex flex-wrap gap-1 mt-3">
+            ${features.slice(0, 3).map(f => 
+              `<span class="px-2 py-0.5 text-xs rounded bg-stone-800 text-stone-300">${f.replace(/-/g, " ")}</span>`
+            ).join("")}
+            ${features.length > 3 ? `<span class="px-2 py-0.5 text-xs rounded bg-stone-800 text-stone-500">+${features.length - 3} more</span>` : ""}
+          </div>
+        </div>
+      `;
+    }).join("");
 
     return `
 <!DOCTYPE html>
@@ -82,8 +123,8 @@ export function LivePreviewPanel({
         <span class="font-bold text-lg">${projectName || "My Project"}</span>
       </div>
       <div class="flex items-center gap-4">
-        <a href="#" class="text-foreground-muted hover:text-white text-sm">Features</a>
-        <a href="#" class="text-foreground-muted hover:text-white text-sm">Pricing</a>
+        <a href="#" class="text-stone-400 hover:text-white text-sm">Features</a>
+        <a href="#" class="text-stone-400 hover:text-white text-sm">Pricing</a>
         ${integrations.auth ? `<button class="px-4 py-2 text-sm bg-orange-600 hover:bg-orange-500 rounded-lg">Sign In</button>` : ""}
       </div>
     </div>
@@ -99,10 +140,12 @@ export function LivePreviewPanel({
       <h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-white to-stone-400 bg-clip-text text-transparent">
         ${description || "Build Something Amazing"}
       </h1>
-      <p class="text-xl text-foreground-muted mb-8 max-w-2xl mx-auto">
-        ${configuredIntegrations > 0 
-          ? `Powered by ${configuredIntegrations} integration${configuredIntegrations > 1 ? 's' : ''}: ${integrationsText || 'None configured'}`
-          : 'Configure your integrations to see them reflected here.'}
+      <p class="text-xl text-stone-400 mb-8 max-w-2xl mx-auto">
+        ${featureCount > 0 
+          ? `${featureCount} features selected across ${featureCategories.length} categories`
+          : configuredIntegrations > 0 
+            ? `Powered by ${configuredIntegrations} integration${configuredIntegrations > 1 ? 's' : ''}`
+            : 'Configure your features and integrations to see them reflected here.'}
       </p>
       <div class="flex gap-4 justify-center">
         <button class="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 rounded-lg font-medium hover:opacity-90 transition-opacity">
@@ -115,96 +158,120 @@ export function LivePreviewPanel({
     </div>
   </section>
 
-  <!-- Features Grid -->
+  <!-- Selected Features Grid -->
+  ${featureCount > 0 ? `
   <section class="px-6 py-16 border-t border-stone-800">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-12">Features</h2>
+      <h2 class="text-3xl font-bold text-center mb-4">Your Features</h2>
+      <p class="text-center text-stone-400 mb-12">${featureCount} features selected for your project</p>
+      <div class="grid md:grid-cols-3 gap-6">
+        ${featureCardsHtml}
+      </div>
+    </div>
+  </section>
+  ` : ""}
+
+  <!-- Integrations Grid -->
+  ${configuredIntegrations > 0 ? `
+  <section class="px-6 py-16 border-t border-stone-800">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-4">Integrations</h2>
+      <p class="text-center text-stone-400 mb-12">${configuredIntegrations} service${configuredIntegrations > 1 ? 's' : ''} connected</p>
       <div class="grid md:grid-cols-3 gap-6">
         ${integrations.auth ? `
         <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
           <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4">🔐</div>
           <h3 class="font-semibold mb-2">Authentication</h3>
-          <p class="text-foreground-muted text-sm">Secure ${integrations.auth} authentication built-in</p>
+          <p class="text-stone-400 text-sm">Secure ${integrations.auth} authentication built-in</p>
         </div>
         ` : ""}
         ${integrations.payments ? `
         <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
           <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">💳</div>
           <h3 class="font-semibold mb-2">Payments</h3>
-          <p class="text-foreground-muted text-sm">${integrations.payments} integration for billing</p>
+          <p class="text-stone-400 text-sm">${integrations.payments} integration for billing</p>
         </div>
         ` : ""}
         ${integrations.db ? `
         <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
           <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">🗄️</div>
           <h3 class="font-semibold mb-2">Database</h3>
-          <p class="text-foreground-muted text-sm">${integrations.db} for data storage</p>
+          <p class="text-stone-400 text-sm">${integrations.db} for data storage</p>
         </div>
         ` : ""}
         ${integrations.ai ? `
         <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
           <div class="w-10 h-10 rounded-lg bg-orange-400/20 flex items-center justify-center mb-4">🤖</div>
           <h3 class="font-semibold mb-2">AI Powered</h3>
-          <p class="text-foreground-muted text-sm">${integrations.ai} integration for AI features</p>
+          <p class="text-stone-400 text-sm">${integrations.ai} integration for AI features</p>
         </div>
         ` : ""}
         ${integrations.email ? `
         <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
           <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center mb-4">📧</div>
           <h3 class="font-semibold mb-2">Email</h3>
-          <p class="text-foreground-muted text-sm">${integrations.email} for transactional emails</p>
+          <p class="text-stone-400 text-sm">${integrations.email} for transactional emails</p>
         </div>
         ` : ""}
         ${integrations.analytics ? `
         <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
           <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4">📊</div>
           <h3 class="font-semibold mb-2">Analytics</h3>
-          <p class="text-foreground-muted text-sm">${integrations.analytics} for insights</p>
-        </div>
-        ` : ""}
-        ${configuredIntegrations === 0 ? `
-        <div class="p-6 rounded-xl bg-stone-900/50 border border-dashed border-stone-700 col-span-full text-center">
-          <p class="text-foreground-muted">Configure integrations to see feature cards here</p>
+          <p class="text-stone-400 text-sm">${integrations.analytics} for insights</p>
         </div>
         ` : ""}
       </div>
     </div>
   </section>
+  ` : ""}
+
+  <!-- Empty State -->
+  ${featureCount === 0 && configuredIntegrations === 0 ? `
+  <section class="px-6 py-16 border-t border-stone-800">
+    <div class="max-w-6xl mx-auto text-center">
+      <div class="p-12 rounded-xl bg-stone-900/50 border border-dashed border-stone-700">
+        <p class="text-stone-400 text-lg mb-2">No features or integrations configured yet</p>
+        <p class="text-stone-500 text-sm">Select features and integrations in the sidebar to see them here</p>
+      </div>
+    </div>
+  </section>
+  ` : ""}
 
   <!-- Footer -->
-  <footer class="px-6 py-8 border-t border-stone-800 text-center text-foreground-muted text-sm">
-    <p>Built with Dawson-Does Framework • ${templateName}</p>
+  <footer class="px-6 py-8 border-t border-stone-800 text-center text-stone-400 text-sm">
+    <p>Built with Dawson-Does Framework • ${templateName} • ${featureCount} features</p>
   </footer>
 </body>
 </html>
     `.trim();
-  }, [template, integrations, projectName, description, selectedTemplate, configuredIntegrations]);
+  }, [template, integrations, projectName, description, selectedTemplate, configuredIntegrations, featureCount, featureCategories]);
 
   // Detect when config changes (don't auto-update, let user trigger it)
   useEffect(() => {
     const hasChanges = 
       template !== lastRendered.template ||
       projectName !== lastRendered.projectName ||
+      featureCount !== lastRendered.featureCount ||
       JSON.stringify(integrations) !== JSON.stringify(lastRendered.integrations);
     
     if (hasChanges && lastRendered.template !== "") {
       setHasPendingChanges(true);
     }
-  }, [template, integrations, projectName, lastRendered]);
+  }, [template, integrations, projectName, featureCount, lastRendered]);
 
   // Handle update preview
   const handleUpdatePreview = () => {
     setPreviewKey(k => k + 1);
-    setLastRendered({ template, integrations, projectName });
+    setLastRendered({ template, integrations, projectName, featureCount });
     setHasPendingChanges(false);
   };
 
   // Initial render - set lastRendered
   useEffect(() => {
     if (isVisible && lastRendered.template === "") {
-      setLastRendered({ template, integrations, projectName });
+      setLastRendered({ template, integrations, projectName, featureCount });
     }
-  }, [isVisible, template, integrations, projectName, lastRendered.template]);
+  }, [isVisible, template, integrations, projectName, featureCount, lastRendered.template]);
 
   if (!isVisible) {
     return (

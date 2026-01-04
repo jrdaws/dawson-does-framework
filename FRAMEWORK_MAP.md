@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 6692c24 2026-01-03 fix(research): add timeouts to prevent Vercel function timeout
 - 547f282 2026-01-03 fix(PreviewCard): sync progress bar with sidebar
 - 8da3fbb 2026-01-03 refactor(configurator): consolidate research inputs into sidebar
 - 53d2ca2 2026-01-03 fix(configurator): theme colors + research loading UX
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 7fabea1 2025-12-26 feat(sidebar): implement Navy Solid design for configurator sidebar
 - e40dbcb 2025-12-26 chore(testing): complete accordion tests task - 21/21 pass
 - 6a43c2c 2025-12-26 fix(test): update progress indicator test to match new sidebar design
-- 65c1d05 2025-12-26 chore: commit Cycle 20 governance work, demos, and reports
 
 ## Agent Governance Structure
 
