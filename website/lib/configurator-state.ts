@@ -478,7 +478,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       setInspirationUrls: (urls) => set({ inspirationUrls: urls }),
 
-      setAiProvider: (provider) => set({ aiProvider: provider }),
+      setAiProvider: (provider) => set((state) => ({ 
+        aiProvider: provider,
+        integrations: { ...state.integrations, ai: provider || '' }
+      })),
 
       setAiApiKey: (key) => set({ aiApiKey: key }),
 
@@ -508,18 +511,55 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         },
       })),
 
-      setPaymentProvider: (provider) => set({ paymentProvider: provider }),
-      setEmailProvider: (provider) => set({ emailProvider: provider }),
-      setAnalyticsProvider: (provider) => set({ analyticsProvider: provider }),
-      setAuthProvider: (provider) => set({ authProvider: provider }),
-      setStorageProvider: (provider) => set({ storageProvider: provider }),
-      setSearchProvider: (provider) => set({ searchProvider: provider }),
-      setCmsProvider: (provider) => set({ cmsProvider: provider }),
-      setMonitoringProvider: (provider) => set({ monitoringProvider: provider }),
-      setImageOptProvider: (provider) => set({ imageOptProvider: provider }),
-      setBackgroundJobsProvider: (provider) => set({ backgroundJobsProvider: provider }),
-      setNotificationsProvider: (provider) => set({ notificationsProvider: provider }),
-      setFeatureFlagsProvider: (provider) => set({ featureFlagsProvider: provider }),
+      // Provider setters - also update integrations record for compatibility with existing preview/generation system
+      setPaymentProvider: (provider) => set((state) => ({ 
+        paymentProvider: provider,
+        integrations: { ...state.integrations, payments: provider || '' }
+      })),
+      setEmailProvider: (provider) => set((state) => ({ 
+        emailProvider: provider,
+        integrations: { ...state.integrations, email: provider || '' }
+      })),
+      setAnalyticsProvider: (provider) => set((state) => ({ 
+        analyticsProvider: provider,
+        integrations: { ...state.integrations, analytics: provider || '' }
+      })),
+      setAuthProvider: (provider) => set((state) => ({ 
+        authProvider: provider,
+        integrations: { ...state.integrations, auth: provider || '' }
+      })),
+      setStorageProvider: (provider) => set((state) => ({ 
+        storageProvider: provider,
+        integrations: { ...state.integrations, storage: provider || '' }
+      })),
+      setSearchProvider: (provider) => set((state) => ({ 
+        searchProvider: provider,
+        integrations: { ...state.integrations, search: provider || '' }
+      })),
+      setCmsProvider: (provider) => set((state) => ({ 
+        cmsProvider: provider,
+        integrations: { ...state.integrations, cms: provider || '' }
+      })),
+      setMonitoringProvider: (provider) => set((state) => ({ 
+        monitoringProvider: provider,
+        integrations: { ...state.integrations, monitoring: provider || '' }
+      })),
+      setImageOptProvider: (provider) => set((state) => ({ 
+        imageOptProvider: provider,
+        integrations: { ...state.integrations, imageOpt: provider || '' }
+      })),
+      setBackgroundJobsProvider: (provider) => set((state) => ({ 
+        backgroundJobsProvider: provider,
+        integrations: { ...state.integrations, backgroundJobs: provider || '' }
+      })),
+      setNotificationsProvider: (provider) => set((state) => ({ 
+        notificationsProvider: provider,
+        integrations: { ...state.integrations, notifications: provider || '' }
+      })),
+      setFeatureFlagsProvider: (provider) => set((state) => ({ 
+        featureFlagsProvider: provider,
+        integrations: { ...state.integrations, featureFlags: provider || '' }
+      })),
 
       reset: () => set(initialState),
     }),

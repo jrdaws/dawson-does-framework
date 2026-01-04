@@ -115,7 +115,7 @@ const STEP_TITLES: Record<number, string> = {
   1: "Template",
   2: "Research",
   3: "Branding",
-  4: "Features",
+  4: "Integrations",
   5: "AI",
   6: "Payments",
   7: "Email",
@@ -801,7 +801,7 @@ export default function ConfigurePage() {
         return (
           <div className="space-y-6">
             <div className="max-w-2xl">
-              <h2 className="text-2xl font-bold text-foreground mb-2">Select Features</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2">Select Integrations</h2>
               <p className="text-foreground-secondary">
                 Choose the features you want in your project. You can always add more later.
               </p>
@@ -995,7 +995,7 @@ export default function ConfigurePage() {
           <div className="hidden sm:flex items-center gap-3 text-sm">
             <div className="flex items-center gap-1.5 text-foreground-muted">
               <span className="font-medium text-primary">{Object.values(selectedFeatures).flat().length}</span>
-              <span>features</span>
+              <span>integrations</span>
             </div>
             <span className="text-border">•</span>
             <div className="flex items-center gap-1.5 text-foreground-muted">
@@ -1034,13 +1034,16 @@ export default function ConfigurePage() {
 
       </div>
 
-      {/* Live Preview Panel */}
+      {/* Live Preview Panel - Using polished components */}
       <LivePreviewPanel
         template={template}
         integrations={integrations}
         selectedFeatures={selectedFeatures}
         projectName={projectName}
         description={description}
+        vision={vision}
+        mission={mission}
+        inspirations={inspirations}
         isVisible={showLivePreview}
         onToggle={() => setShowLivePreview(!showLivePreview)}
       />

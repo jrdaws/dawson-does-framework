@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { TEMPLATES } from "@/lib/templates";
+import { PreviewFrame, MobilePreviewFrame } from "@/components/preview/PreviewRenderer";
+import { generateFallbackProps, UserConfig } from "@/lib/ai/preview-generator";
 import { 
   Eye, 
   EyeOff, 
@@ -14,9 +15,9 @@ import {
   Monitor, 
   Smartphone, 
   RefreshCw,
-  ChevronLeft,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Loader2
 } from "lucide-react";
 
 interface LivePreviewPanelProps {
@@ -25,26 +26,12 @@ interface LivePreviewPanelProps {
   selectedFeatures?: Record<string, string[]>;
   projectName: string;
   description?: string;
+  vision?: string;
+  mission?: string;
+  inspirations?: Array<{ type: string; value: string; preview?: string }>;
   isVisible: boolean;
   onToggle: () => void;
 }
-
-// Feature icons for preview
-const FEATURE_ICONS: Record<string, string> = {
-  "user-management": "👤",
-  "authentication": "🔐",
-  "product-database": "📦",
-  "search-filter": "🔍",
-  "e-commerce": "🛒",
-  "ecommerce-integration": "💳",
-  "enterprise": "🏢",
-  "billing": "💰",
-  "analytics": "📊",
-  "ai": "🤖",
-  "storage": "📁",
-  "communication": "📧",
-  "ui": "🎨",
-};
 
 export function LivePreviewPanel({
   template,
@@ -52,13 +39,17 @@ export function LivePreviewPanel({
   selectedFeatures = {},
   projectName,
   description,
+  vision,
+  mission,
+  inspirations = [],
   isVisible,
   onToggle,
 }: LivePreviewPanelProps) {
   const [viewport, setViewport] = useState<"desktop" | "mobile">("desktop");
   const [isExpanded, setIsExpanded] = useState(false);
-  const [previewKey, setPreviewKey] = useState(0);
   const [hasPendingChanges, setHasPendingChanges] = useState(false);
+  const [isEnhancing, setIsEnhancing] = useState(false);
+  const [componentProps, setComponentProps] = useState<Record<string, Record<string, unknown>>>({});
   
   // Track last rendered values to detect changes
   const [lastRendered, setLastRendered] = useState({
@@ -73,178 +64,24 @@ export function LivePreviewPanel({
   // Count configured integrations and features
   const configuredIntegrations = Object.values(integrations).filter(Boolean).length;
   const featureCount = Object.values(selectedFeatures).flat().length;
-  const featureCategories = Object.entries(selectedFeatures).filter(([, features]) => features.length > 0);
 
-  // Generate preview content based on configuration
-  const previewContent = useMemo(() => {
-    const templateName = selectedTemplate?.name || "SaaS Starter";
-    const integrationsText = Object.entries(integrations)
-      .filter(([, v]) => v)
-      .map(([k, v]) => `${k}: ${v}`)
-      .join(", ");
-    
-    // Generate feature cards HTML
-    const featureCardsHtml = featureCategories.map(([category, features]) => {
-      const icon = FEATURE_ICONS[category] || "✨";
-      const displayName = category.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
-      return `
-        <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
-          <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4 text-xl">${icon}</div>
-          <h3 class="font-semibold mb-2">${displayName}</h3>
-          <p class="text-stone-400 text-sm">${features.length} feature${features.length > 1 ? 's' : ''} configured</p>
-          <div class="flex flex-wrap gap-1 mt-3">
-            ${features.slice(0, 3).map(f => 
-              `<span class="px-2 py-0.5 text-xs rounded bg-stone-800 text-stone-300">${f.replace(/-/g, " ")}</span>`
-            ).join("")}
-            ${features.length > 3 ? `<span class="px-2 py-0.5 text-xs rounded bg-stone-800 text-stone-500">+${features.length - 3} more</span>` : ""}
-          </div>
-        </div>
-      `;
-    }).join("");
+  // Build user config for preview generator
+  const buildUserConfig = useCallback((): UserConfig => ({
+    template,
+    projectName: projectName || "My Project",
+    vision: vision || undefined,
+    mission: mission || undefined,
+    description: description || undefined,
+    inspiration: inspirations[0]?.value || undefined,
+    integrations,
+  }), [template, projectName, vision, mission, description, inspirations, integrations]);
 
-    return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${projectName || "My Project"}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { font-family: 'Inter', system-ui, sans-serif; }
-  </style>
-</head>
-<body class="bg-stone-950 text-white min-h-screen">
-  <!-- Nav -->
-  <nav class="border-b border-stone-800 px-6 py-4">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-400"></div>
-        <span class="font-bold text-lg">${projectName || "My Project"}</span>
-      </div>
-      <div class="flex items-center gap-4">
-        <a href="#" class="text-stone-400 hover:text-white text-sm">Features</a>
-        <a href="#" class="text-stone-400 hover:text-white text-sm">Pricing</a>
-        ${integrations.auth ? `<button class="px-4 py-2 text-sm bg-orange-600 hover:bg-orange-500 rounded-lg">Sign In</button>` : ""}
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <section class="px-6 py-24 text-center">
-    <div class="max-w-4xl mx-auto">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm mb-6">
-        <span>✨</span>
-        <span>${templateName}</span>
-      </div>
-      <h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-white to-stone-400 bg-clip-text text-transparent">
-        ${description || "Build Something Amazing"}
-      </h1>
-      <p class="text-xl text-stone-400 mb-8 max-w-2xl mx-auto">
-        ${featureCount > 0 
-          ? `${featureCount} features selected across ${featureCategories.length} categories`
-          : configuredIntegrations > 0 
-            ? `Powered by ${configuredIntegrations} integration${configuredIntegrations > 1 ? 's' : ''}`
-            : 'Configure your features and integrations to see them reflected here.'}
-      </p>
-      <div class="flex gap-4 justify-center">
-        <button class="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 rounded-lg font-medium hover:opacity-90 transition-opacity">
-          Get Started
-        </button>
-        <button class="px-6 py-3 border border-stone-700 rounded-lg font-medium hover:border-stone-500 transition-colors">
-          Learn More
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Selected Features Grid -->
-  ${featureCount > 0 ? `
-  <section class="px-6 py-16 border-t border-stone-800">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-4">Your Features</h2>
-      <p class="text-center text-stone-400 mb-12">${featureCount} features selected for your project</p>
-      <div class="grid md:grid-cols-3 gap-6">
-        ${featureCardsHtml}
-      </div>
-    </div>
-  </section>
-  ` : ""}
-
-  <!-- Integrations Grid -->
-  ${configuredIntegrations > 0 ? `
-  <section class="px-6 py-16 border-t border-stone-800">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-4">Integrations</h2>
-      <p class="text-center text-stone-400 mb-12">${configuredIntegrations} service${configuredIntegrations > 1 ? 's' : ''} connected</p>
-      <div class="grid md:grid-cols-3 gap-6">
-        ${integrations.auth ? `
-        <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
-          <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4">🔐</div>
-          <h3 class="font-semibold mb-2">Authentication</h3>
-          <p class="text-stone-400 text-sm">Secure ${integrations.auth} authentication built-in</p>
-        </div>
-        ` : ""}
-        ${integrations.payments ? `
-        <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
-          <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">💳</div>
-          <h3 class="font-semibold mb-2">Payments</h3>
-          <p class="text-stone-400 text-sm">${integrations.payments} integration for billing</p>
-        </div>
-        ` : ""}
-        ${integrations.db ? `
-        <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
-          <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">🗄️</div>
-          <h3 class="font-semibold mb-2">Database</h3>
-          <p class="text-stone-400 text-sm">${integrations.db} for data storage</p>
-        </div>
-        ` : ""}
-        ${integrations.ai ? `
-        <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
-          <div class="w-10 h-10 rounded-lg bg-orange-400/20 flex items-center justify-center mb-4">🤖</div>
-          <h3 class="font-semibold mb-2">AI Powered</h3>
-          <p class="text-stone-400 text-sm">${integrations.ai} integration for AI features</p>
-        </div>
-        ` : ""}
-        ${integrations.email ? `
-        <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
-          <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center mb-4">📧</div>
-          <h3 class="font-semibold mb-2">Email</h3>
-          <p class="text-stone-400 text-sm">${integrations.email} for transactional emails</p>
-        </div>
-        ` : ""}
-        ${integrations.analytics ? `
-        <div class="p-6 rounded-xl bg-stone-900 border border-stone-800">
-          <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4">📊</div>
-          <h3 class="font-semibold mb-2">Analytics</h3>
-          <p class="text-stone-400 text-sm">${integrations.analytics} for insights</p>
-        </div>
-        ` : ""}
-      </div>
-    </div>
-  </section>
-  ` : ""}
-
-  <!-- Empty State -->
-  ${featureCount === 0 && configuredIntegrations === 0 ? `
-  <section class="px-6 py-16 border-t border-stone-800">
-    <div class="max-w-6xl mx-auto text-center">
-      <div class="p-12 rounded-xl bg-stone-900/50 border border-dashed border-stone-700">
-        <p class="text-stone-400 text-lg mb-2">No features or integrations configured yet</p>
-        <p class="text-stone-500 text-sm">Select features and integrations in the sidebar to see them here</p>
-      </div>
-    </div>
-  </section>
-  ` : ""}
-
-  <!-- Footer -->
-  <footer class="px-6 py-8 border-t border-stone-800 text-center text-stone-400 text-sm">
-    <p>Built with Dawson-Does Framework • ${templateName} • ${featureCount} features</p>
-  </footer>
-</body>
-</html>
-    `.trim();
-  }, [template, integrations, projectName, description, selectedTemplate, configuredIntegrations, featureCount, featureCategories]);
+  // Initialize with fallback props on mount or when config changes
+  useEffect(() => {
+    const userConfig = buildUserConfig();
+    const fallbackProps = generateFallbackProps(userConfig);
+    setComponentProps(fallbackProps);
+  }, [buildUserConfig]);
 
   // Detect when config changes (don't auto-update, let user trigger it)
   useEffect(() => {
@@ -259,12 +96,40 @@ export function LivePreviewPanel({
     }
   }, [template, integrations, projectName, featureCount, lastRendered]);
 
-  // Handle update preview
-  const handleUpdatePreview = () => {
-    setPreviewKey(k => k + 1);
+  // Handle update preview with fallback props
+  const handleUpdatePreview = useCallback(() => {
+    const userConfig = buildUserConfig();
+    const fallbackProps = generateFallbackProps(userConfig);
+    setComponentProps(fallbackProps);
     setLastRendered({ template, integrations, projectName, featureCount });
     setHasPendingChanges(false);
-  };
+  }, [buildUserConfig, template, integrations, projectName, featureCount]);
+
+  // Handle AI enhancement
+  const handleAIEnhance = useCallback(async () => {
+    setIsEnhancing(true);
+    
+    try {
+      const response = await fetch("/api/preview/enhance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildUserConfig()),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.componentProps) {
+          setComponentProps(data.componentProps);
+          setLastRendered({ template, integrations, projectName, featureCount });
+          setHasPendingChanges(false);
+        }
+      }
+    } catch (error) {
+      console.error("AI enhancement failed:", error);
+    } finally {
+      setIsEnhancing(false);
+    }
+  }, [buildUserConfig, template, integrations, projectName, featureCount]);
 
   // Initial render - set lastRendered
   useEffect(() => {
@@ -289,7 +154,7 @@ export function LivePreviewPanel({
     <div
       className={cn(
         "fixed right-0 top-0 h-screen bg-card border-l border-border flex flex-col z-40 transition-all duration-300",
-        isExpanded ? "w-[60vw]" : "w-[400px]"
+        isExpanded ? "w-[60vw]" : "w-[450px]"
       )}
     >
       {/* Header */}
@@ -306,11 +171,27 @@ export function LivePreviewPanel({
             <span className="font-medium text-sm">Live Preview</span>
           </div>
           <Badge variant="secondary" className="text-xs">
-            {configuredIntegrations} integration{configuredIntegrations !== 1 ? 's' : ''}
+            {featureCount + configuredIntegrations} integration{(featureCount + configuredIntegrations) !== 1 ? 's' : ''}
           </Badge>
         </div>
 
         <div className="flex items-center gap-2">
+          {/* AI Enhance Button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleAIEnhance}
+            disabled={isEnhancing}
+            className="h-8 px-3 text-xs gap-1.5"
+          >
+            {isEnhancing ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Sparkles className="h-3.5 w-3.5" />
+            )}
+            {isEnhancing ? "Enhancing..." : "AI Enhance"}
+          </Button>
+
           {/* Viewport Toggle */}
           <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/50">
             <button
@@ -364,22 +245,21 @@ export function LivePreviewPanel({
         </div>
       </div>
 
-      {/* Preview Frame */}
-      <div className="flex-1 bg-stone-900 p-4 overflow-hidden">
-        <div
-          className={cn(
-            "h-full mx-auto bg-card rounded-lg overflow-hidden shadow-2xl transition-all duration-300",
-            viewport === "mobile" ? "w-[375px]" : "w-full"
-          )}
-        >
-          <iframe
-            key={previewKey}
-            srcDoc={previewContent}
-            className="w-full h-full border-0"
-            title="Live Preview"
-            sandbox="allow-scripts"
+      {/* Preview Frame - Using PreviewRenderer */}
+      <div className="flex-1 bg-stone-900 p-4 overflow-auto">
+        {viewport === "mobile" ? (
+          <div className="flex justify-center">
+            <MobilePreviewFrame
+              template={template}
+              componentProps={componentProps}
+            />
+          </div>
+        ) : (
+          <PreviewFrame
+            template={template}
+            componentProps={componentProps}
           />
-        </div>
+        )}
       </div>
 
       {/* Status Bar */}
@@ -442,4 +322,3 @@ export function PreviewToggleButton({
     </Button>
   );
 }
-

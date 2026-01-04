@@ -98,7 +98,7 @@ const NAV_SECTIONS: NavSection[] = [
   { id: "template", label: "Template", description: "Choose template", stepNumber: 1 },
   { id: "research", label: "Research", description: "Domain & inspiration", stepNumber: 2, optional: true, tooltip: "Describe your project domain and add inspiration URLs" },
   { id: "branding", label: "Branding", description: "Colors & identity", stepNumber: 3, optional: true, tooltip: "Choose a color scheme or enter custom brand colors" },
-  { id: "core-features", label: "Features", description: "Core features", stepNumber: 4 },
+  { id: "core-features", label: "Integrations", description: "Pick features", stepNumber: 4 },
   // Configure Phase (5-18)
   { id: "integrate-ai", label: "AI", description: "AI provider", stepNumber: 5, optional: true, tooltip: "Connect OpenAI, Anthropic, or Google AI" },
   { id: "payments", label: "Payments", description: "Payment provider", stepNumber: 6, optional: true, tooltip: "Stripe, Paddle, or LemonSqueezy" },
