@@ -336,6 +336,35 @@ const INTEGRATION_PATHS: Record<string, string[]> = {
     "integrations/backgroundJobs/trigger/jobs/example-job.ts",
     "integrations/backgroundJobs/trigger/jobs/scheduled-job.ts",
   ],
+  // Phase 3 new integrations
+  "cms:contentful": [
+    "integrations/cms/contentful/lib/client.ts",
+    "integrations/cms/contentful/lib/queries.ts",
+    "integrations/cms/contentful/lib/types.ts",
+    "integrations/cms/contentful/app/api/revalidate/route.ts",
+    "integrations/cms/contentful/app/blog/page.tsx",
+    "integrations/cms/contentful/app/blog/[slug]/page.tsx",
+    "integrations/cms/contentful/components/cms/BlogCard.tsx",
+    "integrations/cms/contentful/components/cms/RichText.tsx",
+    "integrations/cms/contentful/hooks/usePosts.ts",
+  ],
+  "search:meilisearch": [
+    "integrations/search/meilisearch/lib/meilisearch.ts",
+    "integrations/search/meilisearch/lib/indexer.ts",
+    "integrations/search/meilisearch/components/search/SearchBox.tsx",
+    "integrations/search/meilisearch/components/search/SearchResults.tsx",
+    "integrations/search/meilisearch/components/search/SearchModal.tsx",
+    "integrations/search/meilisearch/hooks/useSearch.ts",
+  ],
+  "storage:r2": [
+    "integrations/storage/r2/lib/r2.ts",
+    "integrations/storage/r2/lib/upload.ts",
+    "integrations/storage/r2/app/api/upload/route.ts",
+    "integrations/storage/r2/app/api/upload/presigned/route.ts",
+    "integrations/storage/r2/components/storage/FileUpload.tsx",
+    "integrations/storage/r2/components/storage/FilePreview.tsx",
+    "integrations/storage/r2/hooks/useUpload.ts",
+  ],
 };
 
 interface ExportRequest {
@@ -473,6 +502,16 @@ function getRequiredEnvVars(integrations: Record<string, string>): string[] {
       case "backgroundJobs:trigger":
         vars.push("TRIGGER_API_KEY", "TRIGGER_API_URL");
         break;
+      // Phase 3 new integrations
+      case "cms:contentful":
+        vars.push("CONTENTFUL_SPACE_ID", "CONTENTFUL_ACCESS_TOKEN", "CONTENTFUL_PREVIEW_TOKEN", "CONTENTFUL_REVALIDATE_SECRET");
+        break;
+      case "search:meilisearch":
+        vars.push("MEILISEARCH_HOST", "MEILISEARCH_API_KEY", "NEXT_PUBLIC_MEILISEARCH_HOST", "NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY");
+        break;
+      case "storage:r2":
+        vars.push("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET_NAME", "NEXT_PUBLIC_R2_PUBLIC_URL");
+        break;
     }
   });
   
@@ -590,6 +629,19 @@ function getIntegrationDependencies(integrations: Record<string, string>): Recor
       case "backgroundJobs:trigger":
         deps["@trigger.dev/sdk"] = "^3.0.0";
         deps["@trigger.dev/nextjs"] = "^3.0.0";
+        break;
+      // Phase 3 new integrations
+      case "cms:contentful":
+        deps["contentful"] = "^10.6.0";
+        deps["@contentful/rich-text-react-renderer"] = "^15.19.0";
+        deps["@contentful/rich-text-types"] = "^16.3.0";
+        break;
+      case "search:meilisearch":
+        deps["meilisearch"] = "^0.37.0";
+        break;
+      case "storage:r2":
+        deps["@aws-sdk/client-s3"] = "^3.500.0";
+        deps["@aws-sdk/s3-request-presigner"] = "^3.500.0";
         break;
     }
   });
