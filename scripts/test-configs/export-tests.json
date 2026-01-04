@@ -1,0 +1,517 @@
+{
+  "version": "1.0.0",
+  "baseUrl": "http://localhost:3000",
+  "outputDir": "output/agents/quality/workspace/export-tests",
+  "baselineDir": "output/agents/quality/baseline-exports",
+  "tests": [
+    {
+      "id": "T01",
+      "name": "SaaS + Supabase Auth",
+      "tier": 1,
+      "priority": "P0",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t01-supabase",
+        "integrations": { "auth": "supabase" },
+        "vision": "Test: SaaS with Supabase authentication"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/supabase/server.ts",
+        "lib/supabase/middleware.ts",
+        "middleware.ts",
+        "components/auth/LoginForm.tsx",
+        "components/auth/SignupForm.tsx",
+        "app/(auth)/login/page.tsx",
+        "app/(auth)/signup/page.tsx",
+        "app/auth/callback/route.ts",
+        "hooks/useAuth.ts"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+      ],
+      "expectedDeps": ["@supabase/supabase-js", "@supabase/ssr"]
+    },
+    {
+      "id": "T02",
+      "name": "SaaS + Clerk Auth",
+      "tier": 1,
+      "priority": "P0",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t02-clerk",
+        "integrations": { "auth": "clerk" },
+        "vision": "Test: SaaS with Clerk authentication"
+      },
+      "expectedFiles": [
+        "middleware.ts",
+        "app/sign-in/[[...sign-in]]/page.tsx",
+        "app/sign-up/[[...sign-up]]/page.tsx",
+        "components/auth/ClerkProvider.tsx",
+        "components/auth/SignInButton.tsx"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "CLERK_SECRET_KEY"
+      ],
+      "expectedDeps": ["@clerk/nextjs"]
+    },
+    {
+      "id": "T03",
+      "name": "SaaS + Stripe Payments",
+      "tier": 1,
+      "priority": "P0",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t03-stripe",
+        "integrations": { "payments": "stripe" },
+        "vision": "Test: SaaS with Stripe payments"
+      },
+      "expectedFiles": [
+        "lib/stripe/client.ts",
+        "lib/stripe/server.ts",
+        "app/api/stripe/checkout/route.ts",
+        "app/api/stripe/portal/route.ts",
+        "app/api/webhooks/stripe/route.ts",
+        "components/billing/PricingTable.tsx"
+      ],
+      "expectedEnvVars": [
+        "STRIPE_SECRET_KEY",
+        "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+        "STRIPE_WEBHOOK_SECRET"
+      ],
+      "expectedDeps": ["stripe", "@stripe/stripe-js"]
+    },
+    {
+      "id": "T04",
+      "name": "SaaS + Resend Email",
+      "tier": 1,
+      "priority": "P1",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t04-resend",
+        "integrations": { "email": "resend" },
+        "vision": "Test: SaaS with Resend email"
+      },
+      "expectedFiles": [
+        "lib/email/resend.ts",
+        "lib/email/send.ts",
+        "emails/WelcomeEmail.tsx",
+        "emails/PasswordResetEmail.tsx",
+        "app/api/email/send/route.ts"
+      ],
+      "expectedEnvVars": ["RESEND_API_KEY", "EMAIL_FROM"],
+      "expectedDeps": ["resend", "@react-email/components"]
+    },
+    {
+      "id": "T05",
+      "name": "SaaS + PostHog Analytics",
+      "tier": 1,
+      "priority": "P1",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t05-posthog",
+        "integrations": { "analytics": "posthog" },
+        "vision": "Test: SaaS with PostHog analytics"
+      },
+      "expectedFiles": [
+        "lib/analytics/posthog.ts",
+        "components/analytics/PostHogProvider.tsx",
+        "hooks/useAnalytics.ts",
+        "hooks/useFeatureFlag.ts"
+      ],
+      "expectedEnvVars": ["NEXT_PUBLIC_POSTHOG_KEY"],
+      "expectedDeps": ["posthog-js"]
+    },
+    {
+      "id": "T06",
+      "name": "SaaS + Supabase + Stripe",
+      "tier": 2,
+      "priority": "P0",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t06-auth-payments",
+        "integrations": { "auth": "supabase", "payments": "stripe" },
+        "vision": "Test: SaaS with auth and payments"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/stripe/server.ts",
+        "middleware.ts",
+        "app/api/stripe/checkout/route.ts",
+        "components/auth/LoginForm.tsx",
+        "components/billing/PricingTable.tsx"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "STRIPE_SECRET_KEY"
+      ],
+      "expectedDeps": ["@supabase/supabase-js", "stripe"]
+    },
+    {
+      "id": "T07",
+      "name": "SaaS + Clerk + Stripe",
+      "tier": 2,
+      "priority": "P0",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t07-clerk-stripe",
+        "integrations": { "auth": "clerk", "payments": "stripe" },
+        "vision": "Test: SaaS with Clerk and Stripe"
+      },
+      "expectedFiles": [
+        "middleware.ts",
+        "components/auth/ClerkProvider.tsx",
+        "lib/stripe/server.ts",
+        "app/api/stripe/checkout/route.ts"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "STRIPE_SECRET_KEY"
+      ],
+      "expectedDeps": ["@clerk/nextjs", "stripe"]
+    },
+    {
+      "id": "T08",
+      "name": "E-commerce Full Stack",
+      "tier": 2,
+      "priority": "P0",
+      "config": {
+        "template": "ecommerce",
+        "projectName": "test-t08-ecommerce",
+        "integrations": {
+          "auth": "supabase",
+          "payments": "stripe",
+          "email": "resend",
+          "analytics": "posthog"
+        },
+        "vision": "Test: Full e-commerce platform"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/stripe/server.ts",
+        "lib/email/resend.ts",
+        "lib/analytics/posthog.ts",
+        "emails/WelcomeEmail.tsx",
+        "components/billing/PricingTable.tsx"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "STRIPE_SECRET_KEY",
+        "RESEND_API_KEY",
+        "NEXT_PUBLIC_POSTHOG_KEY"
+      ],
+      "expectedDeps": ["@supabase/supabase-js", "stripe", "resend", "posthog-js"]
+    },
+    {
+      "id": "T09",
+      "name": "Blog + Supabase + PostHog",
+      "tier": 2,
+      "priority": "P1",
+      "config": {
+        "template": "blog",
+        "projectName": "test-t09-blog",
+        "integrations": { "auth": "supabase", "analytics": "posthog" },
+        "vision": "Test: Content platform with analytics"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/analytics/posthog.ts",
+        "app/blog/[slug]/page.tsx"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_POSTHOG_KEY"
+      ],
+      "expectedDeps": ["@supabase/supabase-js", "posthog-js"]
+    },
+    {
+      "id": "T10",
+      "name": "Dashboard + Auth + Analytics",
+      "tier": 2,
+      "priority": "P1",
+      "config": {
+        "template": "dashboard",
+        "projectName": "test-t10-dashboard",
+        "integrations": { "auth": "supabase", "analytics": "posthog" },
+        "vision": "Test: Admin dashboard"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/analytics/posthog.ts",
+        "app/settings/page.tsx"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_POSTHOG_KEY"
+      ],
+      "expectedDeps": ["@supabase/supabase-js", "posthog-js"]
+    },
+    {
+      "id": "T11",
+      "name": "SaaS Full Stack (4 integrations)",
+      "tier": 3,
+      "priority": "P0",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t11-full",
+        "integrations": {
+          "auth": "supabase",
+          "payments": "stripe",
+          "email": "resend",
+          "analytics": "posthog"
+        },
+        "vision": "Test: Full SaaS stack"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/stripe/server.ts",
+        "lib/email/resend.ts",
+        "lib/analytics/posthog.ts"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "STRIPE_SECRET_KEY",
+        "RESEND_API_KEY",
+        "NEXT_PUBLIC_POSTHOG_KEY"
+      ],
+      "expectedDeps": ["@supabase/supabase-js", "stripe", "resend", "posthog-js"]
+    },
+    {
+      "id": "T12",
+      "name": "E-commerce + Search (5 integrations)",
+      "tier": 3,
+      "priority": "P1",
+      "config": {
+        "template": "ecommerce",
+        "projectName": "test-t12-search",
+        "integrations": {
+          "auth": "supabase",
+          "payments": "stripe",
+          "email": "resend",
+          "analytics": "posthog",
+          "search": "algolia"
+        },
+        "vision": "Test: E-commerce with search"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/stripe/server.ts",
+        "lib/search/algolia.ts",
+        "components/search/SearchBox.tsx"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "STRIPE_SECRET_KEY",
+        "NEXT_PUBLIC_ALGOLIA_APP_ID"
+      ],
+      "expectedDeps": ["@supabase/supabase-js", "stripe", "algoliasearch"]
+    },
+    {
+      "id": "T13",
+      "name": "AI-Powered SaaS",
+      "tier": 3,
+      "priority": "P1",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t13-ai",
+        "integrations": {
+          "auth": "supabase",
+          "payments": "stripe",
+          "ai": "openai"
+        },
+        "vision": "Test: AI-powered SaaS"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/stripe/server.ts",
+        "lib/ai/openai.ts",
+        "components/ai/ChatInterface.tsx",
+        "app/api/ai/chat/route.ts"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "STRIPE_SECRET_KEY",
+        "OPENAI_API_KEY"
+      ],
+      "expectedDeps": ["@supabase/supabase-js", "stripe", "openai"]
+    },
+    {
+      "id": "T14",
+      "name": "File-Based SaaS",
+      "tier": 3,
+      "priority": "P1",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t14-files",
+        "integrations": {
+          "auth": "supabase",
+          "payments": "stripe",
+          "storage": "uploadthing"
+        },
+        "vision": "Test: File-based SaaS"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/stripe/server.ts",
+        "lib/uploadthing.ts",
+        "components/upload/UploadButton.tsx",
+        "app/api/uploadthing/route.ts"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "STRIPE_SECRET_KEY",
+        "UPLOADTHING_SECRET"
+      ],
+      "expectedDeps": ["@supabase/supabase-js", "stripe", "uploadthing"]
+    },
+    {
+      "id": "T15",
+      "name": "Maximum Complexity (All integrations)",
+      "tier": 3,
+      "priority": "P2",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t15-max",
+        "integrations": {
+          "auth": "supabase",
+          "payments": "stripe",
+          "email": "resend",
+          "analytics": "posthog",
+          "ai": "openai",
+          "search": "algolia",
+          "storage": "uploadthing"
+        },
+        "vision": "Test: Maximum integration complexity"
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "lib/stripe/server.ts",
+        "lib/email/resend.ts",
+        "lib/analytics/posthog.ts",
+        "lib/ai/openai.ts",
+        "lib/search/algolia.ts",
+        "lib/uploadthing.ts"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "STRIPE_SECRET_KEY",
+        "RESEND_API_KEY",
+        "NEXT_PUBLIC_POSTHOG_KEY",
+        "OPENAI_API_KEY",
+        "NEXT_PUBLIC_ALGOLIA_APP_ID",
+        "UPLOADTHING_SECRET"
+      ],
+      "expectedDeps": [
+        "@supabase/supabase-js",
+        "stripe",
+        "resend",
+        "posthog-js",
+        "openai",
+        "algoliasearch",
+        "uploadthing"
+      ]
+    },
+    {
+      "id": "T16",
+      "name": "Base SaaS (No integrations)",
+      "tier": 4,
+      "priority": "P0",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t16-base",
+        "integrations": {},
+        "vision": "Test: Base template only"
+      },
+      "expectedFiles": [
+        "app/page.tsx",
+        "app/layout.tsx",
+        "package.json"
+      ],
+      "expectedEnvVars": [],
+      "expectedDeps": ["next", "react", "react-dom"]
+    },
+    {
+      "id": "T17",
+      "name": "Landing Page + Analytics",
+      "tier": 4,
+      "priority": "P1",
+      "config": {
+        "template": "landing-page",
+        "projectName": "test-t17-landing",
+        "integrations": { "analytics": "posthog" },
+        "vision": "Test: Static landing page with analytics"
+      },
+      "expectedFiles": [
+        "app/page.tsx",
+        "lib/analytics/posthog.ts"
+      ],
+      "expectedEnvVars": ["NEXT_PUBLIC_POSTHOG_KEY"],
+      "expectedDeps": ["posthog-js"]
+    },
+    {
+      "id": "T18",
+      "name": "Blog + OpenAI",
+      "tier": 4,
+      "priority": "P2",
+      "config": {
+        "template": "blog",
+        "projectName": "test-t18-ai-blog",
+        "integrations": { "auth": "clerk", "ai": "openai" },
+        "vision": "Test: AI-assisted blog"
+      },
+      "expectedFiles": [
+        "components/auth/ClerkProvider.tsx",
+        "lib/ai/openai.ts",
+        "components/ai/ChatInterface.tsx"
+      ],
+      "expectedEnvVars": [
+        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "OPENAI_API_KEY"
+      ],
+      "expectedDeps": ["@clerk/nextjs", "openai"]
+    },
+    {
+      "id": "T19",
+      "name": "SEO Directory + Search",
+      "tier": 4,
+      "priority": "P2",
+      "config": {
+        "template": "seo-directory",
+        "projectName": "test-t19-seo",
+        "integrations": { "search": "algolia" },
+        "vision": "Test: SEO directory with search"
+      },
+      "expectedFiles": [
+        "lib/search/algolia.ts",
+        "components/search/SearchBox.tsx"
+      ],
+      "expectedEnvVars": ["NEXT_PUBLIC_ALGOLIA_APP_ID"],
+      "expectedDeps": ["algoliasearch"]
+    },
+    {
+      "id": "T20",
+      "name": "SaaS with Custom Branding",
+      "tier": 4,
+      "priority": "P1",
+      "config": {
+        "template": "saas",
+        "projectName": "test-t20-branded",
+        "integrations": { "auth": "supabase" },
+        "vision": "Test: Custom branded SaaS",
+        "branding": {
+          "primaryColor": "#FF5722",
+          "secondaryColor": "#2196F3"
+        }
+      },
+      "expectedFiles": [
+        "lib/supabase/client.ts",
+        "app/globals.css"
+      ],
+      "expectedEnvVars": ["NEXT_PUBLIC_SUPABASE_URL"],
+      "expectedDeps": ["@supabase/supabase-js"]
+    }
+  ]
+}
+
