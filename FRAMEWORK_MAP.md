@@ -4,6 +4,7 @@ Generated: (deterministic)
 Hash: 890a7cc38d
 
 ## Recent changes
+- 7d91459 2026-01-03 chore: update framework map
 - 11d7bc0 2026-01-03 fix(ui): address 4 UX issues from visual QA
 - 6528df1 2026-01-03 feat(seo): add complete SEO content pipeline
 - d947dd0 2026-01-03 feat(preview): add feature preview components for WYSIWYG experience
@@ -28,7 +29,6 @@ Hash: 890a7cc38d
 - 44bd8a7 2026-01-03 docs(audit): comprehensive configurator workflow audit with 16 use cases
 - 603ff45 2026-01-03 fix(configurator): compact sidebar sections & dark theme main content
 - f299ea9 2026-01-03 feat(research): add AI-powered domain & URL analysis
-- b4e3eda 2025-12-27 feat(configurator): add P1/P2/P3 UI enhancements
 
 ## Agent Governance Structure
 

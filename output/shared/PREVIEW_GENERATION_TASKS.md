@@ -22,15 +22,20 @@ Build a complete system where:
 | PreviewRenderer | `components/preview/PreviewRenderer.tsx` | Renders template layouts |
 | ZIP Generator | `lib/zip-generator.ts` | Bundles files for download |
 | AI Agent Package | `packages/ai-agent/` | Architecture + code generation |
+| **Supabase Auth Template** | `packages/templates/integrations/auth/supabase/` | ✅ Full auth with login/signup/oauth |
+| **Stripe Payments Template** | `packages/templates/integrations/payments/stripe/` | ✅ Checkout, billing portal, webhooks |
+| **Resend Email Template** | `packages/templates/integrations/email/resend/` | ✅ Welcome, reset, invoice emails |
+| **PostHog Analytics Template** | `packages/templates/integrations/analytics/posthog/` | ✅ Events, feature flags, A/B testing |
+| **Generator Orchestrator** | `website/lib/generator/` | ✅ Combines templates into projects |
+| **ZIP Export Integration** | `app/api/export/zip/route.ts` | ✅ Uses generator when templates unavailable |
 
 ### ❌ Not Yet Built
 
 | Component | Purpose |
 |-----------|---------|
-| Feature Code Templates | Actual code files for each feature |
-| Integration Code Templates | Stripe, Supabase, Resend, etc. configs |
+| Feature Code Templates | Actual code files for each feature (shopping cart, etc.) |
+| More Integration Templates | OpenAI, Clerk, Algolia, etc. |
 | Feature Preview Components | Visual representations in preview |
-| Code Generator Orchestrator | Combines templates + features + integrations |
 | Dependency Graph | Auto-include required features |
 
 ---

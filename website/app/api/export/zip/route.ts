@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import * as fs from "fs";
 import * as path from "path";
 import JSZip from "jszip";
-import { apiError, apiSuccess, ErrorCodes } from "@/lib/api-errors";
+import { apiError, ErrorCodes } from "@/lib/api-errors";
+import { generateProject, type ProjectConfig, type IntegrationCategory } from "@/lib/generator";
 
 // Template component manifests - what core pages/components each template includes
 const TEMPLATE_COMPONENTS: Record<string, {
@@ -387,20 +388,10 @@ export async function POST(request: NextRequest) {
     const templateFilesAccessible = keyFiles.some(f => fs.existsSync(f));
     
     if (!templateFilesAccessible) {
-      console.warn(`Template path not accessible: ${templatePath}`);
+      console.log(`Template path not accessible, using generator: ${templatePath}`);
       // In production (Vercel), templates folder may not be bundled
-      // Return a helpful error directing users to CLI
-      return apiError(
-        ErrorCodes.TEMPLATE_NOT_FOUND,
-        "ZIP export not available - use CLI instead",
-        503,
-        { 
-          template,
-          suggestion: "cli",
-          cliCommand: `npx @jrdaws/framework create ${template} ${projectName}`,
-        },
-        "ZIP export requires local templates. Use the CLI command for full template export: npx @jrdaws/framework create " + template + " " + projectName
-      );
+      // Use the new generator system instead
+      return await generateZipWithGenerator(body);
     }
 
     // 1. Add .dd/ directory with project context
@@ -637,6 +628,153 @@ next-env.d.ts
       500,
       process.env.NODE_ENV === "development" ? { details: errorMessage } : undefined,
       "Try again. If the issue persists, use the CLI command instead."
+    );
+  }
+}
+
+/**
+ * Generate ZIP using the new generator system
+ * Used when filesystem templates aren't available (e.g., Vercel deployment)
+ */
+async function generateZipWithGenerator(request: ExportRequest): Promise<NextResponse> {
+  const { projectName, template, integrations, vision, mission, successCriteria, inspiration } = request;
+
+  try {
+    // Convert integrations to the format expected by the generator
+    const typedIntegrations: Partial<Record<IntegrationCategory, string>> = {};
+    for (const [key, value] of Object.entries(integrations)) {
+      if (value) {
+        typedIntegrations[key as IntegrationCategory] = value;
+      }
+    }
+
+    // Build project config
+    const config: ProjectConfig = {
+      projectName,
+      template: template || "saas",
+      description: vision || "",
+      vision,
+      mission,
+      integrations: typedIntegrations,
+      features: [], // Will add feature support later
+      branding: {
+        primaryColor: "#000000",
+        secondaryColor: "#666666",
+      },
+    };
+
+    // Generate project
+    const project = await generateProject(config);
+
+    // Create ZIP
+    const zip = new JSZip();
+
+    // Add .dd/ context directory
+    const ddFolder = zip.folder(".dd")!;
+    ddFolder.file("template-manifest.json", JSON.stringify({
+      template,
+      version: "1.0.0",
+      generatedAt: new Date().toISOString(),
+      generatedBy: "dawson-does-framework-generator",
+      integrations: typedIntegrations,
+    }, null, 2));
+
+    if (vision?.trim()) {
+      ddFolder.file("vision.md", `# Project Vision\n\n${vision.trim()}\n`);
+    }
+    if (mission?.trim()) {
+      ddFolder.file("mission.md", `# Project Mission\n\n${mission.trim()}\n`);
+    }
+    if (successCriteria?.trim()) {
+      ddFolder.file("goals.md", `# Success Criteria\n\n${successCriteria.trim()}\n`);
+    }
+    if (inspiration?.description || (inspiration?.urls && inspiration.urls.length > 0)) {
+      let content = "# Inspiration\n\n";
+      if (inspiration.description) content += inspiration.description + "\n\n";
+      if (inspiration.urls?.length) content += "## References\n\n" + inspiration.urls.map(u => `- ${u}`).join("\n") + "\n";
+      ddFolder.file("inspiration.md", content);
+    }
+
+    // Add all generated files
+    for (const file of project.files) {
+      zip.file(file.path, file.content);
+    }
+
+    // Add package.json
+    zip.file("package.json", JSON.stringify(project.packageJson, null, 2) + "\n");
+
+    // Add .env.local.example
+    if (project.envTemplate) {
+      zip.file(".env.local.example", project.envTemplate);
+    }
+
+    // Add README
+    zip.file("README.md", project.readme);
+
+    // Add .gitignore
+    zip.file(".gitignore", `# Dependencies
+node_modules
+.pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+
+# Production
+build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env*.local
+.env
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+`);
+
+    // Add setup instructions if any warnings
+    if (project.warnings.length > 0 || project.setupInstructions.length > 0) {
+      const setupContent = [
+        "# Setup Instructions\n",
+        ...project.setupInstructions.map(s => `- ${s}`),
+        "",
+        project.warnings.length > 0 ? "## Warnings\n" : "",
+        ...project.warnings.map(w => `⚠️ ${w}`),
+      ].join("\n");
+      ddFolder.file("SETUP.md", setupContent);
+    }
+
+    // Generate ZIP
+    const blob = await zip.generateAsync({ type: "arraybuffer" });
+
+    return new NextResponse(blob, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/zip",
+        "Content-Disposition": `attachment; filename="${projectName.toLowerCase().replace(/\s+/g, "-")}.zip"`,
+      },
+    });
+  } catch (error) {
+    console.error("[Generator ZIP Error]", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    return apiError(
+      ErrorCodes.INTERNAL_ERROR,
+      "Failed to generate project",
+      500,
+      process.env.NODE_ENV === "development" ? { details: errorMessage } : undefined,
+      "Try the CLI instead: npx @jrdaws/framework create " + template + " " + projectName
     );
   }
 }
